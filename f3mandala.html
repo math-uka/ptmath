@@ -114,6 +114,7 @@
             <button onclick="setSymmetry(10)">10</button>
         </div>
         <button onclick="resetCanvas()">重新作畫</button>
+        <button onclick="undoLastStep()">上一步</button>
         <br><br>
         <button onclick="setCanvasShape('square')">正方形畫框</button>
         <button onclick="setCanvasShape('circle')">圓形畫框</button>
@@ -146,6 +147,8 @@
         let currentColor = '#000000';
         let showAxes = false;
         let drawings = [];
+        let history = []; // 儲存繪畫歷史，最多10步
+        const maxHistorySteps = 10;
         const currentColorDisplay = document.getElementById('currentColor');
 
         // 動態設置canvas大小
@@ -192,6 +195,7 @@
 
         function resetCanvas() {
             drawings = [];
+            history = []; // 清空歷史記錄
             redrawCanvas();
         }
 
@@ -207,6 +211,21 @@
             showAxes = !showAxes;
             document.getElementById('toggleAxes').textContent = showAxes ? '隱藏對稱軸' : '顯示對稱軸';
             redrawCanvas();
+        }
+
+        // 上一步功能
+        function undoLastStep() {
+            if (history.length > 0) {
+                drawings = [...history.pop()]; // 恢復上一步的狀態
+                redrawCanvas();
+            }
+        }
+
+        function saveToHistory() {
+            if (history.length >= maxHistorySteps) {
+                history.shift(); // 移除最早的一步
+            }
+            history.push([...drawings]); // 儲存當前狀態的副本
         }
 
         function drawSymmetryAxes() {
@@ -271,8 +290,8 @@
             startY = y;
             points = [{ x, y }];
             if (shape === 'free') {
-                redrawCanvas(); // 先重繪之前的內容
-                drawFree(points); // 開始自由繪畫
+                redrawCanvas();
+                drawFree(points);
             }
         }
 
@@ -284,7 +303,7 @@
 
             if (shape === 'free') {
                 points.push({ x, y });
-                drawFree(points); // 實時繪製自由線條
+                drawFree(points);
             } else {
                 scale = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2) / 15;
                 endX = x;
@@ -303,6 +322,7 @@
 
             let angle = shape === 'line' ? Math.atan2(y - startY, x - startX) : 0;
 
+            saveToHistory(); // 在添加新繪畫前保存當前狀態
             if (shape === 'free') {
                 drawings.push({ shape, points: [...points], color: currentColor, scale: 1 });
             } else {
