@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>培道中學數學組 - 對稱圖形設計</title>
+    <style>
+        body {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+            transition: border-radius 0.3s;
+            width: 500px; /* 固定寬高為正方形 */
+            height: 500px;
+        }
+        #tools {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+        #colorPicker {
+            width: 160px;
+            height: 200px;
+            display: grid;
+            grid-template-columns: repeat(8, 20px);
+            gap: 2px;
+        }
+        .colorBox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+        #symmetryButtons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        #currentColor {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>培道中學數學組 - 對稱圖形設計</h1>
+        <label>選擇對稱軸數量:</label>
+        <div id="symmetryButtons">
+            <button onclick="setSymmetry(1)">1</button>
+            <button onclick="setSymmetry(2)">2</button>
+            <button onclick="setSymmetry(4)">4</button>
+            <button onclick="setSymmetry(6)">6</button>
+            <button onclick="setSymmetry(8)">8</button>
+            <button onclick="setSymmetry(10)">10</button>
+        </div>
+        <button onclick="resetCanvas()">重新作畫</button>
+        <br><br>
+        <button onclick="setCanvasShape('square')">正方形畫框</button>
+        <button onclick="setCanvasShape('circle')">圓形畫框</button>
+        <br><br>
+        <button id="toggleAxes" onclick="toggleSymmetryAxes()">顯示對稱軸</button>
+    </div>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div id="tools">
+        <button onclick="setShape('heart')">心形</button>
+        <button onclick="setShape('star')">星形</button>
+        <button onclick="setShape('triangle')">三角形</button>
+        <button onclick="setShape('circle')">圓形</button>
+        <button onclick="setShape('line')">直線</button>
+        <button onclick="setShape('free')">自由繪畫</button>
+        <div>顏色選擇:</div>
+        <div id="colorPicker"></div>
+        <div>當前顏色:</div>
+        <div id="currentColor"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let symmetry = 1;
+        let drawing = false;
+        let shape = 'free';
+        let points = [];
+        let startX, startY, scale = 1;
+        let endX, endY;
+        let currentColor = '#000000';
+        let showAxes = false;
+        let drawings = [];
+        const currentColorDisplay = document.getElementById('currentColor');
+
+        // 生成顏色：64種基礎色 + 黑灰白8階
+        const colors = [];
+        for (let r = 0; r < 8; r++) {
+            for (let g = 0; g < 4; g++) {
+                for (let b = 0; b < 2; b++) {
+                    colors.push(`#${(r*32).toString(16).padStart(2,'0')}${(g*64).toString(16).padStart(2,'0')}${(b*128).toString(16).padStart(2,'0')}`);
+                }
+            }
+        }
+        for (let i = 0; i < 8; i++) {
+            const gray = Math.floor(i * 255 / 7).toString(16).padStart(2, '0');
+            colors.push(`#${gray}${gray}${gray}`);
+        }
+
+        const colorPicker = document.getElementById('colorPicker');
+        colors.forEach(color => {
+            const div = document.createElement('div');
+            div.className = 'colorBox';
+            div.style.backgroundColor = color;
+            div.onclick = () => {
+                currentColor = color;
+                currentColorDisplay.style.backgroundColor = color;
+            };
+            colorPicker.appendChild(div);
+        });
+        currentColorDisplay.style.backgroundColor = currentColor;
+
+        function setSymmetry(num) {
+            symmetry = num;
+            redrawCanvas();
+        }
+
+        function resetCanvas() {
+            drawings = [];
+            redrawCanvas();
+        }
+
+        function setShape(newShape) {
+            shape = newShape;
+        }
+
+        function setCanvasShape(shape) {
+            canvas.style.borderRadius = shape === 'circle' ? '50%' : '0';
+        }
+
+        function toggleSymmetryAxes() {
+            showAxes = !showAxes;
+            document.getElementById('toggleAxes').textContent = showAxes ? '隱藏對稱軸' : '顯示對稱軸';
+            redrawCanvas();
+        }
+
+        function drawSymmetryAxes() {
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.strokeStyle = 'lightgreen';
+            ctx.setLineDash([5, 5]);
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < symmetry; i++) {
+                ctx.beginPath();
+                let angle = (i * Math.PI) / symmetry;
+                if (symmetry === 1) angle = Math.PI / 2; // 當symmetry = 1時，設為豎直線
+                ctx.moveTo(-250 * Math.cos(angle), -250 * Math.sin(angle));
+                ctx.lineTo(250 * Math.cos(angle), 250 * Math.sin(angle));
+                ctx.stroke();
+            }
+
+            ctx.setLineDash([]);
+            ctx.restore();
+        }
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawings.forEach(draw => drawDrawing(draw));
+            if (showAxes) drawSymmetryAxes();
+        }
+
+        function drawDrawing({ shape, points, color, scale, angle }) {
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+
+            for (let i = 0; i < symmetry; i++) {
+                ctx.rotate((2 * Math.PI) / symmetry);
+                drawShape(shape, points, scale, color, angle);
+                ctx.scale(-1, 1);
+                drawShape(shape, points, scale, color, angle);
+                ctx.scale(-1, 1);
+            }
+
+            ctx.restore();
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            const rect = canvas.getBoundingClientRect();
+            startX = e.clientX - rect.left - canvas.width / 2;
+            startY = e.clientY - rect.top - canvas.height / 2;
+            points = [{x: startX, y: startY}];
+            if (shape === 'free') draw(startX, startY);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - canvas.width / 2;
+            const y = e.clientY - rect.top - canvas.height / 2;
+
+            if (shape === 'free') {
+                points.push({x, y});
+                draw(x, y);
+            } else {
+                scale = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2) / 15;
+                endX = x;
+                endY = y;
+                redrawCanvas();
+                draw(startX, startY);
+            }
+        });
+
+        canvas.addEventListener('mouseup', (e) => {
+            drawing = false;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - canvas.width / 2;
+            const y = e.clientY - rect.top - canvas.height / 2;
+
+            let angle = shape === 'line' ? Math.atan2(y - startY, x - startX) : 0;
+
+            if (shape === 'free') {
+                drawings.push({ shape, points: [...points], color: currentColor, scale });
+            } else {
+                points.push({x, y});
+                drawings.push({ shape, points: [...points], color: currentColor, scale, angle });
+            }
+
+            scale = 1;
+            points = [];
+            endX = null;
+            endY = null;
+            redrawCanvas();
+        });
+
+        function draw(x, y) {
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+
+            for (let i = 0; i < symmetry; i++) {
+                ctx.rotate((2 * Math.PI) / symmetry);
+                drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
+                ctx.scale(-1, 1);
+                drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
+                ctx.scale(-1, 1);
+            }
+
+            ctx.restore();
+            if (showAxes) drawSymmetryAxes();
+        }
+
+        function drawShape(shapeType, points, scale, color, angle = 0) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+
+            if (shapeType === 'free') {
+                ctx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    ctx.lineTo(points[i].x, points[i].y);
+                }
+                ctx.stroke();
+            } else {
+                ctx.save();
+                ctx.translate(points[0].x, points[0].y);
+                if (shapeType === 'line') ctx.rotate(angle);
+                
+                if (shapeType === 'heart') {
+                    ctx.scale(scale, scale);
+                    ctx.moveTo(0, 10);
+                    ctx.bezierCurveTo(-15, -10, -5, -20, 0, 0);
+                    ctx.bezierCurveTo(5, -20, 15, -10, 0, 10);
+                    ctx.fill();
+                } else if (shapeType === 'star') {
+                    ctx.scale(scale, scale);
+                    for (let i = 0; i < 5; i++) {
+                        ctx.lineTo(15 * Math.cos((18 + i * 72) * Math.PI / 180), 
+                                 15 * Math.sin((18 + i * 72) * Math.PI / 180));
+                        ctx.lineTo(7 * Math.cos((54 + i * 72) * Math.PI / 180), 
+                                 7 * Math.sin((54 + i * 72) * Math.PI / 180));
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                } else if (shapeType === 'triangle') {
+                    ctx.scale(scale, scale);
+                    ctx.moveTo(0, -10);
+                    ctx.lineTo(-10, 10);
+                    ctx.lineTo(10, 10);
+                    ctx.closePath();
+                    ctx.fill();
+                } else if (shapeType === 'circle') {
+                    ctx.scale(scale, scale);
+                    ctx.arc(0, 0, 10, 0, 2 * Math.PI);
+                    ctx.fill();
+                } else if (shapeType === 'line') {
+                    ctx.scale(scale, scale);
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(15, 0);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
+        }
+    </script>
+</body>
+</html>
