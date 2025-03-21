@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>小學加減法練習</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            padding: 50px;
+        }
+        #problem {
+            font-size: 24px;
+            margin: 20px;
+        }
+        #answer {
+            padding: 5px;
+            font-size: 16px;
+        }
+        #message {
+            margin: 10px;
+            color: red;
+        }
+        #completion-message {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 10px 20px;
+            border: 2px solid black;
+            font-weight: bold;
+            font-size: 20px;
+            z-index: 1000;
+            display: none;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>加減法練習</h1>
+    <div id="completion-message"></div>
+    <div id="problem"></div>
+    <input type="number" id="answer" autofocus>
+    <button onclick="checkAnswer()">提交</button>
+    <div>得分: <span id="score">0</span></div>
+    <div id="message"></div>
+    <button onclick="generateProblem()">新題目</button>
+
+    <canvas id="fireworks"></canvas>
+
+    <script>
+        let score = 0;
+        let correctAnswer;
+        let startTime;
+        let wrongAttempts = 0; // 記錄答錯次數
+        
+        function generateProblem() {
+            if (score === 0) startTime = new Date().getTime();
+            if (score >= 10) return;
+            
+            let num1, num2, operator;
+            if (Math.random() < 0.5) {
+                num1 = Math.floor(Math.random() * 13) + 1; // 1-13
+                num2 = Math.floor(Math.random() * (25 - num1 + 1)) + 1; // 確保 num1 + num2 <= 25
+                operator = '+';
+                correctAnswer = num1 + num2;
+            } else {
+                num1 = Math.floor(Math.random() * 25) + 1; // 1-25
+                num2 = Math.floor(Math.random() * num1) + 1; // 1 到 num1，確保不為負數
+                operator = '-';
+                correctAnswer = num1 - num2;
+            }
+            
+            document.getElementById('problem').textContent = `${num1} ${operator} ${num2} = ?`;
+            document.getElementById('answer').value = '';
+            document.getElementById('answer').focus();
+            document.getElementById('message').textContent = '';
+            wrongAttempts = 0; // 新題目時重置答錯次數
+        }
+
+        function checkAnswer() {
+            if (score >= 10) return;
+            
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            if (userAnswer === correctAnswer) {
+                score++;
+                document.getElementById('score').textContent = score;
+                if (score < 10) {
+                    generateProblem();
+                } else {
+                    const endTime = new Date().getTime();
+                    const timeUsed = ((endTime - startTime) / 1000).toFixed(1);
+                    const completionMessage = document.getElementById('completion-message');
+                    completionMessage.textContent = `恭喜完成，共用時 ${timeUsed} 秒`;
+                    completionMessage.style.display = 'block';
+                    showFireworks(); // 同時觸發煙花
+                }
+            } else {
+                wrongAttempts++;
+                document.getElementById('message').textContent = 
+                    `答錯 ${wrongAttempts} 次，請再試一下`;
+                document.getElementById('answer').value = '';
+                document.getElementById('answer').focus();
+            }
+        }
+
+        // 煙花效果
+        function showFireworks() {
+            const canvas = document.getElementById('fireworks');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = Math.random() * 5 + 1;
+                    this.speedX = Math.random() * 3 - 1.5;
+                    this.speedY = Math.random() * 3 - 1.5;
+                    this.life = 100;
+                    this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.life--;
+                }
+
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            let particles = [];
+            
+            function createExplosion(x, y) {
+                for (let i = 0; i < 50; i++) {
+                    particles.push(new Particle(x, y));
+                }
+            }
+
+            function animate() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                if (Math.random() < 0.1) {
+                    createExplosion(
+                        Math.random() * canvas.width,
+                        Math.random() * canvas.height
+                    );
+                }
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    particles[i].update();
+                    particles[i].draw();
+                    
+                    if (particles[i].life <= 0) {
+                        particles.splice(i, 1);
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // 按 Enter 鍵提交答案
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // 開始第一道題目
+        generateProblem();
+    </script>
+</body>
+</html>
