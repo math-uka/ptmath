@@ -252,7 +252,7 @@
             ctx.restore();
         }
 
-        // 統一處理坐標
+        // 獲取坐標
         function getCoordinates(e) {
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches ? e.touches[0] : e;
@@ -271,8 +271,8 @@
             startY = y;
             points = [{ x, y }];
             if (shape === 'free') {
-                ctx.beginPath();
-                draw(x, y);
+                redrawCanvas(); // 先重繪之前的內容
+                drawFree(points); // 開始自由繪畫
             }
         }
 
@@ -284,13 +284,13 @@
 
             if (shape === 'free') {
                 points.push({ x, y });
-                draw(x, y);
+                drawFree(points); // 實時繪製自由線條
             } else {
                 scale = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2) / 15;
                 endX = x;
                 endY = y;
                 redrawCanvas();
-                draw(startX, startY);
+                drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
             }
         }
 
@@ -299,14 +299,13 @@
             if (!drawing) return;
             drawing = false;
             const { x, y } = getCoordinates(e);
+            points.push({ x, y });
 
             let angle = shape === 'line' ? Math.atan2(y - startY, x - startX) : 0;
 
             if (shape === 'free') {
-                points.push({ x, y });
-                drawings.push({ shape, points: [...points], color: currentColor, scale });
+                drawings.push({ shape, points: [...points], color: currentColor, scale: 1 });
             } else {
-                points.push({ x, y });
                 drawings.push({ shape, points: [...points], color: currentColor, scale, angle });
             }
 
@@ -326,27 +325,45 @@
         canvas.addEventListener('touchstart', startDrawing);
         canvas.addEventListener('touchmove', drawWhileMoving);
         canvas.addEventListener('touchend', stopDrawing);
-
-        // 防止觸控取消
         canvas.addEventListener('touchcancel', () => {
             drawing = false;
             points = [];
             scale = 1;
             endX = null;
             endY = null;
+            redrawCanvas();
         });
 
-        function draw(x, y) {
+        // 自由繪畫專用函數
+        function drawFree(points) {
             ctx.save();
             ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.fillStyle = currentColor;
             ctx.strokeStyle = currentColor;
+            ctx.lineWidth = 1;
 
             for (let i = 0; i < symmetry; i++) {
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+                for (let j = 1; j < points.length; j++) {
+                    ctx.lineTo(points[j].x, points[j].y);
+                }
+                ctx.stroke();
+
                 ctx.rotate((2 * Math.PI) / symmetry);
-                drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+                for (let j = 1; j < points.length; j++) {
+                    ctx.lineTo(points[j].x, points[j].y);
+                }
+                ctx.stroke();
+
                 ctx.scale(-1, 1);
-                drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+                for (let j = 1; j < points.length; j++) {
+                    ctx.lineTo(points[j].x, points[j].y);
+                }
+                ctx.stroke();
                 ctx.scale(-1, 1);
             }
 
