@@ -26,7 +26,7 @@
             width: min(90vw, 500px);
             height: min(90vw, 500px);
             margin: 0 auto;
-            touch-action: none; /* 防止手機觸控時滾動 */
+            touch-action: none;
         }
         #tools, #symmetryButtons {
             display: flex;
@@ -50,7 +50,7 @@
         }
         .colorBox {
             width: 100%;
-            padding-top: 100%; /* 保持正方形 */
+            padding-top: 100%;
             position: relative;
             cursor: pointer;
             border: 1px solid #ccc;
@@ -252,37 +252,38 @@
             ctx.restore();
         }
 
-        // 滑鼠事件
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', drawWhileMoving);
-        canvas.addEventListener('mouseup', stopDrawing);
+        // 統一處理坐標
+        function getCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches ? e.touches[0] : e;
+            return {
+                x: touch.clientX - rect.left - canvas.width / 2,
+                y: touch.clientY - rect.top - canvas.height / 2
+            };
+        }
 
-        // 觸控事件
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchmove', drawWhileMoving);
-        canvas.addEventListener('touchend', stopDrawing);
-
+        // 開始繪畫
         function startDrawing(e) {
             e.preventDefault();
             drawing = true;
-            const rect = canvas.getBoundingClientRect();
-            const touch = e.touches ? e.touches[0] : e;
-            startX = touch.clientX - rect.left - canvas.width / 2;
-            startY = touch.clientY - rect.top - canvas.height / 2;
-            points = [{x: startX, y: startY}];
-            if (shape === 'free') draw(startX, startY);
+            const { x, y } = getCoordinates(e);
+            startX = x;
+            startY = y;
+            points = [{ x, y }];
+            if (shape === 'free') {
+                ctx.beginPath();
+                draw(x, y);
+            }
         }
 
+        // 移動時繪畫
         function drawWhileMoving(e) {
             if (!drawing) return;
             e.preventDefault();
-            const rect = canvas.getBoundingClientRect();
-            const touch = e.touches ? e.touches[0] : e;
-            const x = touch.clientX - rect.left - canvas.width / 2;
-            const y = touch.clientY - rect.top - canvas.height / 2;
+            const { x, y } = getCoordinates(e);
 
             if (shape === 'free') {
-                points.push({x, y});
+                points.push({ x, y });
                 draw(x, y);
             } else {
                 scale = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2) / 15;
@@ -293,20 +294,19 @@
             }
         }
 
+        // 結束繪畫
         function stopDrawing(e) {
             if (!drawing) return;
             drawing = false;
-            const rect = canvas.getBoundingClientRect();
-            const touch = e.changedTouches ? e.changedTouches[0] : e;
-            const x = touch.clientX - rect.left - canvas.width / 2;
-            const y = touch.clientY - rect.top - canvas.height / 2;
+            const { x, y } = getCoordinates(e);
 
             let angle = shape === 'line' ? Math.atan2(y - startY, x - startX) : 0;
 
             if (shape === 'free') {
+                points.push({ x, y });
                 drawings.push({ shape, points: [...points], color: currentColor, scale });
             } else {
-                points.push({x, y});
+                points.push({ x, y });
                 drawings.push({ shape, points: [...points], color: currentColor, scale, angle });
             }
 
@@ -317,9 +317,30 @@
             redrawCanvas();
         }
 
+        // 滑鼠事件
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', drawWhileMoving);
+        canvas.addEventListener('mouseup', stopDrawing);
+
+        // 觸控事件
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', drawWhileMoving);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // 防止觸控取消
+        canvas.addEventListener('touchcancel', () => {
+            drawing = false;
+            points = [];
+            scale = 1;
+            endX = null;
+            endY = null;
+        });
+
         function draw(x, y) {
             ctx.save();
             ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.fillStyle = currentColor;
+            ctx.strokeStyle = currentColor;
 
             for (let i = 0; i < symmetry; i++) {
                 ctx.rotate((2 * Math.PI) / symmetry);
