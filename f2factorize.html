@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>炸彈因式分解遊戲</title>
+    <title>炸彈因式分解遊戲2</title>
     <style>
         body {
             display: flex;
@@ -178,15 +178,15 @@
                         `(x - ${b1 + 1})(x + ${b1 - 1})`
                     ];
                     break;
-                case 'factorOut': // 提公因式: ax + bx = x(a + b)
-                    const a2 = Math.floor(Math.random() * 10) + 1;
-                    const b2 = Math.floor(Math.random() * 10) + 1;
-                    question = `${a2}x + ${b2}x`;
-                    correctAnswer = `x(${a2} + ${b2})`;
+                case 'factorOut': // 提公因式: kx + m = k(x + n)，避免同類項
+                    const k2 = Math.floor(Math.random() * 10) + 1; // 公因式
+                    const n2 = Math.floor(Math.random() * 10) + 1; // 常數項除以公因式後的值
+                    question = `${k2}x + ${k2 * n2}`; // 如 3x + 6，無同類項可合併
+                    correctAnswer = `${formatCoefficient(k2, '')}(x + ${n2})`;
                     wrongAnswers = [
-                        `x(${a2} - ${b2})`,
-                        `${a2 + 1}(x + ${b2})`,
-                        `x(${a2 + 1} + ${b2 - 1})`
+                        `${formatCoefficient(k2, '')}(x - ${n2})`,
+                        `${formatCoefficient(k2 + 1, '')}(x + ${n2})`,
+                        `${formatCoefficient(k2, '')}(x + ${n2 + 1})`
                     ];
                     break;
                 case 'perfectSquare': // 完全平方: x² + 2bx + b² = (x + b)²
