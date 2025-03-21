@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>培道中學數學組 - 對稱圖形設計.1</title>
+    <title>培道中學數學組 - 對稱圖形設計.2</title>
     <style>
         body {
             display: flex;
@@ -103,7 +103,7 @@
 </head>
 <body>
     <div>
-        <h1>培道中學數學組 - 對稱圖形設計.1</h1>
+        <h1>培道中學數學組 - 對稱圖形設計.2</h1>
         <label>選擇對稱軸數量:</label>
         <div id="symmetryButtons">
             <button onclick="setSymmetry(1)">1</button>
@@ -248,9 +248,12 @@
             ctx.restore();
         }
 
-        function redrawCanvas() {
+        function redrawCanvas(tempPoints = null) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawings.forEach(draw => drawDrawing(draw));
+            if (tempPoints && shape === 'free') {
+                drawFree(tempPoints); // 繪製臨時自由線條
+            }
             if (showAxes) drawSymmetryAxes();
         }
 
@@ -289,6 +292,9 @@
             startX = x;
             startY = y;
             points = [{ x, y }];
+            if (shape === 'free') {
+                redrawCanvas(points); // 顯示起始點
+            }
         }
 
         // 移動時繪畫
@@ -299,14 +305,16 @@
 
             if (shape === 'free') {
                 points.push({ x, y });
-                redrawCanvas(); // 先重繪之前的所有內容
-                drawFree(points); // 再繪製當前自由線條
+                redrawCanvas(points); // 重繪所有內容並顯示當前線條
             } else {
                 scale = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2) / 15;
                 endX = x;
                 endY = y;
                 redrawCanvas();
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
                 drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
+                ctx.restore();
             }
         }
 
