@@ -4,52 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>培道中學AI應用</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* 響應式設計 */
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                background-color: #e6e6e6;
+                position: relative;
+            }
+
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 12px;
+                width: 45%;
+                padding-right: 10px;
+                font-weight: bold;
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>培道中學AI應用工具</h1>
-    <table border="1">
-         <tr>
+    <table>
+        <tr>
             <th>小學</th>
             <th>初一</th>
             <th>初二</th>
             <th>初三</th>
-             <th>美術</th>
+            <th>美術</th>
         </tr>
         <tr>
-            <td>
-                <!-- 小學的連結 -->p12digitsum
+            <td data-label="小學">
                 <ul>
                     <li><a href="p1plus.html">小學數學1</a></li>
-                      <li><a href="p12digitsum.html">小學數學-兩位數加減法</a></li>
+                    <li><a href="p12digitsum.html">小學數學-兩位數加減法</a></li>
                 </ul>
             </td>
-            <td>
-                <!-- 初一的連結 -->
+            <td data-label="初一">
                 <ul>
                     <li><a href="grade7_page1.html">初一連結1未生成</a></li>
                     <li><a href="grade7_page2.html">初一連結2未生成</a></li>
                 </ul>
             </td>
-            <td>
-                <!-- 初二的連結 -->
+            <td data-label="初二">
                 <ul>
                     <li><a href="f2factorize.html">因式分解小遊戲</a></li>
-                    
                 </ul>
             </td>
-            <td>
-                <!-- 初三的連結 -->
+            <td data-label="初三">
                 <ul>
                     <li><a href="f3mandala.html">中心對稱圖形設計</a></li>
                     <li><a href="f3roll.html">拋骰模擬器</a></li>
                     <li><a href="linear_equation_calculator.html">一元一次方程計算器</a></li>
                 </ul>
             </td>
-             <td>
-                <!-- 美術的連結 -->
+            <td data-label="美術">
                 <ul>
                     <li><a href="f22point.html">2點透視</a></li>
-                    
                 </ul>
             </td>
         </tr>
