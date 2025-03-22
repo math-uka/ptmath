@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小朋友加減法遊戲322457</title>
+    <title>小朋友加減法遊戲322525</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,28 +31,56 @@
         }
         #inputArea {
             margin: 25px 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-            flex-wrap: wrap;
+            width: 100%;
+            max-width: 500px; /* 限制最大寬度 */
+            display: grid;
+            grid-template-areas: 
+                "input submit"
+                "tens units";
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
         #answerInput {
+            grid-area: input;
             font-size: 1.6em;
             width: 90px;
             padding: 10px;
             text-align: center;
-            margin: 15px auto;
-            display: block;
+            margin: 0;
             border: 2px solid #4CAF50;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            justify-self: center;
+        }
+        #submitBtn {
+            grid-area: submit;
+            padding: 12px 40px;
+            font-size: 1.3em;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            touch-action: manipulation;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+            justify-self: center;
+        }
+        #submitBtn:hover {
+            background-color: #1e88e5;
+        }
+        #tens {
+            grid-area: tens;
+        }
+        #units {
+            grid-area: units;
         }
         .number-group {
             background: white;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            height: 260px;
         }
         .number-group label {
             font-size: 1.3em;
@@ -84,21 +112,12 @@
         .number-btn:hover {
             background-color: #45a049;
         }
-        #submitBtn {
-            padding: 12px 40px;
-            font-size: 1.3em;
-            background-color: #2196F3;
-            color: white;
+        .empty-btn {
+            width: 50px;
+            height: 50px;
+            background: transparent;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-            touch-action: manipulation;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: background-color 0.2s;
-        }
-        #submitBtn:hover {
-            background-color: #1e88e5;
+            pointer-events: none;
         }
         #message {
             color: red;
@@ -131,24 +150,32 @@
                 width: 80px;
                 font-size: 1.4em;
             }
+            #submitBtn {
+                padding: 10px 30px;
+                font-size: 1.2em;
+            }
             .number-pad {
                 width: 150px;
                 gap: 6px;
             }
-            .number-btn {
+            .number-btn, .empty-btn {
                 width: 40px;
                 height: 40px;
                 font-size: 1em;
             }
             .number-group {
+                height: 220px;
                 padding: 10px;
-            }
-            #submitBtn {
-                padding: 10px 30px;
-                font-size: 1.2em;
             }
             #message {
                 font-size: 1.1em;
+            }
+            #inputArea {
+                grid-template-areas: 
+                    "input submit"
+                    "tens units";
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
             }
         }
     </style>
@@ -158,6 +185,7 @@
     <div id="question"></div>
     <div id="inputArea">
         <input type="number" id="answerInput" maxlength="2" onkeypress="if(event.key === 'Enter') checkAnswer()">
+        <button id="submitBtn" onclick="checkAnswer()">確定</button>
         <div id="tens" class="number-group">
             <label>十位數:</label>
             <div class="number-pad">
@@ -170,6 +198,7 @@
                 <button class="number-btn" onclick="setNumber('tens', 7)">7</button>
                 <button class="number-btn" onclick="setNumber('tens', 8)">8</button>
                 <button class="number-btn" onclick="setNumber('tens', 9)">9</button>
+                <button class="empty-btn" style="grid-column: 2;"></button>
             </div>
         </div>
         <div id="units" class="number-group">
@@ -187,7 +216,6 @@
                 <button class="number-btn" onclick="setNumber('units', 0)" style="grid-column: 2;">0</button>
             </div>
         </div>
-        <button id="submitBtn" onclick="checkAnswer()">確定</button>
     </div>
     <div id="message"></div>
     <div id="fireworks"></div>
