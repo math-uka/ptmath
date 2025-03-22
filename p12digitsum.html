@@ -17,11 +17,11 @@
             justify-content: center;
         }
         #score {
-            font-size: 1.5em; /* 適應手機放大文字 */
+            font-size: 1.5em;
             margin: 10px 0;
         }
         #question {
-            font-size: 2.5em; /* 題目更大 */
+            font-size: 2.5em;
             margin: 20px 0;
             word-wrap: break-word;
         }
@@ -30,7 +30,7 @@
         }
         #answerInput {
             font-size: 1.5em;
-            width: 80px; /* 適當縮小輸入框 */
+            width: 80px;
             padding: 8px;
             text-align: center;
             margin: 10px auto;
@@ -45,7 +45,7 @@
             margin-bottom: 5px;
         }
         .number-btn {
-            width: 60px; /* 按鈕更大 */
+            width: 60px;
             height: 60px;
             margin: 5px;
             font-size: 1.2em;
@@ -54,13 +54,13 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            touch-action: manipulation; /* 優化觸控 */
+            touch-action: manipulation;
         }
         .number-btn.selected {
             background-color: #808080;
         }
         #submitBtn {
-            padding: 12px 30px; /* 確定按鈕更大 */
+            padding: 12px 30px;
             font-size: 1.2em;
             background-color: #2196F3;
             color: white;
@@ -90,7 +90,6 @@
             padding-top: 20%;
             text-align: center;
         }
-        /* 響應式調整 */
         @media (max-width: 600px) {
             #question {
                 font-size: 2em;
@@ -113,6 +112,7 @@
         <input type="number" id="answerInput" maxlength="2" onkeypress="if(event.key === 'Enter') checkAnswer()">
         <div id="tens" class="number-group">
             <label>十位數:</label>
+            <button class="number-btn" onclick="setNumber('tens', 0)">0</button>
             <button class="number-btn" onclick="setNumber('tens', 1)">1</button>
             <button class="number-btn" onclick="setNumber('tens', 2)">2</button>
             <button class="number-btn" onclick="setNumber('tens', 3)">3</button>
@@ -122,10 +122,10 @@
             <button class="number-btn" onclick="setNumber('tens', 7)">7</button>
             <button class="number-btn" onclick="setNumber('tens', 8)">8</button>
             <button class="number-btn" onclick="setNumber('tens', 9)">9</button>
-            <button class="number-btn" onclick="setNumber('tens', 0)">0</button>
         </div>
         <div id="units" class="number-group">
             <label>個位數:</label>
+            <button class="number-btn" onclick="setNumber('units', 0)">0</button>
             <button class="number-btn" onclick="setNumber('units', 1)">1</button>
             <button class="number-btn" onclick="setNumber('units', 2)">2</button>
             <button class="number-btn" onclick="setNumber('units', 3)">3</button>
@@ -135,7 +135,6 @@
             <button class="number-btn" onclick="setNumber('units', 7)">7</button>
             <button class="number-btn" onclick="setNumber('units', 8)">8</button>
             <button class="number-btn" onclick="setNumber('units', 9)">9</button>
-            <button class="number-btn" onclick="setNumber('units', 0)">0</button>
         </div>
         <button id="submitBtn" onclick="checkAnswer()">確定</button>
     </div>
@@ -184,30 +183,31 @@
             if (type === 'tens') {
                 if (selectedTens === num) {
                     selectedTens = null;
-                    buttons[num-1].classList.remove('selected');
+                    buttons[num].classList.remove('selected'); // 修正索引
                 } else {
                     if (selectedTens !== null) {
-                        buttons[selectedTens-1].classList.remove('selected');
+                        buttons[selectedTens].classList.remove('selected');
                     }
                     selectedTens = num;
-                    buttons[num-1].classList.add('selected');
+                    buttons[num].classList.add('selected');
                 }
             } else {
                 if (selectedUnits === num) {
                     selectedUnits = null;
-                    buttons[num-1].classList.remove('selected');
+                    buttons[num].classList.remove('selected'); // 修正索引
                 } else {
                     if (selectedUnits !== null) {
-                        buttons[selectedUnits-1].classList.remove('selected');
+                        buttons[selectedUnits].classList.remove('selected');
                     }
                     selectedUnits = num;
-                    buttons[num-1].classList.add('selected');
+                    buttons[num].classList.add('selected');
                 }
             }
             
-            const tens = selectedTens !== null ? selectedTens : '';
-            const units = selectedUnits !== null ? selectedUnits : '';
-            input.value = `${tens}${units}`;
+            // 修正0的顯示問題
+            const tens = selectedTens !== null ? selectedTens.toString() : '';
+            const units = selectedUnits !== null ? selectedUnits.toString() : '';
+            input.value = tens + units; // 直接拼接，不用空值判斷
         }
 
         function clearInput() {
@@ -228,18 +228,40 @@
 
         function checkAnswer() {
             const userAnswer = parseInt(document.getElementById('answerInput').value) || 0;
-            if (userAnswer === answer) {
-                score++;
-                document.getElementById('score').textContent = `得分: ${score}`;
-                if (score === 10) {
-                    endGame();
+            const isSingleDigitAnswer = answer < 10;
+
+            if (isSingleDigitAnswer) {
+                // 答案是個位數的情況
+                if (selectedTens === null && selectedUnits === answer) {
+                    // 只選了正確的個位數
+                    score++;
+                    document.getElementById('score').textContent = `得分: ${score}`;
+                    if (score === 10) {
+                        endGame();
+                    } else {
+                        generateQuestion();
+                    }
                 } else {
-                    generateQuestion();
+                    // 選了十位數或個位數不對
+                    wrongCount++;
+                    document.getElementById('message').textContent = `你答錯了${wrongCount}次，請重試`;
+                    clearInput();
                 }
             } else {
-                wrongCount++;
-                document.getElementById('message').textContent = `你答錯了${wrongCount}次，請重試`;
-                clearInput();
+                // 答案是兩位數的情況
+                if (userAnswer === answer) {
+                    score++;
+                    document.getElementById('score').textContent = `得分: ${score}`;
+                    if (score === 10) {
+                        endGame();
+                    } else {
+                        generateQuestion();
+                    }
+                } else {
+                    wrongCount++;
+                    document.getElementById('message').textContent = `你答錯了${wrongCount}次，請重試`;
+                    clearInput();
+                }
             }
         }
 
