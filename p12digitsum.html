@@ -3,51 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小朋友加減法遊戲3221</title>
+    <title>小朋友加減法遊戲</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 10px;
+            padding: 20px;
             background-color: #f0f0f0;
             margin: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
         #score {
-            font-size: 1.5em;
-            margin: 10px 0;
+            font-size: 1.8em;
+            margin: 15px 0;
+            color: #333;
         }
         #question {
-            font-size: 2.5em;
+            font-size: 2.8em;
             margin: 20px 0;
+            color: #2196F3;
+            font-weight: bold;
             word-wrap: break-word;
         }
         #inputArea {
-            margin: 20px 0;
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
         }
         #answerInput {
-            font-size: 1.5em;
-            width: 80px;
-            padding: 8px;
+            font-size: 1.6em;
+            width: 90px;
+            padding: 10px;
             text-align: center;
-            margin: 10px auto;
+            margin: 15px auto;
             display: block;
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .number-group {
-            margin: 10px 0;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .number-group label {
-            font-size: 1.2em;
+            font-size: 1.3em;
+            margin-bottom: 10px;
             display: block;
-            margin-bottom: 5px;
+            color: #555;
+        }
+        .number-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 180px;
         }
         .number-btn {
-            width: 60px;
-            height: 60px;
-            margin: 5px;
+            width: 50px;
+            height: 50px;
             font-size: 1.2em;
             background-color: #4CAF50;
             color: white;
@@ -55,26 +76,35 @@
             border-radius: 8px;
             cursor: pointer;
             touch-action: manipulation;
+            transition: background-color 0.2s;
         }
         .number-btn.selected {
             background-color: #808080;
         }
+        .number-btn:hover {
+            background-color: #45a049;
+        }
         #submitBtn {
-            padding: 12px 30px;
-            font-size: 1.2em;
+            padding: 12px 40px;
+            font-size: 1.3em;
             background-color: #2196F3;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
             touch-action: manipulation;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        #submitBtn:hover {
+            background-color: #1e88e5;
         }
         #message {
             color: red;
-            font-size: 1.2em;
-            margin: 10px 0;
-            min-height: 20px;
+            font-size: 1.3em;
+            margin: 15px 0;
+            min-height: 25px;
         }
         #fireworks {
             position: fixed;
@@ -91,16 +121,34 @@
             text-align: center;
         }
         @media (max-width: 600px) {
+            #score {
+                font-size: 1.5em;
+            }
             #question {
-                font-size: 2em;
+                font-size: 2.2em;
+            }
+            #answerInput {
+                width: 80px;
+                font-size: 1.4em;
+            }
+            .number-pad {
+                width: 150px;
+                gap: 6px;
             }
             .number-btn {
-                width: 50px;
-                height: 50px;
-                margin: 3px;
+                width: 40px;
+                height: 40px;
+                font-size: 1em;
+            }
+            .number-group {
+                padding: 10px;
             }
             #submitBtn {
-                padding: 10px 25px;
+                padding: 10px 30px;
+                font-size: 1.2em;
+            }
+            #message {
+                font-size: 1.1em;
             }
         }
     </style>
@@ -112,29 +160,32 @@
         <input type="number" id="answerInput" maxlength="2" onkeypress="if(event.key === 'Enter') checkAnswer()">
         <div id="tens" class="number-group">
             <label>十位數:</label>
-            <button class="number-btn" onclick="setNumber('tens', 0)">0</button>
-            <button class="number-btn" onclick="setNumber('tens', 1)">1</button>
-            <button class="number-btn" onclick="setNumber('tens', 2)">2</button>
-            <button class="number-btn" onclick="setNumber('tens', 3)">3</button>
-            <button class="number-btn" onclick="setNumber('tens', 4)">4</button>
-            <button class="number-btn" onclick="setNumber('tens', 5)">5</button>
-            <button class="number-btn" onclick="setNumber('tens', 6)">6</button>
-            <button class="number-btn" onclick="setNumber('tens', 7)">7</button>
-            <button class="number-btn" onclick="setNumber('tens', 8)">8</button>
-            <button class="number-btn" onclick="setNumber('tens', 9)">9</button>
+            <div class="number-pad">
+                <button class="number-btn" onclick="setNumber('tens', 1)">1</button>
+                <button class="number-btn" onclick="setNumber('tens', 2)">2</button>
+                <button class="number-btn" onclick="setNumber('tens', 3)">3</button>
+                <button class="number-btn" onclick="setNumber('tens', 4)">4</button>
+                <button class="number-btn" onclick="setNumber('tens', 5)">5</button>
+                <button class="number-btn" onclick="setNumber('tens', 6)">6</button>
+                <button class="number-btn" onclick="setNumber('tens', 7)">7</button>
+                <button class="number-btn" onclick="setNumber('tens', 8)">8</button>
+                <button class="number-btn" onclick="setNumber('tens', 9)">9</button>
+            </div>
         </div>
         <div id="units" class="number-group">
             <label>個位數:</label>
-            <button class="number-btn" onclick="setNumber('units', 0)">0</button>
-            <button class="number-btn" onclick="setNumber('units', 1)">1</button>
-            <button class="number-btn" onclick="setNumber('units', 2)">2</button>
-            <button class="number-btn" onclick="setNumber('units', 3)">3</button>
-            <button class="number-btn" onclick="setNumber('units', 4)">4</button>
-            <button class="number-btn" onclick="setNumber('units', 5)">5</button>
-            <button class="number-btn" onclick="setNumber('units', 6)">6</button>
-            <button class="number-btn" onclick="setNumber('units', 7)">7</button>
-            <button class="number-btn" onclick="setNumber('units', 8)">8</button>
-            <button class="number-btn" onclick="setNumber('units', 9)">9</button>
+            <div class="number-pad">
+                <button class="number-btn" onclick="setNumber('units', 1)">1</button>
+                <button class="number-btn" onclick="setNumber('units', 2)">2</button>
+                <button class="number-btn" onclick="setNumber('units', 3)">3</button>
+                <button class="number-btn" onclick="setNumber('units', 4)">4</button>
+                <button class="number-btn" onclick="setNumber('units', 5)">5</button>
+                <button class="number-btn" onclick="setNumber('units', 6)">6</button>
+                <button class="number-btn" onclick="setNumber('units', 7)">7</button>
+                <button class="number-btn" onclick="setNumber('units', 8)">8</button>
+                <button class="number-btn" onclick="setNumber('units', 9)">9</button>
+                <button class="number-btn" onclick="setNumber('units', 0)" style="grid-column: 2;">0</button>
+            </div>
         </div>
         <button id="submitBtn" onclick="checkAnswer()">確定</button>
     </div>
@@ -183,31 +234,30 @@
             if (type === 'tens') {
                 if (selectedTens === num) {
                     selectedTens = null;
-                    buttons[num].classList.remove('selected'); // 修正索引
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.remove('selected');
                 } else {
                     if (selectedTens !== null) {
-                        buttons[selectedTens].classList.remove('selected');
+                        Array.from(buttons).find(btn => btn.textContent === selectedTens.toString()).classList.remove('selected');
                     }
                     selectedTens = num;
-                    buttons[num].classList.add('selected');
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.add('selected');
                 }
             } else {
                 if (selectedUnits === num) {
                     selectedUnits = null;
-                    buttons[num].classList.remove('selected'); // 修正索引
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.remove('selected');
                 } else {
                     if (selectedUnits !== null) {
-                        buttons[selectedUnits].classList.remove('selected');
+                        Array.from(buttons).find(btn => btn.textContent === selectedUnits.toString()).classList.remove('selected');
                     }
                     selectedUnits = num;
-                    buttons[num].classList.add('selected');
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.add('selected');
                 }
             }
             
-            // 修正0的顯示問題
             const tens = selectedTens !== null ? selectedTens.toString() : '';
             const units = selectedUnits !== null ? selectedUnits.toString() : '';
-            input.value = tens + units; // 直接拼接，不用空值判斷
+            input.value = tens + units;
         }
 
         function clearInput() {
@@ -231,9 +281,7 @@
             const isSingleDigitAnswer = answer < 10;
 
             if (isSingleDigitAnswer) {
-                // 答案是個位數的情況
                 if (selectedTens === null && selectedUnits === answer) {
-                    // 只選了正確的個位數
                     score++;
                     document.getElementById('score').textContent = `得分: ${score}`;
                     if (score === 10) {
@@ -242,13 +290,11 @@
                         generateQuestion();
                     }
                 } else {
-                    // 選了十位數或個位數不對
                     wrongCount++;
                     document.getElementById('message').textContent = `你答錯了${wrongCount}次，請重試`;
                     clearInput();
                 }
             } else {
-                // 答案是兩位數的情況
                 if (userAnswer === answer) {
                     score++;
                     document.getElementById('score').textContent = `得分: ${score}`;
