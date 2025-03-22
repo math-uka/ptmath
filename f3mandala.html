@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>培道中學數學組 - 對稱圖形設計3221</title>
+    <title>培道中學數學組 - 對稱圖形設計3222</title>
     <style>
         body {
             display: flex;
@@ -43,8 +43,7 @@
             touch-action: manipulation;
         }
         #colorPicker {
-            width: 100%;
-            max-width: 160px;
+            width: 160px; /* 桌面版默認寬度 */
             height: 200px;
             display: grid;
             grid-template-columns: repeat(8, 1fr);
@@ -70,7 +69,17 @@
             border: 1px solid #ccc;
             margin: 10px auto 0;
         }
-        @media (min-width: 768px) {
+        @media (max-width: 767px) { /* 手機版 */
+            #colorPicker {
+                width: 120px; /* 手機版縮小寬度 */
+                height: 150px; /* 手機版縮小高度 */
+                gap: 1px; /* 減小間距 */
+            }
+            .colorBox {
+                border-width: 0.5px; /* 減小邊框 */
+            }
+        }
+        @media (min-width: 768px) { /* 平板及桌面 */
             body {
                 flex-direction: row;
                 gap: 20px;
