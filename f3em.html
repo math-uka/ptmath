@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表情包生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            padding: 0;
+            user-select: none;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #canvas {
+            width: 250px;
+            height: 250px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            position: relative;
+            margin: 20px auto;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        .component {
+            position: absolute;
+            text-align: center;
+            cursor: move;
+            touch-action: none;
+        }
+        #left-eyebrow { top: 20px; left: 25%; width: 50px; font-size: 40px; }
+        #right-eyebrow { top: 20px; right: 25%; width: 50px; font-size: 40px; }
+        #left-eye { top: 80px; left: 25%; width: 50px; font-size: 40px; }
+        #right-eye { top: 80px; right: 25%; width: 50px; font-size: 40px; }
+        #mouth { top: 160px; left: 50%; transform: translateX(-50%); font-size: 60px; }
+        .section {
+            margin: 20px 0;
+        }
+        .section h2 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            min-width: 50px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+        button:hover {
+            background-color: #e0e0e0;
+        }
+        #clearBtn {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin-top: 20px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #clearBtn:hover {
+            background-color: #cc0000;
+        }
+        @media (max-width: 600px) {
+            #canvas {
+                width: 200px;
+                height: 200px;
+            }
+            #left-eyebrow, #right-eyebrow { font-size: 30px; }
+            #left-eye, #right-eye { top: 70px; font-size: 30px; }
+            #mouth { top: 140px; font-size: 50px; }
+            button {
+                padding: 8px;
+                font-size: 14px;
+                min-width: 40px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            .section h2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>表情包生成器</h1>
+    
+    <div id="canvas">
+        <div id="left-eyebrow" class="component"></div>
+        <div id="right-eyebrow" class="component"></div>
+        <div id="left-eye" class="component"></div>
+        <div id="right-eye" class="component"></div>
+        <div id="mouth" class="component"></div>
+    </div>
+
+    <div class="section">
+        <h2>眉毛</h2>
+        <div class="options" id="eyebrowsOptions">
+            <button onclick="setEyebrows('^', '^')">^^</button>
+            <button onclick="setEyebrows('/', '/')">//</button>
+            <button onclick="setEyebrows('\\', '\\')">\\</button>
+            <button onclick="setEyebrows('-', '-')">--</button>
+            <button onclick="setEyebrows('_', '_')">__</button>
+            <button onclick="setEyebrows('~', '~')">~~</button>
+            <button onclick="setEyebrows('⌒', '⌒')">⌒⌒</button>
+            <button onclick="setEyebrows('∧', '∧')">∧∧</button>
+            <button onclick="setEyebrows('∨', '∨')">∨∨</button>
+            <button onclick="setEyebrows('⌣', '⌣')">⌣⌣</button>
+            <button onclick="setEyebrows('⌢', '⌢')">⌢⌢</button>
+            <button onclick="setEyebrows('〰', '〰')">〰〰</button>
+            <button onclick="setEyebrows('◜', '◝')">◜◝</button>
+            <button onclick="setEyebrows('◟', '◞')">◟◞</button>
+            <button onclick="setEyebrows('◡', '◡')">◡◡</button>
+            <button onclick="setEyebrows('◤', '◥')">◤◥</button>
+            <button onclick="setEyebrows('◣', '◢')">◣◢</button>
+            <button onclick="setEyebrows('◜', '◞')">◜◞</button>
+            <button onclick="setEyebrows('◝', '◟')">◝◟</button>
+            <button onclick="setEyebrows('⌵', '⌵')">⌵⌵</button>
+            <button onclick="setEyebrows('`', '`')">``</button>
+            <button onclick="setEyebrows('´', '´')">´´</button>
+            <button onclick="setEyebrows('¯', '¯')">¯¯</button>
+            <button onclick="setEyebrows('=', '=')">==</button>
+            <button onclick="setEyebrows('>', '>')">>></button>
+            <button onclick="setEyebrows('<', '<')"><<</button>
+            <button onclick="setEyebrows('⁄', '⁄')">⁄⁄</button>
+            <button onclick="setEyebrows('⁎', '⁎')">⁎⁎</button>
+            <button onclick="setEyebrows('⁀', '⁀')">⁀⁀</button>
+            <button onclick="setEyebrows('⁔', '⁔')">⁔⁔</button>
+            <button onclick="setEyebrows('⁝', '⁝')">⁝⁝</button>
+            <button onclick="setEyebrows('⁞', '⁞')">⁞⁞</button>
+            <button onclick="setEyebrows('⌜', '⌝')">⌜⌝</button>
+            <button onclick="setEyebrows('⌞', '⌟')">⌞⌟</button>
+            <button onclick="setEyebrows('〈', '〉')">〈〉</button>
+            <button onclick="setEyebrows('⦁', '⦁')">⦁⦁</button>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>眼睛</h2>
+        <div class="options" id="eyesOptions">
+            <button onclick="setEyes('•', '•')">••</button>
+            <button onclick="setEyes('o', 'o')">oo</button>
+            <button onclick="setEyes('^', '^')">^^</button>
+            <button onclick="setEyes('=', '=')">==</button>
+            <button onclick="setEyes('-', '-')">--</button>
+            <button onclick="setEyes('x', 'x')">xx</button>
+            <button onclick="setEyes('*', '*')">**</button>
+            <button onclick="setEyes('0', '0')">00</button>
+            <button onclick="setEyes('|', '|')">||</button>
+            <button onclick="setEyes('~', '~')">~~</button>
+            <button onclick="setEyes('⌒', '⌒')">⌒⌒</button>
+            <button onclick="setEyes('◕', '◕')">◕◕</button>
+            <button onclick="setEyes('●', '●')">●●</button>
+            <button onclick="setEyes('◉', '◉')">◉◉</button>
+            <button onclick="setEyes('◔', '◔')">◔◔</button>
+            <button onclick="setEyes('◍', '◍')">◍◍</button>
+            <button onclick="setEyes('◡', '◡')">◡◡</button>
+            <button onclick="setEyes('◣', '◣')">◣◣</button>
+            <button onclick="setEyes('◢', '◢')">◢◢</button>
+            <button onclick="setEyes('◧', '◧')">◧◧</button>
+            <button onclick="setEyes('◩', '◩')">◩◩</button>
+            <button onclick="setEyes('◪', '◪')">◪◪</button>
+            <button onclick="setEyes('◮', '◮')">◮◮</button>
+            <button onclick="setEyes('◰', '◰')">◰◰</button>
+            <button onclick="setEyes('◴', '◴')">◴◴</button>
+            <button onclick="setEyes('◶', '◶')">◶◶</button>
+            <button onclick="setEyes('◷', '◷')">◷◷</button>
+            <button onclick="setEyes('◺', '◺')">◺◺</button>
+            <button onclick="setEyes('◼', '◼')">◼◼</button>
+            <button onclick="setEyes('◽', '◽')">◽◽</button>
+            <button onclick="setEyes('○', '○')">○○</button>
+            <button onclick="setEyes('◌', '◌')">◌◌</button>
+            <button onclick="setEyes('◐', '◐')">◐◐</button>
+            <button onclick="setEyes('◑', '◑')">◑◑</button>
+            <button onclick="setEyes('◒', '◒')">◒◒</button>
+            <button onclick="setEyes('◓', '◓')">◓◓</button>
+            <button onclick="setEyes('◖', '◖')">◖◖</button>
+            <button onclick="setEyes('◗', '◗')">◗◗</button>
+            <button onclick="setEyes('◘', '◘')">◘◘</button>
+            <button onclick="setEyes('◙', '◙')">◙◙</button>
+            <button onclick="setEyes('◚', '◚')">◚◚</button>
+            <button onclick="setEyes('◛', '◛')">◛◛</button>
+            <button onclick="setEyes('◜', '◜')">◜◜</button>
+            <button onclick="setEyes('◝', '◝')">◝◝</button>
+            <button onclick="setEyes('◞', '◞')">◞◞</button>
+            <button onclick="setEyes('◟', '◟')">◟◟</button>
+            <button onclick="setEyes('◠', '◠')">◠◠</button>
+            <button onclick="setEyes('◤', '◤')">◤◤</button>
+            <button onclick="setEyes('◥', '◥')">◥◥</button>
+            <button onclick="setEyes('◦', '◦')">◦◦</button>
+            <button onclick="setEyes('◨', '◨')">◨◨</button>
+            <button onclick="setEyes('◫', '◫')">◫◫</button>
+            <button onclick="setEyes('◬', '◬')">◬◬</button>
+            <button onclick="setEyes('◭', '◭')">◭◭</button>
+            <button onclick="setEyes('◯', '◯')">◯◯</button>
+            <button onclick="setEyes('◱', '◱')">◱◱</button>
+            <button onclick="setEyes('◲', '◲')">◲◲</button>
+            <button onclick="setEyes('◳', '◳')">◳◳</button>
+            <button onclick="setEyes('◵', '◵')">◵◵</button>
+            <button onclick="setEyes('◸', '◸')">◸◸</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>嘴巴</h2>
+        <div class="options" id="mouthOptions">
+            <button onclick="setMouth('O')">O</button>
+            <button onclick="setMouth('U')">U</button>
+            <button onclick="setMouth('ω')">ω</button>
+            <button onclick="setMouth('∩')">∩</button>
+            <button onclick="setMouth('∪')">∪</button>
+            <button onclick="setMouth('⌣')">⌣</button>
+            <button onclick="setMouth('⌢')">⌢</button>
+            <button onclick="setMouth('◡')">◡</button>
+            <button onclick="setMouth('◕')">◕</button>
+            <button onclick="setMouth('□')">□</button>
+            <button onclick="setMouth('△')">△</button>
+            <button onclick="setMouth('▽')">▽</button>
+            <button onclick="setMouth('◇')">◇</button>
+            <button onclick="setMouth('◆')">◆</button>
+            <button onclick="setMouth('⊂')">⊂</button>
+            <button onclick="setMouth('⊃')">⊃</button>
+            <button onclick="setMouth('⊥')">⊥</button>
+            <button onclick="setMouth('⊤')">⊤</button>
+            <button onclick="setMouth('⋂')">⋂</button>
+            <button onclick="setMouth('⋃')">⋃</button>
+            <button onclick="setMouth('⋋')">⋋</button>
+            <button onclick="setMouth('⋌')">⋌</button>
+            <button onclick="setMouth('⋏')">⋏</button>
+            <button onclick="setMouth('⋎')">⋎</button>
+            <button onclick="setMouth('⌂')">⌂</button>
+            <button onclick="setMouth('⌈')">⌈</button>
+            <button onclick="setMouth('⌉')">⌉</button>
+            <button onclick="setMouth('⌊')">⌊</button>
+            <button onclick="setMouth('⌋')">⌋</button>
+            <button onclick="setMouth('〉')">〉</button>
+            <button onclick="setMouth('◣')">◣</button>
+            <button onclick="setMouth('◢')">◢</button>
+            <button onclick="setMouth('◤')">◤</button>
+            <button onclick="setMouth('◥')">◥</button>
+            <button onclick="setMouth('◧')">◧</button>
+            <button onclick="setMouth('◨')">◨</button>
+            <button onclick="setMouth('◩')">◩</button>
+            <button onclick="setMouth('◪')">◪</button>
+            <button onclick="setMouth('◫')">◫</button>
+            <button onclick="setMouth('◬')">◬</button>
+            <button onclick="setMouth('◭')">◭</button>
+            <button onclick="setMouth('◮')">◮</button>
+            <button onclick="setMouth('◯')">◯</button>
+            <button onclick="setMouth('◰')">◰</button>
+            <button onclick="setMouth('◱')">◱</button>
+            <button onclick="setMouth('◲')">◲</button>
+            <button onclick="setMouth('◳')">◳</button>
+            <button onclick="setMouth('◴')">◴</button>
+            <button onclick="setMouth('◵')">◵</button>
+            <button onclick="setMouth('◶')">◶</button>
+            <button onclick="setMouth('◷')">◷</button>
+            <button onclick="setMouth('◸')">◸</button>
+            <button onclick="setMouth('◹')">◹</button>
+            <button onclick="setMouth('◺')">◺</button>
+            <button onclick="setMouth('◻')">◻</button>
+            <button onclick="setMouth('◼')">◼</button>
+            <button onclick="setMouth('◽')">◽</button>
+            <button onclick="setMouth('◾')">◾</button>
+            <button onclick="setMouth('◿')">◿</button>
+            <button onclick="setMouth('○')">○</button>
+        </div>
+    </div>
+
+    <button id="clearBtn" onclick="clearCanvas()">清除</button>
+
+    <script>
+        function setEyebrows(left, right) {
+            const leftEyebrow = document.getElementById('left-eyebrow');
+            const rightEyebrow = document.getElementById('right-eyebrow');
+            leftEyebrow.textContent = left;
+            rightEyebrow.textContent = right;
+            // 確保位置初始化
+            if (!leftEyebrow.style.left) leftEyebrow.style.left = '25%';
+            if (!leftEyebrow.style.top) leftEyebrow.style.top = '20px';
+            if (!rightEyebrow.style.right) rightEyebrow.style.right = '25%';
+            if (!rightEyebrow.style.top) rightEyebrow.style.top = '20px';
+        }
+
+        function setEyes(left, right) {
+            const leftEye = document.getElementById('left-eye');
+            const rightEye = document.getElementById('right-eye');
+            leftEye.textContent = left;
+            rightEye.textContent = right;
+            // 確保位置初始化
+            if (!leftEye.style.left) leftEye.style.left = '25%';
+            if (!leftEye.style.top) leftEye.style.top = '80px';
+            if (!rightEye.style.right) rightEye.style.right = '25%';
+            if (!rightEye.style.top) rightEye.style.top = '80px';
+        }
+
+        function setMouth(value) {
+            const mouth = document.getElementById('mouth');
+            mouth.textContent = value;
+            // 確保位置初始化
+            if (!mouth.style.left) mouth.style.left = '50%';
+            if (!mouth.style.top) mouth.style.top = '160px';
+            mouth.style.transform = 'translateX(-50%)';
+        }
+
+        function clearCanvas() {
+            document.getElementById('left-eyebrow').textContent = '';
+            document.getElementById('right-eyebrow').textContent = '';
+            document.getElementById('left-eye').textContent = '';
+            document.getElementById('right-eye').textContent = '';
+            document.getElementById('mouth').textContent = '';
+            resetPositions();
+        }
+
+        function resetPositions() {
+            const leftEyebrow = document.getElementById('left-eyebrow');
+            const rightEyebrow = document.getElementById('right-eyebrow');
+            const leftEye = document.getElementById('left-eye');
+            const rightEye = document.getElementById('right-eye');
+            const mouth = document.getElementById('mouth');
+            
+            leftEyebrow.style.top = '20px';
+            leftEyebrow.style.left = '25%';
+            leftEyebrow.style.right = 'auto';
+            rightEyebrow.style.top = '20px';
+            rightEyebrow.style.right = '25%';
+            rightEyebrow.style.left = 'auto';
+            leftEye.style.top = '80px';
+            leftEye.style.left = '25%';
+            leftEye.style.right = 'auto';
+            rightEye.style.top = '80px';
+            rightEye.style.right = '25%';
+            rightEye.style.left = 'auto';
+            mouth.style.top = '160px';
+            mouth.style.left = '50%';
+            mouth.style.right = 'auto';
+            mouth.style.transform = 'translateX(-50%)';
+        }
+
+        // 拖動功能
+        const components = document.querySelectorAll('.component');
+        components.forEach(component => {
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            // 桌面端滑鼠事件
+            component.addEventListener('mousedown', startDragging);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDragging);
+
+            // 移動端觸控事件
+            component.addEventListener('touchstart', startDragging, { passive: false });
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', stopDragging);
+
+            function startDragging(e) {
+                if (!component.textContent) return; // 如果部件無內容，不啟動拖動
+                const rect = component.getBoundingClientRect();
+                if (e.type === 'touchstart') {
+                    offsetX = e.touches[0].clientX - rect.left;
+                    offsetY = e.touches[0].clientY - rect.top;
+                } else {
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                }
+                isDragging = true;
+                component.style.zIndex = 10;
+            }
+
+            function drag(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const canvas = document.getElementById('canvas');
+                const canvasRect = canvas.getBoundingClientRect();
+
+                let newX, newY;
+                if (e.type === 'touchmove') {
+                    newX = e.touches[0].clientX - offsetX - canvasRect.left;
+                    newY = e.touches[0].clientY - offsetY - canvasRect.top;
+                } else {
+                    newX = e.clientX - offsetX - canvasRect.left;
+                    newY = e.clientY - offsetY - canvasRect.top;
+                }
+
+                // 限制拖動範圍在畫布內
+                newX = Math.max(0, Math.min(newX, canvasRect.width - component.offsetWidth));
+                newY = Math.max(0, Math.min(newY, canvasRect.height - component.offsetHeight));
+
+                component.style.left = newX + 'px';
+                component.style.top = newY + 'px';
+                component.style.right = 'auto';
+                component.style.transform = 'none';
+            }
+
+            function stopDragging() {
+                isDragging = false;
+                component.style.zIndex = 0;
+            }
+        });
+    </script>
+</body>
+</html>
