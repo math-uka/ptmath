@@ -9,6 +9,13 @@
             margin: 0;
             padding: 10px;
             touch-action: none;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         #grid {
             position: relative;
@@ -46,6 +53,8 @@
         #info {
             margin-top: 20px;
             font-size: 16px;
+            width: 100%;
+            max-width: 400px;
         }
         #info-header {
             display: flex;
@@ -86,22 +95,58 @@
         .long-side {
             color: blue;
         }
+
+        /* 電腦版佈局 */
+        @media (min-width: 768px) {
+            #container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            #grid {
+                margin-right: 20px;
+            }
+            #info {
+                margin-top: 0;
+                flex: 1;
+                max-width: none;
+            }
+            table {
+                margin-left: 0;
+            }
+        }
+
+        /* 手機版佈局 */
+        @media (max-width: 767px) {
+            body {
+                overflow-y: auto; /* 允許垂直滾動 */
+                height: 100vh; /* 確保內容可見 */
+            }
+            #container {
+                height: auto;
+                min-height: 100%;
+            }
+            #info {
+                margin-bottom: 20px; /* 確保底部有空間 */
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="grid">
-        <canvas id="triangle"></canvas>
-        <div id="pointA" class="point"><span class="label">A</span></div>
-        <div id="pointB" class="point"><span class="label">B</span></div>
-        <div id="pointC" class="point"><span class="label">C</span></div>
-    </div>
-    <div id="info">
-        <div id="info-header">
-            <h3>三角形資訊：</h3>
-            <button id="radicalBtn" onclick="toggleRadical()">二次根式表示</button>
-            <button id="squareBtn" onclick="toggleSquares()">顯示平方值</button>
+    <div id="container">
+        <div id="grid">
+            <canvas id="triangle"></canvas>
+            <div id="pointA" class="point"><span class="label">A</span></div>
+            <div id="pointB" class="point"><span class="label">B</span></div>
+            <div id="pointC" class="point"><span class="label">C</span></div>
         </div>
-        <div id="info-content"></div>
+        <div id="info">
+            <div id="info-header">
+                <h3>三角形資訊：</h3>
+                <button id="radicalBtn" onclick="toggleRadical()">二次根式表示</button>
+                <button id="squareBtn" onclick="toggleSquares()">顯示平方值</button>
+            </div>
+            <div id="info-content"></div>
+        </div>
     </div>
 
     <script>
