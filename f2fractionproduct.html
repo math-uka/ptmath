@@ -152,15 +152,21 @@
                 }
             }
 
-            // 約分
-            const coefGCD = gcd(num.coef, den.coef);
-            num.coef /= coefGCD;
-            den.coef /= coefGCD;
+            // 約分係數，確保使用整數運算
+            const coefGCD = gcd(Math.abs(num.coef), Math.abs(den.coef));
+            num.coef = Math.round(num.coef / coefGCD);
+            den.coef = Math.round(den.coef / coefGCD);
+
+            // 如果分母為負數，將負號移到分子
+            if (den.coef < 0) {
+                num.coef = -num.coef;
+                den.coef = -den.coef;
+            }
 
             // 整理結果
             const allVars = [...new Set([...Object.keys(num.varsPowers), ...Object.keys(den.varsPowers)])].sort();
-            let numText = num.coef > 1 ? num.coef.toString() : '';
-            let denText = den.coef > 1 ? den.coef.toString() : '';
+            let numText = num.coef === 1 ? '' : num.coef === -1 ? '-' : num.coef.toString();
+            let denText = den.coef === 1 ? '' : den.coef.toString();
             allVars.forEach(v => {
                 const numPower = num.varsPowers[v] || 0;
                 const denPower = den.varsPowers[v] || 0;
@@ -168,7 +174,12 @@
                 if (powerDiff > 0) numText += v + (powerDiff > 1 ? `<sup>${powerDiff}</sup>` : '');
                 else if (powerDiff < 0) denText += v + (Math.abs(powerDiff) > 1 ? `<sup>${Math.abs(powerDiff)}</sup>` : '');
             });
-            return { num: numText || '1', den: denText || '1' };
+
+            // 處理特殊情況
+            if (numText === '') numText = '1';
+            if (denText === '') denText = '1';
+
+            return { num: numText, den: denText };
         }
 
         // 生成錯誤選項，確保係數不為 0
@@ -183,8 +194,8 @@
             const keys = Object.keys(varsPowers);
             if (keys.length > 0 && Math.random() > 0.5) {
                 const v = keys[Math.floor(Math.random() * keys.length)];
-                varsPowers[v] = (varsPowers[v] + Math.floor(Math.random() * 3) - 1) || 1; // 改變冪次 (±1)
-            } else if (keys.length < 3) {
+                varsPowers[v] = Math.max(1, (varsPowers[v] + Math.floor(Math.random() * 3) - 1)); // 改變冪次 (±1)，但不為 0
+            } else if (keys.length < 3 && Math.random() > 0.3) {
                 const newVar = vars.filter(v => !keys.includes(v))[0] || vars[0];
                 varsPowers[newVar] = Math.floor(Math.random() * 4) + 1;
             }
@@ -213,14 +224,19 @@
             });
 
             const result = calculateFraction(terms, ops);
-            correctAnswer = `<span class="fraction"><span class="numerator">${result.num}</span><span class="denominator">${result.den}</span></span>`;
+            // 如果分母為 1，直接顯示整式
+            correctAnswer = result.den === '1' 
+                ? result.num 
+                : `<span class="fraction"><span class="numerator">${result.num}</span><span class="denominator">${result.den}</span></span>`;
 
             const options = new Set([correctAnswer]);
             while (options.size < 6) {
-                const wrongNum = Math.random() > 0.5 ? generateWrongTerm(result.num) : result.num;
+                const wrongNum = generateWrongTerm(result.num);
                 const wrongDen = Math.random() > 0.5 ? generateWrongTerm(result.den) : result.den;
-                const option = `<span class="fraction"><span class="numerator">${wrongNum}</span><span class="denominator">${wrongDen}</span></span>`;
-                if (option !== correctAnswer) options.add(option);
+                const option = wrongDen === '1' 
+                    ? wrongNum 
+                    : `<span class="fraction"><span class="numerator">${wrongNum}</span><span class="denominator">${wrongDen}</span></span>`;
+                if (option !== correctAnswer && !options.has(option)) options.add(option);
             }
 
             const optionsArray = Array.from(options);
@@ -241,10 +257,6 @@
 
             document.getElementById('message').textContent = '';
             currentQuestion = { terms, ops, correct: correctAnswer };
-
-            console.log('Correct Answer:', correctAnswer);
-            console.log('Options:', optionsArray);
-            console.log('Options Displayed:', optionsDiv.children.length);
         }
 
         // 檢查答案
