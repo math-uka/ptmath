@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勾股定理互動演示</title>
+    <title>勾股定理互動演示2</title>
     <style>
-        body {
+        html, body {
             margin: 0;
-            padding: 10px;
-            touch-action: none;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* 防止body本身滾動 */
         }
         #container {
             display: flex;
             flex-direction: column;
             max-width: 1200px;
             margin: 0 auto;
+            height: 100%;
+            overflow-y: auto; /* 允許容器滾動 */
+            touch-action: pan-y; /* 允許垂直觸控滾動 */
         }
         #grid {
             position: relative;
@@ -24,6 +27,7 @@
             height: 400px;
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABwAAYAAAAAAqACAAQAAAABAAAAKKADAAQAAAABAAAAKAAAAAD15a7LAAAAvElEQVRYCe2SwQ3DMAwEByG+AVvBNuzETrADLmAb3OAWOMF12IQs/UqWffmLIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC4A/gA0v8L5SBX4oAAAAASUVORK5CYII=') repeat;
             border: 1px solid #000;
+            flex-shrink: 0; /* 防止grid被壓縮 */
         }
         .point {
             position: absolute;
@@ -51,10 +55,12 @@
             z-index: 1;
         }
         #info {
-            margin-top: 20px;
+            padding: 10px;
             font-size: 16px;
             width: 100%;
             max-width: 400px;
+            box-sizing: border-box;
+            flex-grow: 1; /* 允許info區擴展 */
         }
         #info-header {
             display: flex;
@@ -65,6 +71,9 @@
             margin: 0;
             margin-right: 10px;
         }
+        #info-content {
+            min-height: 0; /* 確保內容區可適應 */
+        }
         button {
             margin: 0 5px;
             padding: 5px 10px;
@@ -74,7 +83,7 @@
             border-collapse: collapse;
             width: 100%;
             max-width: 400px;
-            margin-left: 20px;
+            margin-left: 0; /* 手機端無左邊距 */
         }
         th, td {
             border: 1px solid #ddd;
@@ -101,6 +110,8 @@
             #container {
                 flex-direction: row;
                 justify-content: space-between;
+                padding: 10px;
+                overflow-y: hidden; /* 電腦版不需要滾動 */
             }
             #grid {
                 margin-right: 20px;
@@ -110,23 +121,12 @@
                 flex: 1;
                 max-width: none;
             }
-            table {
-                margin-left: 0;
-            }
         }
 
         /* 手機版佈局 */
         @media (max-width: 767px) {
-            body {
-                overflow-y: auto; /* 允許垂直滾動 */
-                height: 100vh; /* 確保內容可見 */
-            }
             #container {
-                height: auto;
-                min-height: 100%;
-            }
-            #info {
-                margin-bottom: 20px; /* 確保底部有空間 */
+                padding-bottom: 20px; /* 底部留白 */
             }
         }
     </style>
