@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勾股定理互動演示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 10px;
+            touch-action: none;
+        }
+        #grid {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABwAAYAAAAAAqACAAQAAAABAAAAKKADAAQAAAABAAAAKAAAAAD15a7LAAAAvElEQVRYCe2SwQ3DMAwEByG+AVvBNuzETrADLmAb3OAWOMF12IQs/UqWffmLIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC4A/gA0v8L5SBX4oAAAAASUVORK5CYII=') repeat;
+            border: 1px solid #000;
+        }
+        .point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: black;
+            border-radius: 50%;
+            cursor: move;
+            transform: translate(-5px, -5px);
+            z-index: 2;
+            touch-action: none;
+        }
+        .label {
+            position: absolute;
+            font-size: 16px;
+            transform: translate(5px, -20px);
+            pointer-events: none;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        #info {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        #info-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #info-header h3 {
+            margin: 0;
+            margin-right: 10px;
+        }
+        button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 400px;
+            margin-left: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .right-angle {
+            color: red;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .short-side {
+            color: red;
+        }
+        .long-side {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid">
+        <canvas id="triangle"></canvas>
+        <div id="pointA" class="point"><span class="label">A</span></div>
+        <div id="pointB" class="point"><span class="label">B</span></div>
+        <div id="pointC" class="point"><span class="label">C</span></div>
+    </div>
+    <div id="info">
+        <div id="info-header">
+            <h3>三角形資訊：</h3>
+            <button id="radicalBtn" onclick="toggleRadical()">二次根式表示</button>
+            <button id="squareBtn" onclick="toggleSquares()">顯示平方值</button>
+        </div>
+        <div id="info-content"></div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const canvas = document.getElementById('triangle');
+        const ctx = canvas.getContext('2d');
+        const points = {
+            A: document.getElementById('pointA'),
+            B: document.getElementById('pointB'),
+            C: document.getElementById('pointC')
+        };
+        const infoContent = document.getElementById('info-content');
+        const radicalBtn = document.getElementById('radicalBtn');
+        const squareBtn = document.getElementById('squareBtn');
+        const gridSize = 40;
+        let showRadical = false;
+        let showSquares = false;
+
+        canvas.width = grid.offsetWidth;
+        canvas.height = grid.offsetHeight;
+
+        let coords = {
+            A: { x: 5 * gridSize, y: 2 * gridSize },
+            B: { x: 8 * gridSize, y: 2 * gridSize },
+            C: { x: 6.5 * gridSize, y: 2 + 3 * Math.sqrt(3)/2 * gridSize }
+        };
+
+        function snapToGrid(value) {
+            return Math.round(value / gridSize) * gridSize;
+        }
+
+        function updatePosition() {
+            Object.keys(points).forEach(key => {
+                points[key].style.left = coords[key].x + 'px';
+                points[key].style.top = coords[key].y + 'px';
+            });
+            requestAnimationFrame(drawTriangle);
+            updateInfo();
+        }
+
+        function isCollinear() {
+            const area = Math.abs(
+                (coords.A.x * (coords.B.y - coords.C.y) +
+                 coords.B.x * (coords.C.y - coords.A.y) +
+                 coords.C.x * (coords.A.y - coords.B.y)) / 2
+            );
+            return area < 0.1;
+        }
+
+        Object.keys(points).forEach(key => {
+            points[key].addEventListener('mousedown', startDragging(key));
+            points[key].addEventListener('touchstart', startDragging(key), { passive: false });
+        });
+
+        function startDragging(key) {
+            return function(e) {
+                e.preventDefault();
+                const point = points[key];
+                
+                const moveHandler = (e) => {
+                    let clientX, clientY;
+                    if (e.type === 'mousemove') {
+                        clientX = e.clientX;
+                        clientY = e.clientY;
+                    } else {
+                        clientX = e.touches[0].clientX;
+                        clientY = e.touches[0].clientY;
+                    }
+                    
+                    let newX = snapToGrid(clientX - grid.offsetLeft);
+                    let newY = snapToGrid(clientY - grid.offsetTop);
+                    
+                    newX = Math.max(gridSize, Math.min(newX, canvas.width - gridSize));
+                    newY = Math.max(gridSize, Math.min(newY, canvas.height - gridSize));
+                    
+                    coords[key] = { x: newX, y: newY };
+                    
+                    if (!isCollinear()) {
+                        updatePosition();
+                    }
+                };
+
+                const upHandler = () => {
+                    document.removeEventListener('mousemove', moveHandler);
+                    document.removeEventListener('mouseup', upHandler);
+                    document.removeEventListener('touchmove', moveHandler);
+                    document.removeEventListener('touchend', upHandler);
+                };
+
+                if (e.type === 'mousedown') {
+                    document.addEventListener('mousemove', moveHandler);
+                    document.addEventListener('mouseup', upHandler);
+                } else {
+                    document.addEventListener('touchmove', moveHandler, { passive: false });
+                    document.addEventListener('touchend', upHandler);
+                }
+            };
+        }
+
+        function getSideLengths() {
+            const AB = Math.sqrt(
+                Math.pow(coords.A.x - coords.B.x, 2) + 
+                Math.pow(coords.A.y - coords.B.y, 2)
+            ) / gridSize;
+            const BC = Math.sqrt(
+                Math.pow(coords.B.x - coords.C.x, 2) + 
+                Math.pow(coords.B.y - coords.C.y, 2)
+            ) / gridSize;
+            const CA = Math.sqrt(
+                Math.pow(coords.C.x - coords.A.x, 2) + 
+                Math.pow(coords.C.y - coords.A.y, 2)
+            ) / gridSize;
+            return { AB, BC, CA };
+        }
+
+        function getAngles() {
+            const { AB, BC, CA } = getSideLengths();
+            const angleA = Math.acos((BC*BC + CA*CA - AB*AB) / (2*BC*CA)) * 180/Math.PI;
+            const angleB = Math.acos((CA*CA + AB*AB - BC*BC) / (2*CA*AB)) * 180/Math.PI;
+            const angleC = Math.acos((AB*AB + BC*BC - CA*CA) / (2*AB*BC)) * 180/Math.PI;
+            return { A: angleA, B: angleB, C: angleC };
+        }
+
+        function simplifyRadical(length) {
+            if (Number.isInteger(length)) return length.toString();
+            
+            const squared = Math.round(length * length * 1000000) / 1000000;
+            let i = Math.floor(Math.sqrt(squared));
+            while (i >= 1) {
+                const square = i * i;
+                if (Number.isInteger(squared / square)) {
+                    const remainder = squared / square;
+                    if (remainder === 1) return i.toString();
+                    return i === 1 ? `√${remainder}` : `${i}√${remainder}`;
+                }
+                i--;
+            }
+            return length.toFixed(2);
+        }
+
+        function drawTriangle() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const sides = getSideLengths();
+            const sortedSides = Object.values(sides).sort((a, b) => a - b);
+            const allEqual = Math.abs(sortedSides[0] - sortedSides[2]) < 0.0001;
+
+            ctx.lineWidth = 2;
+            
+            if (allEqual) {
+                ctx.beginPath();
+                ctx.moveTo(coords.A.x, coords.A.y);
+                ctx.lineTo(coords.B.x, coords.B.y);
+                ctx.lineTo(coords.C.x, coords.C.y);
+                ctx.closePath();
+                ctx.strokeStyle = 'blue';
+                ctx.stroke();
+            } else {
+                ctx.strokeStyle = 'red';
+                ['AB', 'BC', 'CA'].forEach(side => {
+                    const len = sides[side];
+                    if (Math.abs(len - sortedSides[0]) < 0.0001 || 
+                        Math.abs(len - sortedSides[1]) < 0.0001) {
+                        ctx.beginPath();
+                        ctx.moveTo(coords[side[0]].x, coords[side[0]].y);
+                        ctx.lineTo(coords[side[1]].x, coords[side[1]].y);
+                        ctx.stroke();
+                    }
+                });
+                ctx.strokeStyle = 'blue';
+                ['AB', 'BC', 'CA'].forEach(side => {
+                    if (Math.abs(sides[side] - sortedSides[2]) < 0.0001) {
+                        ctx.beginPath();
+                        ctx.moveTo(coords[side[0]].x, coords[side[0]].y);
+                        ctx.lineTo(coords[side[1]].x, coords[side[1]].y);
+                        ctx.stroke();
+                    }
+                });
+            }
+        }
+
+        function updateInfo() {
+            const sides = getSideLengths();
+            const angles = getAngles();
+            const sortedSides = Object.values(sides).sort((a, b) => a - b);
+            const allEqual = Math.abs(sortedSides[0] - sortedSides[2]) < 0.0001;
+            let html = '';
+
+            // 邊長表格
+            html += '<table>';
+            html += '<tr><th>邊</th><th>邊長</th>';
+            if (showSquares) html += '<th>邊長²</th>';
+            html += '</tr>';
+            ['AB', 'BC', 'CA'].forEach(side => {
+                const len = sides[side];
+                const displayLen = showRadical ? simplifyRadical(len) : len.toFixed(2);
+                const isShort = !allEqual && (Math.abs(len - sortedSides[0]) < 0.0001 || Math.abs(len - sortedSides[1]) < 0.0001);
+                const colorClass = allEqual ? 'long-side' : (isShort ? 'short-side' : 'long-side');
+                
+                html += '<tr>';
+                html += `<td class="${colorClass}">${side}</td>`;
+                html += `<td class="${colorClass}">${displayLen}</td>`;
+                if (showSquares) html += `<td class="${colorClass}">${side}² = ${(len * len).toFixed(2)}</td>`;
+                html += '</tr>';
+            });
+            html += '</table>';
+
+            // 角度表格
+            html += '<table style="margin-top: 10px">';
+            html += '<tr><th>角</th><th>角度</th></tr>';
+            Object.keys(angles).forEach(angle => {
+                const isRightAngle = Math.abs(angles[angle] - 90) < 0.5;
+                html += '<tr>';
+                html += `<td>∠${angle}</td>`;
+                html += '<td>';
+                if (isRightAngle) {
+                    html += `<span class="right-angle">${angles[angle].toFixed(2)}°</span>`;
+                } else {
+                    html += `${angles[angle].toFixed(2)}°`;
+                }
+                html += '</td>';
+                html += '</tr>';
+            });
+            html += '</table>';
+
+            infoContent.innerHTML = html;
+        }
+
+        function toggleRadical() {
+            showRadical = !showRadical;
+            radicalBtn.textContent = showRadical ? '取消二次根式表示' : '二次根式表示';
+            updateInfo();
+        }
+
+        function toggleSquares() {
+            showSquares = !showSquares;
+            squareBtn.textContent = showSquares ? '不顯示平方值' : '顯示平方值';
+            updateInfo();
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = grid.offsetWidth;
+            canvas.height = grid.offsetHeight;
+            updatePosition();
+        });
+
+        updatePosition();
+    </script>
+</body>
+</html>
