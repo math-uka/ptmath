@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勾股定理互動演示2</title>
+    <title>勾股定理互動演示3</title>
     <style>
         html, body {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* 防止body本身滾動 */
+            overflow: hidden;
         }
         #container {
             display: flex;
@@ -17,8 +17,8 @@
             max-width: 1200px;
             margin: 0 auto;
             height: 100%;
-            overflow-y: auto; /* 允許容器滾動 */
-            touch-action: pan-y; /* 允許垂直觸控滾動 */
+            overflow-y: auto;
+            touch-action: pan-y;
         }
         #grid {
             position: relative;
@@ -27,7 +27,7 @@
             height: 400px;
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABwAAYAAAAAAqACAAQAAAABAAAAKKADAAQAAAABAAAAKAAAAAD15a7LAAAAvElEQVRYCe2SwQ3DMAwEByG+AVvBNuzETrADLmAb3OAWOMF12IQs/UqWffmLIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiC4A/gA0v8L5SBX4oAAAAASUVORK5CYII=') repeat;
             border: 1px solid #000;
-            flex-shrink: 0; /* 防止grid被壓縮 */
+            flex-shrink: 0;
         }
         .point {
             position: absolute;
@@ -60,7 +60,7 @@
             width: 100%;
             max-width: 400px;
             box-sizing: border-box;
-            flex-grow: 1; /* 允許info區擴展 */
+            flex-grow: 1;
         }
         #info-header {
             display: flex;
@@ -72,7 +72,7 @@
             margin-right: 10px;
         }
         #info-content {
-            min-height: 0; /* 確保內容區可適應 */
+            min-height: 0;
         }
         button {
             margin: 0 5px;
@@ -83,7 +83,7 @@
             border-collapse: collapse;
             width: 100%;
             max-width: 400px;
-            margin-left: 0; /* 手機端無左邊距 */
+            margin-left: 0;
         }
         th, td {
             border: 1px solid #ddd;
@@ -105,13 +105,12 @@
             color: blue;
         }
 
-        /* 電腦版佈局 */
         @media (min-width: 768px) {
             #container {
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 10px;
-                overflow-y: hidden; /* 電腦版不需要滾動 */
+                overflow-y: hidden;
             }
             #grid {
                 margin-right: 20px;
@@ -123,10 +122,9 @@
             }
         }
 
-        /* 手機版佈局 */
         @media (max-width: 767px) {
             #container {
-                padding-bottom: 20px; /* 底部留白 */
+                padding-bottom: 20px;
             }
         }
     </style>
@@ -169,9 +167,9 @@
         canvas.height = grid.offsetHeight;
 
         let coords = {
-            A: { x: 5 * gridSize, y: 2 * gridSize },
-            B: { x: 8 * gridSize, y: 2 * gridSize },
-            C: { x: 6.5 * gridSize, y: 2 + 3 * Math.sqrt(3)/2 * gridSize }
+            A: { x: 5 * gridSize, y: 2 * gridSize },  // A(5,2)
+            B: { x: 8 * gridSize, y: 2 * gridSize },  // B(8,2)
+            C: { x: 5 * gridSize, y: 5 * gridSize }   // C(5,5)
         };
 
         function snapToGrid(value) {
@@ -263,10 +261,19 @@
         }
 
         function getAngles() {
-            const { AB, BC, CA } = getSideLengths();
-            const angleA = Math.acos((BC*BC + CA*CA - AB*AB) / (2*BC*CA)) * 180/Math.PI;
-            const angleB = Math.acos((CA*CA + AB*AB - BC*BC) / (2*CA*AB)) * 180/Math.PI;
-            const angleC = Math.acos((AB*AB + BC*BC - CA*CA) / (2*AB*BC)) * 180/Math.PI;
+            const sides = getSideLengths();
+            const angleA = Math.acos(
+                (sides.BC * sides.BC + sides.CA * sides.CA - sides.AB * sides.AB) /
+                (2 * sides.BC * sides.CA)
+            ) * 180 / Math.PI;
+            const angleB = Math.acos(
+                (sides.CA * sides.CA + sides.AB * sides.AB - sides.BC * sides.BC) /
+                (2 * sides.CA * sides.AB)
+            ) * 180 / Math.PI;
+            const angleC = Math.acos(
+                (sides.AB * sides.AB + sides.BC * sides.BC - sides.CA * sides.CA) /
+                (2 * sides.AB * sides.BC)
+            ) * 180 / Math.PI;
             return { A: angleA, B: angleB, C: angleC };
         }
 
@@ -334,7 +341,6 @@
             const allEqual = Math.abs(sortedSides[0] - sortedSides[2]) < 0.0001;
             let html = '';
 
-            // 邊長表格
             html += '<table>';
             html += '<tr><th>邊</th><th>邊長</th>';
             if (showSquares) html += '<th>邊長²</th>';
@@ -353,18 +359,23 @@
             });
             html += '</table>';
 
-            // 角度表格
             html += '<table style="margin-top: 10px">';
             html += '<tr><th>角</th><th>角度</th></tr>';
-            Object.keys(angles).forEach(angle => {
-                const isRightAngle = Math.abs(angles[angle] - 90) < 0.5;
+            // 根據你的建議重新對應角度名稱
+            const angleDisplayOrder = [
+                { label: 'C', value: angles.A }, // 原 ∠A 顯示為 ∠C
+                { label: 'A', value: angles.B }, // 原 ∠B 顯示為 ∠A
+                { label: 'B', value: angles.C }  // 原 ∠C 顯示為 ∠B
+            ];
+            angleDisplayOrder.forEach(angle => {
+                const isRightAngle = Math.abs(angle.value - 90) < 0.5;
                 html += '<tr>';
-                html += `<td>∠${angle}</td>`;
+                html += `<td>∠${angle.label}</td>`;
                 html += '<td>';
                 if (isRightAngle) {
-                    html += `<span class="right-angle">${angles[angle].toFixed(2)}°</span>`;
+                    html += `<span class="right-angle">${angle.value.toFixed(2)}°</span>`;
                 } else {
-                    html += `${angles[angle].toFixed(2)}°`;
+                    html += `${angle.value.toFixed(2)}°`;
                 }
                 html += '</td>';
                 html += '</tr>';
