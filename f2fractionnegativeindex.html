@@ -120,7 +120,7 @@
             const expX2 = randInt(-5, 5, [0]);
             const expY2 = randInt(-5, 5, [0]);
             const expZ2 = randInt(-5, 5, [0]);
-            let power = hasPower ? randInt(-5, 5, [0]) : 1;
+            let power = hasPower ? randInt(-3, 3, [0]) : 1; // 限制乘方範圍，避免過大
 
             let problem = formatMonomial(coeff1, expX1, expY1, expZ1);
             problem += isDivision ? ' ÷ ' : ' × ';
@@ -128,10 +128,15 @@
             if (hasPower) secondTerm = `(${secondTerm})<sup>${power}</sup>`;
             problem += secondTerm;
 
+            // 係數計算保持分數形式
             let numCoeff = coeff1;
             let denCoeff = 1;
             if (isDivision) {
-                denCoeff *= Math.pow(coeff2, power);
+                if (power >= 0) {
+                    denCoeff *= Math.pow(coeff2, power);
+                } else {
+                    numCoeff *= Math.pow(coeff2, -power);
+                }
             } else {
                 numCoeff *= Math.pow(coeff2, power);
             }
@@ -263,7 +268,7 @@
             if (input >= 1 && input <= 40) {
                 output.textContent = `你的密碼是：${passwordTable[input]}`;
             } else {
-                output.textContent = '請輸入1~40之間的數字！';
+                output.textContent = '請輸入你的學號以獲取密碼！';
             }
         }
 
