@@ -2,16 +2,19 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>單項式乘除練習3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>單項式乘除練習4</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            margin: 20px;
+            padding: 0;
         }
         #problem {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            word-wrap: break-word;
         }
         #options {
             display: grid;
@@ -19,15 +22,20 @@
             grid-template-rows: repeat(3, auto);
             gap: 10px;
             justify-content: center;
-            max-width: 600px;
+            max-width: 100%;
             margin: 0 auto;
         }
         .option {
-            padding: 10px 20px;
+            padding: 15px;
             border: 2px solid #ccc;
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
+            font-size: 1.1em;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .option:hover {
             background-color: #f0f0f0;
@@ -37,11 +45,11 @@
             opacity: 0.6;
         }
         #score {
-            font-size: 18px;
-            margin-top: 20px;
+            font-size: 1.2em;
+            margin-top: 15px;
         }
         #message {
-            font-size: 18px;
+            font-size: 1.2em;
             margin-top: 10px;
         }
         #end-screen {
@@ -56,6 +64,19 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #end-screen h1 {
+            font-size: 2em;
+        }
+        #end-screen p, #end-screen h2 {
+            font-size: 1.2em;
+        }
+        #password-section input, #password-section button {
+            font-size: 1em;
+            padding: 8px;
+            margin: 5px;
         }
         .fraction {
             display: inline-block;
@@ -67,6 +88,38 @@
         }
         .fraction .numerator {
             border-bottom: 1px solid black;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin: 10px;
+            }
+            #problem {
+                font-size: 1.2em;
+            }
+            #options {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(4, auto);
+                gap: 8px;
+            }
+            .option {
+                font-size: 0.9em;
+                padding: 12px;
+                min-height: 40px;
+            }
+            #score, #message {
+                font-size: 1em;
+            }
+            #end-screen h1 {
+                font-size: 1.5em;
+            }
+            #end-screen p, #end-screen h2 {
+                font-size: 1em;
+            }
+            #password-section input, #password-section button {
+                font-size: 0.9em;
+                padding: 6px;
+            }
         }
     </style>
 </head>
@@ -138,12 +191,11 @@
 
             let firstTerm = formatMonomial(coeff1, expX1, expY1, expZ1);
             let secondTerm = formatMonomial(coeff2, expX2, expY2, expZ2);
-            // 非乘方且第二項為負數時，加括號
             if (!hasPower && coeff2 < 0) secondTerm = `(${secondTerm})`;
             if (hasPower) secondTerm = `(${secondTerm})<sup>${power}</sup>`;
             
-            let problem = firstTerm + (isDivision ? ' ÷ ' : ' × ') + secondTerm;
-            // 使用數學負號
+            // 使用點乘符號 '·' (U+00B7)
+            let problem = firstTerm + (isDivision ? ' ÷ ' : ' · ') + secondTerm;
             problem = problem.replace(/-/g, '−');
 
             let numCoeff = coeff1;
@@ -170,7 +222,7 @@
         }
 
         function formatMonomial(num, expX, expY, expZ, den = 1) {
-            let sign = num * den < 0 ? '−' : ''; // 使用數學負號
+            let sign = num * den < 0 ? '−' : '';
             let absNum = Math.abs(num);
             let absDen = Math.abs(den);
 
@@ -278,7 +330,7 @@
             if (input >= 1 && input <= 40) {
                 output.textContent = `你的密碼是：${passwordTable[input]}`;
             } else {
-                output.textContent = '請輸入學號以獲取密碼！';
+                output.textContent = '請輸入你的學號以獲取密碼！';
             }
         }
 
