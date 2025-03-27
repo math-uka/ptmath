@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-learning tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-group {
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 80px;
+        }
+        #inputText {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        #mainContainer {
+            display: block;
+        }
+        #quizContainer {
+            display: none;
+            text-align: center;
+        }
+        #currentWord {
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+        .play-button {
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+            th, td {
+                padding: 6px;
+                font-size: 0.9em;
+            }
+            .play-button {
+                padding: 12px 24px;
+                font-size: 16px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Self-learning tool</h1>
+        
+        <div id="mainContainer">
+            <textarea id="inputText" rows="4" placeholder="請輸入文字或句子，以句號(. 或 .)、問號(? 或 ？)、感嘆號(! 或 ！)分隔"></textarea>
+            <button onclick="generateTable()">生成-generate</button>
+            <div id="tableContainer"></div>
+        </div>
+        
+        <div id="quizContainer">
+            <h2>測驗模式</h2>
+            <div id="currentWord"></div>
+            <div class="button-group">
+                <button onclick="replay()">重讀</button>
+                <button onclick="nextWord()">下一個</button>
+            </div>
+            <div id="resultContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let wordsArray = [];
+        let quizArray = [];
+        let currentIndex = 0;
+        let voices = [];
+        let voicesLoaded = false;
+
+        // 加載語音列表
+        function loadVoices() {
+            return new Promise((resolve) => {
+                voices = speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    voicesLoaded = true;
+                    resolve();
+                } else {
+                    speechSynthesis.onvoiceschanged = () => {
+                        voices = speechSynthesis.getVoices();
+                        voicesLoaded = true;
+                        resolve();
+                    };
+                }
+            });
+        }
+
+        // 初始化時加載語音並檢查 LocalStorage
+        window.onload = () => {
+            loadVoices();
+            loadPreviousInput(); // 頁面載入時顯示上次的輸入
+        };
+
+        // 從 LocalStorage 載入之前的輸入
+        function loadPreviousInput() {
+            const savedInput = localStorage.getItem('savedInputText');
+            if (savedInput) {
+                document.getElementById('inputText').value = savedInput;
+                generateTable(); // 自動生成表格
+            }
+        }
+
+        function generateTable() {
+            const input = document.getElementById('inputText').value;
+            // 保存輸入到 LocalStorage
+            localStorage.setItem('savedInputText', input);
+
+            // 使用正則表達式分隔，保留問號和感嘆號
+            wordsArray = input.split(/(?<=[.。]|[!?！])/).map(item => item.trim()).filter(item => item !== '');
+            
+            let tableHtml = '<div class="button-group">' +
+                '<button onclick="startQuiz(5)">抽問5個</button>' +
+                '<button onclick="startQuiz(Math.floor(wordsArray.length/2))">抽問一半</button>' +
+                '<button onclick="startQuiz(wordsArray.length)">抽問全部</button>' +
+                '</div>' +
+                '<table><tr><th>詞語</th><th>發音</th></tr>';
+
+            wordsArray.forEach(word => {
+                // 如果以問號或感嘆號結尾，保留標點；以句號結尾則移除
+                let displayText = word;
+                if (displayText.endsWith('.') || displayText.endsWith('。')) {
+                    displayText = displayText.slice(0, -1); // 移除句號
+                }
+                tableHtml += `<tr><td>${displayText}</td><td><button class="play-button" onclick="speak('${word}')">播放</button></td></tr>`;
+            });
+            tableHtml += '</table>';
+
+            document.getElementById('tableContainer').innerHTML = tableHtml;
+        }
+
+        async function speak(text) {
+            if (!voicesLoaded) {
+                await loadVoices();
+            }
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            let selectedVoice;
+
+            if (/[\u4e00-\u9fff]/.test(text)) {
+                selectedVoice = voices.find(voice => 
+                    (voice.lang === 'zh-HK' || voice.lang === 'zh-Yue') && 
+                    (voice.name.includes('Siri') || voice.name.includes('Mei') || voice.localService)
+                ) || voices.find(voice => voice.lang.startsWith('zh'));
+                utterance.lang = 'zh-HK';
+            } else {
+                selectedVoice = voices.find(voice => 
+                    (voice.lang === 'en-US' || voice.lang === 'en-GB') && 
+                    (voice.name.includes('Samantha') || 
+                     voice.name.includes('Victoria') || 
+                     voice.name.includes('Karen') || 
+                     voice.name.includes('Female') || 
+                     voice.name.includes('Siri') && voice.localService)
+                ) || voices.find(voice => 
+                    (voice.lang === 'en-US' || voice.lang === 'en-GB') && voice.localService
+                ) || voices.find(voice => voice.lang.startsWith('en'));
+                utterance.lang = 'en-US';
+            }
+
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            } else {
+                console.warn('未找到合適的女聲，使用默認語音');
+            }
+
+            utterance.rate = 0.7;  // 慢速自然語速
+            utterance.pitch = 1.1; // 女聲音調
+            utterance.volume = 1.0;
+
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utterance);
+        }
+
+        function startQuiz(count) {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            quizArray = [...wordsArray];
+            for (let i = quizArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [quizArray[i], quizArray[j]] = [quizArray[j], quizArray[i]];
+            }
+            quizArray = quizArray.slice(0, count);
+            
+            currentIndex = 0;
+            document.getElementById('resultContainer').innerHTML = '';
+            showCurrentWord();
+        }
+
+        function showCurrentWord() {
+            if (currentIndex < quizArray.length) {
+                document.getElementById('currentWord').textContent = `第 ${currentIndex + 1} 個詞語`;
+                speak(quizArray[currentIndex]);
+            } else {
+                endQuiz();
+            }
+        }
+
+        function replay() {
+            if (currentIndex < quizArray.length) {
+                speak(quizArray[currentIndex]);
+            }
+        }
+
+        function nextWord() {
+            currentIndex++;
+            showCurrentWord();
+        }
+
+        function endQuiz() {
+            document.getElementById('currentWord').textContent = '全部結束！';
+            let resultHtml = '<h3>剛剛的詞語：</h3><ul>';
+            quizArray.forEach(word => {
+                let displayText = word;
+                if (displayText.endsWith('.') || displayText.endsWith('。')) {
+                    displayText = displayText.slice(0, -1); // 移除句號
+                }
+                resultHtml += `<li>${displayText}</li>`;
+            });
+            resultHtml += '</ul>';
+            document.getElementById('resultContainer').innerHTML = resultHtml;
+        }
+    </script>
+</body>
+</html>
