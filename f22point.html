@@ -2,7 +2,8 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>二點透視與線段工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二點透視與線段工具2</title>
     <style>
         body {
             margin: 0;
@@ -10,22 +11,43 @@
             flex-direction: column;
             align-items: center;
             font-family: Arial, sans-serif;
+            touch-action: none; /* 防止觸控時頁面縮放 */
         }
         #button-container {
             margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            max-width: 90%;
         }
         button {
             padding: 8px 15px;
-            margin: 0 5px;
+            margin: 0;
             cursor: pointer;
             color: white;
             border: none;
             border-radius: 4px;
-            width: 60px;
+            min-width: 60px;
+            font-size: 14px;
             transition: background 0.3s;
+            flex: 1 0 auto;
         }
         canvas {
             border: 1px solid #ccc;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+        @media (max-width: 600px) {
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+                min-width: 50px;
+            }
+            #button-container {
+                gap: 3px;
+            }
         }
     </style>
 </head>
@@ -44,30 +66,47 @@
         <button style="background-color: #808080" onclick="startLineTool()">線段工具</button>
         <button style="background-color: #808080" onclick="clearLines()">清除線段</button>
     </div>
-    <canvas id="canvas" width="800" height="600"></canvas>
+    <canvas id="canvas"></canvas>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+
+        // 動態調整 canvas 尺寸
+        function resizeCanvas() {
+            const maxWidth = Math.min(window.innerWidth * 0.9, 800);
+            canvas.width = maxWidth;
+            canvas.height = maxWidth * 0.75; // 保持 4:3 比例
+            updateVanishPoints();
+            draw();
+        }
+
+        // 更新消失點位置
+        function updateVanishPoints() {
+            vanishPointLeft.x = canvas.width * 0.125;
+            vanishPointLeft.y = canvas.height / 2;
+            vanishPointRight.x = canvas.width * 0.875;
+            vanishPointRight.y = canvas.height / 2;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        const vanishPointLeft = { x: 0, y: 0 };
+        const vanishPointRight = { x: 0, y: 0 };
         
-        const vanishPointLeft = { x: 100, y: 300 };
-        const vanishPointRight = { x: 700, y: 300 };
-        
-        let points = new Array(10).fill(null); // 按鈕控制的點
-        let extraPoints = []; // 線段工具生成的新點
+        let points = new Array(10).fill(null);
+        let extraPoints = [];
         let lines = [];
         let draggingPoint = null;
         let lineToolActive = false;
         let lineStart = null;
         const SNAP_DISTANCE = 15;
 
-        // 定義彩虹過渡顏色 (HSL)
         const pointColors = Array.from({ length: 10 }, (_, i) => 
             `hsl(${i * 36}, 100%, 50%)`
         );
-        const extraPointColor = '#808080'; // 新點使用灰色
+        const extraPointColor = '#808080';
 
-        // 更新按鈕樣式
         function updateButtonStyle(index) {
             const btn = document.getElementById(`btn-${index}`);
             if (points[index]) {
@@ -112,33 +151,37 @@
 
             // 繪製額外點和虛線
             extraPoints.forEach(point => {
-                ctx.beginPath();
-                ctx.setLineDash([5, 5]);
-                ctx.strokeStyle = 'lightgreen';
-                ctx.lineWidth = 1;
-                ctx.moveTo(point.x, point.y);
-                ctx.lineTo(vanishPointLeft.x, vanishPointLeft.y);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(point.x, point.y);
-                ctx.lineTo(vanishPointRight.x, vanishPointRight.y);
-                ctx.stroke();
-                ctx.setLineDash([]);
+                if (point) {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.strokeStyle = 'lightgreen';
+                    ctx.lineWidth = 1;
+                    ctx.moveTo(point.x, point.y);
+                    ctx.lineTo(vanishPointLeft.x, vanishPointLeft.y);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(point.x, point.y);
+                    ctx.lineTo(vanishPointRight.x, vanishPointRight.y);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
 
-                ctx.fillStyle = extraPointColor;
-                ctx.beginPath();
-                ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
-                ctx.fill();
+                    ctx.fillStyle = extraPointColor;
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
             });
 
             // 繪製線段
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 2;
             lines.forEach(line => {
-                ctx.beginPath();
-                ctx.moveTo(line.start.x, line.start.y);
-                ctx.lineTo(line.end.x, line.end.y);
-                ctx.stroke();
+                if (line.start && line.end) {
+                    ctx.beginPath();
+                    ctx.moveTo(line.start.x, line.start.y);
+                    ctx.lineTo(line.end.x, line.end.y);
+                    ctx.stroke();
+                }
             });
 
             // 繪製線段工具預覽
@@ -151,34 +194,30 @@
             }
         }
 
-        // 切換點的顯示/隱藏
         function togglePoint(index) {
             if (points[index]) {
                 points[index] = null;
             } else {
-                points[index] = { x: 400, y: 400 };
+                points[index] = { x: canvas.width / 2, y: canvas.height * 0.67 };
             }
             updateButtonStyle(index);
             draw();
         }
 
-        // 啟動線段工具
         function startLineTool() {
-            if (!lineToolActive) {
-                lineToolActive = true;
-                lineStart = null;
-                draw();
-            }
-        }
-
-        // 清除所有線段和額外點
-        function clearLines() {
-            lines = [];
-            extraPoints = [];
+            lineToolActive = true;
+            lineStart = null;
             draw();
         }
 
-        // 檢查吸附或生成新點
+        function clearLines() {
+            lines = [];
+            extraPoints = [];
+            lineToolActive = false;
+            lineStart = null;
+            draw();
+        }
+
         function snapToPoint(x, y) {
             const allPoints = [...points.filter(p => p), ...extraPoints];
             for (let point of allPoints) {
@@ -186,23 +225,31 @@
                     return point;
                 }
             }
-            // 如果附近沒有點，生成新點並加入 extraPoints
             const newPoint = { x, y };
             extraPoints.push(newPoint);
             return newPoint;
         }
 
-        // 滑鼠事件
-        canvas.addEventListener('mousedown', (e) => {
+        function getPosition(e) {
             const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            const isTouch = e.type.startsWith('touch');
+            const clientX = isTouch ? (e.touches[0] ? e.touches[0].clientX : e.changedTouches[0].clientX) : e.clientX;
+            const clientY = isTouch ? (e.touches[0] ? e.touches[0].clientY : e.changedTouches[0].clientY) : e.clientY;
+            return {
+                x: Math.max(0, Math.min(canvas.width, clientX - rect.left)),
+                y: Math.max(0, Math.min(canvas.height, clientY - rect.top))
+            };
+        }
 
+        function handleStart(e) {
+            e.preventDefault();
+            const { x, y } = getPosition(e);
             if (lineToolActive) {
                 if (!lineStart) {
-                    lineStart = snapToPoint(mouseX, mouseY);
+                    lineStart = snapToPoint(x, y);
+                    draw();
                 } else {
-                    const endPoint = snapToPoint(mouseX, mouseY);
+                    const endPoint = snapToPoint(x, y);
                     lines.push({ start: lineStart, end: endPoint });
                     lineToolActive = false;
                     lineStart = null;
@@ -211,35 +258,50 @@
             } else {
                 const allPoints = [...points.filter(p => p), ...extraPoints];
                 draggingPoint = allPoints.find(point => 
-                    point && Math.sqrt((point.x - mouseX) ** 2 + (point.y - mouseY) ** 2) < 10
+                    point && Math.sqrt((point.x - x) ** 2 + (point.y - y) ** 2) < 10
                 );
             }
-        });
+        }
 
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
+        function handleMove(e) {
+            e.preventDefault();
+            const { x, y } = getPosition(e);
             if (draggingPoint) {
-                draggingPoint.x = mouseX;
-                draggingPoint.y = mouseY;
+                draggingPoint.x = x;
+                draggingPoint.y = y;
                 draw();
             } else if (lineToolActive && lineStart) {
-                draggingPoint = { x: mouseX, y: mouseY };
+                draggingPoint = { x, y };
                 draw();
             }
-        });
+        }
 
-        canvas.addEventListener('mouseup', () => {
+        function handleEnd(e) {
+            e.preventDefault();
             draggingPoint = null;
-        });
+            if (lineToolActive && lineStart && draggingPoint) {
+                const endPoint = snapToPoint(draggingPoint.x, draggingPoint.y);
+                lines.push({ start: lineStart, end: endPoint });
+                lineToolActive = false;
+                lineStart = null;
+                draggingPoint = null;
+                draw();
+            }
+        }
 
-        // 初始化按鈕樣式
+        // 綁定事件
+        canvas.addEventListener('mousedown', handleStart);
+        canvas.addEventListener('mousemove', handleMove);
+        canvas.addEventListener('mouseup', handleEnd);
+        canvas.addEventListener('touchstart', handleStart);
+        canvas.addEventListener('touchmove', handleMove);
+        canvas.addEventListener('touchend', handleEnd);
+
+        // 初始化
         for (let i = 0; i < 10; i++) {
             updateButtonStyle(i);
         }
-        draw();
+        resizeCanvas(); // 確保初次加載時設置正確尺寸和消失點
     </script>
 </body>
 </html>
