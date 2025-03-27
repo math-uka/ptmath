@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>單項式乘除練習4</title>
+    <title>單項式乘除練習</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -134,7 +134,7 @@
         <h2 id="end-message"></h2>
         <div id="wrong-problems"></div>
         <div id="password-section" style="display: none;">
-            <p>請輸入1~40的數字以獲取密碼：</p>
+            <p>請輸入你的學號以獲取密碼！</p>
             <input type="number" id="password-input" min="1" max="40">
             <button onclick="generatePassword()">生成密碼</button>
             <p id="password-output"></p>
@@ -148,6 +148,7 @@
         let wrongProblems = new Set();
         let currentAnswer = '';
         let optionsLocked = false;
+        let passwordGenerated = false;
 
         const encodedPasswordTable = [
             "NzI5", "NTM2", "MTQ4", "ODkz", "MjY3", "NDUx", "OTgz", "NjEy", "Mzc1", "ODI0",
@@ -167,7 +168,7 @@
         const passwordTable = decodePasswordTable(encodedPasswordTable);
 
         function generateProblem() {
-            if (problemCount >= 5) {
+            if (score >= 3) { // 答對3題結束
                 showEndScreen();
                 return;
             }
@@ -194,7 +195,6 @@
             if (!hasPower && coeff2 < 0) secondTerm = `(${secondTerm})`;
             if (hasPower) secondTerm = `(${secondTerm})<sup>${power}</sup>`;
             
-            // 使用點乘符號 '·' (U+00B7)
             let problem = firstTerm + (isDivision ? ' ÷ ' : ' · ') + secondTerm;
             problem = problem.replace(/-/g, '−');
 
@@ -316,21 +316,26 @@
             const wrongDiv = document.getElementById('wrong-problems');
             wrongDiv.innerHTML = Array.from(wrongProblems).join('<br>');
 
-            if (wrongProblems.size > 0) {
-                document.getElementById('end-message').textContent = '請重新挑戰，爭取全對';
-            } else {
-                document.getElementById('end-message').textContent = '恭喜全對！';
+            if (score === 3 && wrongProblems.size === 0) { // 全部答對（3題且無錯題）
+                document.getElementById('end-message').textContent = '恭喜全部答對！';
                 document.getElementById('password-section').style.display = 'block';
+            } else {
+                document.getElementById('end-message').textContent = '請重新挑戰，爭取全部答對3題';
             }
         }
 
         function generatePassword() {
+            if (passwordGenerated) return;
+
             const input = parseInt(document.getElementById('password-input').value);
             const output = document.getElementById('password-output');
             if (input >= 1 && input <= 40) {
                 output.textContent = `你的密碼是：${passwordTable[input]}`;
+                passwordGenerated = true;
+                document.getElementById('password-input').disabled = true;
+                document.querySelector('#password-section button').disabled = true;
             } else {
-                output.textContent = '請輸入你的學號以獲取密碼！';
+                output.textContent = '請輸入1~40之間的學號！';
             }
         }
 
