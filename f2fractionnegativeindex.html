@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>單項式乘除練習2</title>
+    <title>單項式乘除練習3</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -96,7 +96,6 @@
         let currentAnswer = '';
         let optionsLocked = false;
 
-        // 加密後的密碼表（Base64編碼）
         const encodedPasswordTable = [
             "NzI5", "NTM2", "MTQ4", "ODkz", "MjY3", "NDUx", "OTgz", "NjEy", "Mzc1", "ODI0",
             "Mzg0", "OTE3", "NjI1", "NDMy", "NzU5", "ODM2", "NTc0", "Mjkz", "NjQ4", "OTUx",
@@ -104,7 +103,6 @@
             "ODQz", "Mjk1", "NzYx", "OTE0", "NDgy", "NjM5", "MzU4", "MTI3", "NTY5", "NDAz"
         ];
 
-        // 解碼函數
         function decodePasswordTable(encoded) {
             const decoded = {};
             for (let i = 0; i < encoded.length; i++) {
@@ -138,11 +136,15 @@
             const expZ2 = randInt(-5, 5, [0]);
             let power = hasPower ? randInt(-2, 2, [0]) : 1;
 
-            let problem = formatMonomial(coeff1, expX1, expY1, expZ1);
-            problem += isDivision ? ' ÷ ' : ' × ';
+            let firstTerm = formatMonomial(coeff1, expX1, expY1, expZ1);
             let secondTerm = formatMonomial(coeff2, expX2, expY2, expZ2);
+            // 非乘方且第二項為負數時，加括號
+            if (!hasPower && coeff2 < 0) secondTerm = `(${secondTerm})`;
             if (hasPower) secondTerm = `(${secondTerm})<sup>${power}</sup>`;
-            problem += secondTerm;
+            
+            let problem = firstTerm + (isDivision ? ' ÷ ' : ' × ') + secondTerm;
+            // 使用數學負號
+            problem = problem.replace(/-/g, '−');
 
             let numCoeff = coeff1;
             let denCoeff = 1;
@@ -161,17 +163,16 @@
             const resultExpY = expY1 + (isDivision ? -expY2 : expY2) * power;
             const resultExpZ = expZ1 + (isDivision ? -expZ2 : expZ2) * power;
 
-            currentAnswer = formatMonomial(simplifiedNum, resultExpX, resultExpY, resultExpZ, simplifiedDen);
+            currentAnswer = formatMonomial(simplifiedNum, resultExpX, resultExpY, resultExpZ, simplifiedDen).replace(/-/g, '−');
             document.getElementById('problem').innerHTML = problem;
 
             generateOptions(simplifiedNum, simplifiedDen, resultExpX, resultExpY, resultExpZ, isDivision);
         }
 
         function formatMonomial(num, expX, expY, expZ, den = 1) {
-            let sign = '';
+            let sign = num * den < 0 ? '−' : ''; // 使用數學負號
             let absNum = Math.abs(num);
             let absDen = Math.abs(den);
-            if (num * den < 0) sign = '-';
 
             let numPart = '';
             let denPart = '';
@@ -216,12 +217,12 @@
             const wrongDen = denCoeff;
 
             for (let i = 0; i < 3; i++) {
-                options.push(formatMonomial(numCoeff, wrongExps[i][0], wrongExps[i][1], wrongExps[i][2], denCoeff));
+                options.push(formatMonomial(numCoeff, wrongExps[i][0], wrongExps[i][1], wrongExps[i][2], denCoeff).replace(/-/g, '−'));
             }
-            options.push(formatMonomial(wrongNum, expX, expY, expZ, wrongDen));
+            options.push(formatMonomial(wrongNum, expX, expY, expZ, wrongDen).replace(/-/g, '−'));
 
             for (let i = 3; i < 7; i++) {
-                options.push(formatMonomial(-numCoeff, wrongExps[i][0], wrongExps[i][1], wrongExps[i][2], denCoeff));
+                options.push(formatMonomial(-numCoeff, wrongExps[i][0], wrongExps[i][1], wrongExps[i][2], denCoeff).replace(/-/g, '−'));
             }
 
             shuffle(options);
@@ -277,7 +278,7 @@
             if (input >= 1 && input <= 40) {
                 output.textContent = `你的密碼是：${passwordTable[input]}`;
             } else {
-                output.textContent = '請輸入1~40之間的數字！';
+                output.textContent = '請輸入學號以獲取密碼！';
             }
         }
 
