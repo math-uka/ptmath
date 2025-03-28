@@ -126,7 +126,7 @@
         function generatePassword(studentId) {
             const base = parseInt(studentId);
             if (base < 1 || base > 40) return "無效學號";
-            const key = 12345; // 簡單的混淆密鑰
+            const key = 12345;
             const passwords = [
                 742, 186, 395, 610, 823, 47, 259, 431, 578, 694,
                 802, 913, 125, 340, 467, 589, 701, 832, 950, 64,
@@ -134,8 +134,8 @@
                 203, 314, 408, 527, 639, 745, 856, 968, 79, 190
             ];
             const rawPassword = passwords[base - 1];
-            const encrypted = (rawPassword ^ key) >> 2; // 簡單的位運算混淆
-            return String(encrypted ^ key).padStart(3, '0'); // 解混淆並補零
+            const encrypted = (rawPassword ^ key) >> 2;
+            return String(encrypted ^ key).padStart(3, '0');
         }
 
         function generateProblem() {
@@ -222,7 +222,10 @@
                 } else {
                     option = { value: Math.floor(Math.random() * 15) + 1, isRoot: false };
                 }
-                options.add(JSON.stringify(option));
+                const optionStr = JSON.stringify(option);
+                if (!options.has(optionStr)) { // 確保不重複
+                    options.add(optionStr);
+                }
             }
 
             const optionArray = Array.from(options).map(str => JSON.parse(str)).sort(() => Math.random() - 0.5);
@@ -245,7 +248,7 @@
                              selected.coefficient === correct.coefficient && 
                              selected.radicand === correct.radicand);
 
-            const currentQuestion = document.getElementById('question').textContent;
+            const currentQuestion = document.getElementById('question').innerHTML; // 改用 innerHTML 保存原始格式
             const correctAnswerText = formatNumber(correct);
 
             if (isCorrect) {
@@ -262,7 +265,7 @@
             } else {
                 feedback.textContent = '你答錯了，請重試！';
                 totalCount++;
-                wrongProblems.set(currentQuestion, correctAnswerText);
+                wrongProblems.set(currentQuestion, correctAnswerText); // 儲存帶有根號格式的題目
             }
 
             document.getElementById('progress').textContent = `已完成: ${correctCount}/${TOTAL_QUESTIONS}`;
@@ -302,7 +305,7 @@
         }
 
         function generatePasswordFromInput() {
-            if (passwordGenerated) return; // 防止重複生成
+            if (passwordGenerated) return;
             const studentIdInput = document.getElementById('studentId');
             const studentId = parseInt(studentIdInput.value);
             const passwordOutput = document.getElementById('passwordOutput');
@@ -310,7 +313,7 @@
             if (studentId >= 1 && studentId <= 40) {
                 const password = generatePassword(studentId);
                 passwordOutput.textContent = `你的密碼是：${password}`;
-                studentIdInput.disabled = true; // 鎖定輸入框
+                studentIdInput.disabled = true;
                 passwordGenerated = true;
             } else {
                 passwordOutput.textContent = '請輸入有效的學號（1-40）！';
