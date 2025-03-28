@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勾股定理練習題746</title>
+    <title>勾股定理練習題</title>
     <!-- 引入 MathJax -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -56,6 +56,23 @@
         }
         #wrongAnswers {
             margin-top: 20px;
+            text-align: center;
+        }
+        #restartButton, #studentIdForm {
+            margin: 20px auto;
+            text-align: center;
+        }
+        #restartButton button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        #studentIdForm input, #studentIdForm button {
+            padding: 5px;
+            font-size: 1em;
+        }
+        #studentIdForm input:disabled {
+            background-color: #f0f0f0;
         }
         @media (max-width: 400px) {
             .grid {
@@ -77,12 +94,15 @@
     <div id="feedback"></div>
     <div id="progress">已完成: 0/5</div>
     <div id="wrongAnswers"></div>
+    <div id="restartButton"></div>
+    <div id="studentIdForm"></div>
 
     <script>
         let correctCount = 0;
         let totalCount = 0;
         let wrongProblems = new Map();
         const TOTAL_QUESTIONS = 5;
+        let passwordGenerated = false;
 
         // 簡化二次根式
         function simplifyRoot(n) {
@@ -100,6 +120,22 @@
         // 計算邊長的平方值以比較大小
         function getSideValue(side) {
             return side.isRoot ? side.coefficient * side.coefficient * side.radicand : side.value * side.value;
+        }
+
+        // 密碼生成函數（簡單混淆）
+        function generatePassword(studentId) {
+            const base = parseInt(studentId);
+            if (base < 1 || base > 40) return "無效學號";
+            const key = 12345; // 簡單的混淆密鑰
+            const passwords = [
+                742, 186, 395, 610, 823, 47, 259, 431, 578, 694,
+                802, 913, 125, 340, 467, 589, 701, 832, 950, 64,
+                173, 285, 309, 426, 548, 657, 769, 874, 981, 92,
+                203, 314, 408, 527, 639, 745, 856, 968, 79, 190
+            ];
+            const rawPassword = passwords[base - 1];
+            const encrypted = (rawPassword ^ key) >> 2; // 簡單的位運算混淆
+            return String(encrypted ^ key).padStart(3, '0'); // 解混淆並補零
         }
 
         function generateProblem() {
@@ -151,9 +187,9 @@
                 `${givenSides[0].name} = ${formatNumber(givenSides[0].data)}，` +
                 `${givenSides[1].name} = ${formatNumber(givenSides[1].data)}，` +
                 `求${answerSide.name}的長度`;
-            document.getElementById('question').innerHTML = question; // 使用 innerHTML 以觸發 MathJax
+            document.getElementById('question').innerHTML = question;
             generateOptions(answerSide.data);
-            MathJax.typeset(); // 渲染數學公式
+            MathJax.typeset();
             return { question: question, answer: formatNumber(answerSide.data) };
         }
 
@@ -194,11 +230,11 @@
             optionArray.forEach(data => {
                 const div = document.createElement('div');
                 div.className = 'option';
-                div.innerHTML = formatNumber(data); // 使用 innerHTML 以支持 MathJax
+                div.innerHTML = formatNumber(data);
                 div.onclick = () => checkAnswer(data, correctAnswer);
                 grid.appendChild(div);
             });
-            MathJax.typeset(); // 渲染選項中的數學公式
+            MathJax.typeset();
         }
 
         function checkAnswer(selected, correct) {
@@ -242,17 +278,43 @@
 
         function showResults() {
             const wrongDiv = document.getElementById('wrongAnswers');
+            const restartDiv = document.getElementById('restartButton');
+            const studentIdDiv = document.getElementById('studentIdForm');
             wrongDiv.innerHTML = '<h2>錯題回顧:</h2>';
+            document.getElementById('grid').innerHTML = '';
+            document.getElementById('question').textContent = '練習已完成！';
+
             if (wrongProblems.size === 0) {
                 wrongDiv.innerHTML += '<p>恭喜你！沒有錯題！</p>';
+                studentIdDiv.innerHTML = `
+                    <p>請輸入你的學號以獲取密碼（1-40）:</p>
+                    <input type="number" id="studentId" min="1" max="40" required>
+                    <button onclick="generatePasswordFromInput()">提交</button>
+                    <p id="passwordOutput"></p>
+                `;
             } else {
                 wrongProblems.forEach((answer, problem) => {
                     wrongDiv.innerHTML += `<p>${problem} 正確答案：${answer}</p>`;
                 });
+                restartDiv.innerHTML = '<button onclick="location.reload()">重新遊戲</button>';
             }
-            document.getElementById('grid').innerHTML = '';
-            document.getElementById('question').textContent = '練習已完成！';
-            MathJax.typeset(); // 確保結果頁面中的公式也被渲染
+            MathJax.typeset();
+        }
+
+        function generatePasswordFromInput() {
+            if (passwordGenerated) return; // 防止重複生成
+            const studentIdInput = document.getElementById('studentId');
+            const studentId = parseInt(studentIdInput.value);
+            const passwordOutput = document.getElementById('passwordOutput');
+
+            if (studentId >= 1 && studentId <= 40) {
+                const password = generatePassword(studentId);
+                passwordOutput.textContent = `你的密碼是：${password}`;
+                studentIdInput.disabled = true; // 鎖定輸入框
+                passwordGenerated = true;
+            } else {
+                passwordOutput.textContent = '請輸入有效的學號（1-40）！';
+            }
         }
 
         // 開始第一題
