@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二點透視與線段工具3</title>
+    <title>二點透視與線段工具4</title>
     <style>
         body {
             margin: 0;
@@ -250,6 +250,13 @@
             };
         }
 
+        function findPointAtPosition(x, y) {
+            const allPoints = [...points.filter(p => p), ...extraPoints];
+            return allPoints.find(point => 
+                point && Math.sqrt((point.x - x) ** 2 + (point.y - y) ** 2) < 10
+            );
+        }
+
         function handleStart(e) {
             e.preventDefault();
             const { x, y } = getPosition(e);
@@ -259,10 +266,10 @@
                     draw();
                 }
             } else {
-                const allPoints = [...points.filter(p => p), ...extraPoints];
-                draggingPoint = allPoints.find(point => 
-                    point && Math.sqrt((point.x - x) ** 2 + (point.y - y) ** 2) < 10
-                );
+                draggingPoint = findPointAtPosition(x, y);
+                if (draggingPoint) {
+                    draw();
+                }
             }
         }
 
@@ -288,10 +295,11 @@
                 lineToolActive = false;
                 lineStart = null;
                 draggingPoint = null;
+                draw();
             } else {
                 draggingPoint = null;
+                draw();
             }
-            draw();
         }
 
         // 綁定事件
