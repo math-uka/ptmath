@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勾股定理練習題</title>
+    <title>勾股定理練習題746</title>
+    <!-- 引入 MathJax -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,7 +82,7 @@
         let correctCount = 0;
         let totalCount = 0;
         let wrongProblems = new Map();
-        const TOTAL_QUESTIONS = 5; // 總共需要完成的題數，在此修改即可
+        const TOTAL_QUESTIONS = 5;
 
         // 簡化二次根式
         function simplifyRoot(n) {
@@ -123,7 +125,6 @@
                 isRoot: true 
             };
 
-            // 將三條邊放入陣列並隨機排序
             const sidesData = [leg1, leg2, hypotenuse];
             const sides = [
                 { name: 'a', data: null, angle: 'A' },
@@ -131,7 +132,6 @@
                 { name: 'c', data: null, angle: 'C' }
             ];
 
-            // 隨機分配邊長
             for (let i = sidesData.length - 1; i >= 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [sidesData[i], sidesData[j]] = [sidesData[j], sidesData[i]];
@@ -140,7 +140,6 @@
             sides[1].data = sidesData[1];
             sides[2].data = sidesData[2];
 
-            // 找出最長邊（斜邊）及其對應的角
             const hypotenuseSide = sides.reduce((max, side) => 
                 getSideValue(side.data) > getSideValue(max.data) ? side : max
             );
@@ -152,18 +151,18 @@
                 `${givenSides[0].name} = ${formatNumber(givenSides[0].data)}，` +
                 `${givenSides[1].name} = ${formatNumber(givenSides[1].data)}，` +
                 `求${answerSide.name}的長度`;
-
-            document.getElementById('question').textContent = question;
+            document.getElementById('question').innerHTML = question; // 使用 innerHTML 以觸發 MathJax
             generateOptions(answerSide.data);
+            MathJax.typeset(); // 渲染數學公式
             return { question: question, answer: formatNumber(answerSide.data) };
         }
 
         function formatNumber(data) {
             if (!data.isRoot) return data.value;
             if (data.coefficient === 1 && data.radicand === 1) return 1;
-            if (data.coefficient === 1) return `√${data.radicand}`;
+            if (data.coefficient === 1) return `\\(\\sqrt{${data.radicand}}\\)`;
             if (data.radicand === 1) return data.coefficient;
-            return `${data.coefficient}√${data.radicand}`;
+            return `\\(${data.coefficient}\\sqrt{${data.radicand}}\\)`;
         }
 
         function generateOptions(correctAnswer) {
@@ -195,10 +194,11 @@
             optionArray.forEach(data => {
                 const div = document.createElement('div');
                 div.className = 'option';
-                div.textContent = formatNumber(data);
+                div.innerHTML = formatNumber(data); // 使用 innerHTML 以支持 MathJax
                 div.onclick = () => checkAnswer(data, correctAnswer);
                 grid.appendChild(div);
             });
+            MathJax.typeset(); // 渲染選項中的數學公式
         }
 
         function checkAnswer(selected, correct) {
@@ -252,6 +252,7 @@
             }
             document.getElementById('grid').innerHTML = '';
             document.getElementById('question').textContent = '練習已完成！';
+            MathJax.typeset(); // 確保結果頁面中的公式也被渲染
         }
 
         // 開始第一題
