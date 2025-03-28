@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二點透視與線段工具2</title>
+    <title>二點透視與線段工具3</title>
     <style>
         body {
             margin: 0;
@@ -185,11 +185,11 @@
             });
 
             // 繪製線段工具預覽
-            if (lineToolActive && lineStart) {
+            if (lineToolActive && lineStart && draggingPoint) {
                 ctx.beginPath();
                 ctx.strokeStyle = 'gray';
                 ctx.moveTo(lineStart.x, lineStart.y);
-                ctx.lineTo(draggingPoint ? draggingPoint.x : lineStart.x, draggingPoint ? draggingPoint.y : lineStart.y);
+                ctx.lineTo(draggingPoint.x, draggingPoint.y);
                 ctx.stroke();
             }
         }
@@ -207,6 +207,7 @@
         function startLineTool() {
             lineToolActive = true;
             lineStart = null;
+            draggingPoint = null;
             draw();
         }
 
@@ -215,6 +216,7 @@
             extraPoints = [];
             lineToolActive = false;
             lineStart = null;
+            draggingPoint = null;
             draw();
         }
 
@@ -233,8 +235,15 @@
         function getPosition(e) {
             const rect = canvas.getBoundingClientRect();
             const isTouch = e.type.startsWith('touch');
-            const clientX = isTouch ? (e.touches[0] ? e.touches[0].clientX : e.changedTouches[0].clientX) : e.clientX;
-            const clientY = isTouch ? (e.touches[0] ? e.touches[0].clientY : e.changedTouches[0].clientY) : e.clientY;
+            let clientX, clientY;
+            if (isTouch) {
+                const touch = e.touches[0] || e.changedTouches[0];
+                clientX = touch.clientX;
+                clientY = touch.clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
             return {
                 x: Math.max(0, Math.min(canvas.width, clientX - rect.left)),
                 y: Math.max(0, Math.min(canvas.height, clientY - rect.top))
@@ -247,12 +256,6 @@
             if (lineToolActive) {
                 if (!lineStart) {
                     lineStart = snapToPoint(x, y);
-                    draw();
-                } else {
-                    const endPoint = snapToPoint(x, y);
-                    lines.push({ start: lineStart, end: endPoint });
-                    lineToolActive = false;
-                    lineStart = null;
                     draw();
                 }
             } else {
@@ -278,15 +281,17 @@
 
         function handleEnd(e) {
             e.preventDefault();
-            draggingPoint = null;
+            const { x, y } = getPosition(e);
             if (lineToolActive && lineStart && draggingPoint) {
-                const endPoint = snapToPoint(draggingPoint.x, draggingPoint.y);
+                const endPoint = snapToPoint(x, y);
                 lines.push({ start: lineStart, end: endPoint });
                 lineToolActive = false;
                 lineStart = null;
                 draggingPoint = null;
-                draw();
+            } else {
+                draggingPoint = null;
             }
+            draw();
         }
 
         // 綁定事件
