@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>二點透視與線段工具5</title>
+    <title>二點透視與線段工具6</title>
     <style>
         body {
             margin: 0;
@@ -11,7 +11,7 @@
             flex-direction: column;
             align-items: center;
             font-family: Arial, sans-serif;
-            overscroll-behavior: none; /* 防止手機上下滑動 */
+            overscroll-behavior: none;
         }
         #button-container {
             margin: 10px 0;
@@ -38,7 +38,7 @@
             width: 100%;
             max-width: 800px;
             height: auto;
-            touch-action: none; /* 將 touch-action 移到 canvas，避免影響其他元素 */
+            touch-action: none;
         }
         @media (max-width: 600px) {
             button {
@@ -66,6 +66,7 @@
         <button id="btn-9" style="background: hsl(324, 100%, 50%)" onclick="togglePoint(9)">點 10</button>
         <button style="background-color: #808080" onclick="startLineTool()">線段工具</button>
         <button style="background-color: #808080" onclick="clearLines()">清除線段</button>
+        <button style="background-color: #808080" onclick="refreshPage()">重畫</button>
     </div>
     <canvas id="canvas"></canvas>
 <script>
@@ -98,8 +99,8 @@
     let draggingPoint = null;
     let lineToolActive = false;
     let lineStart = null;
-    const SNAP_DISTANCE = 20; // 增加吸附距離，提升手機觸控體驗
-    const DETECT_RADIUS = 20; // 增加點擊檢測範圍
+    const SNAP_DISTANCE = 20;
+    const DETECT_RADIUS = 20;
 
     const pointColors = Array.from({ length: 10 }, (_, i) => `hsl(${i * 36}, 100%, 50%)`);
     const extraPointColor = '#808080';
@@ -210,6 +211,10 @@
         lineStart = null;
         draggingPoint = null;
         draw();
+    }
+
+    function refreshPage() {
+        window.location.reload(); // 重新整理頁面
     }
 
     function snapToPoint(x, y) {
