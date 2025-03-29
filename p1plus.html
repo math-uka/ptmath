@@ -2,189 +2,397 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>小學加減法練習</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小朋友加減法冒險</title>
     <style>
         body {
+            font-family: 'Comic Sans MS', Arial, sans-serif;
             text-align: center;
-            font-family: Arial, sans-serif;
-            padding: 50px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffeb3b, #4caf50);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
-        #problem {
-            font-size: 24px;
-            margin: 20px;
+        #score {
+            font-size: 2em;
+            margin: 10px 0;
+            color: #fff;
+            background: #ff5722;
+            padding: 10px 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: bounce 2s infinite;
         }
-        #answer {
-            padding: 5px;
-            font-size: 16px;
+        #question {
+            font-size: 3em;
+            margin: 20px 0;
+            color: #2196f3;
+            background: #fff;
+            padding: 15px 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 3px solid #ffeb3b;
+        }
+        #inputArea {
+            margin: 20px 0;
+            width: 100%;
+            max-width: 600px;
+            display: grid;
+            grid-template-areas: 
+                "input submit"
+                "tens units";
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        #answerInput {
+            grid-area: input;
+            font-size: 2em;
+            width: 100px;
+            padding: 10px;
+            text-align: center;
+            border: 4px solid #ff9800;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        #answerInput:focus {
+            transform: scale(1.05);
+            border-color: #4caf50;
+        }
+        #submitBtn {
+            grid-area: submit;
+            padding: 15px 40px;
+            font-size: 1.5em;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.3s;
+        }
+        #submitBtn:hover {
+            transform: scale(1.1);
+            background: #e91e63;
+        }
+        .number-group {
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 3px solid #2196f3;
+            height: 300px;
+        }
+        .number-group label {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #ff5722;
+            font-weight: bold;
+        }
+        .number-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 200px;
+        }
+        .number-btn {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5em;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.3s;
+        }
+        .number-btn:hover {
+            transform: scale(1.1);
+            background: #45a049;
+        }
+        .number-btn.selected {
+            background: #ff9800;
+            transform: scale(0.95);
+        }
+        .empty-btn {
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border: none;
+            pointer-events: none;
         }
         #message {
-            margin: 10px;
-            color: red;
-        }
-        #completion-message {
-            position: fixed;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: white;
+            color: #ff5722;
+            font-size: 1.5em;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.8);
             padding: 10px 20px;
-            border: 2px solid black;
-            font-weight: bold;
-            font-size: 20px;
-            z-index: 1000;
-            display: none;
+            border-radius: 15px;
         }
-        canvas {
+        #fireworks {
             position: fixed;
             top: 0;
             left: 0;
-            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            z-index: 1000;
+            color: #fff;
+            font-size: 2.5em;
+            padding-top: 20%;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .cloud {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50px;
+            animation: float 20s infinite linear;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+        }
+        .cloud::before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 20px;
+        }
+        .cloud::after {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            right: 20px;
+        }
+        @keyframes float {
+            0% { transform: translateX(-200px); }
+            100% { transform: translateX(120vw); }
+        }
+        @media (max-width: 600px) {
+            #score { font-size: 1.5em; padding: 8px 15px; }
+            #question { font-size: 2em; padding: 10px 20px; }
+            #answerInput { width: 80px; font-size: 1.5em; }
+            #submitBtn { padding: 10px 30px; font-size: 1.2em; }
+            .number-pad { width: 150px; gap: 8px; }
+            .number-btn, .empty-btn { width: 45px; height: 45px; font-size: 1.2em; }
+            .number-group { height: 250px; padding: 15px; }
+            #message { font-size: 1.2em; }
         }
     </style>
 </head>
 <body>
-    <h1>加減法練習</h1>
-    <div id="completion-message"></div>
-    <div id="problem"></div>
-    <input type="number" id="answer" autofocus>
-    <button onclick="checkAnswer()">提交</button>
-    <div>得分: <span id="score">0</span></div>
+    <div class="cloud" style="top: 10%;"></div>
+    <div class="cloud" style="top: 20%; animation-delay: -5s;"></div>
+    <div class="cloud" style="top: 30%; animation-delay: -10s;"></div>
+    <div id="score">得分: 0</div>
+    <div id="question"></div>
+    <div id="inputArea">
+        <input type="number" id="answerInput" maxlength="2" onkeypress="if(event.key === 'Enter') checkAnswer()">
+        <button id="submitBtn" onclick="checkAnswer()">確定</button>
+        <div id="tens" class="number-group">
+            <label>十位數:</label>
+            <div class="number-pad">
+                <button class="number-btn" onclick="setNumber('tens', 1)">1</button>
+                <button class="number-btn" onclick="setNumber('tens', 2)">2</button>
+                <button class="number-btn" onclick="setNumber('tens', 3)">3</button>
+                <button class="number-btn" onclick="setNumber('tens', 4)">4</button>
+                <button class="number-btn" onclick="setNumber('tens', 5)">5</button>
+                <button class="number-btn" onclick="setNumber('tens', 6)">6</button>
+                <button class="number-btn" onclick="setNumber('tens', 7)">7</button>
+                <button class="number-btn" onclick="setNumber('tens', 8)">8</button>
+                <button class="number-btn" onclick="setNumber('tens', 9)">9</button>
+                <button class="empty-btn" style="grid-column: 2;"></button>
+            </div>
+        </div>
+        <div id="units" class="number-group">
+            <label>個位數:</label>
+            <div class="number-pad">
+                <button class="number-btn" onclick="setNumber('units', 1)">1</button>
+                <button class="number-btn" onclick="setNumber('units', 2)">2</button>
+                <button class="number-btn" onclick="setNumber('units', 3)">3</button>
+                <button class="number-btn" onclick="setNumber('units', 4)">4</button>
+                <button class="number-btn" onclick="setNumber('units', 5)">5</button>
+                <button class="number-btn" onclick="setNumber('units', 6)">6</button>
+                <button class="number-btn" onclick="setNumber('units', 7)">7</button>
+                <button class="number-btn" onclick="setNumber('units', 8)">8</button>
+                <button class="number-btn" onclick="setNumber('units', 9)">9</button>
+                <button class="number-btn" onclick="setNumber('units', 0)" style="grid-column: 2;">0</button>
+            </div>
+        </div>
+    </div>
     <div id="message"></div>
-    <button onclick="generateProblem()">新題目</button>
-
-    <canvas id="fireworks"></canvas>
+    <div id="fireworks"></div>
 
     <script>
+        // 此處插入前述版本的 JavaScript 代碼（包含進位/借位的 generateQuestion）
         let score = 0;
-        let correctAnswer;
-        let startTime;
-        let wrongAttempts = 0; // 記錄答錯次數
-        
-        function generateProblem() {
-            if (score === 0) startTime = new Date().getTime();
-            if (score >= 10) return;
-            
-            let num1, num2, operator;
-            if (Math.random() < 0.5) {
-                num1 = Math.floor(Math.random() * 13) + 1; // 1-13
-                num2 = Math.floor(Math.random() * (25 - num1 + 1)) + 1; // 確保 num1 + num2 <= 25
-                operator = '+';
-                correctAnswer = num1 + num2;
+        let wrongCount = 0;
+        let answer = 0;
+        let selectedTens = null;
+        let selectedUnits = null;
+        let startTime = new Date();
+
+        function generateQuestion() {
+            const isAddition = Math.random() > 0.5;
+
+            if (isAddition) {
+                const units1 = Math.floor(Math.random() * 9) + 1;
+                const units2 = Math.floor(Math.random() * (9 - units1 + 1)) + (10 - units1);
+                const tens1 = Math.floor(Math.random() * 1) + 1;
+                const tens2 = 0;
+                const num1 = tens1 * 10 + units1;
+                const num2 = tens2 * 10 + units2;
+                answer = num1 + num2;
+                if (answer > 25) {
+                    return generateQuestion();
+                }
+                document.getElementById('question').textContent = `${num1} + ${num2} = ?`;
             } else {
-                num1 = Math.floor(Math.random() * 25) + 1; // 1-25
-                num2 = Math.floor(Math.random() * num1) + 1; // 1 到 num1，確保不為負數
-                operator = '-';
-                correctAnswer = num1 - num2;
+                const units1 = Math.floor(Math.random() * 9);
+                const units2 = Math.floor(Math.random() * (9 - units1)) + units1 + 1;
+                const tens1 = Math.floor(Math.random() * 2) + 1;
+                const num1 = tens1 * 10 + units1;
+                const num2 = units2;
+                answer = num1 - num2;
+                if (answer < 0) {
+                    return generateQuestion();
+                }
+                document.getElementById('question').textContent = `${num1} - ${num2} = ?`;
+            }
+
+            wrongCount = 0;
+            clearInput();
+            document.getElementById('message').textContent = '';
+        }
+
+        function setNumber(type, num) {
+            const buttons = document.getElementById(type).getElementsByClassName('number-btn');
+            const input = document.getElementById('answerInput');
+            
+            if (type === 'tens') {
+                if (selectedTens === num) {
+                    selectedTens = null;
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.remove('selected');
+                } else {
+                    if (selectedTens !== null) {
+                        Array.from(buttons).find(btn => btn.textContent === selectedTens.toString()).classList.remove('selected');
+                    }
+                    selectedTens = num;
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.add('selected');
+                }
+            } else {
+                if (selectedUnits === num) {
+                    selectedUnits = null;
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.remove('selected');
+                } else {
+                    if (selectedUnits !== null) {
+                        Array.from(buttons).find(btn => btn.textContent === selectedUnits.toString()).classList.remove('selected');
+                    }
+                    selectedUnits = num;
+                    Array.from(buttons).find(btn => btn.textContent === num.toString()).classList.add('selected');
+                }
             }
             
-            document.getElementById('problem').textContent = `${num1} ${operator} ${num2} = ?`;
-            document.getElementById('answer').value = '';
-            document.getElementById('answer').focus();
-            document.getElementById('message').textContent = '';
-            wrongAttempts = 0; // 新題目時重置答錯次數
+            const tens = selectedTens !== null ? selectedTens.toString() : '';
+            const units = selectedUnits !== null ? selectedUnits.toString() : '';
+            input.value = tens + units;
+        }
+
+        function clearInput() {
+            const tensButtons = document.getElementById('tens').getElementsByClassName('number-btn');
+            const unitsButtons = document.getElementById('units').getElementsByClassName('number-btn');
+            
+            for (let btn of tensButtons) {
+                btn.classList.remove('selected');
+            }
+            for (let btn of unitsButtons) {
+                btn.classList.remove('selected');
+            }
+            
+            selectedTens = null;
+            selectedUnits = null;
+            document.getElementById('answerInput').value = '';
         }
 
         function checkAnswer() {
-            if (score >= 10) return;
-            
-            const userAnswer = parseInt(document.getElementById('answer').value);
-            if (userAnswer === correctAnswer) {
-                score++;
-                document.getElementById('score').textContent = score;
-                if (score < 10) {
-                    generateProblem();
+            const userAnswer = parseInt(document.getElementById('answerInput').value) || 0;
+            const isSingleDigitAnswer = answer < 10;
+
+            if (isSingleDigitAnswer) {
+                if (selectedTens === null && selectedUnits === answer) {
+                    score++;
+                    document.getElementById('score').textContent = `得分: ${score}`;
+                    if (score === 10) {
+                        endGame();
+                    } else {
+                        generateQuestion();
+                    }
                 } else {
-                    const endTime = new Date().getTime();
-                    const timeUsed = ((endTime - startTime) / 1000).toFixed(1);
-                    const completionMessage = document.getElementById('completion-message');
-                    completionMessage.textContent = `恭喜完成，共用時 ${timeUsed} 秒`;
-                    completionMessage.style.display = 'block';
-                    showFireworks(); // 同時觸發煙花
+                    wrongCount++;
+                    document.getElementById('message').textContent = `你答錯了${wrongCount}次，請重試`;
+                    clearInput();
                 }
             } else {
-                wrongAttempts++;
-                document.getElementById('message').textContent = 
-                    `答錯 ${wrongAttempts} 次，請再試一下`;
-                document.getElementById('answer').value = '';
-                document.getElementById('answer').focus();
-            }
-        }
-
-        // 煙花效果
-        function showFireworks() {
-            const canvas = document.getElementById('fireworks');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            class Particle {
-                constructor(x, y) {
-                    this.x = x;
-                    this.y = y;
-                    this.size = Math.random() * 5 + 1;
-                    this.speedX = Math.random() * 3 - 1.5;
-                    this.speedY = Math.random() * 3 - 1.5;
-                    this.life = 100;
-                    this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                }
-
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    this.life--;
-                }
-
-                draw() {
-                    ctx.fillStyle = this.color;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            let particles = [];
-            
-            function createExplosion(x, y) {
-                for (let i = 0; i < 50; i++) {
-                    particles.push(new Particle(x, y));
-                }
-            }
-
-            function animate() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                if (Math.random() < 0.1) {
-                    createExplosion(
-                        Math.random() * canvas.width,
-                        Math.random() * canvas.height
-                    );
-                }
-
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    particles[i].update();
-                    particles[i].draw();
-                    
-                    if (particles[i].life <= 0) {
-                        particles.splice(i, 1);
+                if (userAnswer === answer) {
+                    score++;
+                    document.getElementById('score').textContent = `得分: ${score}`;
+                    if (score === 10) {
+                        endGame();
+                    } else {
+                        generateQuestion();
                     }
+                } else {
+                    wrongCount++;
+                    document.getElementById('message').textContent = `你答錯了${wrongCount}次，請重試`;
+                    clearInput();
                 }
-
-                requestAnimationFrame(animate);
             }
-
-            animate();
         }
 
-        // 按 Enter 鍵提交答案
-        document.getElementById('answer').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
+        function endGame() {
+            const endTime = new Date();
+            const timeDiff = (endTime - startTime) / 1000;
+            const fireworks = document.getElementById('fireworks');
+            fireworks.style.display = 'block';
+            fireworks.textContent = `恭喜完成，共用時${Math.round(timeDiff)}秒`;
+            
+            setInterval(() => {
+                const spark = document.createElement('div');
+                spark.style.position = 'absolute';
+                spark.style.left = Math.random() * 100 + '%';
+                spark.style.top = Math.random() * 100 + '%';
+                spark.style.width = '15px';
+                spark.style.height = '15px';
+                spark.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                spark.style.borderRadius = '50%';
+                fireworks.appendChild(spark);
+                setTimeout(() => spark.remove(), 1000);
+            }, 80);
+        }
 
-        // 開始第一道題目
-        generateProblem();
+        generateQuestion();
     </script>
 </body>
 </html>
