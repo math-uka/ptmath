@@ -4,48 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Self-learning tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Noto Sans TC', Arial, sans-serif;
             margin: 0;
-            padding: 15px;
+            padding: 20px;
             min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 20px 0;
         }
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #3498db;
+            color: white;
         }
         .button-group {
-            margin: 10px 0;
+            margin: 15px 0;
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
         button {
-            padding: 8px 16px;
+            padding: 10px 20px;
             cursor: pointer;
             flex: 1;
-            min-width: 80px;
+            min-width: 100px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        #generateButton {
+            background: #2ecc71; /* 綠色 */
+        }
+        #generateButton:hover {
+            background: #27ae60; /* 懸停時深綠色 */
         }
         #inputText {
             width: 100%;
-            padding: 8px;
-            margin: 10px 0;
+            padding: 12px;
+            margin: 15px 0;
             box-sizing: border-box;
             resize: vertical;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        #inputText:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
         }
         #mainContainer {
             display: block;
@@ -53,47 +90,64 @@
         #quizContainer {
             display: none;
             text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
         }
         #currentWord {
-            margin: 20px 0;
-            font-size: 1.2em;
+            margin: 25px 0;
+            font-size: 1.5em;
+            color: #2c3e50;
         }
         .play-button {
-            padding: 6px 12px;
-            font-size: 14px;
+            padding: 8px 16px;
+            font-size: 16px;
             cursor: pointer;
             width: 240px;
+            background: #e74c3c;
+        }
+        .play-button:hover {
+            background: #c0392b;
         }
         .quiz-buttons {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin: 20px 0;
+            margin: 25px 0;
         }
         .word-buttons {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 12px;
+            margin: 20px 0;
         }
         .word-button {
-            padding: 10px;
-            background-color: white;
+            padding: 12px;
+            background-color: #ecf0f1;
             border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: black;
         }
         .word-button.selected {
-            background-color: #ccc;
+            background-color: #95a5a6;
+            color: black;
+        }
+        .word-button:hover {
+            background-color: #bdc3c7;
         }
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.5em;
+                font-size: 1.8em;
             }
             button {
                 padding: 12px 24px;
                 font-size: 16px;
             }
             th, td {
-                padding: 6px;
+                padding: 8px;
                 font-size: 0.9em;
             }
             .play-button {
@@ -120,7 +174,7 @@
         <div id="mainContainer">
             <textarea id="inputText" rows="4" placeholder="請輸入文字或句子，以句號(. 或 .)、問號(? 或 ？)、感嘆號(! 或 ！)分隔"></textarea>
             <div class="button-group">
-                <button onclick="generateTable()">生成-generate</button>
+                <button id="generateButton" onclick="generateTable()">生成-generate</button>
                 <button onclick="clearInput()">清除</button>
             </div>
             <div id="tableContainer"></div>
@@ -144,6 +198,7 @@
         let voices = [];
         let voicesLoaded = false;
         let selectedWords = [];
+        let originalInput = ''; // 保存最初的輸入內容
 
         function loadVoices() {
             return new Promise((resolve) => {
@@ -170,6 +225,7 @@
             const savedInput = localStorage.getItem('savedInputText');
             if (savedInput) {
                 document.getElementById('inputText').value = savedInput;
+                originalInput = savedInput; // 初始化原始輸入
                 generateTable();
             }
         }
@@ -178,11 +234,13 @@
             document.getElementById('inputText').value = '';
             document.getElementById('tableContainer').innerHTML = '';
             localStorage.removeItem('savedInputText');
+            originalInput = ''; // 清空原始輸入
         }
 
         function generateTable() {
             const input = document.getElementById('inputText').value;
             localStorage.setItem('savedInputText', input);
+            originalInput = input; // 更新原始輸入
 
             wordsArray = input.split(/(?<=[.。]|[!?！])/).map(item => item.trim()).filter(item => item !== '');
             
@@ -289,11 +347,16 @@
         }
 
         function retest() {
-            // 移除每個詞語末尾的句號或中文句號，然後用單個句號連接
-            const cleanedWords = selectedWords.map(word => 
-                word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word
-            );
-            document.getElementById('inputText').value = cleanedWords.join('.');
+            if (selectedWords.length === 0) {
+                // 如果沒有選中任何詞語，保留原始輸入
+                document.getElementById('inputText').value = originalInput;
+            } else {
+                // 否則使用選中的詞語
+                const cleanedWords = selectedWords.map(word => 
+                    word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word
+                );
+                document.getElementById('inputText').value = cleanedWords.join('.');
+            }
             localStorage.setItem('savedInputText', document.getElementById('inputText').value);
             document.getElementById('quizContainer').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'block';
