@@ -62,24 +62,53 @@
             padding: 6px 12px;
             font-size: 14px;
             cursor: pointer;
+            width: 240px;
+        }
+        .quiz-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .word-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .word-button {
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+        .word-button.selected {
+            background-color: #ccc;
         }
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.5em;
             }
             button {
-                padding: 6px 12px;
-                font-size: 0.9em;
+                padding: 12px 24px;
+                font-size: 16px;
             }
             th, td {
                 padding: 6px;
                 font-size: 0.9em;
             }
             .play-button {
-                padding: 12px 24px;
-                font-size: 16px;
+                padding: 15px;
+                font-size: 18px;
                 width: 100%;
                 box-sizing: border-box;
+            }
+            .quiz-buttons button {
+                padding: 15px;
+                font-size: 18px;
+            }
+            .word-button {
+                padding: 15px;
+                font-size: 16px;
             }
         }
     </style>
@@ -90,14 +119,17 @@
         
         <div id="mainContainer">
             <textarea id="inputText" rows="4" placeholder="請輸入文字或句子，以句號(. 或 .)、問號(? 或 ？)、感嘆號(! 或 ！)分隔"></textarea>
-            <button onclick="generateTable()">生成-generate</button>
+            <div class="button-group">
+                <button onclick="generateTable()">生成-generate</button>
+                <button onclick="clearInput()">清除</button>
+            </div>
             <div id="tableContainer"></div>
         </div>
         
         <div id="quizContainer">
             <h2>測驗模式</h2>
             <div id="currentWord"></div>
-            <div class="button-group">
+            <div class="quiz-buttons">
                 <button onclick="replay()">重讀</button>
                 <button onclick="nextWord()">下一個</button>
             </div>
@@ -111,8 +143,8 @@
         let currentIndex = 0;
         let voices = [];
         let voicesLoaded = false;
+        let selectedWords = [];
 
-        // 加載語音列表
         function loadVoices() {
             return new Promise((resolve) => {
                 voices = speechSynthesis.getVoices();
@@ -129,27 +161,29 @@
             });
         }
 
-        // 初始化時加載語音並檢查 LocalStorage
         window.onload = () => {
             loadVoices();
-            loadPreviousInput(); // 頁面載入時顯示上次的輸入
+            loadPreviousInput();
         };
 
-        // 從 LocalStorage 載入之前的輸入
         function loadPreviousInput() {
             const savedInput = localStorage.getItem('savedInputText');
             if (savedInput) {
                 document.getElementById('inputText').value = savedInput;
-                generateTable(); // 自動生成表格
+                generateTable();
             }
+        }
+
+        function clearInput() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('tableContainer').innerHTML = '';
+            localStorage.removeItem('savedInputText');
         }
 
         function generateTable() {
             const input = document.getElementById('inputText').value;
-            // 保存輸入到 LocalStorage
             localStorage.setItem('savedInputText', input);
 
-            // 使用正則表達式分隔，保留問號和感嘆號
             wordsArray = input.split(/(?<=[.。]|[!?！])/).map(item => item.trim()).filter(item => item !== '');
             
             let tableHtml = '<div class="button-group">' +
@@ -160,11 +194,7 @@
                 '<table><tr><th>詞語</th><th>發音</th></tr>';
 
             wordsArray.forEach(word => {
-                // 如果以問號或感嘆號結尾，保留標點；以句號結尾則移除
-                let displayText = word;
-                if (displayText.endsWith('.') || displayText.endsWith('。')) {
-                    displayText = displayText.slice(0, -1); // 移除句號
-                }
+                let displayText = word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word;
                 tableHtml += `<tr><td>${displayText}</td><td><button class="play-button" onclick="speak('${word}')">播放</button></td></tr>`;
             });
             tableHtml += '</table>';
@@ -173,10 +203,7 @@
         }
 
         async function speak(text) {
-            if (!voicesLoaded) {
-                await loadVoices();
-            }
-
+            if (!voicesLoaded) await loadVoices();
             const utterance = new SpeechSynthesisUtterance(text);
             let selectedVoice;
 
@@ -189,25 +216,16 @@
             } else {
                 selectedVoice = voices.find(voice => 
                     (voice.lang === 'en-US' || voice.lang === 'en-GB') && 
-                    (voice.name.includes('Samantha') || 
-                     voice.name.includes('Victoria') || 
-                     voice.name.includes('Karen') || 
-                     voice.name.includes('Female') || 
+                    (voice.name.includes('Samantha') || voice.name.includes('Victoria') || 
+                     voice.name.includes('Karen') || voice.name.includes('Female') || 
                      voice.name.includes('Siri') && voice.localService)
-                ) || voices.find(voice => 
-                    (voice.lang === 'en-US' || voice.lang === 'en-GB') && voice.localService
                 ) || voices.find(voice => voice.lang.startsWith('en'));
                 utterance.lang = 'en-US';
             }
 
-            if (selectedVoice) {
-                utterance.voice = selectedVoice;
-            } else {
-                console.warn('未找到合適的女聲，使用默認語音');
-            }
-
-            utterance.rate = 0.7;  // 慢速自然語速
-            utterance.pitch = 1.1; // 女聲音調
+            if (selectedVoice) utterance.voice = selectedVoice;
+            utterance.rate = 0.7;
+            utterance.pitch = 1.1;
             utterance.volume = 1.0;
 
             speechSynthesis.cancel();
@@ -224,7 +242,7 @@
                 [quizArray[i], quizArray[j]] = [quizArray[j], quizArray[i]];
             }
             quizArray = quizArray.slice(0, count);
-            
+            selectedWords = [];
             currentIndex = 0;
             document.getElementById('resultContainer').innerHTML = '';
             showCurrentWord();
@@ -240,9 +258,7 @@
         }
 
         function replay() {
-            if (currentIndex < quizArray.length) {
-                speak(quizArray[currentIndex]);
-            }
+            if (currentIndex < quizArray.length) speak(quizArray[currentIndex]);
         }
 
         function nextWord() {
@@ -252,16 +268,36 @@
 
         function endQuiz() {
             document.getElementById('currentWord').textContent = '全部結束！';
-            let resultHtml = '<h3>剛剛的詞語：</h3><ul>';
+            let resultHtml = '<h3>剛剛的詞語：</h3><div class="word-buttons">';
             quizArray.forEach(word => {
-                let displayText = word;
-                if (displayText.endsWith('.') || displayText.endsWith('。')) {
-                    displayText = displayText.slice(0, -1); // 移除句號
-                }
-                resultHtml += `<li>${displayText}</li>`;
+                let displayText = word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word;
+                resultHtml += `<button class="word-button" onclick="toggleWord('${word}', this)">${displayText}</button>`;
             });
-            resultHtml += '</ul>';
+            resultHtml += '</div><div class="button-group"><button onclick="retest()">重測</button></div>';
             document.getElementById('resultContainer').innerHTML = resultHtml;
+        }
+
+        function toggleWord(word, button) {
+            const index = selectedWords.indexOf(word);
+            if (index === -1) {
+                selectedWords.push(word);
+                button.classList.add('selected');
+            } else {
+                selectedWords.splice(index, 1);
+                button.classList.remove('selected');
+            }
+        }
+
+        function retest() {
+            // 移除每個詞語末尾的句號或中文句號，然後用單個句號連接
+            const cleanedWords = selectedWords.map(word => 
+                word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word
+            );
+            document.getElementById('inputText').value = cleanedWords.join('.');
+            localStorage.setItem('savedInputText', document.getElementById('inputText').value);
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+            generateTable();
         }
     </script>
 </body>
