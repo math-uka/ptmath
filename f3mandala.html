@@ -6,90 +6,170 @@
     <title>培道中學數學組 - 對稱圖形設計</title>
     <style>
         body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-            font-family: Arial, sans-serif;
-            margin: 0;
+            gap: 20px;
+            min-height: 100vh;
             overflow-x: hidden;
         }
+
         h1 {
             text-align: center;
-            font-size: clamp(16px, 5vw, 24px);
-            margin-bottom: 10px;
+            font-size: clamp(18px, 5vw, 28px);
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
+
         #canvas {
-            border: 1px solid black;
+            border: 2px solid #3498db;
+            background: white;
             cursor: crosshair;
-            transition: border-radius 0.3s;
+            transition: border-radius 0.3s, box-shadow 0.3s;
             width: min(500px, 90vw);
             height: min(500px, 90vw);
             max-width: 100%;
             touch-action: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        #tools, #controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+
+        #controls, #tools {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 300px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* 增加整體內部間距 */
         }
+
+        #controls label {
+            font-size: 16px;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
         button {
-            padding: 8px;
+            padding: 12px 20px; /* 增加按鈕內邊距 */
             font-size: clamp(12px, 3vw, 16px);
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
             touch-action: manipulation;
+            transition: all 0.3s ease;
+            width: 100%; /* 統一按鈕寬度 */
+            box-sizing: border-box;
         }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        #symmetryButtons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 每行3個按鈕 */
+            gap: 10px; /* 增加對稱軸按鈕間距 */
+            justify-content: center;
+        }
+
+        #symmetryButtons button {
+            width: 100%; /* 統一寬度 */
+            height: 45px; /* 固定高度 */
+            font-size: 14px;
+            background: #2ecc71;
+            padding: 0; /* 重置內邊距，讓文字居中 */
+        }
+
+        #symmetryButtons button:hover {
+            background: #27ae60;
+        }
+
+        #tools div {
+            font-size: 16px;
+            color: #34495e;
+            margin: 10px 0 5px;
+        }
+
         #colorPicker {
-            width: 160px; /* 桌面版默認寬度 */
+            width: 160px;
             height: 200px;
             display: grid;
             grid-template-columns: repeat(8, 1fr);
-            gap: 2px;
+            gap: 3px;
             margin: 0 auto;
         }
+
         .colorBox {
             width: 100%;
             height: 100%;
             cursor: pointer;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             aspect-ratio: 1 / 1;
+            transition: transform 0.2s;
         }
-        #symmetryButtons {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            justify-content: center;
+
+        .colorBox:hover {
+            transform: scale(1.1);
+            border-color: #3498db;
         }
+
         #currentColor {
             width: 50px;
             height: 50px;
-            border: 1px solid #ccc;
+            border: 2px solid #ddd;
+            border-radius: 5px;
             margin: 10px auto 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        @media (max-width: 767px) { /* 手機版 */
+
+        @media (max-width: 767px) {
             #colorPicker {
-                width: 120px; /* 手機版縮小寬度 */
-                height: 150px; /* 手機版縮小高度 */
-                gap: 1px; /* 減小間距 */
+                width: 120px;
+                height: 150px;
+                gap: 2px;
             }
             .colorBox {
-                border-width: 0.5px; /* 減小邊框 */
+                border-width: 0.5px;
+            }
+            #canvas {
+                width: min(400px, 90vw);
+                height: min(400px, 90vw);
+            }
+            #symmetryButtons {
+                grid-template-columns: repeat(2, 1fr); /* 手機版每行2個 */
+                gap: 8px;
             }
         }
-        @media (min-width: 768px) { /* 平板及桌面 */
+
+        @media (min-width: 768px) {
             body {
                 flex-direction: row;
-                gap: 20px;
-                padding: 20px;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 30px;
+                padding: 30px;
             }
             #controls {
-                width: auto;
+                width: 240px; /* 增加寬度以容納更大按鈕 */
             }
             #tools {
-                width: 200px;
+                width: 240px;
+            }
+            #canvas {
+                width: 500px;
+                height: 500px;
             }
         }
     </style>
@@ -141,16 +221,15 @@
         let history = [];
         const currentColorDisplay = document.getElementById('currentColor');
 
-        // 按規律排列的64色（紅、橙、黃、綠、青、藍、紫、灰）
         const colors = [
-            '#FFC1CC', '#FF9999', '#FF6666', '#FF3333', '#FF0000', '#CC0000', '#990000', '#660000', // 紅
-            '#FFE5B4', '#FFD700', '#FFC107', '#FFA500', '#FF8C00', '#FF4500', '#D2691E', '#8B4513', // 橙
-            '#FFFFCC', '#FFFF99', '#FFFF66', '#FFFF00', '#FFD700', '#FFC107', '#DAA520', '#B8860B', // 黃
-            '#CCFFCC', '#99FF99', '#66FF66', '#33FF33', '#00FF00', '#00CC00', '#009900', '#006600', // 綠
-            '#CCFFFF', '#99FFFF', '#66FFFF', '#33FFFF', '#00FFFF', '#00CED1', '#20B2AA', '#008B8B', // 青
-            '#CCE5FF', '#99CCFF', '#6699FF', '#3366FF', '#0000FF', '#0000CC', '#000099', '#000066', // 藍
-            '#FFCCFF', '#FF99FF', '#FF66FF', '#FF00FF', '#CC00CC', '#990099', '#800080', '#4B0082', // 紫
-            '#FFFFFF', '#F5F5F5', '#D3D3D3', '#B0B0B0', '#808080', '#666666', '#333333', '#000000'  // 灰/黑/白
+            '#FFC1CC', '#FF9999', '#FF6666', '#FF3333', '#FF0000', '#CC0000', '#990000', '#660000',
+            '#FFE5B4', '#FFD700', '#FFC107', '#FFA500', '#FF8C00', '#FF4500', '#D2691E', '#8B4513',
+            '#FFFFCC', '#FFFF99', '#FFFF66', '#FFFF00', '#FFD700', '#FFC107', '#DAA520', '#B8860B',
+            '#CCFFCC', '#99FF99', '#66FF66', '#33FF33', '#00FF00', '#00CC00', '#009900', '#006600',
+            '#CCFFFF', '#99FFFF', '#66FFFF', '#33FFFF', '#00FFFF', '#00CED1', '#20B2AA', '#008B8B',
+            '#CCE5FF', '#99CCFF', '#6699FF', '#3366FF', '#0000FF', '#0000CC', '#000099', '#000066',
+            '#FFCCFF', '#FF99FF', '#FF66FF', '#FF00FF', '#CC00CC', '#990099', '#800080', '#4B0082',
+            '#FFFFFF', '#F5F5F5', '#D3D3D3', '#B0B0B0', '#808080', '#666666', '#333333', '#000000'
         ];
 
         const colorPicker = document.getElementById('colorPicker');
@@ -189,7 +268,7 @@
         }
 
         function setCanvasShape(shape) {
-            canvas.style.borderRadius = shape === 'circle' ? '50%' : '0';
+            canvas.style.borderRadius = shape === 'circle' ? '50%' : '10px';
         }
 
         function toggleSymmetryAxes() {
