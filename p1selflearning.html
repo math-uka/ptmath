@@ -37,7 +37,7 @@
             text-align: left;
         }
         th {
-            background-color: #95a5a6; /* 改為灰色 */
+            background-color: #95a5a6;
             color: white;
         }
         .button-group {
@@ -112,8 +112,11 @@
         .quiz-buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 25px; /* 增加按鈕間距以防誤觸 */
             margin: 25px 0;
+        }
+        .quiz-buttons button:nth-child(1) {
+            padding: 20px 20px; /* 重讀按鈕高度加倍 */
         }
         .word-buttons {
             display: flex;
@@ -160,6 +163,9 @@
                 padding: 15px;
                 font-size: 18px;
             }
+            .quiz-buttons button:nth-child(1) {
+                padding: 30px 24px; /* 手機端重讀按鈕高度加倍 */
+            }
             .word-button {
                 padding: 15px;
                 font-size: 16px;
@@ -172,7 +178,7 @@
         <h1>Self-learning tool</h1>
         
         <div id="mainContainer">
-            <textarea id="inputText" rows="4" placeholder="請輸入文字或句子，以句號(. 或 .)、問號(? 或 ？)、感嘆號(! 或 ！)分隔"></textarea>
+            <textarea id="inputText" rows="4" placeholder="請輸入中送或英文的文字或句子，以句號(. 或 .)分隔"></textarea>
             <div class="button-group">
                 <button id="generateButton" onclick="generateTable()">生成-generate</button>
                 <button onclick="clearInput()">清除</button>
