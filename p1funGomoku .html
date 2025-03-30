@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>五子棋遊戲</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* 限制最大寬度 */
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        #mode-selection, #hand-selection {
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            touch-action: manipulation; /* 防止觸控縮放 */
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #game-board {
+            display: none;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 1px;
+            background: #d2a679;
+            padding: 5px;
+            border-radius: 10px;
+            margin-top: 15px;
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1; /* 保持正方形 */
+        }
+        .cell {
+            width: 100%;
+            padding-top: 100%; /* 保持正方形比例 */
+            background: #f0d9b5;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        .cell.black::after {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: black;
+            border-radius: 50%;
+            top: 10%;
+            left: 10%;
+        }
+        .cell.white::after {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: white;
+            border-radius: 50%;
+            top: 10%;
+            left: 10%;
+            border: 1px solid #ccc;
+        }
+        #status {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #333;
+        }
+        #restart {
+            display: none;
+            margin-top: 15px;
+        }
+        #game-over {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .game-over-content {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            animation: popIn 0.5s ease;
+            max-width: 80%;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .game-over-content h2 {
+            font-size: 24px;
+            color: #d32f2f;
+            margin: 0;
+        }
+        .game-over-content p {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+        .win-line {
+            position: absolute;
+            background: red;
+            opacity: 0;
+            z-index: 2;
+            transition: opacity 0.2s;
+        }
+        /* 響應式調整 */
+        @media (max-width: 400px) {
+            h1 { font-size: 1.2em; }
+            button { font-size: 12px; padding: 6px 12px; }
+            #status { font-size: 14px; }
+            .game-over-content h2 { font-size: 20px; }
+            .game-over-content p { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>五子棋遊戲</h1>
+        <div id="mode-selection">
+            <button onclick="startGame('pvp')">兩人對戰</button>
+            <button onclick="showHandSelection()">人機對戰</button>
+        </div>
+        <div id="hand-selection" style="display: none;">
+            <button onclick="startGame('pve', 'black')">玩家先手（黑棋）</button>
+            <button onclick="startGame('pve', 'white')">玩家後手（白棋）</button>
+        </div>
+        <div id="game-board"></div>
+        <div id="status">請選擇遊戲模式</div>
+        <button id="restart" onclick="resetGame()">重新開始</button>
+        <div id="game-over">
+            <div class="game-over-content">
+                <h2>遊戲結束</h2>
+                <p id="game-result"></p>
+                <button onclick="resetGame()">再玩一局</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const boardSize = 15;
+        let board = [];
+        let currentPlayer = 'black';
+        let gameMode = null;
+        let playerColor = null;
+        let gameOver = false;
+
+        // 初始化棋盤
+        function initBoard() {
+            const gameBoard = document.getElementById('game-board');
+            gameBoard.style.display = 'grid';
+            gameBoard.innerHTML = '';
+            board = Array(boardSize).fill().map(() => Array(boardSize).fill(null));
+            for (let i = 0; i < boardSize; i++) {
+                for (let j = 0; j < boardSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.addEventListener('click', handleClick);
+                    cell.addEventListener('touchstart', handleClick, { passive: true }); // 支持觸控
+                    gameBoard.appendChild(cell);
+                }
+            }
+        }
+
+        // 顯示先手選擇
+        function showHandSelection() {
+            document.getElementById('mode-selection').style.display = 'none';
+            document.getElementById('hand-selection').style.display = 'block';
+        }
+
+        // 開始遊戲
+        function startGame(mode, hand) {
+            gameMode = mode;
+            gameOver = false;
+            if (mode === 'pve') {
+                playerColor = hand;
+                currentPlayer = 'black';
+            }
+            document.getElementById('mode-selection').style.display = 'none';
+            document.getElementById('hand-selection').style.display = 'none';
+            initBoard();
+            document.getElementById('restart').style.display = 'block';
+            document.getElementById('game-over').style.display = 'none';
+            updateStatus();
+
+            if (mode === 'pve' && playerColor === 'white') {
+                aiMove();
+            }
+        }
+
+        // 處理點擊事件
+        function handleClick(event) {
+            event.preventDefault(); // 防止觸控時的預設行為
+            if (gameOver || (gameMode === 'pve' && currentPlayer !== playerColor)) return;
+            const row = parseInt(event.target.dataset.row);
+            const col = parseInt(event.target.dataset.col);
+            if (board[row][col] !== null) return;
+
+            placePiece(row, col);
+            if (checkWin(row, col)) {
+                gameOver = true;
+                document.getElementById('status').textContent = `${currentPlayer === 'black' ? '黑方' : '白方'} 獲勝！`;
+                animateWinLine(row, col, () => {
+                    setTimeout(() => endGame(`${currentPlayer === 'black' ? '黑方' : '白方'} 獲勝！`), 1000);
+                });
+                return;
+            }
+            if (isBoardFull()) {
+                gameOver = true;
+                document.getElementById('status').textContent = '平局！';
+                setTimeout(() => endGame('平局！'), 2000);
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+            updateStatus();
+
+            if (gameMode === 'pve' && !gameOver) {
+                setTimeout(aiMove, 500);
+            }
+        }
+
+        // 放置棋子
+        function placePiece(row, col) {
+            board[row][col] = currentPlayer;
+            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+            cell.classList.add(currentPlayer);
+        }
+
+        // 更新狀態
+        function updateStatus() {
+            document.getElementById('status').textContent = 
+                `輪到 ${currentPlayer === 'black' ? '黑方' : '白方'} 下棋`;
+        }
+
+        // 優化的AI策略
+        function aiMove() {
+            if (gameOver) return;
+
+            const aiColor = playerColor === 'black' ? 'white' : 'black';
+            const opponentColor = aiColor === 'black' ? 'white' : 'black';
+            let bestMove = null;
+            let bestScore = -Infinity;
+
+            if (board.every(row => row.every(cell => cell === null))) {
+                const center = Math.floor(boardSize / 2);
+                placePiece(center, center);
+                currentPlayer = playerColor;
+                updateStatus();
+                return;
+            }
+
+            for (let i = 0; i < boardSize; i++) {
+                for (let j = 0; j < boardSize; j++) {
+                    if (board[i][j] === null) {
+                        board[i][j] = aiColor;
+                        if (checkWin(i, j)) {
+                            board[i][j] = null;
+                            placePiece(i, j);
+                            gameOver = true;
+                            document.getElementById('status').textContent = `${aiColor === 'black' ? '黑方（電腦）' : '白方（電腦）'} 獲勝！`;
+                            animateWinLine(i, j, () => {
+                                setTimeout(() => endGame(`${aiColor === 'black' ? '黑方（電腦）' : '白方（電腦）'} 獲勝！`), 1000);
+                            });
+                            return;
+                        }
+                        board[i][j] = null;
+
+                        board[i][j] = opponentColor;
+                        if (checkWin(i, j)) {
+                            board[i][j] = null;
+                            placePiece(i, j);
+                            currentPlayer = playerColor;
+                            updateStatus();
+                            return;
+                        }
+                        board[i][j] = null;
+
+                        const score = evaluatePosition(i, j, aiColor, opponentColor);
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMove = [i, j];
+                        }
+                    }
+                }
+            }
+
+            if (bestMove) {
+                const [row, col] = bestMove;
+                placePiece(row, col);
+                if (checkWin(row, col)) {
+                    gameOver = true;
+                    document.getElementById('status').textContent = `${aiColor === 'black' ? '黑方（電腦）' : '白方（電腦）'} 獲勝！`;
+                    animateWinLine(row, col, () => {
+                        setTimeout(() => endGame(`${aiColor === 'black' ? '黑方（電腦）' : '白方（電腦）'} 獲勝！`), 1000);
+                    });
+                    return;
+                }
+                if (isBoardFull()) {
+                    gameOver = true;
+                    document.getElementById('status').textContent = '平局！';
+                    setTimeout(() => endGame('平局！'), 2000);
+                    return;
+                }
+                currentPlayer = playerColor;
+                updateStatus();
+            }
+        }
+
+        // 評估位置得分
+        function evaluatePosition(row, col, aiColor, opponentColor) {
+            let score = 0;
+            const directions = [[0, 1], [1, 0], [1, 1], [1, -1]];
+
+            for (let [dr, dc] of directions) {
+                let aiCount = 1;
+                let aiOpenEnds = 0;
+                for (let i = 1; i < 5; i++) {
+                    const r = row + dr * i, c = col + dc * i;
+                    if (r < 0 || r >= boardSize || c < 0 || c >= boardSize || board[r][c] !== aiColor) {
+                        if (r >= 0 && r < boardSize && c >= 0 && c < boardSize && board[r][c] === null) aiOpenEnds++;
+                        break;
+                    }
+                    aiCount++;
+                }
+                for (let i = 1; i < 5; i++) {
+                    const r = row - dr * i, c = col - dc * i;
+                    if (r < 0 || r >= boardSize || c < 0 || c >= boardSize || board[r][c] !== aiColor) {
+                        if (r >= 0 && r < boardSize && c >= 0 && c < boardSize && board[r][c] === null) aiOpenEnds++;
+                        break;
+                    }
+                    aiCount++;
+                }
+                if (aiCount >= 4 && aiOpenEnds > 0) score += 1000;
+                else if (aiCount === 3 && aiOpenEnds === 2) score += 100;
+                else score += aiCount;
+
+                let oppCount = 1;
+                let oppOpenEnds = 0;
+                for (let i = 1; i < 5; i++) {
+                    const r = row + dr * i, c = col + dc * i;
+                    if (r < 0 || r >= boardSize || c < 0 || c >= boardSize || board[r][c] !== opponentColor) {
+                        if (r >= 0 && r < boardSize && c >= 0 && c < boardSize && board[r][c] === null) oppOpenEnds++;
+                        break;
+                    }
+                    oppCount++;
+                }
+                for (let i = 1; i < 5; i++) {
+                    const r = row - dr * i, c = col - dc * i;
+                    if (r < 0 || r >= boardSize || c < 0 || c >= boardSize || board[r][c] !== opponentColor) {
+                        if (r >= 0 && r < boardSize && c >= 0 && c < boardSize && board[r][c] === null) oppOpenEnds++;
+                        break;
+                    }
+                    oppCount++;
+                }
+                if (oppCount >= 4 && oppOpenEnds > 0) score += 2000;
+                else if (oppCount === 3 && oppOpenEnds === 2) score += 200;
+                else score += oppCount * 2;
+            }
+
+            const centerDist = Math.abs(row - 7) + Math.abs(col - 7);
+            score += (14 - centerDist);
+            return score;
+        }
+
+        // 檢查是否獲勝並返回獲勝線
+        function checkWin(row, col) {
+            const directions = [[0, 1], [1, 0], [1, 1], [1, -1]];
+            for (let [dr, dc] of directions) {
+                let count = 1;
+                let start = [row, col];
+                let end = [row, col];
+                for (let i = 1; i < 5; i++) {
+                    const r = row + dr * i, c = col + dc * i;
+                    if (r < 0 || r >= boardSize || c < 0 || c >= boardSize || board[r][c] !== currentPlayer) break;
+                    count++;
+                    end = [r, c];
+                }
+                for (let i = 1; i < 5; i++) {
+                    const r = row - dr * i, c = col - dc * i;
+                    if (r < 0 || r >= boardSize || c < 0 || c >= boardSize || board[r][c] !== currentPlayer) break;
+                    count++;
+                    start = [r, c];
+                }
+                if (count >= 5) return { start, end, direction: [dr, dc] };
+            }
+            return null;
+        }
+
+        // 動畫顯示獲勝線
+        function animateWinLine(row, col, callback) {
+            const winInfo = checkWin(row, col);
+            if (!winInfo) return callback();
+
+            const { start, end, direction } = winInfo;
+            const gameBoard = document.getElementById('game-board');
+            const boardWidth = gameBoard.offsetWidth;
+            const cellSize = boardWidth / boardSize;
+            const padding = 5;
+
+            const [startRow, startCol] = start;
+            const [endRow, endCol] = end;
+            const [dr, dc] = direction;
+
+            const line = document.createElement('div');
+            line.classList.add('win-line');
+
+            const x1 = startCol * cellSize + cellSize / 2 + padding;
+            const y1 = startRow * cellSize + cellSize / 2 + padding;
+            const x2 = endCol * cellSize + cellSize / 2 + padding;
+            const y2 = endRow * cellSize + cellSize / 2 + padding;
+
+            const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+            line.style.width = `${length}px`;
+            line.style.height = '4px';
+            line.style.left = `${x1}px`;
+            line.style.top = `${y1}px`;
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.transformOrigin = '0 0';
+
+            gameBoard.appendChild(line);
+
+            let step = 0;
+            const totalSteps = 5;
+            const animate = () => {
+                if (step < totalSteps) {
+                    const pos = startRow + dr * step;
+                    const col = startCol + dc * step;
+                    if (pos >= 0 && pos < boardSize && col >= 0 && col < boardSize) {
+                        const cell = document.querySelector(`[data-row="${pos}"][data-col="${col}"]`);
+                        cell.style.boxShadow = '0 0 10px red';
+                    }
+                    step++;
+                    setTimeout(animate, 200);
+                } else {
+                    line.style.opacity = '1';
+                    setTimeout(() => {
+                        gameBoard.removeChild(line);
+                        callback();
+                    }, 1000);
+                }
+            };
+            setTimeout(animate, 0);
+        }
+
+        // 檢查棋盤是否已滿
+        function isBoardFull() {
+            return board.every(row => row.every(cell => cell !== null));
+        }
+
+        // 結束遊戲
+        function endGame(message) {
+            document.getElementById('game-over').style.display = 'flex';
+            document.getElementById('game-result').textContent = message;
+        }
+
+        // 重置遊戲
+        function resetGame() {
+            gameOver = false;
+            currentPlayer = 'black';
+            playerColor = null;
+            document.getElementById('mode-selection').style.display = 'block';
+            document.getElementById('hand-selection').style.display = 'none';
+            document.getElementById('game-board').style.display = 'none';
+            document.getElementById('restart').style.display = 'none';
+            document.getElementById('game-over').style.display = 'none';
+            document.getElementById('status').textContent = '請選擇遊戲模式';
+        }
+    </script>
+</body>
+</html>
