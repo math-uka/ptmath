@@ -37,7 +37,7 @@
             text-align: left;
         }
         th {
-            background-color: #3498db;
+            background-color: #95a5a6; /* 改為灰色 */
             color: white;
         }
         .button-group {
@@ -63,10 +63,10 @@
             transform: translateY(-2px);
         }
         #generateButton {
-            background: #2ecc71; /* 綠色 */
+            background: #2ecc71;
         }
         #generateButton:hover {
-            background: #27ae60; /* 懸停時深綠色 */
+            background: #27ae60;
         }
         #inputText {
             width: 100%;
@@ -198,7 +198,7 @@
         let voices = [];
         let voicesLoaded = false;
         let selectedWords = [];
-        let originalInput = ''; // 保存最初的輸入內容
+        let originalInput = '';
 
         function loadVoices() {
             return new Promise((resolve) => {
@@ -225,7 +225,7 @@
             const savedInput = localStorage.getItem('savedInputText');
             if (savedInput) {
                 document.getElementById('inputText').value = savedInput;
-                originalInput = savedInput; // 初始化原始輸入
+                originalInput = savedInput;
                 generateTable();
             }
         }
@@ -234,13 +234,13 @@
             document.getElementById('inputText').value = '';
             document.getElementById('tableContainer').innerHTML = '';
             localStorage.removeItem('savedInputText');
-            originalInput = ''; // 清空原始輸入
+            originalInput = '';
         }
 
         function generateTable() {
             const input = document.getElementById('inputText').value;
             localStorage.setItem('savedInputText', input);
-            originalInput = input; // 更新原始輸入
+            originalInput = input;
 
             wordsArray = input.split(/(?<=[.。]|[!?！])/).map(item => item.trim()).filter(item => item !== '');
             
@@ -348,10 +348,8 @@
 
         function retest() {
             if (selectedWords.length === 0) {
-                // 如果沒有選中任何詞語，保留原始輸入
                 document.getElementById('inputText').value = originalInput;
             } else {
-                // 否則使用選中的詞語
                 const cleanedWords = selectedWords.map(word => 
                     word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word
                 );
