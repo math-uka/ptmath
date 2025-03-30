@@ -6,73 +6,75 @@
     <title>培道中學AI應用</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
         }
 
         h1 {
             text-align: center;
-            font-size: 24px;
+            font-size: 32px;
+            color: #2c3e50;
+            padding: 30px 0;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0 10px;
             margin: 20px 0;
         }
 
         th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
+            padding: 15px;
             text-align: left;
             vertical-align: top;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
         }
 
         th {
-            background-color: #f2f2f2;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        td:hover {
+            transform: translateY(-3px);
         }
 
         ul {
             padding-left: 20px;
             margin: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 10px 0;
         }
 
         a {
             text-decoration: none;
-            color: #0066cc;
+            color: #2980b9;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
 
         a:hover {
+            color: #e74c3c;
             text-decoration: underline;
-        }
-
-        /* 響應式設計 */
-        @media screen and (max-width: 768px) {
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-
-            th {
-                background-color: #e6e6e6;
-                position: relative;
-            }
-
-            td {
-                border: none;
-                border-bottom: 1px solid #eee;
-                position: relative;
-                padding-left: 50%;
-            }
-
-            td:before {
-                content: attr(data-label);
-                position: absolute;
-                left: 12px;
-                width: 45%;
-                padding-right: 10px;
-                font-weight: bold;
-            }
         }
 
         /* 密碼保護樣式 */
@@ -86,69 +88,123 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 20px;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            z-index: 1000;
+        }
+
+        #password-input {
+            padding: 10px;
+            width: 200px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #27ae60;
+        }
+
+        /* 響應式設計 */
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                border-radius: 8px 8px 0 0;
+            }
+
+            td {
+                border-radius: 0 0 8px 8px;
+                position: relative;
+                padding-left: 15px;
+            }
+
+            td:before {
+                content: attr(data-label);
+                display: block;
+                font-weight: bold;
+                color: #3498db;
+                margin-bottom: 10px;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="password-prompt">
         <h2>請輸入密碼</h2>
-        <input type="password" id="password-input">
+        <input type="password" id="password-input" placeholder="輸入密碼">
         <button onclick="checkPassword()">提交</button>
     </div>
 
     <div id="content">
         <h1>培道中學AI應用工具</h1>
-        <table>
-            <tr>
-                <th>小學</th>
-                <th>初一</th>
-                <th>初二</th>
-                <th>初三</th>
-                <th>美術</th>
-            </tr>
-            <tr>
-                <td data-label="小學">
-                    <ul>
-                        <li><a href="p1plus.html">小學數學1-25加減法</a></li>
-                        <li><a href="p12digitsum.html">小學數學-兩位數加減法</a></li>
-                        <li><a href="p1selflearning.html">中英文-閱讀及默寫</a></li>
-                    </ul>
-                </td>
-                <td data-label="初一">
-                    <ul>
-                        <li><a href="grade7_page1.html">初一連結1未生成</a></li>
-                        <li><a href="grade7_page2.html">初一連結2未生成</a></li>
-                    </ul>
-                </td>
-                <td data-label="初二">
-                    <ul>
-                        <li><a href="f2factorize.html">因式分解小遊戲</a></li>
-                        <li><a href="f2commonfactor.html">分式-最簡公分母練習</a></li>
-                        <li><a href="f2fractionproduct.html">分式-乘除法練習</a></li>
-                        <li><a href="f2fractionnegativeindex.html">分式-整數指數幂乘除法</a></li>
-                        <li><a href="f2scientific mar.html">科學記數法-整數指數幂</a></li>
-                        <li><a href="f2pyththeorm.html">勾股定理演示</a></li>
-                           <li><a href="f2mathpyththeoremcal.html">勾股定理計算練習</a></li>
-                    </ul>
-                </td>
-                <td data-label="初三">
-                    <ul>
-                        <li><a href="f3mandala.html">中心對稱圖形設計</a></li>
-                        <li><a href="f3roll.html">拋骰模擬器</a></li>
-                        <li><a href="linear_equation_calculator.html">一元一次方程計算器</a></li>
-                    </ul>
-                </td>
-                <td data-label="美術">
-                    <ul>
-                        <li><a href="f22point.html">2點透視</a></li>
-                        <li><a href="f3em.html">表情包生成器</a></li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
+        <div class="container">
+            <table>
+                <tr>
+                    <th>小學</th>
+                    <th>初一</th>
+                    <th>初二</th>
+                    <th>初三</th>
+                    <th>美術</th>
+                </tr>
+                <tr>
+                    <td data-label="小學">
+                        <ul>
+                            <li><a href="p1plus.html">小學數學1-25加減法</a></li>
+                            <li><a href="p12digitsum.html">小學數學-兩位數加減法</a></li>
+                            <li><a href="p1selflearning.html">中英文-閱讀及默寫</a></li>
+                        </ul>
+                    </td>
+                    <td data-label="初一">
+                        <ul>
+                            <li><a href="grade7_page1.html">初一連結1未生成</a></li>
+                            <li><a href="grade7_page2.html">初一連結2未生成</a></li>
+                        </ul>
+                    </td>
+                    <td data-label="初二">
+                        <ul>
+                            <li><a href="f2factorize.html">因式分解小遊戲</a></li>
+                            <li><a href="f2commonfactor.html">分式-最簡公分母練習</a></li>
+                            <li><a href="f2fractionproduct.html">分式-乘除法練習</a></li>
+                            <li><a href="f2fractionnegativeindex.html">分式-整數指數幂乘除法</a></li>
+                            <li><a href="f2scientific mar.html">科學記數法-整數指數幂</a></li>
+                            <li><a href="f2pyththeorm.html">勾股定理演示</a></li>
+                            <li><a href="f2mathpyththeoremcal.html">勾股定理計算練習</a></li>
+                        </ul>
+                    </td>
+                    <td data-label="初三">
+                        <ul>
+                            <li><a href="f3mandala.html">中心對稱圖形設計</a></li>
+                            <li><a href="f3roll.html">拋骰模擬器</a></li>
+                            <li><a href="linear_equation_calculator.html">一元一次方程計算器</a></li>
+                        </ul>
+                    </td>
+                    <td data-label="美術">
+                        <ul>
+                            <li><a href="f22point.html">2點透視</a></li>
+                            <li><a href="f3em.html">表情包生成器</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -164,7 +220,6 @@
             }
         }
 
-        // 允許按 Enter 鍵提交
         document.getElementById('password-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 checkPassword();
