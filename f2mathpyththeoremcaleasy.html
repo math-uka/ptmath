@@ -242,7 +242,7 @@
             const givenSides = [sides[givenIndices[0]], sides[givenIndices[1]]];
             const answerSide = sides.find(s => !givenSides.includes(s));
 
-            const question = `直角三角形DEF中，D為最長邊且∠D為直角，` +
+            const question = `直角三角形DEF中，∠D為直角，` +
                 `${givenSides[0].name} = ${formatNumber(givenSides[0].data)}，` +
                 `${givenSides[1].name} = ${formatNumber(givenSides[1].data)}，` +
                 `求${answerSide.name}的長度`;
