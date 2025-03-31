@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>二維碼生成器</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { text-align: center; max-width: 600px; }
+        input[type="text"] { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        #qrcode { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>二維碼生成器</h1>
+        <input type="text" id="inputText" placeholder="輸入文字或網址">
+        <div id="qrcode">
+            <img id="qrImage" src="" alt="QR Code will appear here">
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('inputText');
+        const qrImage = document.getElementById('qrImage');
+
+        input.addEventListener('input', generateQRCode);
+
+        function generateQRCode() {
+            const text = input.value.trim();
+            if (text === '') {
+                qrImage.src = '';
+                qrImage.alt = 'QR Code will appear here';
+                return;
+            }
+            const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(text)}&size=200`;
+            qrImage.src = qrUrl;
+            qrImage.alt = `QR Code for ${text}`;
+        }
+
+        generateQRCode();
+    </script>
+</body>
+</html>
