@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勾股定理練習題702</title>
+    <title>勾股定理練習題313</title>
     <!-- 引入 MathJax -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -41,19 +41,19 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 10px;
             margin: 30px auto;
             max-width: 450px;
         }
 
         .option {
-            padding: 20px;
+            padding: 15px;
             border: 2px solid #3498db;
             text-align: center;
             cursor: pointer;
             background-color: white;
-            font-size: 1.1em;
-            min-height: 60px;
+            font-size: 1em;
+            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -140,24 +140,51 @@
             border-color: #bdc3c7;
         }
 
+        /* 手機版調整 */
         @media (max-width: 600px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 100%;
-                gap: 10px;
+            body {
+                padding: 10px;
             }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            #question {
+                font-size: 1em;
+                padding: 10px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(3, 1fr); /* 強制3x3格式 */
+                gap: 8px;
+                max-width: 100%;
+                padding: 0 5px;
+            }
+
             .option {
-                padding: 15px;
+                padding: 10px;
+                font-size: 0.9em;
+                min-height: 40px;
+            }
+
+            #feedback, #progress {
                 font-size: 1em;
             }
-            #question {
-                font-size: 1.1em;
-            }
-        }
 
-        @media (max-width: 400px) {
-            .grid {
-                grid-template-columns: 1fr;
+            #wrongAnswers {
+                padding: 15px;
+            }
+
+            #restartButton button, #studentIdForm button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+
+            #studentIdForm input {
+                width: 120px;
+                padding: 8px;
+                font-size: 1em;
             }
         }
     </style>
