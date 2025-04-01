@@ -11,13 +11,13 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
             margin: 0;
-            padding: 10px; /* 進一步減小邊距 */
+            padding: 10px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            overflow-x: hidden; /* 防止水平溢出 */
+            overflow-x: hidden;
         }
         h1 {
             color: #0277bd;
@@ -32,19 +32,19 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             margin-bottom: 15px;
-            font-size: 0.95em; /* 進一步減小字體 */
+            font-size: 0.95em;
             line-height: 1.4;
             text-align: left;
             width: 100%;
-            max-width: 100%; /* 確保不超出屏幕 */
+            max-width: 100%;
             word-wrap: break-word;
-            overflow-wrap: break-word; /* 強制換行 */
-            box-sizing: border-box; /* 包含padding在寬度內 */
+            overflow-wrap: break-word;
+            box-sizing: border-box;
         }
         #options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px; /* 減小間距 */
+            gap: 8px;
             width: 100%;
             margin: 0 0 15px;
             padding: 0 5px;
@@ -52,11 +52,11 @@
         }
         .option {
             background: #ffffff;
-            padding: 8px; /* 減小內邊距 */
+            padding: 8px;
             border-radius: 8px;
             border: 2px solid #0288d1;
             cursor: pointer;
-            font-size: 0.85em; /* 減小字體 */
+            font-size: 0.85em;
             transition: all 0.3s ease;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             word-wrap: break-word;
@@ -79,20 +79,9 @@
             animation: correctFeedback 0.5s ease forwards;
         }
         @keyframes correctFeedback {
-            0% {
-                transform: scale(1);
-                background: #ffffff;
-            }
-            50% {
-                transform: scale(1.1);
-                background: #c8e6c9;
-                border-color: #388e3c;
-            }
-            100% {
-                transform: scale(1);
-                background: #c8e6c9;
-                border-color: #388e3c;
-            }
+            0% { transform: scale(1); background: #ffffff; }
+            50% { transform: scale(1.1); background: #c8e6c9; border-color: #388e3c; }
+            100% { transform: scale(1); background: #c8e6c9; border-color: #388e3c; }
         }
         #result {
             font-size: 0.95em;
@@ -131,7 +120,7 @@
             background: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 250px; /* 減小最大寬度 */
+            max-width: 250px;
             height: auto;
         }
         #content {
@@ -139,67 +128,67 @@
             max-width: 600px;
             box-sizing: border-box;
         }
+        /* 輸入框樣式 */
+        #studentIdForm {
+            margin-top: 15px;
+            text-align: center;
+        }
+        #studentIdInput {
+            padding: 8px;
+            font-size: 1em;
+            border: 2px solid #0288d1;
+            border-radius: 5px;
+            width: 100px;
+            margin-right: 10px;
+        }
+        #submitBtn {
+            padding: 8px 15px;
+            font-size: 1em;
+            background: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        #submitBtn:hover {
+            background: #0277bd;
+        }
+        #submitBtn:disabled, #studentIdInput:disabled {
+            background: #b0bec5;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #passwordDisplay {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #388e3c;
+            font-weight: 500;
+        }
 
-        /* 平板及以上 */
         @media (min-width: 768px) {
             body {
                 flex-direction: row;
                 padding: 20px;
                 gap: 30px;
             }
-            h1 {
-                font-size: 2.2em;
-            }
-            #question {
-                font-size: 1.1em;
-                padding: 20px;
-            }
-            #options {
-                gap: 12px;
-                padding: 0 10px;
-            }
-            .option {
-                padding: 12px;
-                font-size: 1em;
-            }
-            #result {
-                font-size: 1.1em;
-            }
-            #summary {
-                padding: 20px;
-            }
-            svg {
-                max-width: 300px;
-                height: 200px;
-            }
+            h1 { font-size: 2.2em; }
+            #question { font-size: 1.1em; padding: 20px; }
+            #options { gap: 12px; padding: 0 10px; }
+            .option { padding: 12px; font-size: 1em; }
+            #result { font-size: 1.1em; }
+            #summary { padding: 20px; }
+            svg { max-width: 300px; height: 200px; }
         }
 
-        /* 小屏幕手機 */
         @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5em;
-            }
-            #question {
-                font-size: 0.9em;
-                padding: 10px;
-            }
-            #options {
-                gap: 6px; /* 進一步減小間距 */
-            }
-            .option {
-                padding: 6px; /* 進一步減小內邊距 */
-                font-size: 0.8em;
-            }
-            #result {
-                font-size: 0.9em;
-            }
-            #summary {
-                padding: 10px;
-            }
-            svg {
-                max-width: 200px;
-                height: 120px;
-            }
+            h1 { font-size: 1.5em; }
+            #question { font-size: 0.9em; padding: 10px; }
+            #options { gap: 6px; }
+            .option { padding: 6px; font-size: 0.8em; }
+            #result { font-size: 0.9em; }
+            #summary { padding: 10px; }
+            svg { max-width: 200px; height: 120px; }
         }
     </style>
 </head>
@@ -226,6 +215,18 @@
         let currentQuestion = 0;
         let wrongQuestions = new Set();
         const totalQuestions = 5;
+
+        // 學號到BASE64編碼密碼的映射
+        const passwordMap = {
+            1: btoa("582"), 2: btoa("739"), 3: btoa("196"), 4: btoa("325"), 5: btoa("948"),
+            6: btoa("417"), 7: btoa("653"), 8: btoa("290"), 9: btoa("861"), 10: btoa("472"),
+            11: btoa("304"), 12: btoa("687"), 13: btoa("259"), 14: btoa("836"), 15: btoa("140"),
+            16: btoa("593"), 17: btoa("428"), 18: btoa("715"), 19: btoa("362"), 20: btoa("974"),
+            21: btoa("506"), 22: btoa("843"), 23: btoa("671"), 24: btoa("059"), 25: btoa("782"),
+            26: btoa("134"), 27: btoa("695"), 28: btoa("327"), 29: btoa("410"), 30: btoa("568"),
+            31: btoa("291"), 32: btoa("754"), 33: btoa("903"), 34: btoa("216"), 35: btoa("849"),
+            36: btoa("375"), 37: btoa("642"), 38: btoa("128"), 39: btoa("497"), 40: btoa("630")
+        };
 
         function gcd(a, b) {
             return b === 0 ? a : gcd(b, a % b);
@@ -342,14 +343,40 @@
             summary.style.display = 'block';
             summary.innerHTML = '<h2>錯題回顧</h2>';
             const wrongArray = Array.from(wrongQuestions).map(JSON.parse);
+
             if (wrongArray.length === 0) {
-                summary.innerHTML += '恭喜你，全部答對！';
+                summary.innerHTML += '恭喜你，全部答對！<br>請輸入你的學號（1-40）以獲取密碼：<br>';
+                summary.innerHTML += `
+                    <div id="studentIdForm">
+                        <input type="number" id="studentIdInput" min="1" max="40" placeholder="學號">
+                        <button id="submitBtn" onclick="getPassword()">提交</button>
+                        <div id="passwordDisplay"></div>
+                    </div>
+                `;
             } else {
                 wrongArray.forEach((wq, i) => {
                     summary.innerHTML += `<p>第 ${i + 1} 題：\\(${wq.question}\\)，正確答案：\\(${wq.answer}\\)</p>`;
                 });
             }
             MathJax.typeset();
+        }
+
+        function getPassword() {
+            const input = document.getElementById('studentIdInput');
+            const studentId = parseInt(input.value);
+            const passwordDisplay = document.getElementById('passwordDisplay');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (studentId >= 1 && studentId <= 40) {
+                const encodedPassword = passwordMap[studentId];
+                const decodedPassword = atob(encodedPassword); // 解碼BASE64
+                passwordDisplay.innerHTML = `你的密碼是：${decodedPassword}`;
+                input.disabled = true; // 禁用輸入框
+                submitBtn.disabled = true; // 禁用按鈕
+            } else {
+                passwordDisplay.innerHTML = '請輸入有效的學號（1-40）！';
+                passwordDisplay.style.color = '#d32f2f';
+            }
         }
 
         displayQuestion();
