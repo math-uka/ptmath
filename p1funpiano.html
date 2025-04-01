@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>鋼琴音樂遊戲</title>
+    <!-- 引入 Tone.js -->
+    <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            overflow: hidden;
+            touch-action: none; /* 防止觸控時滾動 */
+        }
+        #mode-selection {
+            position: absolute;
+            top: 20px;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #mode-selection h2 {
+            font-size: clamp(20px, 5vw, 28px);
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        #mode-selection button {
+            padding: 12px 25px;
+            font-size: clamp(14px, 4vw, 18px);
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            background: #ff6f61;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.3s;
+        }
+        #mode-selection button:hover {
+            transform: scale(1.05);
+            background: #ff8a80;
+        }
+        #piano {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 1800px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-top: 2px solid rgba(255,255,255,0.2);
+            box-sizing: border-box;
+        }
+        .key {
+            width: clamp(60px, 10vw, 120px);
+            height: clamp(120px, 25vh, 180px);
+            border: 1px solid #333;
+            background: #fff;
+            cursor: pointer;
+            transition: background 0.1s, transform 0.1s;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            font-size: clamp(12px, 2vw, 16px);
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            touch-action: none;
+        }
+        .key:active {
+            transform: scale(0.98);
+            background: #e0e0e0;
+        }
+        .black-key {
+            width: clamp(40px, 6vw, 80px);
+            height: clamp(70px, 15vh, 110px);
+            background: #222;
+            color: #fff;
+            margin: 0 calc(clamp(40px, 6vw, 80px) / -2);
+            position: relative;
+            z-index: 1;
+        }
+        .black-key:active {
+            background: #444;
+        }
+        .highlight {
+            background: #ffd700 !important;
+        }
+        @media (max-width: 600px) {
+            #mode-selection {
+                padding: 10px;
+            }
+            #piano {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="mode-selection">
+        <h2>鋼琴音樂遊戲</h2>
+        <button onclick="startFreeMode()">自由彈奏</button>
+        <button onclick="startSongMode()">樂譜模式</button>
+    </div>
+    <div id="piano" style="display: none;"></div>
+
+    <script>
+        // 初始化 Tone.js 合成器
+        const synth = new Tone.Synth().toDestination();
+
+        const piano = document.getElementById('piano');
+        const modeSelection = document.getElementById('mode-selection');
+        const keys = [
+            { note: 'C4', color: 'white' },
+            { note: 'C#4', color: 'black' },
+            { note: 'D4', color: 'white' },
+            { note: 'D#4', color: 'black' },
+            { note: 'E4', color: 'white' },
+            { note: 'F4', color: 'white' },
+            { note: 'F#4', color: 'black' },
+            { note: 'G4', color: 'white' },
+            { note: 'G#4', color: 'black' },
+            { note: 'A4', color: 'white' },
+            { note: 'A#4', color: 'black' },
+            { note: 'B4', color: 'white' }
+        ];
+
+        // 播放音符函數
+        function playNote(e, note) {
+            e.preventDefault();
+            synth.triggerAttackRelease(note, '8n');
+        }
+
+        // 創建鋼琴鍵
+        function createPiano() {
+            piano.innerHTML = '';
+            keys.forEach(key => {
+                const div = document.createElement('div');
+                div.className = `key ${key.color === 'black' ? 'black-key' : ''}`;
+                div.dataset.note = key.note;
+                div.textContent = key.note;
+                // 多點觸控支援
+                div.addEventListener('mousedown', e => playNote(e, key.note));
+                div.addEventListener('touchstart', e => {
+                    e.preventDefault();
+                    playNote(e, key.note);
+                });
+                // 防止觸控移動時觸發其他事件
+                div.addEventListener('touchmove', e => e.preventDefault());
+                div.addEventListener('touchend', e => e.preventDefault());
+                piano.appendChild(div);
+            });
+            piano.style.display = 'flex';
+            modeSelection.style.display = 'none';
+        }
+
+        // 自由彈奏模式
+        function startFreeMode() {
+            createPiano();
+        }
+
+        // 樂譜模式 - 「小星星」
+        const song = [
+            { note: 'C4', duration: 500 },
+            { note: 'C4', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'A4', duration: 500 },
+            { note: 'A4', duration: 500 },
+            { note: 'G4', duration: 1000 },
+            { note: 'F4', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'C4', duration: 1000 }
+        ];
+
+        function startSongMode() {
+            createPiano(); // 保留點擊事件
+            let index = 0;
+
+            function highlightNextNote() {
+                if (index >= song.length) return;
+                const { note, duration } = song[index];
+                const key = piano.querySelector(`[data-note="${note}"]`);
+                key.classList.add('highlight');
+
+                setTimeout(() => {
+                    key.classList.remove('highlight');
+                    index++;
+                    highlightNextNote();
+                }, duration);
+            }
+
+            highlightNextNote();
+        }
+
+        // 啟動音頻上下文（解決移動設備首次無聲問題）
+        document.addEventListener('touchstart', function startAudio() {
+            Tone.start();
+            document.removeEventListener('touchstart', startAudio);
+        });
+        document.addEventListener('mousedown', function startAudio() {
+            Tone.start();
+            document.removeEventListener('mousedown', startAudio);
+        });
+    </script>
+</body>
+</html>
