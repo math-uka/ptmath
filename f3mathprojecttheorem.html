@@ -11,52 +11,58 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
             margin: 0;
-            padding: 20px;
+            padding: 10px; /* 進一步減小邊距 */
             min-height: 100vh;
             display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            overflow-x: hidden; /* 防止水平溢出 */
         }
         h1 {
             color: #0277bd;
-            font-size: 2.2em;
+            font-size: 1.8em;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            margin: 0 0 15px;
+            margin: 0 0 10px;
             text-align: center;
         }
         #question {
             background: #ffffff;
-            padding: 20px;
+            padding: 12px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px;
-            font-size: 1.1em;
-            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.95em; /* 進一步減小字體 */
+            line-height: 1.4;
             text-align: left;
-            max-width: 100%;
+            width: 100%;
+            max-width: 100%; /* 確保不超出屏幕 */
+            word-wrap: break-word;
+            overflow-wrap: break-word; /* 強制換行 */
+            box-sizing: border-box; /* 包含padding在寬度內 */
         }
         #options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 100%;
-            margin: 0 auto 25px;
-            padding: 0 10px;
+            gap: 8px; /* 減小間距 */
+            width: 100%;
+            margin: 0 0 15px;
+            padding: 0 5px;
+            box-sizing: border-box;
         }
         .option {
             background: #ffffff;
-            padding: 12px;
+            padding: 8px; /* 減小內邊距 */
             border-radius: 8px;
             border: 2px solid #0288d1;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.85em; /* 減小字體 */
             transition: all 0.3s ease;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             word-wrap: break-word;
             text-align: center;
-            position: relative; /* 為動畫定位 */
+            position: relative;
+            box-sizing: border-box;
         }
         .option:hover:not(.disabled) {
             background: #e1f5fe;
@@ -69,7 +75,6 @@
             border-color: #b0bec5;
             opacity: 0.7;
         }
-        /* 答對時的動畫效果 */
         .correct-animation {
             animation: correctFeedback 0.5s ease forwards;
         }
@@ -79,8 +84,8 @@
                 background: #ffffff;
             }
             50% {
-                transform: scale(1.1); /* 放大 */
-                background: #c8e6c9; /* 淺綠色背景 */
+                transform: scale(1.1);
+                background: #c8e6c9;
                 border-color: #388e3c;
             }
             100% {
@@ -90,9 +95,9 @@
             }
         }
         #result {
-            font-size: 1.1em;
+            font-size: 0.95em;
             color: #d32f2f;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-align: center;
             font-weight: 500;
         }
@@ -101,81 +106,98 @@
         }
         #summary {
             background: #ffffff;
-            padding: 20px;
+            padding: 12px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-top: 25px;
+            margin-top: 15px;
             text-align: left;
-            max-width: 100%;
+            width: 100%;
+            box-sizing: border-box;
         }
         #summary h2 {
             color: #0277bd;
-            margin: 0 0 15px;
-            font-size: 1.5em;
+            margin: 0 0 10px;
+            font-size: 1.3em;
         }
         #diagram {
-            flex-shrink: 0;
+            margin-bottom: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
         svg {
             border: 1px solid #333;
             border-radius: 5px;
             background: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 250px; /* 減小最大寬度 */
+            height: auto;
         }
         #content {
-            flex: 1;
+            width: 100%;
             max-width: 600px;
+            box-sizing: border-box;
         }
 
-        @media (max-width: 768px) {
+        /* 平板及以上 */
+        @media (min-width: 768px) {
             body {
-                flex-direction: column;
-                padding: 15px;
-                align-items: center;
-                gap: 20px;
+                flex-direction: row;
+                padding: 20px;
+                gap: 30px;
             }
             h1 {
-                font-size: 1.8em;
+                font-size: 2.2em;
             }
             #question {
-                font-size: 1em;
-                padding: 15px;
+                font-size: 1.1em;
+                padding: 20px;
             }
             #options {
-                gap: 10px;
+                gap: 12px;
+                padding: 0 10px;
             }
             .option {
-                padding: 10px;
-                font-size: 0.9em;
-            }
-            #result {
+                padding: 12px;
                 font-size: 1em;
             }
-            #summary {
-                padding: 15px;
+            #result {
+                font-size: 1.1em;
             }
-            #diagram svg {
-                width: 250px;
-                height: 150px;
+            #summary {
+                padding: 20px;
+            }
+            svg {
+                max-width: 300px;
+                height: 200px;
             }
         }
 
+        /* 小屏幕手機 */
         @media (max-width: 480px) {
             h1 {
                 font-size: 1.5em;
             }
             #question {
                 font-size: 0.9em;
+                padding: 10px;
+            }
+            #options {
+                gap: 6px; /* 進一步減小間距 */
             }
             .option {
+                padding: 6px; /* 進一步減小內邊距 */
                 font-size: 0.8em;
-                padding: 8px;
             }
             #result {
                 font-size: 0.9em;
             }
-            #diagram svg {
-                width: 200px;
+            #summary {
+                padding: 10px;
+            }
+            svg {
+                max-width: 200px;
                 height: 120px;
             }
         }
@@ -183,7 +205,7 @@
 </head>
 <body>
     <div id="diagram">
-        <svg width="300" height="200">
+        <svg viewBox="0 0 300 200">
             <polygon points="50,150 150,50 280,150" fill="none" stroke="black" stroke-width="2"/>
             <line x1="150" y1="50" x2="150" y2="150" stroke="black" stroke-width="2"/>
             <text x="45" y="165" font-size="16">A</text>
@@ -280,7 +302,7 @@
                 const div = document.createElement('div');
                 div.className = 'option';
                 div.innerHTML = `\\(${Number.isInteger(opt) ? opt : simplifySqrt(opt * opt)}\\)`;
-                div.onclick = () => checkAnswer(opt, q.correctAnswer, q, div); // 傳遞當前選項元素
+                div.onclick = () => checkAnswer(opt, q.correctAnswer, q, div);
                 optionsDiv.appendChild(div);
             });
 
@@ -294,9 +316,7 @@
                 resultDiv.innerHTML = '答對了！';
                 resultDiv.className = 'correct';
                 disableOptions();
-                // 添加動畫效果到選中的正確選項
                 selectedOption.classList.add('correct-animation');
-                // 1秒後自動進入下一題
                 setTimeout(() => {
                     nextQuestion();
                 }, 1000);
