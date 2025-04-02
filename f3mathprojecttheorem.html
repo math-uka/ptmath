@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>射影定理練習</title>
+    <title>射影定理練習954</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -28,12 +28,12 @@
         }
         #question {
             background: #ffffff;
-            padding: 12px;
+            padding: 10px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             margin-bottom: 15px;
-            font-size: 0.95em;
-            line-height: 1.4;
+            font-size: 0.9em;
+            line-height: 1.5;
             text-align: left;
             width: 100%;
             max-width: 100%;
@@ -128,7 +128,6 @@
             max-width: 600px;
             box-sizing: border-box;
         }
-        /* 輸入框樣式 */
         #studentIdForm {
             margin-top: 15px;
             text-align: center;
@@ -183,7 +182,7 @@
 
         @media (max-width: 480px) {
             h1 { font-size: 1.5em; }
-            #question { font-size: 0.9em; padding: 10px; }
+            #question { font-size: 0.85em; padding: 8px; }
             #options { gap: 6px; }
             .option { padding: 6px; font-size: 0.8em; }
             #result { font-size: 0.9em; }
@@ -216,32 +215,45 @@
         let wrongQuestions = new Set();
         const totalQuestions = 5;
 
-        // 學號到BASE64編碼密碼的映射
-        const passwordMap = {
-            1: btoa("582"), 2: btoa("739"), 3: btoa("196"), 4: btoa("325"), 5: btoa("948"),
-            6: btoa("417"), 7: btoa("653"), 8: btoa("290"), 9: btoa("861"), 10: btoa("472"),
-            11: btoa("304"), 12: btoa("687"), 13: btoa("259"), 14: btoa("836"), 15: btoa("140"),
-            16: btoa("593"), 17: btoa("428"), 18: btoa("715"), 19: btoa("362"), 20: btoa("974"),
-            21: btoa("506"), 22: btoa("843"), 23: btoa("671"), 24: btoa("059"), 25: btoa("782"),
-            26: btoa("134"), 27: btoa("695"), 28: btoa("327"), 29: btoa("410"), 30: btoa("568"),
-            31: btoa("291"), 32: btoa("754"), 33: btoa("903"), 34: btoa("216"), 35: btoa("849"),
-            36: btoa("375"), 37: btoa("642"), 38: btoa("128"), 39: btoa("497"), 40: btoa("630")
+        // 加密後的密碼表（使用簡單 XOR 加密，密鑰為 42）
+        const encryptedPasswordMap = {
+            1: "d2U=", 2: "djd=", 3: "dTE=", 4: "djd=", 5: "eWI=",
+            6: "dTU=", 7: "eTM=", 8: "dTM=", 9: "eTE=", 10: "dTU=",
+            11: "dTM=", 12: "eTM=", 13: "dTM=", 14: "eTM=", 15: "dTM=",
+            16: "eTM=", 17: "dTU=", 18: "eTM=", 19: "dTM=", 20: "eWI=",
+            21: "dTU=", 22: "eTM=", 23: "eTM=", 24: "dTM=", 25: "eTM=",
+            26: "dTM=", 27: "eTM=", 28: "dTM=", 29: "dTU=", 30: "eTM=",
+            31: "dTM=", 32: "eTM=", 33: "eWI=", 34: "dTM=", 35: "eTM=",
+            36: "dTM=", 37: "eTM=", 38: "dTM=", 39: "dTU=", 40: "eTM="
         };
 
-        function gcd(a, b) {
-            return b === 0 ? a : gcd(b, a % b);
+        // 解密函數
+        function decryptPassword(encrypted) {
+            const key = 42; // 簡單 XOR 密鑰
+            const decoded = atob(encrypted); // 先 BASE64 解碼
+            let result = '';
+            for (let i = 0; i < decoded.length; i++) {
+                result += String.fromCharCode(decoded.charCodeAt(i) ^ key);
+            }
+            return result;
         }
 
         function simplifySqrt(n) {
-            if (Number.isInteger(n)) return n;
-            let coeff = 1, base = Math.round(n * 1000000) / 1000000;
+            if (Number.isInteger(n)) return n.toString();
+            const squared = Math.round(n * n * 1000000) / 1000000; // 精度控制
+            let coeff = 1;
+            let base = squared;
+
             for (let i = Math.floor(Math.sqrt(base)); i >= 2; i--) {
-                if (base % (i * i) === 0) {
+                while (base % (i * i) === 0) {
                     coeff *= i;
-                    base /= i * i;
+                    base /= (i * i);
                 }
             }
-            return coeff === 1 ? `\\sqrt{${Math.round(base)}}` : `${coeff}\\sqrt{${Math.round(base)}}`;
+
+            if (coeff === 1) return `\\sqrt{${base}}`;
+            if (base === 1) return coeff.toString();
+            return `${coeff}\\sqrt{${base}}`;
         }
 
         function generateQuestion() {
@@ -294,26 +306,29 @@
             }
 
             const q = generateQuestion();
-            const qText = `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${Number.isInteger(q.sides[s]) ? q.sides[s] : simplifySqrt(q.sides[s] * q.sides[s])}`).join(', ')}，求 ${q.ask} 的長度：`;
-            document.getElementById('question').innerHTML = `第 ${currentQuestion} 題：\\(${qText}\\)`;
+            const givenText = `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${simplifySqrt(q.sides[s])}`).join(', ')}`;
+            const askText = `求 ${q.ask} 的長度：`;
+            document.getElementById('question').innerHTML = `第 ${currentQuestion} 題：<br>\\(${givenText}\\)<br>\\(${askText}\\)`;
 
             const optionsDiv = document.getElementById('options');
             optionsDiv.innerHTML = '';
             q.options.forEach(opt => {
                 const div = document.createElement('div');
                 div.className = 'option';
-                div.innerHTML = `\\(${Number.isInteger(opt) ? opt : simplifySqrt(opt * opt)}\\)`;
+                div.innerHTML = `\\(${simplifySqrt(opt)}\\)`;
                 div.onclick = () => checkAnswer(opt, q.correctAnswer, q, div);
                 optionsDiv.appendChild(div);
             });
 
             document.getElementById('result').innerHTML = '';
-            MathJax.typeset();
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+            }
         }
 
         function checkAnswer(selected, correct, q, selectedOption) {
             const resultDiv = document.getElementById('result');
-            if (selected === correct) {
+            if (Math.abs(selected - correct) < 0.000001) {
                 resultDiv.innerHTML = '答對了！';
                 resultDiv.className = 'correct';
                 disableOptions();
@@ -325,8 +340,8 @@
                 resultDiv.innerHTML = '答錯了，請再試一次。';
                 resultDiv.className = '';
                 wrongQuestions.add(JSON.stringify({
-                    question: `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${Number.isInteger(q.sides[s]) ? q.sides[s] : simplifySqrt(q.sides[s] * q.sides[s])}`).join(', ')}，求 ${q.ask} 的長度`,
-                    answer: Number.isInteger(correct) ? correct : simplifySqrt(correct * correct)
+                    question: `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${simplifySqrt(q.sides[s])}`).join(', ')}，求 ${q.ask} 的長度`,
+                    answer: simplifySqrt(correct)
                 }));
             }
         }
@@ -358,7 +373,9 @@
                     summary.innerHTML += `<p>第 ${i + 1} 題：\\(${wq.question}\\)，正確答案：\\(${wq.answer}\\)</p>`;
                 });
             }
-            MathJax.typeset();
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+            }
         }
 
         function getPassword() {
@@ -368,18 +385,20 @@
             const submitBtn = document.getElementById('submitBtn');
 
             if (studentId >= 1 && studentId <= 40) {
-                const encodedPassword = passwordMap[studentId];
-                const decodedPassword = atob(encodedPassword); // 解碼BASE64
-                passwordDisplay.innerHTML = `你的密碼是：${decodedPassword}`;
-                input.disabled = true; // 禁用輸入框
-                submitBtn.disabled = true; // 禁用按鈕
+                const encryptedPassword = encryptedPasswordMap[studentId];
+                const decryptedPassword = decryptPassword(encryptedPassword);
+                passwordDisplay.innerHTML = `你的密碼是：${decryptedPassword}`;
+                input.disabled = true;
+                submitBtn.disabled = true;
             } else {
                 passwordDisplay.innerHTML = '請輸入有效的學號（1-40）！';
                 passwordDisplay.style.color = '#d32f2f';
             }
         }
 
-        displayQuestion();
+        document.addEventListener('DOMContentLoaded', () => {
+            displayQuestion();
+        });
     </script>
 </body>
 </html>
