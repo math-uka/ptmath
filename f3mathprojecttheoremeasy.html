@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>射影定理練習954</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            overflow-x: hidden;
+        }
+        h1 {
+            color: #0277bd;
+            font-size: 1.8em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin: 0 0 10px;
+            text-align: center;
+        }
+        #question {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            line-height: 1.5;
+            text-align: left;
+            width: 100%;
+            max-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            box-sizing: border-box;
+        }
+        #options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+            margin: 0 0 15px;
+            padding: 0 5px;
+            box-sizing: border-box;
+        }
+        .option {
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 8px;
+            border: 2px solid #0288d1;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            word-wrap: break-word;
+            text-align: center;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .option:hover:not(.disabled) {
+            background: #e1f5fe;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .option.disabled {
+            cursor: not-allowed;
+            background: #eceff1;
+            border-color: #b0bec5;
+            opacity: 0.7;
+        }
+        .correct-animation {
+            animation: correctFeedback 0.5s ease forwards;
+        }
+        @keyframes correctFeedback {
+            0% { transform: scale(1); background: #ffffff; }
+            50% { transform: scale(1.1); background: #c8e6c9; border-color: #388e3c; }
+            100% { transform: scale(1); background: #c8e6c9; border-color: #388e3c; }
+        }
+        #result {
+            font-size: 0.95em;
+            color: #d32f2f;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+        #result.correct {
+            color: #388e3c;
+        }
+        #summary {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #summary h2 {
+            color: #0277bd;
+            margin: 0 0 10px;
+            font-size: 1.3em;
+        }
+        #diagram {
+            margin-bottom: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        svg {
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+        }
+        #content {
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+        #studentIdForm {
+            margin-top: 15px;
+            text-align: center;
+        }
+        #studentIdInput {
+            padding: 8px;
+            font-size: 1em;
+            border: 2px solid #0288d1;
+            border-radius: 5px;
+            width: 100px;
+            margin-right: 10px;
+        }
+        #submitBtn {
+            padding: 8px 15px;
+            font-size: 1em;
+            background: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        #submitBtn:hover {
+            background: #0277bd;
+        }
+        #submitBtn:disabled, #studentIdInput:disabled {
+            background: #b0bec5;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #passwordDisplay {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #388e3c;
+            font-weight: 500;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                flex-direction: row;
+                padding: 20px;
+                gap: 30px;
+            }
+            h1 { font-size: 2.2em; }
+            #question { font-size: 1.1em; padding: 20px; }
+            #options { gap: 12px; padding: 0 10px; }
+            .option { padding: 12px; font-size: 1em; }
+            #result { font-size: 1.1em; }
+            #summary { padding: 20px; }
+            svg { max-width: 300px; height: 200px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5em; }
+            #question { font-size: 0.85em; padding: 8px; }
+            #options { gap: 6px; }
+            .option { padding: 6px; font-size: 0.8em; }
+            #result { font-size: 0.9em; }
+            #summary { padding: 10px; }
+            svg { max-width: 200px; height: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="diagram">
+        <svg viewBox="0 0 300 200">
+            <polygon points="50,150 150,50 280,150" fill="none" stroke="black" stroke-width="2"/>
+            <line x1="150" y1="50" x2="150" y2="150" stroke="black" stroke-width="2"/>
+            <text x="45" y="165" font-size="16">A</text>
+            <text x="155" y="40" font-size="16">B</text>
+            <text x="270" y="165" font-size="16">C</text>
+            <text x="155" y="165" font-size="16">D</text>
+        </svg>
+    </div>
+    <div id="content">
+        <h1>射影定理練習</h1>
+        <div id="question"></div>
+        <div id="options"></div>
+        <div id="result"></div>
+        <div id="summary" style="display: none;"></div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let wrongQuestions = new Set();
+        const totalQuestions = 5;
+
+        // 加密後的密碼表（使用簡單 XOR 加密，密鑰為 42）
+        const encryptedPasswordMap = {
+            1: "d2U=", 2: "djd=", 3: "dTE=", 4: "djd=", 5: "eWI=",
+            6: "dTU=", 7: "eTM=", 8: "dTM=", 9: "eTE=", 10: "dTU=",
+            11: "dTM=", 12: "eTM=", 13: "dTM=", 14: "eTM=", 15: "dTM=",
+            16: "eTM=", 17: "dTU=", 18: "eTM=", 19: "dTM=", 20: "eWI=",
+            21: "dTU=", 22: "eTM=", 23: "eTM=", 24: "dTM=", 25: "eTM=",
+            26: "dTM=", 27: "eTM=", 28: "dTM=", 29: "dTU=", 30: "eTM=",
+            31: "dTM=", 32: "eTM=", 33: "eWI=", 34: "dTM=", 35: "eTM=",
+            36: "dTM=", 37: "eTM=", 38: "dTM=", 39: "dTU=", 40: "eTM="
+        };
+
+        // 解密函數
+        function decryptPassword(encrypted) {
+            const key = 42; // 簡單 XOR 密鑰
+            const decoded = atob(encrypted); // 先 BASE64 解碼
+            let result = '';
+            for (let i = 0; i < decoded.length; i++) {
+                result += String.fromCharCode(decoded.charCodeAt(i) ^ key);
+            }
+            return result;
+        }
+
+        function simplifySqrt(n) {
+            if (Number.isInteger(n)) return n.toString();
+            const squared = Math.round(n * n * 1000000) / 1000000; // 精度控制
+            let coeff = 1;
+            let base = squared;
+
+            for (let i = Math.floor(Math.sqrt(base)); i >= 2; i--) {
+                while (base % (i * i) === 0) {
+                    coeff *= i;
+                    base /= (i * i);
+                }
+            }
+
+            if (coeff === 1) return `\\sqrt{${base}}`;
+            if (base === 1) return coeff.toString();
+            return `${coeff}\\sqrt{${base}}`;
+        }
+
+        function generateQuestion() {
+            const ints = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const irrationals = [2, 3, 5, 6, 7];
+
+            // 隨機生成 AD 和 DC，確保 AC = AD + DC
+            let AD = ints[Math.floor(Math.random() * ints.length)];
+            let DC = ints[Math.floor(Math.random() * ints.length)];
+            if (Math.random() < 0.3) {
+                AD = irrationals[Math.floor(Math.random() * irrationals.length)];
+            }
+            if (Math.random() < 0.3) {
+                DC = irrationals[Math.floor(Math.random() * irrationals.length)];
+            }
+            const AC = AD + DC;
+
+            // 根據射影定理計算其他邊長
+            const BD = Math.sqrt(AD * DC); // BD 是調和平均
+            const AB = Math.sqrt(AD * AD + BD * BD);
+            const BC = Math.sqrt(DC * DC + BD * BD);
+
+            const sides = { 'AB': AB, 'AD': AD, 'AC': AC, 'BD': BD, 'DC': DC, 'BC': BC };
+            const sideNames = Object.keys(sides);
+
+            // 隨機選擇三種提問方式之一
+            const questionType = Math.floor(Math.random() * 3);
+            let given, ask;
+
+            switch (questionType) {
+                case 0: // 給出 AB, AD, AC 中的任意兩邊，求剩下的一邊
+                    given = ['AB', 'AD', 'AC'].sort(() => Math.random() - 0.5).slice(0, 2);
+                    ask = ['AB', 'AD', 'AC'].find(s => !given.includes(s));
+                    break;
+                case 1: // 給出 BD, AD, DC 中的任意兩邊，求剩下的一邊
+                    given = ['BD', 'AD', 'DC'].sort(() => Math.random() - 0.5).slice(0, 2);
+                    ask = ['BD', 'AD', 'DC'].find(s => !given.includes(s));
+                    break;
+                case 2: // 給出 BC, AC, DC 中的任意兩邊，求剩下的一邊
+                    given = ['BC', 'AC', 'DC'].sort(() => Math.random() - 0.5).slice(0, 2);
+                    ask = ['BC', 'AC', 'DC'].find(s => !given.includes(s));
+                    break;
+            }
+
+            const correctAnswer = sides[ask];
+            const otherSides = sideNames.filter(s => s !== ask && !given.includes(s)).map(s => sides[s]);
+            const options = [correctAnswer, ...otherSides.slice(0, 2)];
+            while (options.length < 9) {
+                let fake = Math.floor(Math.random() * 15) + 1;
+                if (!options.includes(fake)) options.push(fake);
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            return { given, ask, sides, options, correctAnswer };
+        }
+
+        function disableOptions() {
+            document.querySelectorAll('.option').forEach(opt => opt.classsList.add('disabled'));
+        }
+
+        function displayQuestion() {
+            currentQuestion++;
+            if (currentQuestion > totalQuestions) {
+                endGame();
+                return;
+            }
+
+            const q = generateQuestion();
+            const givenText = `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${simplifySqrt(q.sides[s])}`).join(', ')}`;
+            const askText = `求 ${q.ask} 的長度：`;
+            document.getElementById('question').innerHTML = `第 ${currentQuestion} 題：<br>\\(${givenText}\\)<br>\\(${askText}\\)`;
+
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            q.options.forEach(opt => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerHTML = `\\(${simplifySqrt(opt)}\\)`;
+                div.onclick = () => checkAnswer(opt, q.correctAnswer, q, div);
+                optionsDiv.appendChild(div);
+            });
+
+            document.getElementById('result').innerHTML = '';
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+            }
+        }
+
+        function checkAnswer(selected, correct, q, selectedOption) {
+            const resultDiv = document.getElementById('result');
+            if (Math.abs(selected - correct) < 0.000001) {
+                resultDiv.innerHTML = '答對了！';
+                resultDiv.className = 'correct';
+                disableOptions();
+                selectedOption.classList.add('correct-animation');
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1000);
+            } else {
+                resultDiv.innerHTML = '答錯了，請再試一次。';
+                resultDiv.className = '';
+                wrongQuestions.add(JSON.stringify({
+                    question: `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${simplifySqrt(q.sides[s])}`).join(', ')}，求 ${q.ask} 的長度`,
+                    answer: simplifySqrt(correct)
+                }));
+            }
+        }
+
+        function nextQuestion() {
+            displayQuestion();
+        }
+
+        function endGame() {
+            document.getElementById('question').innerHTML = '遊戲結束！';
+            document.getElementById('options').innerHTML = '';
+            document.getElementById('result').innerHTML = '';
+            const summary = document.getElementById('summary');
+            summary.style.display = 'block';
+            summary.innerHTML = '<h2>錯題回顧</h2>';
+            const wrongArray = Array.from(wrongQuestions).map(JSON.parse);
+
+            if (wrongArray.length === 0) {
+                summary.innerHTML += '恭喜你，全部答對！<br>請輸入你的學號（1-40）以獲取密碼：<br>';
+                summary.innerHTML += `
+                    <div id="studentIdForm">
+                        <input type="number" id="studentIdInput" min="1" max="40" placeholder="學號">
+                        <button id="submitBtn" onclick="getPassword()">提交</button>
+                        <div id="passwordDisplay"></div>
+                    </div>
+                `;
+            } else {
+                wrongArray.forEach((wq, i) => {
+                    summary.innerHTML += `<p>第 ${i + 1} 題：\\(${wq.question}\\)，正確答案：\\(${wq.answer}\\)</p>`;
+                });
+            }
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+            }
+        }
+
+        function getPassword() {
+            const input = document.getElementById('studentIdInput');
+            const studentId = parseInt(input.value);
+            const passwordDisplay = document.getElementById('passwordDisplay');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (studentId >= 1 && studentId <= 40) {
+                const encryptedPassword = encryptedPasswordMap[studentId];
+                const decryptedPassword = decryptPassword(encryptedPassword);
+                passwordDisplay.innerHTML = `你的密碼是：${decryptedPassword}`;
+                input.disabled = true;
+                submitBtn.disabled = true;
+            } else {
+                passwordDisplay.innerHTML = '請輸入有效的學號（1-40）！';
+                passwordDisplay.style.color = '#d32f2f';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayQuestion();
+        });
+    </script>
+</body>
+</html>
