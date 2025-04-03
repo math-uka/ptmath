@@ -215,32 +215,27 @@
         let wrongQuestions = new Set();
         const totalQuestions = 5;
 
-        // 加密後的密碼表（使用簡單 XOR 加密，密鑰為 42）
+        // 修復後的加密密碼表（移除多餘的 "]"）
         const encryptedPasswordMap = {
-            1: "d2U=", 2: "djd=", 3: "dTE=", 4: "djd=", 5: "eWI=",
-            6: "dTU=", 7: "eTM=", 8: "dTM=", 9: "eTE=", 10: "dTU=",
-            11: "dTM=", 12: "eTM=", 13: "dTM=", 14: "eTM=", 15: "dTM=",
-            16: "eTM=", 17: "dTU=", 18: "eTM=", 19: "dTM=", 20: "eWI=",
-            21: "dTU=", 22: "eTM=", 23: "eTM=", 24: "dTM=", 25: "eTM=",
-            26: "dTM=", 27: "eTM=", 28: "dTM=", 29: "dTU=", 30: "eTM=",
-            31: "dTM=", 32: "eTM=", 33: "eWI=", 34: "dTM=", 35: "eTM=",
-            36: "dTM=", 37: "eTM=", 38: "dTM=", 39: "dTU=", 40: "eTM="
+            1: "NTgy", 2: "NzM5", 3: "MTk2", 4: "MzI1", 5: "OTQ4",
+            6: "NDE3", 7: "NjUz", 8: "Mjkw", 9: "ODYx", 10: "NDcy",
+            11: "MzA0", 12: "Njg3", 13: "MjU5", 14: "ODM2", 15: "MTQw",
+            16: "NTkz", 17: "NDI4", 18: "NzE1", 19: "MzYy", 20: "OTc0",
+            21: "NTA2", 22: "ODQz", 23: "Njcx", 24: "MDU5", 25: "Nzgy",
+            26: "MTM0", 27: "Njk1", 28: "MzI3", 29: "NDEw", 30: "NTY4",
+            31: "Mjkx", 32: "NzU0", 33: "OTAz", 34: "MjE2", 35: "ODQ5",
+            36: "Mzc1", 37: "NjQy", 38: "MTI4", 39: "NDk3", 40: "NjMw"
         };
 
-        // 解密函數
+        // 修復後的解密函數
         function decryptPassword(encrypted) {
-            const key = 42; // 簡單 XOR 密鑰
-            const decoded = atob(encrypted); // 先 BASE64 解碼
-            let result = '';
-            for (let i = 0; i < decoded.length; i++) {
-                result += String.fromCharCode(decoded.charCodeAt(i) ^ key);
-            }
-            return result;
+            // 直接進行 BASE64 解碼
+            return atob(encrypted);
         }
 
         function simplifySqrt(n) {
             if (Number.isInteger(n)) return n.toString();
-            const squared = Math.round(n * n * 1000000) / 1000000; // 精度控制
+            const squared = Math.round(n * n * 1000000) / 1000000;
             let coeff = 1;
             let base = squared;
 
@@ -260,7 +255,6 @@
             const ints = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             const irrationals = [2, 3, 5, 6, 7];
 
-            // 隨機生成 AD 和 DC，確保 AC = AD + DC
             let AD = ints[Math.floor(Math.random() * ints.length)];
             let DC = ints[Math.floor(Math.random() * ints.length)];
             if (Math.random() < 0.3) {
@@ -271,47 +265,54 @@
             }
             const AC = AD + DC;
 
-            // 根據射影定理計算其他邊長
-            const BD = Math.sqrt(AD * DC); // BD 是調和平均
+            const BD = Math.sqrt(AD * DC);
             const AB = Math.sqrt(AD * AD + BD * BD);
             const BC = Math.sqrt(DC * DC + BD * BD);
 
             const sides = { 'AB': AB, 'AD': AD, 'AC': AC, 'BD': BD, 'DC': DC, 'BC': BC };
             const sideNames = Object.keys(sides);
 
-            // 隨機選擇三種提問方式之一
             const questionType = Math.floor(Math.random() * 3);
             let given, ask;
 
             switch (questionType) {
-                case 0: // 給出 AB, AD, AC 中的任意兩邊，求剩下的一邊
+                case 0:
                     given = ['AB', 'AD', 'AC'].sort(() => Math.random() - 0.5).slice(0, 2);
                     ask = ['AB', 'AD', 'AC'].find(s => !given.includes(s));
                     break;
-                case 1: // 給出 BD, AD, DC 中的任意兩邊，求剩下的一邊
+                case 1:
                     given = ['BD', 'AD', 'DC'].sort(() => Math.random() - 0.5).slice(0, 2);
                     ask = ['BD', 'AD', 'DC'].find(s => !given.includes(s));
                     break;
-                case 2: // 給出 BC, AC, DC 中的任意兩邊，求剩下的一邊
+                case 2:
                     given = ['BC', 'AC', 'DC'].sort(() => Math.random() - 0.5).slice(0, 2);
                     ask = ['BC', 'AC', 'DC'].find(s => !given.includes(s));
                     break;
             }
 
             const correctAnswer = sides[ask];
+            const optionsSet = new Set([correctAnswer]);
             const otherSides = sideNames.filter(s => s !== ask && !given.includes(s)).map(s => sides[s]);
-            const options = [correctAnswer, ...otherSides.slice(0, 2)];
-            while (options.length < 9) {
-                let fake = Math.floor(Math.random() * 15) + 1;
-                if (!options.includes(fake)) options.push(fake);
+            
+            for (let side of otherSides) {
+                if (optionsSet.size < 3 && !optionsSet.has(side)) {
+                    optionsSet.add(side);
+                }
             }
-            options.sort(() => Math.random() - 0.5);
 
+            while (optionsSet.size < 9) {
+                let fake = Math.floor(Math.random() * 15) + 1;
+                if (!optionsSet.has(fake)) {
+                    optionsSet.add(fake);
+                }
+            }
+
+            const options = Array.from(optionsSet).sort(() => Math.random() - 0.5);
             return { given, ask, sides, options, correctAnswer };
         }
 
         function disableOptions() {
-            document.querySelectorAll('.option').forEach(opt => opt.classList.add('disabled')); // 修正拼寫錯誤：classsList -> classList
+            document.querySelectorAll('.option').forEach(opt => opt.classList.add('disabled'));
         }
 
         function displayQuestion() {
@@ -350,7 +351,7 @@
                 selectedOption.classList.add('correct-animation');
                 disableOptions();
                 setTimeout(() => {
-                    displayQuestion(); // 直接調用 displayQuestion 而不是 nextQuestion
+                    displayQuestion();
                 }, 1000);
             } else {
                 resultDiv.innerHTML = '答錯了，請再試一次。';
@@ -376,17 +377,18 @@
                 summary.innerHTML += `
                     <div id="studentIdForm">
                         <input type="number" id="studentIdInput" min="1" max="40" placeholder="學號">
-                        <button id="submitBtn" onclick="getPassword()">提交</button>
+                        <button id="submitBtn">提交</button>
                         <div id="passwordDisplay"></div>
                     </div>
                 `;
+                document.getElementById('submitBtn').addEventListener('click', getPassword);
             } else {
                 wrongArray.forEach((wq, i) => {
                     summary.innerHTML += `<p>第 ${i + 1} 題：\\(${wq.question}\\)，正確答案：\\(${wq.answer}\\)</p>`;
                 });
-            }
-            if (window.MathJax) {
-                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+                if (window.MathJax) {
+                    MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+                }
             }
         }
 
@@ -399,11 +401,11 @@
             if (studentId >= 1 && studentId <= 40) {
                 const encryptedPassword = encryptedPasswordMap[studentId];
                 const decryptedPassword = decryptPassword(encryptedPassword);
-                passwordDisplay.innerHTML = `你的密碼是：${decryptedPassword}`;
+                passwordDisplay.textContent = `你的密碼是：${decryptedPassword}`;
                 input.disabled = true;
                 submitBtn.disabled = true;
             } else {
-                passwordDisplay.innerHTML = '請輸入有效的學號（1-40）！';
+                passwordDisplay.textContent = '請輸入有效的學號（1-40）！';
                 passwordDisplay.style.color = '#d32f2f';
             }
         }
