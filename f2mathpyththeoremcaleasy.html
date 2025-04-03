@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勾股定理練習題702</title>
+    <title>勾股定理練習題501</title>
     <!-- 引入 MathJax -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -289,20 +289,26 @@
             options.add(JSON.stringify(correctAnswer));
 
             while (options.size < 9) {
-                const hasRoot = Math.random() < 0.5;
                 let option;
+                const hasRoot = Math.random() < 0.5;
+
                 if (hasRoot) {
                     const roots = [2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 23];
                     const root = roots[Math.floor(Math.random() * roots.length)];
-                    const simplified = simplifyRoot(root);
+                    const coeff = Math.floor(Math.random() * 5) + 1;
+                    const simplified = simplifyRoot(root * coeff * coeff);
                     option = { 
                         coefficient: simplified.coefficient, 
                         radicand: simplified.radicand, 
                         isRoot: true 
                     };
                 } else {
-                    option = { value: Math.floor(Math.random() * 15) + 1, isRoot: false };
+                    option = { 
+                        value: Math.floor(Math.random() * 20) + 1, 
+                        isRoot: false 
+                    };
                 }
+
                 const optionStr = JSON.stringify(option);
                 if (!options.has(optionStr)) {
                     options.add(optionStr);
@@ -325,9 +331,9 @@
             const feedback = document.getElementById('feedback');
             const grid = document.getElementById('grid');
             const isCorrect = (!selected.isRoot && !correct.isRoot && selected.value === correct.value) ||
-                            (selected.isRoot && correct.isRoot && 
-                             selected.coefficient === correct.coefficient && 
-                             selected.radicand === correct.radicand);
+                             (selected.isRoot && correct.isRoot && 
+                              selected.coefficient === correct.coefficient && 
+                              selected.radicand === correct.radicand);
 
             const currentQuestion = document.getElementById('question').innerHTML;
             const correctAnswerText = formatNumber(correct);
@@ -339,11 +345,17 @@
                 totalCount++;
                 grid.classList.add('disabled');
 
+                // 禁用所有選項，避免重複點擊
+                const options = grid.getElementsByClassName('option');
+                for (let opt of options) {
+                    opt.onclick = null; // 移除點擊事件
+                }
+
                 setTimeout(() => {
                     feedback.textContent = '';
                     feedback.className = '';
                     grid.classList.remove('disabled');
-                    nextProblem();
+                    nextProblem(); // 跳到下一題
                 }, 1000);
             } else {
                 feedback.textContent = '你答錯了，請重試！';
