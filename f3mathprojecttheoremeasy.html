@@ -311,16 +311,16 @@
         }
 
         function disableOptions() {
-            document.querySelectorAll('.option').forEach(opt => opt.classsList.add('disabled'));
+            document.querySelectorAll('.option').forEach(opt => opt.classList.add('disabled')); // 修正拼寫錯誤：classsList -> classList
         }
 
         function displayQuestion() {
-            currentQuestion++;
-            if (currentQuestion > totalQuestions) {
+            if (currentQuestion >= totalQuestions) {
                 endGame();
                 return;
             }
 
+            currentQuestion++;
             const q = generateQuestion();
             const givenText = `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${simplifySqrt(q.sides[s])}`).join(', ')}`;
             const askText = `求 ${q.ask} 的長度：`;
@@ -347,10 +347,10 @@
             if (Math.abs(selected - correct) < 0.000001) {
                 resultDiv.innerHTML = '答對了！';
                 resultDiv.className = 'correct';
-                disableOptions();
                 selectedOption.classList.add('correct-animation');
+                disableOptions();
                 setTimeout(() => {
-                    nextQuestion();
+                    displayQuestion(); // 直接調用 displayQuestion 而不是 nextQuestion
                 }, 1000);
             } else {
                 resultDiv.innerHTML = '答錯了，請再試一次。';
@@ -360,10 +360,6 @@
                     answer: simplifySqrt(correct)
                 }));
             }
-        }
-
-        function nextQuestion() {
-            displayQuestion();
         }
 
         function endGame() {
