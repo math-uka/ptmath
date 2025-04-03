@@ -43,14 +43,14 @@
         #inputArea {
             margin: 25px 0;
             width: 100%;
-            max-width: 400px; /* 增加最大寬度以容納更大的鍵盤 */
+            max-width: 400px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
         }
         #answerInput {
-            font-size: 2em; /* 放大輸入框字體 */
+            font-size: 2em;
             width: 120px;
             padding: 15px;
             text-align: center;
@@ -59,7 +59,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         #submitBtn {
-            padding: 15px 50px; /* 按鈕更大 */
+            padding: 15px 50px;
             font-size: 1.5em;
             background-color: #2196F3;
             color: white;
@@ -75,24 +75,24 @@
         .number-pad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px; /* 增加按鈕間距 */
-            width: 300px; /* 鍵盤寬度放大 */
+            gap: 15px;
+            width: 300px;
             background: white;
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .number-btn {
-            width: 80px; /* 按鈕寬度放大 */
-            height: 80px; /* 按鈕高度放大 */
-            font-size: 1.8em; /* 字體放大 */
+            width: 80px;
+            height: 80px;
+            font-size: 1.8em;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.2s;
-            touch-action: manipulation; /* 優化觸控體驗 */
+            touch-action: manipulation;
         }
         .number-btn:hover {
             background-color: #45a049;
@@ -122,6 +122,15 @@
             font-size: 1.5em;
             padding-top: 20%;
             text-align: center;
+        }
+        #miniFireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* 確保不影響操作 */
+            z-index: 500;
         }
         @media (max-width: 600px) {
             #welcome { font-size: 1.5em; }
@@ -164,6 +173,7 @@
     </div>
     <div id="message"></div>
     <div id="fireworks"></div>
+    <div id="miniFireworks"></div>
 
     <script>
         let score = 0;
@@ -199,12 +209,42 @@
             document.getElementById('answerInput').value = '';
         }
 
+        function showMiniFireworks() {
+            const miniFireworks = document.getElementById('miniFireworks');
+            miniFireworks.innerHTML = ''; // 清空之前的煙花
+
+            // 產生短暫的煙花效果
+            for (let i = 0; i < 10; i++) {
+                const spark = document.createElement('div');
+                spark.style.position = 'absolute';
+                spark.style.left = Math.random() * 100 + '%';
+                spark.style.top = Math.random() * 100 + '%';
+                spark.style.width = '15px';
+                spark.style.height = '15px';
+                spark.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                spark.style.borderRadius = '50%';
+                spark.style.opacity = '1';
+                spark.style.transition = 'all 0.5s ease-out';
+                miniFireworks.appendChild(spark);
+
+                // 動畫效果：擴散並淡出
+                setTimeout(() => {
+                    spark.style.transform = `translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px)`;
+                    spark.style.opacity = '0';
+                }, 10);
+
+                // 移除煙花
+                setTimeout(() => spark.remove(), 500);
+            }
+        }
+
         function checkAnswer() {
             const userAnswer = parseInt(document.getElementById('answerInput').value) || 0;
             
             if (userAnswer === answer) {
                 score++;
                 document.getElementById('score').textContent = `得分: ${score}`;
+                showMiniFireworks(); // 答對時觸發煙花效果
                 if (score === 10) {
                     endGame();
                 } else {
