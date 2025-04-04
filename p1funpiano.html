@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>鋼琴音樂遊戲358</title>
+    <title>鋼琴音樂遊戲401</title>
     <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
     <style>
         body {
@@ -207,22 +207,61 @@
         }
 
         const songs = {
-            twinkle: [
-                { note: 'C4', duration: 500 },
-                { note: 'C4', duration: 500 },
-                { note: 'G4', duration: 500 },
-                { note: 'G4', duration: 500 },
-                { note: 'A4', duration: 500 },
-                { note: 'A4', duration: 500 },
-                { note: 'G4', duration: 1000 },
-                { note: 'F4', duration: 500 },
-                { note: 'F4', duration: 500 },
-                { note: 'E4', duration: 500 },
-                { note: 'E4', duration: 500 },
-                { note: 'D4', duration: 500 },
-                { note: 'D4', duration: 500 },
-                { note: 'C4', duration: 1000 }
-            ],
+            twinkle:  [
+    // 第一段 "Twinkle twinkle little star"
+    { note: 'C4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'A4', duration: 500 },
+    { note: 'A4', duration: 500 },
+    { note: 'G4', duration: 1000 }, // "star"
+    
+    // 第二段 "How I wonder what you are"
+    { note: 'F4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'C4', duration: 1000 }, // "are"
+    
+    // 第三段 "Up above the world so high"
+    { note: 'G4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 1000 }, // "high"
+    
+    // 第四段 "Like a diamond in the sky"
+    { note: 'G4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 1000 }, // "sky"
+    
+    // 重複第一段
+    { note: 'C4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'A4', duration: 500 },
+    { note: 'A4', duration: 500 },
+    { note: 'G4', duration: 1000 },
+    
+    // 結尾
+    { note: 'F4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'C4', duration: 1500 } // 延長結束
+],
             birthday: [
                 { note: 'C4', duration: 500 },
                 { note: 'C4', duration: 500 },
