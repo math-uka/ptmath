@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>鋼琴音樂遊戲340</title>
+    <title>鋼琴音樂遊戲348</title>
     <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
     <style>
         body {
@@ -219,21 +219,57 @@
                 { note: 'G4', duration: 1000 },
                 { note: 'F4', duration: 1000 }
             ],
-            mary: [ // 瑪莉有隻小羊羔
-                { note: 'E4', duration: 500 },
-                { note: 'D4', duration: 500 },
-                { note: 'C4', duration: 500 },
-                { note: 'D4', duration: 500 },
-                { note: 'E4', duration: 500 },
-                { note: 'E4', duration: 500 },
-                { note: 'E4', duration: 1000 },
-                { note: 'D4', duration: 500 },
-                { note: 'D4', duration: 500 },
-                { note: 'D4', duration: 1000 },
-                { note: 'E4', duration: 500 },
-                { note: 'G4', duration: 500 },
-                { note: 'G4', duration: 1000 }
-            ],
+            mary: [
+    // 第一段："Mary had a little lamb"
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 1000 }, // "Little lamb"
+
+    // 第二段："Little lamb, little lamb"
+    { note: 'D4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'D4', duration: 1000 }, // 稍長的停頓
+    { note: 'E4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'G4', duration: 1000 }, // "Little lamb"
+
+    // 第三段："Mary had a little lamb"
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 1000 }, // "Little lamb"
+
+    // 第四段："Its fleece was white as snow"
+    { note: 'D4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'C4', duration: 1000 }, // "As snow"，結尾稍長
+
+    // 重複第一段（常見的完整版本會重複）
+    { note: 'E4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 500 },
+    { note: 'E4', duration: 1000 },
+
+    // 結尾
+    { note: 'D4', duration: 500 },
+    { note: 'D4', duration: 500 },
+    { note: 'D4', duration: 1000 },
+    { note: 'E4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'G4', duration: 1000 }
+],
 t: [
     { note: 'C4', duration: 500 },
     { note: 'C4', duration: 500 },
