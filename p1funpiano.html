@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>鋼琴音樂遊戲348</title>
+    <title>鋼琴音樂遊戲358</title>
     <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
     <style>
         body {
@@ -104,6 +104,14 @@
                 padding: 10px;
             }
         }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
     </style>
 </head>
 <body>
@@ -114,20 +122,16 @@
     </div>
     <div id="song-selection">
         <h2>選擇樂譜</h2>
-        <!-- 在這裡添加新樂譜的按鈕 -->
         <button onclick="startSongMode('twinkle')">小星星</button>
         <button onclick="startSongMode('birthday')">生日快樂</button>
         <button onclick="startSongMode('mary')">瑪莉有隻小羊羔</button>
-<button onclick="startSongMode('t')">twinkle</button>
-<button onclick="startSongMode('canonInD')">卡農D大調</button>
-<button onclick="startSongMode('aptFull')">APT</button>
-        <!-- 示例：添加新樂譜按鈕    aptFull-->
-        <!-- <button onclick="startSongMode('newSong')">新曲目名稱</button> -->
+        <button onclick="startSongMode('t')">Twinkle Extended</button>
+        <button onclick="startSongMode('canonInD')">卡農D大調</button>
+        <button onclick="startSongMode('aptFull')">APT</button>
     </div>
     <div id="piano" style="display: none;"></div>
 
     <script>
-        // 初始化 Tone.js 合成器
         const synth = new Tone.Synth().toDestination();
 
         const piano = document.getElementById('piano');
@@ -148,25 +152,42 @@
             { note: 'B4', color: 'white' }
         ];
 
-        // 播放音符函數
         function playNote(e, note) {
             e.preventDefault();
             synth.triggerAttackRelease(note, '8n');
         }
 
-        // 創建鋼琴鍵
-        function createPiano() {
+        function createPiano(isSongMode = false, currentNoteCallback = null) {
             piano.innerHTML = '';
             keys.forEach(key => {
                 const div = document.createElement('div');
                 div.className = `key ${key.color === 'black' ? 'black-key' : ''}`;
                 div.dataset.note = key.note;
                 div.textContent = key.note;
-                div.addEventListener('mousedown', e => playNote(e, key.note));
-                div.addEventListener('touchstart', e => {
-                    e.preventDefault();
-                    playNote(e, key.note);
-                });
+
+                if (isSongMode) {
+                    // 在樂譜模式下，按下正確的高亮鍵立即關閉高亮
+                    div.addEventListener('mousedown', e => {
+                        playNote(e, key.note);
+                        if (currentNoteCallback && div.dataset.note === currentNoteCallback() && div.classList.contains('highlight')) {
+                            div.classList.remove('highlight');
+                        }
+                    });
+                    div.addEventListener('touchstart', e => {
+                        e.preventDefault();
+                        playNote(e, key.note);
+                        if (currentNoteCallback && div.dataset.note === currentNoteCallback() && div.classList.contains('highlight')) {
+                            div.classList.remove('highlight');
+                        }
+                    });
+                } else {
+                    div.addEventListener('mousedown', e => playNote(e, key.note));
+                    div.addEventListener('touchstart', e => {
+                        e.preventDefault();
+                        playNote(e, key.note);
+                    });
+                }
+
                 div.addEventListener('touchmove', e => e.preventDefault());
                 div.addEventListener('touchend', e => e.preventDefault());
                 piano.appendChild(div);
@@ -176,20 +197,17 @@
             songSelection.style.display = 'none';
         }
 
-        // 自由彈奏模式
         function startFreeMode() {
-            createPiano();
+            createPiano(false);
         }
 
-        // 顯示樂譜選擇介面
         function showSongSelection() {
             modeSelection.style.display = 'none';
             songSelection.style.display = 'block';
         }
 
-        // 樂譜定義區 - 在這裡添加新樂譜
         const songs = {
-            twinkle: [ // 小星星
+            twinkle: [
                 { note: 'C4', duration: 500 },
                 { note: 'C4', duration: 500 },
                 { note: 'G4', duration: 500 },
@@ -205,7 +223,7 @@
                 { note: 'D4', duration: 500 },
                 { note: 'C4', duration: 1000 }
             ],
-            birthday: [ // 生日快樂
+            birthday: [
                 { note: 'C4', duration: 500 },
                 { note: 'C4', duration: 500 },
                 { note: 'D4', duration: 1000 },
@@ -220,346 +238,314 @@
                 { note: 'F4', duration: 1000 }
             ],
             mary: [
-    // 第一段："Mary had a little lamb"
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 1000 }, // "Little lamb"
-
-    // 第二段："Little lamb, little lamb"
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 1000 }, // 稍長的停頓
-    { note: 'E4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 1000 }, // "Little lamb"
-
-    // 第三段："Mary had a little lamb"
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 1000 }, // "Little lamb"
-
-    // 第四段："Its fleece was white as snow"
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'C4', duration: 1000 }, // "As snow"，結尾稍長
-
-    // 重複第一段（常見的完整版本會重複）
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 1000 },
-
-    // 結尾
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 1000 },
-    { note: 'E4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 1000 }
-],
-t: [
-    { note: 'C4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'G4', duration: 1000 },
-    { note: 'F4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'C4', duration: 1000 },
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 1000 }
-],
-canonInD: [
-    { note: 'D4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'C#5', duration: 500 },
-    { note: 'D5', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'C#5', duration: 500 },
-    { note: 'D5', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'D5', duration: 500 },
-    { note: 'E5', duration: 500 },
-    { note: 'F#5', duration: 500 },
-    { note: 'D5', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'C#5', duration: 500 },
-    { note: 'D5', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'B4', duration: 500 },
-    { note: 'F#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 1000 }
-],
-            aptFull:  [
-    // 前奏 (Intro)
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 }, // Eb4
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-
-    // 第一段 (Verse 1: "Apateu, apateu")
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-
-    // 過渡 (Pre-Chorus: "Kissy face, kissy face")
-    { note: 'G#4', duration: 500 }, // Ab4 改為 G#4
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-
-    // 副歌 (Chorus: "Don’t you want me like I want you, baby")
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 }, // Ab4 改為 G#4
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'A#4', duration: 500 }, // Bb4 改為 A#4
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-
-    // 重複前奏 (Intro Repeat)
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-
-    // 第二段 (Verse 2: "Sleep tomorrow, but tonight go crazy")
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-
-    // 副歌重複 (Chorus Repeat)
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'A#4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-
-    // 橋段 (Bridge: "All my ladies say")
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'A#4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-
-    // 最後副歌 (Final Chorus)
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'A#4', duration: 500 },
-    { note: 'G#4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-
-    // 結尾 (Outro)
-    { note: 'C4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'D#4', duration: 500 },
-    { note: 'C4', duration: 1000 },
-    { note: 'C4', duration: 1000 }
-]
- 
-            
-            // 如何添加新樂譜：
-            // 1. 在這裡添加新屬性，例如：
-            // newSong: [
-            //     { note: 'C4', duration: 500 }, // 音符和持續時間（毫秒）
-            //     { note: 'E4', duration: 500 },
-            //     { note: 'G4', duration: 1000 }
-            // ],
-            // 2. 在上面的 #song-selection 中添加對應按鈕：
-            // <button onclick="startSongMode('newSong')">新曲目名稱</button>
-            // 注意：確保 note 值與 keys 陣列中的音符一致（C4, C#4, D4 等）
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 1000 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 1000 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 1000 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 1000 }
+            ],
+            t: [
+                { note: 'C4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'G4', duration: 1000 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1000 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 }
+            ],
+            canonInD: [
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'C#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'C#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'E5', duration: 500 },
+                { note: 'F#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'C#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 }
+            ],
+            aptFull: [
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'A#4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'A#4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'A#4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'A#4', duration: 500 },
+                { note: 'G#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'D#4', duration: 500 },
+                { note: 'C4', duration: 1000 },
+                { note: 'C4', duration: 1000 }
+            ]
         };
 
-        // 樂譜模式
         function startSongMode(songKey) {
-            createPiano();
             const selectedSong = songs[songKey];
             if (!selectedSong) {
                 console.error(`樂譜 ${songKey} 未找到！`);
                 return;
             }
+
             let index = 0;
+            let currentNote = null;
+
+            createPiano(true, () => currentNote);
 
             function highlightNextNote() {
                 if (index >= selectedSong.length) return;
+
                 const { note, duration } = selectedSong[index];
+                currentNote = note;
                 const key = piano.querySelector(`[data-note="${note}"]`);
+
                 if (key) {
                     key.classList.add('highlight');
-                    console.log(`高亮音符: ${note}, 持續時間: ${duration}ms`); // 調試資訊
+                    console.log(`高亮音符: ${note}, 持續時間: ${duration}ms`);
+                    // 即使未按下，超時後也自動熄滅
+                    setTimeout(() => {
+                        if (key.classList.contains('highlight')) {
+                            key.classList.remove('highlight');
+                        }
+                    }, duration);
                 } else {
-                    console.error(`找不到鍵位: ${note}`); // 如果鍵位沒發光，這裡會顯示錯誤
+                    console.error(`找不到鍵位: ${note}`);
                 }
 
                 setTimeout(() => {
-                    if (key) key.classList.remove('highlight');
                     index++;
                     highlightNextNote();
                 }, duration);
@@ -568,7 +554,6 @@ canonInD: [
             highlightNextNote();
         }
 
-        // 啟動音頻上下文
         document.addEventListener('touchstart', function startAudio() {
             Tone.start();
             document.removeEventListener('touchstart', startAudio);
@@ -578,8 +563,8 @@ canonInD: [
             document.removeEventListener('mousedown', startAudio);
         });
     </script>
-     <footer>
-        <p>&copy; 2025 ukawai</p>
+    <footer>
+        <p>© 2025 ukawai</p>
     </footer>
 </body>
 </html>
