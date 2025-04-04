@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>鋼琴音樂遊戲412</title>
+    <title>鋼琴音樂遊戲422</title>
     <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
     <style>
         body {
@@ -149,6 +149,8 @@
         <button onclick="startSongMode('t')">Twinkle Extended</button>
         <button onclick="startSongMode('canonInD')">卡農D大調</button>
         <button onclick="startSongMode('aptFull')">APT</button>
+<button onclick="startSongMode('sigmaBoyMelody')">sigmaBoyMelody</button>
+        
     </div>
     <div id="speed-control">
         <label for="speed-slider">播放速度: </label>
@@ -468,7 +470,34 @@
                 { note: 'B4', duration: 500 },
                 { note: 'A4', duration: 200 }, { note: 'G4', duration: 200 },
                 { note: 'E4', duration: 300 }, { note: 'D4', duration: 700 }
-            ]
+            ],
+            sigmaBoyMelody = [
+    // 前奏合成器旋律 (原曲高八度，此处降八度)
+    { note: 'E4', duration: 200 }, { note: 'G4', duration: 200 },
+    { note: 'A4', duration: 400 }, { note: 'G4', duration: 200 },
+    { note: 'E4', duration: 400 }, { note: 'D4', duration: 400 },
+
+    // Verse "I'm a sigma boy..."
+    { note: 'C4', duration: 300 }, { note: 'D4', duration: 300 },
+    { note: 'E4', duration: 600 }, { note: 'G4', duration: 300 },
+    { note: 'A4', duration: 300 }, { note: 'G4', duration: 600 }, // "sigma boy"
+
+    // Pre-Chorus "No rules no games..."
+    { note: 'A4', duration: 200 }, { note: 'G4', duration: 200 },
+    { note: 'F4', duration: 200 }, { note: 'E4', duration: 400 },
+    { note: 'D4', duration: 800 }, // "games"
+
+    // Chorus "I do what I want..."
+    { note: 'G4', duration: 250 }, { note: 'G4', duration: 250 },
+    { note: 'A4', duration: 250 }, { note: 'B4', duration: 250 },
+    { note: 'A4', duration: 250 }, { note: 'G4', duration: 250 },
+    { note: 'E4', duration: 1000 }, // "want"
+
+    // 重复段落
+    { note: 'E4', duration: 200 }, { note: 'G4', duration: 200 },
+    { note: 'A4', duration: 400 }, { note: 'G4', duration: 200 },
+    { note: 'E4', duration: 400 }, { note: 'D4', duration: 400 }
+]
         };
 
         function startSongMode(songKey) {
