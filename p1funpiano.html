@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>鋼琴音樂遊戲401</title>
+    <title>鋼琴音樂遊戲412</title>
     <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
     <style>
         body {
@@ -64,7 +64,7 @@
         }
         .key {
             width: clamp(60px, 10vw, 120px);
-            height: clamp(120px, 25vh, 180px);
+            height: clamp(240px, 50vh, 360px);
             border: 1px solid #333;
             background: #fff;
             cursor: pointer;
@@ -83,7 +83,7 @@
         }
         .black-key {
             width: clamp(40px, 6vw, 80px);
-            height: clamp(70px, 15vh, 110px);
+            height: clamp(140px, 30vh, 220px);
             background: #222;
             color: #fff;
             margin: 0 calc(clamp(40px, 6vw, 80px) / -2);
@@ -96,12 +96,33 @@
         .highlight {
             background: #ffd700 !important;
         }
+        #speed-control {
+            position: absolute;
+            top: 150px;
+            text-align: center;
+            width: 100%;
+            display: none;
+        }
+        #speed-control label {
+            font-size: clamp(14px, 4vw, 18px);
+            margin-right: 10px;
+        }
+        #speed-control input[type="range"] {
+            width: 200px;
+            cursor: pointer;
+        }
         @media (max-width: 600px) {
             #mode-selection, #song-selection {
                 padding: 10px;
             }
             #piano {
                 padding: 10px;
+            }
+            #speed-control {
+                top: 120px;
+            }
+            #speed-control input[type="range"] {
+                width: 150px;
             }
         }
         footer {
@@ -129,6 +150,10 @@
         <button onclick="startSongMode('canonInD')">卡農D大調</button>
         <button onclick="startSongMode('aptFull')">APT</button>
     </div>
+    <div id="speed-control">
+        <label for="speed-slider">播放速度: </label>
+        <input type="range" id="speed-slider" min="0.5" max="2" step="0.1" value="1">
+    </div>
     <div id="piano" style="display: none;"></div>
 
     <script>
@@ -137,6 +162,8 @@
         const piano = document.getElementById('piano');
         const modeSelection = document.getElementById('mode-selection');
         const songSelection = document.getElementById('song-selection');
+        const speedControl = document.getElementById('speed-control');
+        const speedSlider = document.getElementById('speed-slider');
         const keys = [
             { note: 'C4', color: 'white' },
             { note: 'C#4', color: 'black' },
@@ -166,7 +193,6 @@
                 div.textContent = key.note;
 
                 if (isSongMode) {
-                    // 在樂譜模式下，按下正確的高亮鍵立即關閉高亮
                     div.addEventListener('mousedown', e => {
                         playNote(e, key.note);
                         if (currentNoteCallback && div.dataset.note === currentNoteCallback() && div.classList.contains('highlight')) {
@@ -195,6 +221,11 @@
             piano.style.display = 'flex';
             modeSelection.style.display = 'none';
             songSelection.style.display = 'none';
+            if (isSongMode) {
+                speedControl.style.display = 'block';
+            } else {
+                speedControl.style.display = 'none';
+            }
         }
 
         function startFreeMode() {
@@ -207,75 +238,72 @@
         }
 
         const songs = {
-            twinkle:  [
-    // 第一段 "Twinkle twinkle little star"
-    { note: 'C4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'G4', duration: 1000 }, // "star"
-    
-    // 第二段 "How I wonder what you are"
-    { note: 'F4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'C4', duration: 1000 }, // "are"
-    
-    // 第三段 "Up above the world so high"
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 1000 }, // "high"
-    
-    // 第四段 "Like a diamond in the sky"
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 1000 }, // "sky"
-    
-    // 重複第一段
-    { note: 'C4', duration: 500 },
-    { note: 'C4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'G4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'A4', duration: 500 },
-    { note: 'G4', duration: 1000 },
-    
-    // 結尾
-    { note: 'F4', duration: 500 },
-    { note: 'F4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'E4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'D4', duration: 500 },
-    { note: 'C4', duration: 1500 } // 延長結束
-],
-            birthday: [
+            twinkle: [
                 { note: 'C4', duration: 500 },
                 { note: 'C4', duration: 500 },
-                { note: 'D4', duration: 1000 },
-                { note: 'C4', duration: 1000 },
-                { note: 'F4', duration: 1000 },
-                { note: 'E4', duration: 1000 },
-                { note: 'C4', duration: 500 },
-                { note: 'C4', duration: 500 },
-                { note: 'D4', duration: 1000 },
-                { note: 'C4', duration: 1000 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'A4', duration: 500 },
                 { note: 'G4', duration: 1000 },
-                { note: 'F4', duration: 1000 }
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1000 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'C4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'G4', duration: 1000 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1500 }
             ],
+            birthday: [
+    // "Happy birthday to you"
+    { note: 'C4', duration: 400 }, { note: 'C4', duration: 400 },
+    { note: 'D4', duration: 800 }, { note: 'C4', duration: 800 },
+    { note: 'F4', duration: 800 }, { note: 'E4', duration: 1200 },
+
+    // "Happy birthday to you"
+    { note: 'C4', duration: 400 }, { note: 'C4', duration: 400 },
+    { note: 'D4', duration: 800 }, { note: 'C4', duration: 800 },
+    { note: 'G4', duration: 800 }, { note: 'F4', duration: 1200 },
+
+    // "Happy birthday dear [name]"
+    { note: 'C4', duration: 400 }, { note: 'C4', duration: 400 },
+    { note: 'C5', duration: 800 }, { note: 'A4', duration: 800 }, // 原曲高音C5，此处用A4替代
+    { note: 'F4', duration: 800 }, { note: 'E4', duration: 800 },
+    { note: 'D4', duration: 1200 },
+
+    // "Happy birthday to you"
+    { note: 'A#4', duration: 400 }, { note: 'A#4', duration: 400 }, // 原曲降B调，用A#4替代
+    { note: 'A4', duration: 800 }, { note: 'F4', duration: 800 },
+    { note: 'G4', duration: 800 }, { note: 'F4', duration: 1200 }
+],
             mary: [
                 { note: 'E4', duration: 500 },
                 { note: 'D4', duration: 500 },
@@ -427,27 +455,20 @@
                 { note: 'D4', duration: 1000 }
             ],
             aptFull: [
-    // 前奏部分 (Bruno Mars哼唱旋律)
-    { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
-    { note: 'G4', duration: 300 }, { note: 'E4', duration: 500 },
-    { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
-    { note: 'G4', duration: 300 }, { note: 'E4', duration: 500 },
-
-    // ROSÉ主歌 "I left my keys.."
-    { note: 'C4', duration: 400 }, { note: 'D4', duration: 300 }, 
-    { note: 'E4', duration: 500 }, { note: 'G4', duration: 300 },
-    { note: 'E4', duration: 400 }, { note: 'D4', duration: 800 }, // "in your apartment"
-    
-    // 副歌 "Tell me how.."
-    { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
-    { note: 'G4', duration: 300 }, { note: 'E4', duration: 400 },
-    { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
-    { note: 'B4', duration: 500 }, // 最高音 "how"
-    
-    // 过渡段 (Bruno Mars即兴部分)
-    { note: 'A4', duration: 200 }, { note: 'G4', duration: 200 },
-    { note: 'E4', duration: 300 }, { note: 'D4', duration: 700 }
-]
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'G4', duration: 300 }, { note: 'E4', duration: 500 },
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'G4', duration: 300 }, { note: 'E4', duration: 500 },
+                { note: 'C4', duration: 400 }, { note: 'D4', duration: 300 },
+                { note: 'E4', duration: 500 }, { note: 'G4', duration: 300 },
+                { note: 'E4', duration: 400 }, { note: 'D4', duration: 800 },
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'G4', duration: 300 }, { note: 'E4', duration: 400 },
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'B4', duration: 500 },
+                { note: 'A4', duration: 200 }, { note: 'G4', duration: 200 },
+                { note: 'E4', duration: 300 }, { note: 'D4', duration: 700 }
+            ]
         };
 
         function startSongMode(songKey) {
@@ -463,21 +484,25 @@
             createPiano(true, () => currentNote);
 
             function highlightNextNote() {
-                if (index >= selectedSong.length) return;
+                if (index >= selectedSong.length) {
+                    speedControl.style.display = 'none'; // 結束時隱藏滑條
+                    return;
+                }
 
+                const speedMultiplier = parseFloat(speedSlider.value); // 獲取滑條值 (0.5 到 2)
                 const { note, duration } = selectedSong[index];
+                const adjustedDuration = duration / speedMultiplier; // 根據速度調整持續時間
                 currentNote = note;
                 const key = piano.querySelector(`[data-note="${note}"]`);
 
                 if (key) {
                     key.classList.add('highlight');
-                    console.log(`高亮音符: ${note}, 持續時間: ${duration}ms`);
-                    // 即使未按下，超時後也自動熄滅
+                    console.log(`高亮音符: ${note}, 調整後持續時間: ${adjustedDuration}ms`);
                     setTimeout(() => {
                         if (key.classList.contains('highlight')) {
                             key.classList.remove('highlight');
                         }
-                    }, duration);
+                    }, adjustedDuration);
                 } else {
                     console.error(`找不到鍵位: ${note}`);
                 }
@@ -485,7 +510,7 @@
                 setTimeout(() => {
                     index++;
                     highlightNextNote();
-                }, duration);
+                }, adjustedDuration);
             }
 
             highlightNextNote();
