@@ -36,14 +36,18 @@
             margin: 5px;
             background: #98fb98;
             border-radius: 10px;
-            cursor: move;
+            cursor: pointer;
             user-select: none;
-            font-size: clamp(16px, 4vw, 20px);
             transition: transform 0.2s;
-            touch-action: none;
         }
         .word:hover {
             transform: scale(1.1);
+        }
+        #source .word {
+            font-size: clamp(20px, 5vw, 28px); /* 題目區文字放大 */
+        }
+        #dropzone .word {
+            font-size: clamp(16px, 4vw, 20px);
         }
         #source, #dropzone {
             min-height: 80px;
@@ -141,7 +145,7 @@
 
     <script>
         const sentences = [
-   '學校 是 學習 知識 地方',
+          '學校 是 學習 知識 地方',
 '老師 教 我們 讀書 寫字',
 '同學 之間 要 互相 幫助',
 '上課 要 安靜 聽 老師',
@@ -206,7 +210,6 @@
         let questionCount = 0;
         let usedSentences = [];
         const totalQuestions = 5;
-        let draggedElement = null;
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -245,84 +248,22 @@
                 div.className = 'word';
                 div.textContent = word;
                 div.id = `word-${index}`;
-                // 滑鼠事件
-                div.draggable = true;
-                div.ondragstart = dragStart;
-                div.ondragend = dragEnd;
-                // 觸控事件
-                div.addEventListener('touchstart', touchStart);
-                div.addEventListener('touchmove', touchMove);
-                div.addEventListener('touchend', touchEnd);
+                div.onclick = () => moveToDropzone(div);
                 source.appendChild(div);
             });
         }
 
-        // 滑鼠拖放
-        function dragStart(event) {
-            draggedElement = event.target;
-            event.dataTransfer.setData('text', event.target.id);
+        function moveToDropzone(element) {
+            const dropzone = document.getElementById('dropzone');
+            dropzone.appendChild(element);
+            element.onclick = () => moveToSource(element);
         }
 
-        function dragEnd(event) {
-            draggedElement = null;
+        function moveToSource(element) {
+            const source = document.getElementById('source');
+            source.appendChild(element);
+            element.onclick = () => moveToDropzone(element);
         }
-
-        // 觸控事件
-        function touchStart(event) {
-            event.preventDefault();
-            draggedElement = event.target;
-            draggedElement.style.position = 'absolute';
-            moveElement(event.touches[0]);
-        }
-
-        function touchMove(event) {
-            event.preventDefault();
-            if (draggedElement) {
-                moveElement(event.touches[0]);
-            }
-        }
-
-        function touchEnd(event) {
-            if (draggedElement) {
-                const dropzone = document.getElementById('dropzone');
-                const source = document.getElementById('source');
-                const touch = event.changedTouches[0];
-                const dropRect = dropzone.getBoundingClientRect();
-                const sourceRect = source.getBoundingClientRect();
-
-                draggedElement.style.position = '';
-                if (touch.clientY >= dropRect.top && touch.clientY <= dropRect.bottom &&
-                    touch.clientX >= dropRect.left && touch.clientX <= dropRect.right) {
-                    dropzone.appendChild(draggedElement);
-                } else if (touch.clientY >= sourceRect.top && touch.clientY <= sourceRect.bottom &&
-                    touch.clientX >= sourceRect.left && touch.clientX <= sourceRect.right) {
-                    source.appendChild(draggedElement);
-                } else {
-                    source.appendChild(draggedElement);
-                }
-                draggedElement = null;
-            }
-        }
-
-        function moveElement(touch) {
-            draggedElement.style.left = `${touch.clientX - draggedElement.offsetWidth / 2}px`;
-            draggedElement.style.top = `${touch.clientY - draggedElement.offsetHeight / 2}px`;
-        }
-
-        // 拖放區域
-        ['source', 'dropzone'].forEach(id => {
-            const element = document.getElementById(id);
-            element.ondragover = (event) => event.preventDefault();
-            element.ondrop = (event) => {
-                event.preventDefault();
-                const id = event.dataTransfer.getData('text');
-                const draggableElement = document.getElementById(id);
-                const dropzone = event.target.closest('#source, #dropzone');
-                if (dropzone) {
-                    dropzone.appendChild(draggableElement);
-                }
-            };
-        });
 
         function checkAnswer() {
             const dropzone = document.getElementById('dropzone');
@@ -398,5 +339,8 @@
 
         newQuestion();
     </script>
+     <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
 </body>
 </html>
