@@ -120,8 +120,8 @@
         <button onclick="startSongMode('mary')">瑪莉有隻小羊羔</button>
 <button onclick="startSongMode('t')">twinkle</button>
 <button onclick="startSongMode('canonInD')">卡農D大調</button>
-
-        <!-- 示例：添加新樂譜按鈕 canonInD-->
+<button onclick="startSongMode('aptFul')">APT</button>
+        <!-- 示例：添加新樂譜按鈕    aptFull-->
         <!-- <button onclick="startSongMode('newSong')">新曲目名稱</button> -->
     </div>
     <div id="piano" style="display: none;"></div>
@@ -343,7 +343,152 @@ canonInD: [
     { note: 'G4', duration: 500 },
     { note: 'E4', duration: 500 },
     { note: 'D4', duration: 1000 }
+],
+            aptFull: [
+    // 前奏 (Intro)
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+
+    // 第一段 (Verse 1: "Apateu, apateu")
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+
+    // 過渡 (Pre-Chorus: "Kissy face, kissy face")
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+
+    // 副歌 (Chorus: "Don’t you want me like I want you, baby")
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'Bb4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+
+    // 重複前奏 (Intro Repeat)
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+
+    // 第二段 (Verse 2: "Sleep tomorrow, but tonight go crazy")
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+
+    // 副歌重複 (Chorus Repeat)
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'Bb4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+
+    // 橋段 (Bridge: "All my ladies say")
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'Bb4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+
+    // 最後副歌 (Final Chorus)
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'Bb4', duration: 500 },
+    { note: 'Ab4', duration: 500 },
+    { note: 'G4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+
+    // 結尾 (Outro)
+    { note: 'C4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'F4', duration: 500 },
+    { note: 'Eb4', duration: 500 },
+    { note: 'C4', duration: 1000 },
+    { note: 'C4', duration: 1000 }
 ]
+
+            
             // 如何添加新樂譜：
             // 1. 在這裡添加新屬性，例如：
             // newSong: [
