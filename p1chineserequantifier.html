@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>量詞冒險島</title>
+    <style>
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background-color: #e6f7ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            background-image: url('https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg');
+            background-size: cover;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 5px solid #ff9966;
+        }
+        
+        h1 {
+            color: #ff6600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #3399ff;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 10px;
+        }
+        
+        .question-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        
+        .question {
+            font-size: 2em;
+            color: #333;
+            background-color: #ffffcc;
+            padding: 15px;
+            border-radius: 15px;
+            display: inline-block;
+            border: 3px dashed #ff9966;
+            margin: 10px;
+        }
+        
+        .blank {
+            display: inline-block;
+            width: 80px;
+            height: 50px;
+            border-bottom: 3px solid #3399ff;
+            margin: 0 5px;
+            vertical-align: middle;
+            position: relative;
+        }
+        
+        .selected-answer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            color: #ff6600;
+            font-weight: bold;
+        }
+        
+        .options-area {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .option {
+            background-color: #ffcc99;
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s;
+            border: 3px solid #ff9966;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            user-select: none;
+        }
+        
+        .option:hover, .option:active {
+            background-color: #ff9966;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .option.selected {
+            background-color: #99ccff;
+            border-color: #3399ff;
+            transform: scale(0.95);
+        }
+        
+        .option.correct {
+            background-color: #a5d6a7;
+            border-color: #4CAF50;
+        }
+        
+        .option.wrong {
+            background-color: #ffab91;
+            border-color: #FF5722;
+            opacity: 0.6;
+        }
+        
+        .feedback {
+            font-size: 1.5em;
+            margin: 20px 0;
+            min-height: 40px;
+        }
+        
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .incorrect {
+            color: #FF5722;
+        }
+        
+        .next-btn, .restart-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            user-select: none;
+        }
+        
+        .next-btn:hover, .restart-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .next-btn:active, .restart-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .restart-btn {
+            background-color: #FF5722;
+            display: none;
+        }
+        
+        .restart-btn:hover {
+            background-color: #e64a19;
+        }
+        
+        .score-display {
+            font-size: 1.5em;
+            color: #ff6600;
+            margin: 15px 0;
+        }
+        
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .question {
+                font-size: 1.5em;
+                padding: 10px;
+            }
+            
+            .blank {
+                width: 60px;
+                height: 40px;
+            }
+            
+            .selected-answer {
+                font-size: 1.2em;
+            }
+            
+            .options-area {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .option {
+                padding: 12px;
+                font-size: 1em;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .subtitle {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>量詞冒險島</h1>
+        <div class="subtitle">選擇正確的量詞完成句子！</div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="score-display">第 <span id="currentQuestion">1</span> / 10 關</div>
+        
+        <div class="question-container">
+            <div class="question" id="questionText"></div>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="options-area" id="optionsArea"></div>
+        
+        <button class="next-btn" id="nextBtn" style="display: none;">下一題</button>
+        <button class="restart-btn" id="restartBtn">重新開始</button>
+    </div>
+    
+    <div class="celebration" id="celebration"></div>
+    
+    <script>
+        // 量詞庫
+        const measureWords = {
+            "車": "輛",
+            "書": "本",
+            "狗": "隻",
+            "魚": "條",
+            "桌子": "張",
+            "牛": "頭",
+            "樹": "棵",
+            "水": "杯",
+            "衣服": "件",
+            "鳥": "隻",
+            "鉛筆": "支",
+            "紙": "張",
+            "飛機": "架",
+            "花": "朵",
+            "貓": "隻",
+            "椅子": "張",
+            "馬": "匹",
+            "羊": "隻",
+            "船": "艘",
+            "電腦": "台",
+            "手機": "支",
+            "電視": "台",
+            "鞋子": "雙",
+            "襪子": "雙",
+            "手套": "雙",
+            "眼睛": "雙",
+            "耳朵": "對",
+            "筷子": "雙",
+            "刀": "把",
+            "傘": "把",
+            "扇子": "把",
+            "鑰匙": "把",
+            "牙刷": "支",
+            "筆": "支",
+            "香蕉": "根",
+            "黃瓜": "根",
+            "繩子": "條",
+            "路": "條",
+            "河": "條",
+            "蛇": "條",
+            "褲子": "條",
+            "裙子": "條",
+            "圍巾": "條",
+            "項鍊": "條",
+            "新聞": "則",
+            "消息": "則",
+            "事件": "件",
+            "禮物": "份",
+            "工作": "份",
+            "報紙": "份",
+            "飯": "碗",
+            "湯": "碗",
+            "茶": "杯",
+            "咖啡": "杯",
+            "酒": "瓶",
+            "牛奶": "瓶",
+            "果汁": "瓶",
+            "藥": "粒",
+            "糖": "顆",
+            "葡萄": "顆",
+            "星星": "顆",
+            "心": "顆",
+            "牙齒": "顆",
+            "寶石": "顆",
+            "珍珠": "顆",
+            "雞蛋": "個",
+            "蘋果": "個",
+            "橘子": "個",
+            "西瓜": "個",
+            "球": "個",
+            "問題": "個",
+            "人": "個",
+"車輪": "個",
+    "椰子": "個",
+    "星星": "顆",
+    "包子": "個",
+    "糖果": "顆",
+    "蝴蝶": "隻",
+    "馬": "匹",
+    "手表": "塊",
+    "氣球": "個",
+    "果凍": "個",
+    "魚缸": "個",
+    "沙發": "張",
+    "畫": "幅",
+    "故事": "篇",
+    "冰淇淋": "球",
+    "玩具": "個",
+    "帽子": "頂",
+    "籃球": "個",
+    "足球": "個",
+    "橡皮擦": "個",
+    "筆記本": "本",
+    "水壺": "個",
+    "寶寶": "個",
+    "小熊": "隻",
+    "音樂": "首",
+    "樂器": "件",
+    "花束": "束",
+    "影像": "幅",
+    "生日蛋糕": "個",
+    "糖果罐": "個",
+    "小鳥": "隻",
+    "水族箱": "個",
+    "相片": "張",
+    "小豬": "隻",
+    "馬戲團": "個",
+    "畫筆": "支",
+    "木頭": "根",
+    "沙子": "堆",
+    "故事書": "本",
+    "玩偶": "個",
+    "背包": "個",
+    "圍棋": "盤",
+    "拼圖": "塊",
+    "木馬": "匹",
+    "手指": "隻",
+    "奶昔": "杯",
+    "香蕉": "根",
+    "糖": "包",
+    "氣泡": "個",
+    "水晶": "顆",
+    "寶盒": "個",
+    "行李": "個",
+    "小貓": "隻",
+    "小狗": "隻",
+    "小兔": "隻",
+    "小魚": "隻",
+    "海洋": "片",
+    "星球": "顆",
+    "月亮": "個",
+    "太陽": "個",
+    "花園": "個",
+    "草地": "片",
+    "小鎮": "個",
+    "植物": "棵",
+            "孩子": "個"
+        };
+        
+        const allMeasureWords = [...new Set(Object.values(measureWords))];
+        
+        // 遊戲狀態
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let currentSelectedOption = null;
+        let shuffledQuestions = [];
+        let usedNouns = [];
+        let autoNextTimeout = null; // 用於管理自動下一題的計時器
+        
+        // DOM 元素
+        const questionText = document.getElementById('questionText');
+        const optionsArea = document.getElementById('optionsArea');
+        const feedback = document.getElementById('feedback');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const currentQuestionDisplay = document.getElementById('currentQuestion');
+        const progressBar = document.getElementById('progressBar');
+        const celebration = document.getElementById('celebration');
+        
+        // 初始化遊戲
+        function initGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            currentSelectedOption = null;
+            usedNouns = [];
+            if (autoNextTimeout) clearTimeout(autoNextTimeout); // 清除任何現有的計時器
+            
+            shuffledQuestions = generateUniqueQuestions(10);
+            loadQuestion();
+        }
+        
+        // 生成不重複的題目
+        function generateUniqueQuestions(count) {
+            const questions = [];
+            const nouns = Object.keys(measureWords);
+            
+            if (nouns.length < count) {
+                console.error("名詞數量不足，無法生成足夠的題目");
+                return [];
+            }
+            
+            const shuffledNouns = [...nouns].sort(() => Math.random() - 0.5);
+            
+            for (let i = 0; i < count; i++) {
+                const noun = shuffledNouns[i];
+                const correctAnswer = measureWords[noun];
+                let wrongOptions = [];
+                const otherAnswers = allMeasureWords.filter(mw => mw !== correctAnswer);
+                const shuffledWrong = [...otherAnswers].sort(() => Math.random() - 0.5);
+                wrongOptions = shuffledWrong.slice(0, 8);
+                const allOptions = [correctAnswer, ...wrongOptions].sort(() => Math.random() - 0.5);
+                
+                questions.push({
+                    question: `一___${noun}`,
+                    noun: noun,
+                    correctAnswer: correctAnswer,
+                    options: allOptions
+                });
+                usedNouns.push(noun);
+            }
+            return questions;
+        }
+        
+        // 載入問題
+        function loadQuestion() {
+            currentQuestionData = shuffledQuestions[currentQuestionIndex];
+            
+            const questionParts = currentQuestionData.question.split('___');
+            questionText.innerHTML = `
+                ${questionParts[0]}
+                <span class="blank" id="answerBlank">
+                    ${currentSelectedOption ? `<span class="selected-answer">${currentSelectedOption}</span>` : ''}
+                </span>
+                ${questionParts[1]}
+            `;
+            
+            currentQuestionDisplay.textContent = currentQuestionIndex + 1;
+            progressBar.style.width = `${(currentQuestionIndex / 10) * 100}%`;
+            
+            feedback.innerHTML = '';
+            optionsArea.innerHTML = '';
+            nextBtn.style.display = 'none';
+            
+            currentSelectedOption = null;
+            
+            currentQuestionData.options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => {
+                    selectOption(option, optionElement);
+                });
+                optionsArea.appendChild(optionElement);
+            });
+        }
+        
+        // 選擇選項
+        function selectOption(option, optionElement) {
+            // 移除之前選中的樣式
+            document.querySelectorAll('.option').forEach(el => {
+                el.classList.remove('selected', 'correct', 'wrong');
+            });
+            
+            // 添加新選中的樣式
+            optionElement.classList.add('selected');
+            currentSelectedOption = option;
+            
+            // 更新題目空白處
+            const blank = document.getElementById('answerBlank');
+            blank.innerHTML = `<span class="selected-answer">${option}</span>`;
+            
+            // 檢查答案
+            checkAnswer(option, optionElement);
+        }
+        
+        // 檢查答案
+        function checkAnswer(selectedOption, optionElement) {
+            const isCorrect = selectedOption === currentQuestionData.correctAnswer;
+            
+            if (isCorrect) {
+                feedback.textContent = '太棒了！答對了！';
+                feedback.className = 'feedback correct';
+                optionElement.classList.add('correct');
+                score++;
+                
+                if (currentQuestionIndex === 9) {
+                    showCelebration();
+                    feedback.textContent = '恭喜你完成所有題目！';
+                    setTimeout(() => {
+                        showFinalResults();
+                    }, 2000);
+                } else {
+                    // 2秒後自動下一題
+                    if (autoNextTimeout) clearTimeout(autoNextTimeout); // 清除之前的計時器
+                    autoNextTimeout = setTimeout(() => {
+                        nextQuestion();
+                    }, 2000);
+                    nextBtn.style.display = 'inline-block'; // 同時顯示下一題按鈕，讓用戶可以手動跳過
+                }
+            } else {
+                feedback.textContent = '再試試看！';
+                feedback.className = 'feedback incorrect';
+                optionElement.classList.add('wrong');
+                // 不鎖定選項，讓用戶可以重新選擇
+            }
+        }
+        
+        // 顯示最終結果
+        function showFinalResults() {
+            questionText.textContent = '遊戲完成！';
+            optionsArea.innerHTML = '';
+            feedback.textContent = `你的得分是 ${score} / 10`;
+            nextBtn.style.display = 'none';
+            restartBtn.style.display = 'inline-block';
+            progressBar.style.width = '100%';
+        }
+        
+        // 下一題
+        function nextQuestion() {
+            currentQuestionIndex++;
+            currentSelectedOption = null;
+            if (autoNextTimeout) clearTimeout(autoNextTimeout); // 清除計時器
+            
+            if (currentQuestionIndex < 10) {
+                loadQuestion();
+            } else {
+                showFinalResults();
+            }
+        }
+        
+        // 顯示慶祝動畫
+        function showCelebration() {
+            celebration.style.display = 'block';
+            celebration.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animation = `confetti-fall ${2 + Math.random() * 3}s linear forwards`;
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                celebration.appendChild(confetti);
+            }
+            
+            setTimeout(() => {
+                celebration.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 事件監聽
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', initGame);
+        
+        // 開始遊戲
+        initGame();
+    </script>
+</body>
+</html>
