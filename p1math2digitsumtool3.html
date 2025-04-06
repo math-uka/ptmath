@@ -20,15 +20,24 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            text-align: center;
-            position: relative;
-            z-index: 2;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
             max-width: 90%;
             margin: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .problem-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
         }
         .problem {
             font-size: 36px;
-            margin: 40px 0;
             position: relative;
             display: inline-block;
         }
@@ -58,11 +67,16 @@
             top: 78px;
             pointer-events: none;
         }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
         .keyboard {
             display: grid;
             grid-template-columns: repeat(3, 60px);
             gap: 15px;
-            margin: 40px auto;
             width: 210px;
         }
         .key {
@@ -87,7 +101,6 @@
         }
         .btn {
             padding: 10px 20px;
-            margin: 5px;
             background: #ff5722;
             color: white;
             border: none;
@@ -114,15 +127,15 @@
         }
         .feedback {
             position: absolute;
-            bottom: -50px; /* Adjusted for larger size */
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 36px; /* Larger text */
+            font-size: 36px;
             color: #4caf50;
             opacity: 0;
             pointer-events: none;
-            font-weight: bold; /* More prominent */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2); /* Shadow for emphasis */
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         @keyframes feedbackEffect {
             0% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); }
@@ -144,6 +157,10 @@
             animation: feedbackEffect 1.5s;
         }
         @media (max-width: 480px) {
+            .container {
+                flex-direction: column; /* Stack vertically on small screens */
+                gap: 10px;
+            }
             .problem {
                 font-size: 28px;
             }
@@ -182,42 +199,45 @@
 <body>
     <div class="stars" id="stars"></div>
     <div class="container">
-        <h1>✨ 加法大冒險 ✨</h1>
-        <div id="progress">第 1/10 題</div>
-        <div class="problem" id="problemArea">
-            <div class="number" id="num1"></div>
-            <div class="number" id="num2"><span>+</span></div>
-            <div class="line"></div>
-            <div class="number" id="answer">
-                <span class="digit" id="tens"></span>
-                <span class="digit" id="ones"></span>
+        <div class="problem-area">
+            <h1>✨ 加法大冒險 ✨</h1>
+            <div id="progress">第 1/10 題</div>
+            <div class="problem" id="problemArea">
+                <div class="number" id="num1"></div>
+                <div class="number" id="num2"><span>+</span></div>
+                <div class="line"></div>
+                <div class="number" id="answer">
+                    <span class="digit" id="tens"></span>
+                    <span class="digit" id="ones"></span>
+                </div>
+                <span id="carry" class="carry"></span>
+                <div id="feedback" class="feedback">太棒了！</div>
             </div>
-            <span id="carry" class="carry"></span>
-            <div id="feedback" class="feedback">太棒了！</div>
         </div>
-        <div class="keyboard">
-            <div class="key" onclick="inputNum(1)">1</div>
-            <div class="key" onclick="inputNum(2)">2</div>
-            <div class="key" onclick="inputNum(3)">3</div>
-            <div class="key" onclick="inputNum(4)">4</div>
-            <div class="key" onclick="inputNum(5)">5</div>
-            <div class="key" onclick="inputNum(6)">6</div>
-            <div class="key" onclick="inputNum(7)">7</div>
-            <div class="key" onclick="inputNum(8)">8</div>
-            <div class="key" onclick="inputNum(9)">9</div>
-            <div class="key" onclick="inputNum(0)">0</div>
-            <div class="key" onclick="clearInput()">清除</div>
-            <div class="key submit-btn" onclick="submitAnswer()">確認</div>
+        <div class="controls">
+            <div class="keyboard">
+                <div class="key" onclick="inputNum(1)">1</div>
+                <div class="key" onclick="inputNum(2)">2</div>
+                <div class="key" onclick="inputNum(3)">3</div>
+                <div class="key" onclick="inputNum(4)">4</div>
+                <div class="key" onclick="inputNum(5)">5</div>
+                <div class="key" onclick="inputNum(6)">6</div>
+                <div class="key" onclick="inputNum(7)">7</div>
+                <div class="key" onclick="inputNum(8)">8</div>
+                <div class="key" onclick="inputNum(9)">9</div>
+                <div class="key" onclick="inputNum(0)">0</div>
+                <div class="key" onclick="clearInput()">清除</div>
+                <div class="key submit-btn" onclick="submitAnswer()">確認</div>
+            </div>
+            <button class="btn" onclick="toggleCarry()">進位</button>
         </div>
-        <button class="btn" onclick="toggleCarry()">進位</button>
     </div>
 
     <script>
         let currentProblem = 0;
         let problems = new Set();
         let num1, num2, correctAnswer;
-        let inputOnes = '', inputTens = ''; // Reversed order: ones first, then tens
-
+        let inputOnes = '', inputTens = '';
         let carryVisible = false;
 
         function generateProblem() {
@@ -308,7 +328,7 @@
         generateProblem();
         addStars();
     </script>
-  <footer>
+      <footer>
         <p>&copy; 2025 ukawai</p>
     </footer>
 </body>
