@@ -2,10 +2,11 @@
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device:Wdevice-width, initial-scale=1.0">
     <title>Self-learning tool</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* 原有樣式保持不變 */
         body {
             font-family: 'Noto Sans TC', Arial, sans-serif;
             margin: 0;
@@ -256,8 +257,9 @@
         }
 
         window.onload = () => {
-            loadVoices();
-            loadPreviousInput();
+            loadVoices().then(() => {
+                loadPreviousInput();
+            });
         };
 
         function loadPreviousInput() {
@@ -298,11 +300,14 @@
             tableHtml += '</table>';
 
             document.getElementById('tableContainer').innerHTML = tableHtml;
-            document.getElementById('savedTextContainer').style.display = 'none'; // 隱藏儲存內容
+            document.getElementById('savedTextContainer').style.display = 'none';
         }
 
         async function speak(text) {
-            if (!voicesLoaded) await loadVoices();
+            if (!voicesLoaded) {
+                await loadVoices();
+            }
+
             const utterance = new SpeechSynthesisUtterance(text);
             let selectedVoice;
 
@@ -322,12 +327,21 @@
                 utterance.lang = 'en-US';
             }
 
-            if (selectedVoice) utterance.voice = selectedVoice;
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            } else {
+                console.warn('No suitable voice found for:', text);
+            }
+
             utterance.rate = 0.7;
             utterance.pitch = 1.1;
             utterance.volume = 1.0;
 
-            speechSynthesis.cancel();
+            // 只在必要時取消，例如避免重疊播放
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+
             speechSynthesis.speak(utterance);
         }
 
@@ -403,7 +417,6 @@
             generateTable();
         }
 
-        // 新增儲存功能
         function saveText() {
             const input = document.getElementById('inputText').value.trim();
             if (!input) {
@@ -425,7 +438,7 @@
             if (savedTexts.length < 5) {
                 savedTexts.push(input);
             } else {
-                savedTexts.shift(); // 移除最早的記錄
+                savedTexts.shift();
                 savedTexts.push(input);
             }
 
@@ -435,7 +448,6 @@
             alert('儲存成功！');
         }
 
-        // 新增讀取功能
         function showSavedTexts() {
             let savedTexts = [];
             for (let i = 1; i <= 5; i++) {
