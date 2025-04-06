@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>勾股定理逆定理遊戲 14</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to bottom, #f0f8ff, #e6e6fa);
+            transition: all 0.2s;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .progress {
+            color: #666;
+            font-size: 18px;
+        }
+        .stars {
+            font-size: 24px;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        .numbers {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .buttons {
+            margin: 20px 0;
+        }
+        button {
+            padding: 12px 25px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background: #45a049;
+        }
+        .feedback {
+            font-size: 20px;
+            margin: 20px 0;
+            height: 30px;
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        .correct {
+            color: green;
+            animation: fade 1.5s;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        @keyframes fade {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        footer {
+            margin-top: 40px;
+            color: #666;
+        }
+        .password-section {
+            margin-top: 20px;
+        }
+        input {
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        #submitId {
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submitId:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>勾股定理逆定理遊戲</h1>
+        <div class="progress">第 <span id="questionNum">1</span>/10 題</div>
+        <div class="stars" id="stars"></div>
+        <div class="numbers" id="numbers"></div>
+        <div class="buttons">
+            <button id="yesBtn" onclick="checkAnswer(true)">是直角三角形</button>
+            <button id="noBtn" onclick="checkAnswer(false)">不是直角三角形</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <div id="result" style="display: none;">
+            <h2>遊戲結束！</h2>
+            <div id="finalStars"></div>
+            <div id="wrongAnswers"></div>
+            <div class="password-section" id="passwordSection" style="display: none;">
+                <p>請輸入你的學號（1-40）以獲取密碼：</p>
+                <input type="number" id="studentId" min="1" max="40">
+                <button id="submitId" onclick="showPassword()">提交</button>
+                <p id="passwordOutput"></p>
+            </div>
+            <p id="retryMessage" style="display: none; color: red;">請再試一次，以獲取密碼</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        let currentQuestion = 1;
+        let wrongQuestions = [];
+        let usedQuestions = new Set();
+        let numbers = [];
+        let starCount = 0;
+        let hasAnsweredWrong = false;
+        let questions = [];
+
+        // 簡化根式函數
+        function simplifySqrt(n) {
+            if (Number.isInteger(n)) return n;
+            let coeff = 1;
+            let radicand = Math.round(n * n);
+            for (let i = 2; i * i <= radicand; i++) {
+                while (radicand % (i * i) === 0) {
+                    coeff *= i;
+                    radicand /= (i * i);
+                }
+            }
+            return coeff === 1 ? `\\sqrt{${radicand}}` : radicand === 1 ? coeff : `${coeff}\\sqrt{${radicand}}`;
+        }
+
+        // 更新星星顯示
+        function updateStars() {
+            const starsDiv = document.getElementById('stars');
+            starsDiv.textContent = '★'.repeat(starCount) + '☆'.repeat(10 - starCount);
+        }
+
+        // 隨機生成非整數（不可簡化為整數）
+        function generateNonInteger() {
+            let n;
+            do {
+                n = Math.sqrt(Math.floor(Math.random() * 100) + 20); // √20-√119
+            } while (Number.isInteger(n)); // 確保不可簡化為整數
+            return n;
+        }
+
+        // 隨機生成三角形
+        function generateTriangle(isRight) {
+            let a, b, c;
+            let key;
+            const useNonInteger = Math.random() < 0.7; // 70%含非整數
+
+            do {
+                if (isRight) {
+                    // 生成直角三角形
+                    a = Math.floor(Math.random() * 10) + 3; // 3-12
+                    b = Math.floor(Math.random() * 10) + 3; // 3-12
+                    c = Math.sqrt(a * a + b * b);
+                    if (!Number.isInteger(c)) continue;
+                } else {
+                    // 生成非直角三角形
+                    a = Math.floor(Math.random() * 10) + 5; // 5-14
+                    b = Math.floor(Math.random() * 10) + 5; // 5-14
+                    c = Math.floor(Math.random() * 10) + 5; // 5-14
+                }
+
+                // 若含非整數，隨機選一邊替換
+                if (useNonInteger) {
+                    const replaceIndex = Math.floor(Math.random() * 3);
+                    if (replaceIndex === 0) a = generateNonInteger();
+                    else if (replaceIndex === 1) b = generateNonInteger();
+                    else c = generateNonInteger();
+                }
+
+                const sorted = [a, b, c].sort((x, y) => x - y);
+                key = sorted.join(',');
+            } while (
+                c >= 20 || 
+                a + b <= c || a + c <= b || b + c <= a || // 三角形條件
+                (isRight && Math.abs(a * a + b * b - c * c) > 0.0001) || // 直角條件
+                (!isRight && Math.abs(a * a + b * b - c * c) < 0.1) || // 非直角條件
+                usedQuestions.has(key) || // 避免重複
+                a === b || b === c || a === c // 三邊不同
+            );
+            usedQuestions.add(key);
+            return [a, b, c];
+        }
+
+        // 初始化10題，4-6題為直角
+        function initializeQuestions() {
+            questions = [];
+            usedQuestions.clear();
+            const rightCount = Math.floor(Math.random() * 3) + 4; // 4-6
+            const nonRightCount = 10 - rightCount;
+
+            // 生成直角三角形
+            for (let i = 0; i < rightCount; i++) {
+                const sides = generateTriangle(true);
+                questions.push({ sides, isRight: true });
+            }
+
+            // 生成非直角三角形
+            for (let i = 0; i < nonRightCount; i++) {
+                const sides = generateTriangle(false);
+                questions.push({ sides, isRight: false });
+            }
+
+            // 隨機打亂
+            questions.sort(() => Math.random() - 0.5);
+        }
+
+        function generateNumbers() {
+            const triangle = questions[currentQuestion - 1];
+            numbers = [...triangle.sides].sort((x, y) => x - y); // 由小到大排序
+            displayNumbers();
+            hasAnsweredWrong = false;
+            return triangle.isRight;
+        }
+
+        function displayNumbers() {
+            const numDiv = document.getElementById('numbers');
+            const formatted = numbers.map(n => Number.isInteger(n) ? n : simplifySqrt(n)).join(', ');
+            numDiv.innerHTML = `已知三角形的三邊長度分別為：\\(${formatted}\\)，則它`;
+            MathJax.typeset();
+        }
+
+        function disableButtons() {
+            document.getElementById('yesBtn').disabled = true;
+            document.getElementById('noBtn').disabled = true;
+        }
+
+        function enableButtons() {
+            document.getElementById('yesBtn').disabled = false;
+            document.getElementById('noBtn').disabled = false;
+        }
+
+        function checkAnswer(userAnswer) {
+            const sorted = [...numbers].sort((a, b) => a - b);
+            const a2 = sorted[0] * sorted[0];
+            const b2 = sorted[1] * sorted[1];
+            const c2 = sorted[2] * sorted[2];
+            const isRightTriangle = Math.abs(a2 + b2 - c2) < 0.0001;
+            const feedback = document.getElementById('feedback');
+
+            disableButtons();
+
+            if (userAnswer === isRightTriangle) {
+                feedback.textContent = '正確！';
+                feedback.className = 'feedback correct';
+                if (!hasAnsweredWrong) starCount++;
+                updateStars();
+                setTimeout(nextQuestion, 1500);
+            } else {
+                feedback.textContent = '錯誤！';
+                feedback.className = 'feedback';
+                document.body.classList.add('shake');
+                if (!hasAnsweredWrong && starCount > 0) starCount--;
+                hasAnsweredWrong = true;
+                updateStars();
+                wrongQuestions.push({
+                    numbers: [...numbers],
+                    correct: isRightTriangle
+                });
+                setTimeout(() => {
+                    document.body.classList.remove('shake');
+                    enableButtons();
+                    feedback.textContent = '';
+                }, 500);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 10) {
+                currentQuestion++;
+                document.getElementById('questionNum').textContent = currentQuestion;
+                document.title = `勾股定理逆定理遊戲 ${currentQuestion + 13}`; // 從版本 14 開始
+                generateNumbers();
+                document.getElementById('feedback').textContent = '';
+                enableButtons();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('numbers').style.display = 'none';
+            document.querySelector('.buttons').style.display = 'none';
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            const finalStarsDiv = document.getElementById('finalStars');
+            const wrongDiv = document.getElementById('wrongAnswers');
+            const passwordSection = document.getElementById('passwordSection');
+            const retryMessage = document.getElementById('retryMessage');
+
+            finalStarsDiv.textContent = `最終得分：${starCount} 顆星星`; // 只顯示數量
+            if (wrongQuestions.length === 0) {
+                wrongDiv.textContent = '恭喜你！全部答對！';
+            } else {
+                wrongDiv.innerHTML = '<h3>錯題回顧：</h3>';
+                wrongQuestions.forEach((q, i) => {
+                    const formatted = q.numbers.map(n => Number.isInteger(n) ? n : simplifySqrt(n)).join(', ');
+                    wrongDiv.innerHTML += `第 ${i + 1} 題：\\(${formatted}\\) - ${q.correct ? '是' : '不是'}直角三角形<br>`;
+                });
+                MathJax.typeset();
+            }
+
+            if (starCount >= 9) {
+                passwordSection.style.display = 'block';
+            } else {
+                retryMessage.style.display = 'block';
+            }
+        }
+
+        // 密碼表（Base64編碼）
+        const encodedPasswords = [
+            "MTIz", "NDYy", "Nzg5", "MzQ1", "OTAx", "MjM0", "NTY3", "ODkw", "MTEy", "MzM0", // 1-10
+            "NTU2", "Nzc4", "OTkw", "MTI1", "MzQ3", "NTY5", "Nzgx", "OTAz", "MjE0", "NDM2", // 11-20
+            "NjU4", "ODcw", "MTM1", "MzU3", "NTc5", "Nzkx", "OTEz", "MjQ2", "NDY4", "Njgw", // 21-30
+            "ODAy", "MTI0", "NDY3", "Njg5", "OTEy", "MjM1", "NTc4", "ODAx", "MTM0", "NTc3"  // 31-40
+        ];
+
+        function showPassword() {
+            const studentId = document.getElementById('studentId').value;
+            const passwordOutput = document.getElementById('passwordOutput');
+            const submitBtn = document.getElementById('submitId');
+
+            if (studentId >= 1 && studentId <= 40) {
+                const password = atob(encodedPasswords[studentId - 1]);
+                passwordOutput.textContent = `你的密碼是：${password}`;
+                document.getElementById('studentId').disabled = true;
+                submitBtn.disabled = true;
+            } else {
+                passwordOutput.textContent = '請輸入有效的學號（1-40）！';
+            }
+        }
+
+        // 遊戲開始
+        initializeQuestions();
+        updateStars();
+        generateNumbers();
+    </script>
+</body>
+</html>
