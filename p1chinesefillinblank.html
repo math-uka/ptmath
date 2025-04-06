@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中文填空挑戰</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            flex-direction: column;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 500px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        #question {
+            font-size: 20px;
+            margin: 20px 0;
+            color: #34495e;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #27ae60;
+        }
+        .hidden {
+            display: none;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>中文填空挑戰</h1>
+        <div id="start-screen">
+            <p>請選擇挑戰題數：</p>
+            <button onclick="startGame(5)">挑戰5題</button>
+            <button onclick="startGame('half')">挑戰一半</button>
+            <button onclick="startGame('all')">挑戰全部</button>
+        </div>
+        <div id="game-screen" class="hidden">
+            <p id="progress"></p>
+            <p id="question"></p>
+            <button onclick="nextQuestion()">下一題</button>
+        </div>
+        <div id="result" class="hidden"></div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // 題庫數據
+        const questionBank = {
+            '搭橋': [
+                '小動物們一起搭橋過小河。',
+                '爸爸教我搭橋玩積木。',
+                '螞蟻用樹葉搭橋過水坑。',
+                '我們用椅子搭橋玩遊戲。',
+                '工人叔叔在河上搭橋真厲害。',
+                '我和弟弟搭橋給玩具車過。'
+            ],
+            '娃娃': [
+                '妹妹抱著娃娃睡覺。',
+                '我的娃娃會眨眼睛。',
+                '我們給娃娃梳頭髮。',
+               
+            ],
+            '黃': [
+                '小鴨子的毛是黃色的。',
+                '我喜歡吃黃色的香蕉。',
+                '太陽下山時天空變黃。',
+                '小雞有黃黃的羽毛。',
+                '黃色的葉子掉下來。'
+            ],
+            '藍': [
+                '天空是藍藍的。',
+                '大海的顏色是藍色。',
+                '藍色的魚在水裡游。'
+            ],
+            '世界': [
+                '世界上有很多國家。',
+                '熊貓是世界寶貝。',
+                '我們要愛護世界。',
+                '小鳥飛遍全世界。',
+                '我們是世界小主人。'
+            ],
+            '笑嘻嘻': [
+                '妹妹笑嘻嘻地跑來。',
+                '小狗笑嘻嘻地搖尾巴。',
+                '老師笑嘻嘻地講故事。',
+                '我們笑嘻嘻地玩遊戲。',
+                '我們笑嘻嘻地上學。'
+            ],
+            '氣球': [
+                '氣球飛到天上。',
+                '生日會有很多氣球。',
+                '我們玩傳氣球遊戲。'
+            ],
+            '臉蛋': [
+                '妹妹的臉蛋圓圓的。',
+                '我的臉蛋被太陽曬紅。',
+                '小貓的臉蛋好可愛。',
+                '弟弟的臉蛋軟軟的。',
+                '蘋果像紅臉蛋。',
+                '媽媽親我的臉蛋。',
+                '冷風吹紅了臉蛋。'
+            ],
+            '歡笑': [
+                '操場上充滿歡笑。',
+                '我們歡笑地唱歌。',
+                '全家一起歡笑。',
+                '故事書帶來歡笑。'
+            ],
+            '忘記': [
+                '我忘記帶鉛筆。',
+                '不要忘記說謝謝。',
+                '小狗忘記回家的路。',
+                '我忘記作業本。',
+                '媽媽忘記買水果。'
+            ],
+            '快樂': [
+                '生日真快樂。',
+                '余一妍快樂地跳舞。',
+                '和朋友玩很快樂。',
+                '小明快樂像小鳥飛。',
+                '吃冰淇淋快樂。',
+                '她快樂地畫圖。'
+            ],
+            '沒有': [
+                '今天沒有下雨。',
+                '我沒有鉛筆。',
+                '花園裡沒有花。',
+                '沒有太陽好冷。',
+                '我沒有遲到。',
+                '天空沒有雲。',
+                '沒有朋友很孤單。'
+            ],
+            '盒': [
+                '我的鉛筆盒。',
+                '餅乾盒空空的。',
+                '彩色積木盒。',
+                '漂亮的糖果盒。',
+                '小貓睡在紙盒裹。'
+            ]
+        };
+
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let totalQuestions = 0;
+        let usedWords = new Set();
+
+        // 計算總詞語數量（每個詞語選一句）
+        const totalWords = Object.keys(questionBank).length;
+
+        // 開始遊戲
+        function startGame(mode) {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+
+            if (mode === 'half') {
+                totalQuestions = Math.floor(totalWords / 2);
+            } else if (mode === 'all') {
+                totalQuestions = totalWords;
+            } else {
+                totalQuestions = mode; // 直接傳入數字，例如 5
+            }
+
+            generateQuestions();
+            showQuestion();
+        }
+
+        // 生成題目
+        function generateQuestions() {
+            questions = [];
+            const allSentences = [];
+            for (let word in questionBank) {
+                allSentences.push(...questionBank[word].map(sentence => ({ word, sentence })));
+            }
+            // 隨機打亂句子
+            allSentences.sort(() => Math.random() - 0.5);
+            // 確保不重複詞語
+            for (let i = 0; i < allSentences.length && questions.length < totalQuestions; i++) {
+                const { word, sentence } = allSentences[i];
+                if (!usedWords.has(word)) {
+                    questions.push({ word, sentence });
+                    usedWords.add(word);
+                }
+            }
+        }
+
+        // 顯示當前題目
+        function showQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                const { word, sentence } = questions[currentQuestionIndex];
+                const blankedSentence = sentence.replace(word, '_______');
+                document.getElementById('progress').textContent = `第 ${currentQuestionIndex + 1} 題 / 共 ${totalQuestions} 題`;
+                document.getElementById('question').textContent = blankedSentence;
+            } else {
+                endGame();
+            }
+        }
+
+        // 下一題
+        function nextQuestion() {
+            currentQuestionIndex++;
+            showQuestion();
+        }
+
+        // 結束遊戲並顯示答案
+        function endGame() {
+            document.getElementById('game-screen').classList.add('hidden');
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = '<h2>挑戰結束！以下是題目與答案：</h2>';
+            questions.forEach((q, index) => {
+                resultDiv.innerHTML += `<p>第 ${index + 1} 題：${q.sentence}（答案：${q.word}）</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
