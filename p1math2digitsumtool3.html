@@ -64,7 +64,7 @@
             font-size: 12px;
             color: red;
             right: 25px;
-            top: 78px;
+            top: 68px;
             pointer-events: none;
         }
         .controls {
@@ -125,6 +125,18 @@
             pointer-events: none;
             z-index: 1;
         }
+        .earned-stars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            max-width: 210px;
+        }
+        .earned-star {
+            font-size: 24px;
+            color: #ffeb3b;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
         .feedback {
             position: absolute;
             bottom: -50px;
@@ -150,15 +162,22 @@
             75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
+        @keyframes starFadeIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
         .shake {
             animation: shake 0.3s;
         }
         .correct {
             animation: feedbackEffect 1.5s;
         }
+        .star-appear {
+            animation: starFadeIn 0.5s;
+        }
         @media (max-width: 480px) {
             .container {
-                flex-direction: column; /* Stack vertically on small screens */
+                flex-direction: column;
                 gap: 10px;
             }
             .problem {
@@ -171,6 +190,9 @@
                 width: 30px;
                 min-height: 30px;
                 line-height: 30px;
+            }
+            .carry {
+                top: 58px;
             }
             .keyboard {
                 grid-template-columns: repeat(3, 50px);
@@ -187,6 +209,9 @@
             .feedback {
                 font-size: 28px;
                 bottom: -40px;
+            }
+            .earned-star {
+                font-size: 20px;
             }
         }
         @keyframes float {
@@ -230,6 +255,7 @@
                 <div class="key submit-btn" onclick="submitAnswer()">確認</div>
             </div>
             <button class="btn" onclick="toggleCarry()">進位</button>
+            <div id="earnedStars" class="earned-stars"></div>
         </div>
     </div>
 
@@ -239,17 +265,28 @@
         let num1, num2, correctAnswer;
         let inputOnes = '', inputTens = '';
         let carryVisible = false;
+        let starCount = 0;
+        let earnedStars = [];
 
         function generateProblem() {
             do {
-                num1 = Math.floor(Math.random() * 90) + 10;
-                num2 = Math.floor(Math.random() * (100 - num1)) + 1;
-            } while (problems.has(`${num1}+${num2}`) || num1 + num2 > 100);
+                num1 = Math.floor(Math.random() * 90) + 1; // 1-89
+                num2 = Math.floor(Math.random() * (99 - num1)) + 1; // Ensure sum < 100
+            } while (problems.has(`${num1}+${num2}`) || num1 + num2 >= 100);
             
             problems.add(`${num1}+${num2}`);
             correctAnswer = num1 + num2;
-            document.getElementById('num1').innerHTML = `<span class="digit">${Math.floor(num1/10)}</span><span class="digit">${num1%10}</span>`;
-            document.getElementById('num2').innerHTML = `<span>+</span><span class="digit">${Math.floor(num2/10)}</span><span class="digit">${num2%10}</span>`;
+
+            // Display num1
+            document.getElementById('num1').innerHTML = num1 < 10 
+                ? `<span class="digit"></span><span class="digit">${num1}</span>` 
+                : `<span class="digit">${Math.floor(num1/10)}</span><span class="digit">${num1%10}</span>`;
+            
+            // Display num2
+            document.getElementById('num2').innerHTML = num2 < 10 
+                ? `<span>+</span><span class="digit"></span><span class="digit">${num2}</span>` 
+                : `<span>+</span><span class="digit">${Math.floor(num2/10)}</span><span class="digit">${num2%10}</span>`;
+            
             clearInput();
             carryVisible = false;
             document.getElementById('carry').textContent = '';
@@ -272,10 +309,30 @@
             document.getElementById('tens').textContent = '';
         }
 
+        function addStar() {
+            const earnedStarsDiv = document.getElementById('earnedStars');
+            let star = document.createElement('span');
+            star.textContent = '⭐';
+            star.classList.add('earned-star', 'star-appear');
+            earnedStarsDiv.appendChild(star);
+            earnedStars.push(star);
+            starCount++;
+        }
+
+        function removeStar() {
+            if (starCount > 0) {
+                const earnedStarsDiv = document.getElementById('earnedStars');
+                const star = earnedStars.pop();
+                earnedStarsDiv.removeChild(star);
+                starCount--;
+            }
+        }
+
         function submitAnswer() {
             if (inputOnes === '' || inputTens === '') return;
             let userAnswer = parseInt(inputTens) * 10 + parseInt(inputOnes);
             if (userAnswer === correctAnswer) {
+                addStar();
                 let feedback = document.getElementById('feedback');
                 feedback.classList.add('correct');
                 setTimeout(() => {
@@ -283,6 +340,7 @@
                     nextProblem();
                 }, 1500);
             } else {
+                removeStar();
                 let problemArea = document.getElementById('problemArea');
                 problemArea.classList.add('shake');
                 setTimeout(() => {
@@ -296,8 +354,12 @@
             currentProblem++;
             if (currentProblem >= 10) {
                 setTimeout(() => {
+                    alert(`遊戲結束！你獲得了 ${starCount} 顆星星！🎉`);
                     currentProblem = 0;
                     problems.clear();
+                    earnedStars.forEach(star => star.remove());
+                    earnedStars = [];
+                    starCount = 0;
                     generateProblem();
                     document.getElementById('progress').textContent = `第 1/10 題`;
                 }, 1500);
@@ -328,7 +390,7 @@
         generateProblem();
         addStars();
     </script>
-      <footer>
+    <footer>
         <p>&copy; 2025 ukawai</p>
     </footer>
 </body>
