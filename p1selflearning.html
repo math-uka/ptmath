@@ -68,6 +68,18 @@
         #generateButton:hover {
             background: #27ae60;
         }
+        #saveButton {
+            background: #e67e22;
+        }
+        #saveButton:hover {
+            background: #d35400;
+        }
+        #loadButton {
+            background: #8e44ad;
+        }
+        #loadButton:hover {
+            background: #6c3483;
+        }
         #inputText {
             width: 100%;
             padding: 12px;
@@ -112,11 +124,11 @@
         .quiz-buttons {
             display: flex;
             flex-direction: column;
-            gap: 25px; /* 增加按鈕間距以防誤觸 */
+            gap: 25px;
             margin: 25px 0;
         }
         .quiz-buttons button:nth-child(1) {
-            padding: 20px 20px; /* 重讀按鈕高度加倍 */
+            padding: 20px 20px;
         }
         .word-buttons {
             display: flex;
@@ -139,6 +151,24 @@
             color: black;
         }
         .word-button:hover {
+            background-color: #bdc3c7;
+        }
+        #savedTextContainer {
+            display: none;
+            margin: 15px 0;
+        }
+        .saved-text-button {
+            padding: 10px;
+            background-color: #ecf0f1;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: black;
+            text-align: left;
+        }
+        .saved-text-button:hover {
             background-color: #bdc3c7;
         }
         @media (max-width: 768px) {
@@ -164,9 +194,9 @@
                 font-size: 18px;
             }
             .quiz-buttons button:nth-child(1) {
-                padding: 30px 24px; /* 手機端重讀按鈕高度加倍 */
+                padding: 30px 24px;
             }
-            .word-button {
+            .word-button, .saved-text-button {
                 padding: 15px;
                 font-size: 16px;
             }
@@ -182,7 +212,10 @@
             <div class="button-group">
                 <button id="generateButton" onclick="generateTable()">生成-generate</button>
                 <button onclick="clearInput()">清除</button>
+                <button id="saveButton" onclick="saveText()">儲存</button>
+                <button id="loadButton" onclick="showSavedTexts()">讀取</button>
             </div>
+            <div id="savedTextContainer"></div>
             <div id="tableContainer"></div>
         </div>
         
@@ -259,11 +292,13 @@
 
             wordsArray.forEach(word => {
                 let displayText = word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word;
-                tableHtml += `<tr><td>${displayText}</td><td><button class="play-button" onclick="speak('${word}')">播放</button></td></tr>`;
+                const escapedWord = word.replace(/'/g, "\\'");
+                tableHtml += `<tr><td>${displayText}</td><td><button class="play-button" onclick="speak('${escapedWord}')">播放</button></td></tr>`;
             });
             tableHtml += '</table>';
 
             document.getElementById('tableContainer').innerHTML = tableHtml;
+            document.getElementById('savedTextContainer').style.display = 'none'; // 隱藏儲存內容
         }
 
         async function speak(text) {
@@ -303,7 +338,7 @@
             quizArray = [...wordsArray];
             for (let i = quizArray.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [quizArray[i], quizArray[j]] = [quizArray[j], quizArray[i]];
+                [quizArray[i], quizArray[j]] = [quizArray[i], quizArray[j]];
             }
             quizArray = quizArray.slice(0, count);
             selectedWords = [];
@@ -335,7 +370,8 @@
             let resultHtml = '<h3>剛剛的詞語：</h3><div class="word-buttons">';
             quizArray.forEach(word => {
                 let displayText = word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word;
-                resultHtml += `<button class="word-button" onclick="toggleWord('${word}', this)">${displayText}</button>`;
+                const escapedWord = word.replace(/'/g, "\\'");
+                resultHtml += `<button class="word-button" onclick="toggleWord('${escapedWord}', this)">${displayText}</button>`;
             });
             resultHtml += '</div><div class="button-group"><button onclick="retest()">重測</button></div>';
             document.getElementById('resultContainer').innerHTML = resultHtml;
@@ -366,9 +402,73 @@
             document.getElementById('mainContainer').style.display = 'block';
             generateTable();
         }
+
+        // 新增儲存功能
+        function saveText() {
+            const input = document.getElementById('inputText').value.trim();
+            if (!input) {
+                alert('請輸入內容再儲存！');
+                return;
+            }
+
+            let savedTexts = [];
+            for (let i = 1; i <= 5; i++) {
+                const text = localStorage.getItem(`savedText${i}`);
+                if (text) savedTexts.push(text);
+            }
+
+            if (savedTexts.includes(input)) {
+                alert('此內容已儲存過！');
+                return;
+            }
+
+            if (savedTexts.length < 5) {
+                savedTexts.push(input);
+            } else {
+                savedTexts.shift(); // 移除最早的記錄
+                savedTexts.push(input);
+            }
+
+            for (let i = 1; i <= savedTexts.length; i++) {
+                localStorage.setItem(`savedText${i}`, savedTexts[i - 1]);
+            }
+            alert('儲存成功！');
+        }
+
+        // 新增讀取功能
+        function showSavedTexts() {
+            let savedTexts = [];
+            for (let i = 1; i <= 5; i++) {
+                const text = localStorage.getItem(`savedText${i}`);
+                if (text) savedTexts.push(text);
+            }
+
+            const container = document.getElementById('savedTextContainer');
+            if (savedTexts.length === 0) {
+                container.innerHTML = '<p>尚未儲存任何內容。</p>';
+            } else {
+                let html = '<h3>已儲存的內容：</h3>';
+                savedTexts.forEach((text, index) => {
+                    const preview = text.length > 30 ? text.substring(0, 30) + '...' : text;
+                    html += `<button class="saved-text-button" onclick="loadSavedText(${index + 1})">${index + 1}. ${preview}</button>`;
+                });
+                container.innerHTML = html;
+            }
+            container.style.display = 'block';
+        }
+
+        function loadSavedText(index) {
+            const text = localStorage.getItem(`savedText${index}`);
+            if (text) {
+                document.getElementById('inputText').value = text;
+                originalInput = text;
+                localStorage.setItem('savedInputText', text);
+                generateTable();
+            }
+        }
     </script>
-         <footer>
-        <p>&copy; 2025 ukawai</p>
+    <footer>
+        <p>© 2025 ukawai</p>
     </footer>
 </body>
 </html>
