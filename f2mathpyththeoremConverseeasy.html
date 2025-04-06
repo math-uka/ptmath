@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>勾股定理逆定理遊戲 14</title>
+    <title>勾股定理逆定理遊戲 15</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -119,7 +119,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>勾股定理逆定理遊戲</h1>
+        <h1>勾股定理逆定理遊戲(容易)</h1>
         <div class="progress">第 <span id="questionNum">1</span>/10 題</div>
         <div class="stars" id="stars"></div>
         <div class="numbers" id="numbers"></div>
@@ -175,12 +175,12 @@
             starsDiv.textContent = '★'.repeat(starCount) + '☆'.repeat(10 - starCount);
         }
 
-        // 隨機生成非整數（不可簡化為整數）
+        // 隨機生成非整數（不可簡化為整數，且不超過16）
         function generateNonInteger() {
             let n;
             do {
-                n = Math.sqrt(Math.floor(Math.random() * 100) + 20); // √20-√119
-            } while (Number.isInteger(n)); // 確保不可簡化為整數
+                n = Math.sqrt(Math.floor(Math.random() * 96) + 20); // √20-√115，確保 < 16
+            } while (Number.isInteger(n) || n > 16); // 確保不可簡化為整數且不超過16
             return n;
         }
 
@@ -196,12 +196,12 @@
                     a = Math.floor(Math.random() * 10) + 3; // 3-12
                     b = Math.floor(Math.random() * 10) + 3; // 3-12
                     c = Math.sqrt(a * a + b * b);
-                    if (!Number.isInteger(c)) continue;
+                    if (!Number.isInteger(c) || c > 16) continue;
                 } else {
                     // 生成非直角三角形
-                    a = Math.floor(Math.random() * 10) + 5; // 5-14
-                    b = Math.floor(Math.random() * 10) + 5; // 5-14
-                    c = Math.floor(Math.random() * 10) + 5; // 5-14
+                    a = Math.floor(Math.random() * 8) + 5; // 5-12
+                    b = Math.floor(Math.random() * 8) + 5; // 5-12
+                    c = Math.floor(Math.random() * 8) + 5; // 5-12
                 }
 
                 // 若含非整數，隨機選一邊替換
@@ -215,7 +215,7 @@
                 const sorted = [a, b, c].sort((x, y) => x - y);
                 key = sorted.join(',');
             } while (
-                c >= 20 || 
+                c > 16 || // 最長邊不超過16
                 a + b <= c || a + c <= b || b + c <= a || // 三角形條件
                 (isRight && Math.abs(a * a + b * b - c * c) > 0.0001) || // 直角條件
                 (!isRight && Math.abs(a * a + b * b - c * c) < 0.1) || // 非直角條件
@@ -313,7 +313,7 @@
             if (currentQuestion < 10) {
                 currentQuestion++;
                 document.getElementById('questionNum').textContent = currentQuestion;
-                document.title = `勾股定理逆定理遊戲 ${currentQuestion + 13}`; // 從版本 14 開始
+                document.title = `勾股定理逆定理遊戲 ${currentQuestion + 14}`; // 從版本 15 開始
                 generateNumbers();
                 document.getElementById('feedback').textContent = '';
                 enableButtons();
