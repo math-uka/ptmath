@@ -369,55 +369,83 @@
 
     <script>
         const shapes = [
-            { char: "⬠", symmetric: true, name: "正五邊形", explanation: "有5條對稱軸，每個頂點到對邊中點的連線都是對稱軸。" },
-            { char: "⬡", symmetric: true, name: "正六邊形", explanation: "有6條對稱軸，通過對邊中點和對角頂點的直線都是對稱軸。" },
-            { char: "⋈", symmetric: true, name: "平行四邊形", explanation: "有2條對稱軸，對角線是其對稱軸（僅在特殊情況下如菱形）。" },
-            { char: "⌧", symmetric: true, name: "交叉正方形", explanation: "有4條對稱軸，水平和垂直各一條，兩條對角線也是對稱軸。" },
-            { char: "⯁", symmetric: true, name: "菱形", explanation: "有2條對稱軸，兩條對角線都是其對稱軸。" },
-            { char: "⬭", symmetric: true, name: "橢圓", explanation: "有2條對稱軸，長軸和短軸都是對稱軸。" },
-            { char: "⌑", symmetric: true, name: "正方形內有圓", explanation: "有4條對稱軸，與正方形相同。" },
-            { char: "⧉", symmetric: true, name: "兩個重疊正方形", explanation: "有4條對稱軸，與單一正方形相同。" },
-            { char: "⬯", symmetric: true, name: "六角星", explanation: "有6條對稱軸，類似大衛之星。" },
-            { char: "❖", symmetric: true, name: "鑽石形", explanation: "有4條對稱軸，類似正方形但旋轉45度。" },
-            { char: "⌬", symmetric: true, name: "苯環符號", explanation: "有6條對稱軸，完全對稱的六邊形結構。" },
-            { char: "⧓", symmetric: true, name: "雙環", explanation: "有2條對稱軸，水平和垂直各一條。" },
-            { char: "⧔", symmetric: true, name: "三環相連", explanation: "有2條對稱軸，垂直於連接線。" },
-            { char: "⌖", symmetric: true, name: "同心圓", explanation: "有無限多條對稱軸，任何通過圓心的直線都是對稱軸。" },
-            { char: "⍟", symmetric: true, name: "五角星", explanation: "有5條對稱軸，每個頂點到對邊的垂直線都是對稱軸。" },
-            { char: "✦", symmetric: true, name: "四角星", explanation: "有4條對稱軸，類似十字形。" },
-            { char: "✶", symmetric: true, name: "六角星", explanation: "有6條對稱軸，類似雪花結構。" },
-            { char: "✷", symmetric: true, name: "八角星", explanation: "有8條對稱軸，每個角都有對應的對稱軸。" },
-            { char: "❂", symmetric: true, name: "傘形符號", explanation: "有1條垂直對稱軸。" },
-            { char: "⯐", symmetric: true, name: "五邊形內有星", explanation: "有5條對稱軸，與正五邊形相同。" },
-            { char: "⯑", symmetric: true, name: "六邊形內有星", explanation: "有6條對稱軸，與正六邊形相同。" },
-            { char: "⌘", symmetric: true, name: "命令鍵符號", explanation: "有4條對稱軸，類似風車形狀。" },
-            { char: "⚹", symmetric: true, name: "六角星", explanation: "有6條對稱軸，類似大衛之星。" },
-            { char: "⧭", symmetric: true, name: "交叉菱形", explanation: "有2條對稱軸，兩條對角線都是對稱軸。" },
-            { char: "⧲", symmetric: true, name: "三葉草", explanation: "有3條對稱軸，每個葉片之間都是對稱的。" },
-            { char: "⚂", symmetric: true, name: "骰子3點", explanation: "點數排列不對稱，沒有對稱軸。" },
-            { char: "⚃", symmetric: true, name: "骰子4點", explanation: "雖然4點本身對稱，但圖標表示方式使其不對稱。" },
-            { char: "⚄", symmetric: true, name: "骰子5點", explanation: "。" },
-            { char: "⚅", symmetric: false, name: "骰子6點", explanation: "雖然6點本身可對稱，但圖標表示方式使其不對稱。" },
-            { char: "☂", symmetric: false, name: "雨傘", explanation: "傘面和手柄組合形成不對稱圖形。" },
-            { char: "☔", symmetric: false, name: "帶雨滴的傘", explanation: "雨滴位置使圖形完全不對稱。" },
-            { char: "⚑", symmetric: false, name: "旗幟", explanation: "旗幟飄動方向使其不對稱。" },
-            { char: "⚐", symmetric: false, name: "白色旗幟", explanation: "與黑色旗幟類似，不對稱。" },
-            { char: "☘", symmetric: false, name: "三葉草", explanation: "雖然名稱有三，但實際圖標葉片不對稱。" },
-            { char: "✌", symmetric: false, name: "勝利手勢", explanation: "手指方向使圖形不對稱。" },
-            { char: "✍", symmetric: false, name: "寫字手", explanation: "手和筆的組合不對稱。" },
-            { char: "☜", symmetric: false, name: "左指手", explanation: "指向特定方向，不對稱。" },
-            { char: "☞", symmetric: false, name: "右指手", explanation: "指向特定方向，不對稱。" },
-            { char: "⚡", symmetric: false, name: "閃電", explanation: "鋸齒形狀沒有對稱軸。" },
-            { char: "☇", symmetric: false, name: "閃電", explanation: "另一種閃電圖標，也不對稱。" },
-            { char: "☎", symmetric: true, name: "電話", explanation: "--" },
-            { char: "✆", symmetric: false, name: "手機", explanation: "現代手機圖標不對稱。" },
-            { char: "☏", symmetric: true, name: "電話", explanation: "另一種電話圖標，不對稱。" },
-            { char: "✉", symmetric: false, name: "信封", explanation: "封口位置使其不對稱。" },
-            { char: "☁", symmetric: false, name: "雲", explanation: "雲朵形狀不規則，沒有對稱軸。" },
-            { char: "☃", symmetric: false, name: "雪人", explanation: "臉部特徵和手臂使其不對稱。" },
-           
-            { char: "☕", symmetric: false, name: "熱飲", explanation: "杯子和蒸汽組合不對稱。" },
-            { char: "♿", symmetric: false, name: "輪椅符號", explanation: "輪椅方向和人物使其不對稱。" },
+            { "char": "⚹", "symmetric": true, "name": "六角星", "explanation": "有6條對稱軸，類似大衛之星。" },
+  { "char": "★", "symmetric": true, "name": "五角星", "explanation": "有5條對稱軸，旋轉對稱。" },
+  { "char": "⬢", "symmetric": true, "name": "六邊形", "explanation": "6條對稱軸，正多邊形。" },
+  { "char": "⬟", "symmetric": true, "name": "五邊形", "explanation": "5條對稱軸，正多邊形。" },
+
+  { "char": "●", "symmetric": true, "name": "圓形", "explanation": "無限對稱軸，完全旋轉對稱。" },
+  { "char": "□", "symmetric": true, "name": "正方形", "explanation": "4條對稱軸，水平、垂直及對角。" },
+  { "char": "△", "symmetric": true, "name": "等邊三角形", "explanation": "3條對稱軸，旋轉對稱。" },
+  { "char": "◇", "symmetric": true, "name": "菱形", "explanation": "2條對稱軸，沿對角線對稱。" },
+  { "char": "✦", "symmetric": true, "name": "四角星", "explanation": "4條對稱軸，呈十字星形。" },
+  { "char": "✧", "symmetric": true, "name": "點星", "explanation": "4條對稱軸，簡化星形。" },
+  { "char": "✳", "symmetric": true, "name": "八輻星", "explanation": "8條對稱軸，輻射對稱。" },
+
+  { "char": "❀", "symmetric": true, "name": "花形", "explanation": "4條對稱軸，旋轉花瓣對稱。" },
+  { "char": "❁", "symmetric": true, "name": "簡花", "explanation": "8條對稱軸，花瓣均勻分佈。" },
+  { "char": "❂", "symmetric": true, "name": "光芒花", "explanation": "8條對稱軸，輻射狀花形。" },
+  { "char": "☀", "symmetric": true, "name": "太陽", "explanation": "多條對稱軸，輻射對稱。" },
+  { "char": "☼", "symmetric": true, "name": "光輝太陽", "explanation": "8條對稱軸，均勻光芒。" },
+  { "char": "⚪", "symmetric": true, "name": "白圓", "explanation": "無限對稱軸，圓形對稱。" },
+  { "char": "⚫", "symmetric": true, "name": "黑圓", "explanation": "無限對稱軸，圓形對稱。" },
+  { "char": "◉", "symmetric": true, "name": "同心圓", "explanation": "無限對稱軸，圓心對稱。" },
+  { "char": "◎", "symmetric": true, "name": "雙圓", "explanation": "無限對稱軸，圓環對稱。" },
+  { "char": "◍", "symmetric": true, "name": "實心圓環", "explanation": "無限對稱軸，圓形對稱。" },
+  { "char": "◌", "symmetric": true, "name": "空圓", "explanation": "無限對稱軸，圓形對稱。" },
+  { "char": "◯", "symmetric": true, "name": "大圓", "explanation": "無限對稱軸，圓形對稱。" },
+  { "char": "✶", "symmetric": true, "name": "六輻星", "explanation": "6條對稱軸，輻射對稱。" },
+  { "char": "✷", "symmetric": true, "name": "八方星", "explanation": "8條對稱軸，均勻分佈。" },
+
+  { "char": "❅", "symmetric": true, "name": "複雪花", "explanation": "6條對稱軸，細緻對稱。" },
+  { "char": "❆", "symmetric": true, "name": "重雪花", "explanation": "6條對稱軸，層次對稱。" },
+ 
+  { "char": "✾", "symmetric": true, "name": "花卉", "explanation": "4條對稱軸，花瓣均勻。" },
+  { "char": "✿", "symmetric": true, "name": "盛開花", "explanation": "5條對稱軸，花形對稱。" },
+  { "char": "❈", "symmetric": true, "name": "閃花", "explanation": "8條對稱軸，星花對稱。" },
+  { "char": "❉", "symmetric": true, "name": "點花", "explanation": "8條對稱軸，點狀對稱。" },
+
+
+  { "char": "⬮", "symmetric": true, "name": "斜六邊形", "explanation": "6條對稱軸，旋轉對稱。" },
+  { "char": "⬯", "symmetric": true, "name": "框六邊形", "explanation": "6條對稱軸，均勻分佈。" },
+
+  { "char": "⬱", "symmetric": true, "name": "線六邊形", "explanation": "6條對稱軸，線條對稱。" },
+  { "char": "⬲", "symmetric": true, "name": "交叉六邊形", "explanation": "6條對稱軸，交叉對稱。" },
+
+  { "char": "⬵", "symmetric": true, "name": "環六邊形", "explanation": "6條對稱軸，環狀對稱。" },
+            
+ { "char": "⚑", "symmetric": false, "name": "旗幟", "explanation": "旗幟飄動方向使其不對稱。" },
+  { "char": "⚐", "symmetric": false, "name": "白旗", "explanation": "旗面單向設計，無對稱性。" },
+  { "char": "⚒", "symmetric": false, "name": "錘鎬", "explanation": "錘與鎬方向不同，無對稱軸。" },
+ 
+  { "char": "⚕", "symmetric": false, "name": "醫杖", "explanation": "蛇與杖纏繞，無對稱軸。" },
+ 
+  { "char": "⚗", "symmetric": false, "name": "蒸餾瓶", "explanation": "瓶口與管方向不同，無對稱。" },
+
+  { "char": "⚡", "symmetric": false, "name": "閃電", "explanation": "閃電形狀曲折，無對稱性。" },
+
+  { "char": "⚤", "symmetric": false, "name": "男女符", "explanation": "男女符號組合，無對稱軸。" },
+  { "char": "⚥", "symmetric": false, "name": "中性符", "explanation": "混合符號，無對稱性。" },
+
+  { "char": "⚧", "symmetric": false, "name": "變性符", "explanation": "符號組合單向，無對稱性。" },
+ 
+  
+
+  { "char": "⚳", "symmetric": false, "name": "穀神星", "explanation": "符號形狀單向，無對稱性。" },
+ 
+  { "char": "⚶", "symmetric": false, "name": "灶神星", "explanation": "火焰形狀偏移，無對稱軸。" },
+  { "char": "⚷", "symmetric": false, "name": "健神星", "explanation": "線條與點不均，無對稱性。" },
+
+
+  { "char": "⚼", "symmetric": false, "name": "愛神星", "explanation": "心形偏移，無對稱軸。" },
+  { "char": "⚽", "symmetric": false, "name": "足球", "explanation": "圖案分佈不均，無對稱性。" },
+  { "char": "⚾", "symmetric": false, "name": "棒球", "explanation": "縫線單向，無對稱軸。" },
+  { "char": "⚿", "symmetric": false, "name": "鎖匙", "explanation": "匙柄與齒不均，無對稱性。" },
+
+
+  
+  { "char": "⛈", "symmetric": false, "name": "雷雨", "explanation": "雲與閃電不均，無對稱性。" },
+            
             { char: "⚕", symmetric: false, name: "醫療符號", explanation: "蛇纏繞杖的圖形不對稱。" }
         ];
 
