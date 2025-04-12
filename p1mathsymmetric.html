@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圖形繪圖辨識測驗 - 版本5</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --error-color: #ea4335;
+            --warning-color: #fbbc05;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: #f9f9f9;
+            padding: 20px;
+            max-width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            height: 10px;
+            overflow: hidden;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-card {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-number {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: bold;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .shape-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+            width: 200px;
+            height: 200px;
+            z-index: 10;
+        }
+        
+        .shape {
+            font-size: 100px;
+            line-height: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            user-select: none;
+            z-index: 5;
+        }
+        
+        .drawing-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-option {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-option:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-option:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            border: 2px solid #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-clear {
+            background-color: white;
+            color: var(--warning-color);
+            border: 2px solid var(--warning-color);
+            margin-right: 10px;
+        }
+        
+        .btn-clear:hover {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3367d6;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2d9249;
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(234, 67, 53, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+        
+        .drawing-tools {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .result-container {
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .result-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-item {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            margin-top: auto;
+            text-align: center;
+            color: #666;
+            padding: 20px 0;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .shape-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .shape {
+                font-size: 80px;
+                line-height: 150px;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>圖形繪圖辨識測驗</h1>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div id="quiz-area">
+            <div class="question-card" id="question-card">
+                <div class="question-number" id="question-number">問題 1/10</div>
+                <div class="shape-container">
+                    <div class="shape" id="shape"></div>
+                    <canvas class="drawing-layer" id="drawing-layer"></canvas>
+                </div>
+                <div class="question-text">這個圖形是軸對稱的嗎？</div>
+                
+                <div class="drawing-tools">
+                    <button class="btn btn-clear" id="clear-btn">清除繪圖</button>
+                </div>
+                
+                <div class="options">
+                    <button class="btn btn-option" onclick="answerQuestion(true)">是</button>
+                    <button class="btn btn-option" onclick="answerQuestion(false)">否</button>
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">測驗完成!</h2>
+            <div class="score" id="final-score">90分</div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="correct-answers">9</div>
+                    <div class="stat-label">正確答案</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="incorrect-answers">1</div>
+                    <div class="stat-label">錯誤答案</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-secondary" onclick="restartQuiz()">重新開始測驗</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        const shapes = [
+            { char: "⬠", symmetric: true, name: "正五邊形", explanation: "有5條對稱軸，每個頂點到對邊中點的連線都是對稱軸。" },
+            { char: "⬡", symmetric: true, name: "正六邊形", explanation: "有6條對稱軸，通過對邊中點和對角頂點的直線都是對稱軸。" },
+            { char: "⋈", symmetric: true, name: "平行四邊形", explanation: "有2條對稱軸，對角線是其對稱軸（僅在特殊情況下如菱形）。" },
+            { char: "⌧", symmetric: true, name: "交叉正方形", explanation: "有4條對稱軸，水平和垂直各一條，兩條對角線也是對稱軸。" },
+            { char: "⯁", symmetric: true, name: "菱形", explanation: "有2條對稱軸，兩條對角線都是其對稱軸。" },
+            { char: "⬭", symmetric: true, name: "橢圓", explanation: "有2條對稱軸，長軸和短軸都是對稱軸。" },
+            { char: "⌑", symmetric: true, name: "正方形內有圓", explanation: "有4條對稱軸，與正方形相同。" },
+            { char: "⧉", symmetric: true, name: "兩個重疊正方形", explanation: "有4條對稱軸，與單一正方形相同。" },
+            { char: "⬯", symmetric: true, name: "六角星", explanation: "有6條對稱軸，類似大衛之星。" },
+            { char: "❖", symmetric: true, name: "鑽石形", explanation: "有4條對稱軸，類似正方形但旋轉45度。" },
+            { char: "⌬", symmetric: true, name: "苯環符號", explanation: "有6條對稱軸，完全對稱的六邊形結構。" },
+            { char: "⧓", symmetric: true, name: "雙環", explanation: "有2條對稱軸，水平和垂直各一條。" },
+            { char: "⧔", symmetric: true, name: "三環相連", explanation: "有2條對稱軸，垂直於連接線。" },
+            { char: "⌖", symmetric: true, name: "同心圓", explanation: "有無限多條對稱軸，任何通過圓心的直線都是對稱軸。" },
+            { char: "⍟", symmetric: true, name: "五角星", explanation: "有5條對稱軸，每個頂點到對邊的垂直線都是對稱軸。" },
+            { char: "✦", symmetric: true, name: "四角星", explanation: "有4條對稱軸，類似十字形。" },
+            { char: "✶", symmetric: true, name: "六角星", explanation: "有6條對稱軸，類似雪花結構。" },
+            { char: "✷", symmetric: true, name: "八角星", explanation: "有8條對稱軸，每個角都有對應的對稱軸。" },
+            { char: "❂", symmetric: true, name: "傘形符號", explanation: "有1條垂直對稱軸。" },
+            { char: "⯐", symmetric: true, name: "五邊形內有星", explanation: "有5條對稱軸，與正五邊形相同。" },
+            { char: "⯑", symmetric: true, name: "六邊形內有星", explanation: "有6條對稱軸，與正六邊形相同。" },
+            { char: "⌘", symmetric: true, name: "命令鍵符號", explanation: "有4條對稱軸，類似風車形狀。" },
+            { char: "⚹", symmetric: true, name: "六角星", explanation: "有6條對稱軸，類似大衛之星。" },
+            { char: "⧭", symmetric: true, name: "交叉菱形", explanation: "有2條對稱軸，兩條對角線都是對稱軸。" },
+            { char: "⧲", symmetric: true, name: "三葉草", explanation: "有3條對稱軸，每個葉片之間都是對稱的。" },
+            { char: "⚂", symmetric: false, name: "骰子3點", explanation: "點數排列不對稱，沒有對稱軸。" },
+            { char: "⚃", symmetric: false, name: "骰子4點", explanation: "雖然4點本身對稱，但圖標表示方式使其不對稱。" },
+            { char: "⚄", symmetric: false, name: "骰子5點", explanation: "中心點加四角點，但圖標表示不對稱。" },
+            { char: "⚅", symmetric: false, name: "骰子6點", explanation: "雖然6點本身可對稱，但圖標表示方式使其不對稱。" },
+            { char: "☂", symmetric: false, name: "雨傘", explanation: "傘面和手柄組合形成不對稱圖形。" },
+            { char: "☔", symmetric: false, name: "帶雨滴的傘", explanation: "雨滴位置使圖形完全不對稱。" },
+            { char: "⚑", symmetric: false, name: "旗幟", explanation: "旗幟飄動方向使其不對稱。" },
+            { char: "⚐", symmetric: false, name: "白色旗幟", explanation: "與黑色旗幟類似，不對稱。" },
+            { char: "☘", symmetric: false, name: "三葉草", explanation: "雖然名稱有三，但實際圖標葉片不對稱。" },
+            { char: "✌", symmetric: false, name: "勝利手勢", explanation: "手指方向使圖形不對稱。" },
+            { char: "✍", symmetric: false, name: "寫字手", explanation: "手和筆的組合不對稱。" },
+            { char: "☜", symmetric: false, name: "左指手", explanation: "指向特定方向，不對稱。" },
+            { char: "☞", symmetric: false, name: "右指手", explanation: "指向特定方向，不對稱。" },
+            { char: "⚡", symmetric: false, name: "閃電", explanation: "鋸齒形狀沒有對稱軸。" },
+            { char: "☇", symmetric: false, name: "閃電", explanation: "另一種閃電圖標，也不對稱。" },
+            { char: "☎", symmetric: true, name: "電話", explanation: "--" },
+            { char: "✆", symmetric: false, name: "手機", explanation: "現代手機圖標不對稱。" },
+            { char: "☏", symmetric: false, name: "電話", explanation: "另一種電話圖標，不對稱。" },
+            { char: "✉", symmetric: false, name: "信封", explanation: "封口位置使其不對稱。" },
+            { char: "☁", symmetric: false, name: "雲", explanation: "雲朵形狀不規則，沒有對稱軸。" },
+            { char: "☃", symmetric: false, name: "雪人", explanation: "臉部特徵和手臂使其不對稱。" },
+            { char: "☄", symmetric: false, name: "彗星", explanation: "尾巴方向使圖形不對稱。" },
+            { char: "☕", symmetric: false, name: "熱飲", explanation: "杯子和蒸汽組合不對稱。" },
+            { char: "♿", symmetric: false, name: "輪椅符號", explanation: "輪椅方向和人物使其不對稱。" },
+            { char: "⚕", symmetric: false, name: "醫療符號", explanation: "蛇纏繞杖的圖形不對稱。" }
+        ];
+
+        let questions = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let canvas, ctx, isDrawing = false;
+        
+        const quizArea = document.getElementById('quiz-area');
+        const questionCard = document.getElementById('question-card');
+        const resultContainer = document.getElementById('result-container');
+        const questionNumber = document.getElementById('question-number');
+        const shapeElement = document.getElementById('shape');
+        const feedbackElement = document.getElementById('feedback');
+        const progressBar = document.getElementById('progress-bar');
+        const finalScore = document.getElementById('final-score');
+        const correctAnswers = document.getElementById('correct-answers');
+        const incorrectAnswers = document.getElementById('incorrect-answers');
+        const clearBtn = document.getElementById('clear-btn');
+        const shapeContainer = document.querySelector('.shape-container');
+        const optionButtons = document.querySelectorAll('.btn-option');
+        
+        function initDrawingCanvas() {
+            canvas = document.getElementById('drawing-layer');
+            ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                const containerWidth = shapeContainer.offsetWidth;
+                const containerHeight = shapeContainer.offsetHeight;
+                
+                canvas.width = containerWidth;
+                canvas.height = containerHeight;
+                
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = '#4285f4';
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('touchstart', handleTouchStart);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('touchmove', handleTouchMove);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+        }
+        
+        function startDrawing(e) {
+            e.preventDefault();
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        
+        function handleTouchStart(e) {
+            e.preventDefault();
+            isDrawing = true;
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+        
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!isDrawing) return;
+            
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+        
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+        
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        function generateQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            
+            const symmetricShapes = shapes.filter(s => s.symmetric);
+            const nonSymmetricShapes = shapes.filter(s => !s.symmetric);
+            
+            const selectedSymmetric = shuffleArray([...symmetricShapes]).slice(0, 5);
+            const selectedNonSymmetric = shuffleArray([...nonSymmetricShapes]).slice(0, 5);
+            
+            questions = shuffleArray([...selectedSymmetric, ...selectedNonSymmetric]);
+            
+            showQuestion();
+            
+            quizArea.style.display = 'block';
+            resultContainer.style.display = 'none';
+        }
+        
+        function showQuestion() {
+            clearCanvas();
+            
+            const question = questions[currentQuestion];
+            questionNumber.textContent = `問題 ${currentQuestion + 1}/10`;
+            shapeElement.textContent = question.char;
+            
+            progressBar.style.width = `${(currentQuestion / 10) * 100}%`;
+            
+            feedbackElement.style.display = 'none';
+            feedbackElement.className = 'feedback';
+            
+            optionButtons.forEach(button => {
+                button.disabled = false;
+            });
+            
+            const containerWidth = shapeContainer.offsetWidth;
+            const containerHeight = shapeContainer.offsetHeight;
+            canvas.width = containerWidth;
+            canvas.height = containerHeight;
+        }
+        
+        function answerQuestion(userAnswer) {
+            optionButtons.forEach(button => {
+                button.disabled = true;
+            });
+            
+            const question = questions[currentQuestion];
+            question.userAnswer = userAnswer;
+            
+            const isCorrect = userAnswer === question.symmetric;
+            
+            if (isCorrect) {
+                score++;
+                feedbackElement.textContent = `正確！${question.explanation}`;
+                feedbackElement.className = 'feedback correct';
+            } else {
+                feedbackElement.textContent = `錯誤！正確答案是 ${question.symmetric ? "是" : "否"}。${question.explanation}`;
+                feedbackElement.className = 'feedback incorrect';
+            }
+            
+            feedbackElement.style.display = 'block';
+            
+            if (currentQuestion < 9) {
+                currentQuestion++;
+                setTimeout(showQuestion, 2000);
+            } else {
+                setTimeout(showResults, 2000);
+            }
+        }
+        
+        function showResults() {
+            quizArea.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            finalScore.textContent = `${score * 10}分`;
+            correctAnswers.textContent = score;
+            incorrectAnswers.textContent = 10 - score;
+            
+            progressBar.style.width = '100%';
+        }
+        
+        function restartQuiz() {
+            generateQuiz();
+        }
+        
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        window.onload = function() {
+            initDrawingCanvas();
+            generateQuiz();
+            
+            clearBtn.addEventListener('click', clearCanvas);
+        };
+    </script>
+</body>
+</html>
