@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device:Wdevice-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Self-learning tool1127</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -209,7 +209,7 @@
         <h1>Self-learning tool</h1>
         
         <div id="mainContainer">
-            <textarea id="inputText" rows="4" placeholder="請輸入中送或英文的文字或句子，以句號(. 或 .)分隔"></textarea>
+            <textarea id="inputText" rows="4" placeholder="請輸入中文或英文的文字或句子，以句號(. 或 .)分隔"></textarea>
             <div class="button-group">
                 <button id="generateButton" onclick="generateTable()">生成-generate</button>
                 <button onclick="clearInput()">清除</button>
@@ -337,7 +337,6 @@
             utterance.pitch = 1.1;
             utterance.volume = 1.0;
 
-            // 只在必要時取消，例如避免重疊播放
             if (speechSynthesis.speaking) {
                 speechSynthesis.cancel();
             }
@@ -346,17 +345,18 @@
         }
 
         function startQuiz(count) {
+            if (wordsArray.length === 0) {
+                alert('請先輸入詞語！');
+                return;
+            }
+
+            // 隨機洗牌並選取指定數量的詞語
+            quizArray = [...wordsArray].sort(() => Math.random() - 0.5).slice(0, Math.min(count, wordsArray.length));
+            currentIndex = 0;
+            selectedWords = [];
+
             document.getElementById('mainContainer').style.display = 'none';
             document.getElementById('quizContainer').style.display = 'block';
-            
-            quizArray = [...wordsArray];
-            for (let i = quizArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [quizArray[i], quizArray[j]] = [quizArray[i], quizArray[j]];
-            }
-            quizArray = quizArray.slice(0, count);
-            selectedWords = [];
-            currentIndex = 0;
             document.getElementById('resultContainer').innerHTML = '';
             showCurrentWord();
         }
