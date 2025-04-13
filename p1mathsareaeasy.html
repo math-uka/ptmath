@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面積計算遊戲</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            margin: 0;
+            height: 100vh;
+            overflow: auto;
+        }
+        #game-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            width: 90%;
+            max-width: 800px;
+            gap: 20px;
+            padding: 20px;
+        }
+        #canvas-container {
+            position: relative;
+        }
+        #canvas {
+            border: 2px solid #333;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #success-message, #error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: none;
+            animation: fadeOut 2s forwards;
+        }
+        #success-message {
+            color: #28a745;
+        }
+        #error-message {
+            color: #dc3545;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        #control-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+        }
+        #question-counter {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        #input-display {
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding: 10px;
+            width: 120px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            gap: 10px;
+        }
+        .key {
+            padding: 15px;
+            font-size: 20px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        .key:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        .key:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .number-btn {
+            background-color: #6c757d;
+        }
+        .number-btn:hover {
+            background-color: #5a6268;
+        }
+        #submit-btn {
+            background-color: #007bff;
+        }
+        #submit-btn:hover {
+            background-color: #0056b3;
+        }
+        #clear-btn {
+            background-color: #dc3545;
+        }
+        #clear-btn:hover {
+            background-color: #c82333;
+        }
+        #skip-btn {
+            background-color: #ffc107;
+        }
+        #skip-btn:hover {
+            background-color: #e0a800;
+        }
+        #result {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        @media (max-width: 600px) {
+            #game-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            #control-panel {
+                width: 100%;
+            }
+            #keypad {
+                grid-template-columns: repeat(3, 1fr);
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="canvas-container">
+            <canvas id="canvas" width="400" height="400"></canvas>
+            <div id="success-message">答對了！</div>
+            <div id="error-message">你答錯了！</div>
+        </div>
+        <div id="control-panel">
+            <div id="question-counter">第 1 / 10 題</div>
+            <div id="input-display">0</div>
+            <div id="keypad">
+                <button class="key number-btn" onclick="appendNumber('1')">1</button>
+                <button class="key number-btn" onclick="appendNumber('2')">2</button>
+                <button class="key number-btn" onclick="appendNumber('3')">3</button>
+                <button class="key number-btn" onclick="appendNumber('4')">4</button>
+                <button class="key number-btn" onclick="appendNumber('5')">5</button>
+                <button class="key number-btn" onclick="appendNumber('6')">6</button>
+                <button class="key number-btn" onclick="appendNumber('7')">7</button>
+                <button class="key number-btn" onclick="appendNumber('8')">8</button>
+                <button class="key number-btn" onclick="appendNumber('9')">9</button>
+                <button class="key number-btn" onclick="appendNumber('0')">0</button>
+                <button class="key" id="clear-btn" onclick="clearInput()">C</button>
+                <button class="key" id="submit-btn" onclick="submitAnswer()">OK</button>
+                <button class="key" id="skip-btn" onclick="skipQuestion()">放棄</button>
+            </div>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const gameContainer = document.getElementById('game-container');
+        const inputDisplay = document.getElementById('input-display');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const questionCounter = document.getElementById('question-counter');
+        const resultDiv = document.getElementById('result');
+
+        let currentQuestion = 1;
+        let correctArea = 0;
+        let wrongAnswers = 0;
+        let inputValue = '';
+        const totalQuestions = 10;
+        const gridSize = 40; // 每個格子 40px
+        const gridCount = 10; // 10x10 格子
+        const usedAreas = new Set(); // 記錄使用過的面積
+        const usedShapes = new Set(); // 記錄使用過的圖形（頂點集合）
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#ccc';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= gridCount; i++) {
+                let pos = i * gridSize;
+                ctx.beginPath();
+                ctx.moveTo(pos, 0);
+                ctx.lineTo(pos, canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, pos);
+                ctx.lineTo(canvas.width, pos);
+                ctx.stroke();
+            }
+            ctx.fillStyle = 'black';
+            ctx.font = '12px Arial';
+            for (let i = 0; i <= gridCount; i++) {
+                let pos = i * gridSize;
+                ctx.fillText(i, pos + 2, canvas.height - 12); // x 軸標記（底部）
+                ctx.fillText(i, 2, canvas.height - pos - 12); // y 軸標記（左側）
+            }
+        }
+
+        function generateShape() {
+            let points = [];
+            let area = 0;
+            let shapeKey;
+
+            do {
+                points = [];
+                if (currentQuestion <= 5) {
+                    // 第 1-5 題：等腰三角形、正方形、長方形
+                    const types = ['isosceles_triangle', 'square', 'rectangle'];
+                    const type = types[Math.floor(Math.random() * types.length)];
+
+                    if (type === 'square') {
+                        let x = Math.floor(Math.random() * 8);
+                        let y = Math.floor(Math.random() * 8);
+                        let side = Math.floor(Math.random() * 3) + 2;
+                        area = side * side;
+                        points = [
+                            [x, y],
+                            [x + side, y],
+                            [x + side, y + side],
+                            [x, y + side]
+                        ];
+                    } else if (type === 'rectangle') {
+                        let x = Math.floor(Math.random() * 8);
+                        let y = Math.floor(Math.random() * 8);
+                        let width = Math.floor(Math.random() * 3) + 2;
+                        let height = Math.floor(Math.random() * 3) + 2;
+                        area = width * height;
+                        points = [
+                            [x, y],
+                            [x + width, y],
+                            [x + width, y + height],
+                            [x, y + height]
+                        ];
+                    } else if (type === 'isosceles_triangle') {
+                        let x = Math.floor(Math.random() * 6) + 2;
+                        let y = Math.floor(Math.random() * 6) + 2;
+                        let base = (Math.floor(Math.random() * 3) + 2) * 2; // 偶數底
+                        let height = Math.floor(Math.random() * 3) + 2;
+                        area = (base * height) / 2;
+                        points = [
+                            [x - base / 2, y],
+                            [x + base / 2, y],
+                            [x, y + height]
+                        ];
+                    }
+                } else {
+                    // 第 6-10 題：不等邊三角形或平行四邊形，至少一邊平行 X 軸或 Y 軸
+                    const type = Math.random() < 0.5 ? 'scalene_triangle' : 'parallelogram';
+                    if (type === 'scalene_triangle') {
+                        points = generateIntegerAreaScaleneTriangleWithParallelEdge();
+                        area = calculateTriangleArea(points);
+                    } else {
+                        points = generateIntegerAreaParallelogramWithParallelEdge();
+                        area = calculateQuadArea(points);
+                    }
+                }
+
+                // 確保點在畫布內且面積為整數
+                if (points.some(p => p[0] < 0 || p[0] >= gridCount || p[1] < 0 || p[1] >= gridCount) || !Number.isInteger(area) || area <= 0) {
+                    continue;
+                }
+
+                // 檢查圖形是否重複（頂點集合）
+                shapeKey = points.map(p => `${p[0]},${p[1]}`).sort().join('|');
+            } while (usedAreas.has(area) || usedShapes.has(shapeKey));
+
+            usedAreas.add(area);
+            usedShapes.add(shapeKey);
+            correctArea = area;
+            drawShape(points);
+        }
+
+        function generateIntegerAreaScaleneTriangleWithParallelEdge() {
+            let points = [];
+            let area;
+            do {
+                points = [];
+                const isParallelX = Math.random() < 0.5;
+                if (isParallelX) {
+                    let y = Math.floor(Math.random() * (gridCount - 2)) + 1;
+                    let x1 = Math.floor(Math.random() * (gridCount - 2));
+                    let x2 = x1 + Math.floor(Math.random() * 3) + 1;
+                    points.push([x1, y], [x2, y]);
+                    let x3 = Math.floor(Math.random() * gridCount);
+                    let y3 = Math.floor(Math.random() * (gridCount - 2));
+                    if (y3 !== y) points.push([x3, y3]);
+                } else {
+                    let x = Math.floor(Math.random() * (gridCount - 2)) + 1;
+                    let y1 = Math.floor(Math.random() * (gridCount - 2));
+                    let y2 = y1 + Math.floor(Math.random() * 3) + 1;
+                    points.push([x, y1], [x, y2]);
+                    let x3 = Math.floor(Math.random() * (gridCount - 2));
+                    let y3 = Math.floor(Math.random() * gridCount);
+                    if (x3 !== x) points.push([x3, y3]);
+                }
+                area = calculateTriangleArea(points);
+                if (points.length === 3) {
+                    let side1 = Math.sqrt((points[0][0] - points[1][0])**2 + (points[0][1] - points[1][1])**2);
+                    let side2 = Math.sqrt((points[1][0] - points[2][0])**2 + (points[1][1] - points[2][1])**2);
+                    let side3 = Math.sqrt((points[2][0] - points[0][0])**2 + (points[2][1] - points[0][1])**2);
+                    if (side1 === side2 || side2 === side3 || side1 === side3) {
+                        points = [];
+                    }
+                }
+            } while (points.length !== 3 || !Number.isInteger(area) || area <= 0);
+            return points;
+        }
+
+        function generateIntegerAreaParallelogramWithParallelEdge() {
+            let points = [];
+            let area;
+            do {
+                points = [];
+                const isParallelX = Math.random() < 0.5;
+                if (isParallelX) {
+                    let y1 = Math.floor(Math.random() * (gridCount - 3)) + 1;
+                    let y2 = y1 + Math.floor(Math.random() * 3) + 1;
+                    let x1 = Math.floor(Math.random() * (gridCount - 3));
+                    let x2 = x1 + Math.floor(Math.random() * 3) + 1;
+                    let offset = Math.floor(Math.random() * 2) + 1;
+                    points = [
+                        [x1, y1],
+                        [x2, y1],
+                        [x2 + offset, y2],
+                        [x1 + offset, y2]
+                    ];
+                } else {
+                    let x1 = Math.floor(Math.random() * (gridCount - 3)) + 1;
+                    let x2 = x1 + Math.floor(Math.random() * 3) + 1;
+                    let y1 = Math.floor(Math.random() * (gridCount - 3));
+                    let y2 = y1 + Math.floor(Math.random() * 3) + 1;
+                    let offset = Math.floor(Math.random() * 2) + 1;
+                    points = [
+                        [x1, y1],
+                        [x2, y1],
+                        [x2, y1 + offset],
+                        [x1, y2 + offset]
+                    ];
+                }
+                area = calculateQuadArea(points);
+            } while (!Number.isInteger(area) || area <= 0);
+            return points;
+        }
+
+        function calculateTriangleArea(points) {
+            let [p1, p2, p3] = points;
+            return Math.abs(
+                (p1[0] * (p2[1] - p3[1]) + p2[0] * (p3[1] - p1[1]) + p3[0] * (p1[1] - p2[1])) / 2
+            );
+        }
+
+        function calculateQuadArea(points) {
+            return calculatePolygonArea(points);
+        }
+
+        function calculatePolygonArea(points) {
+            let area = 0;
+            for (let i = 0; i < points.length; i++) {
+                let j = (i + 1) % points.length;
+                area += points[i][0] * points[j][1];
+                area -= points[j][0] * points[i][1];
+            }
+            return Math.abs(area) / 2;
+        }
+
+        function drawShape(points) {
+            drawGrid();
+            ctx.fillStyle = 'rgba(100, 150, 255, 0.5)';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(points[0][0] * gridSize, canvas.height - points[0][1] * gridSize);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i][0] * gridSize, canvas.height - points[i][1] * gridSize);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = 'red';
+            points.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p[0] * gridSize, canvas.height - p[1] * gridSize, 4, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+        }
+
+        function appendNumber(num) {
+            inputValue += num;
+            inputDisplay.textContent = inputValue || '0';
+        }
+
+        function clearInput() {
+            inputValue = '';
+            inputDisplay.textContent = '0';
+        }
+
+        function submitAnswer() {
+            let userAnswer = parseInt(inputValue);
+            if (userAnswer === correctArea) {
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    nextQuestion();
+                }, 2000);
+            } else {
+                wrongAnswers++;
+                gameContainer.classList.add('shake');
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    gameContainer.classList.remove('shake');
+                    errorMessage.style.display = 'none';
+                    clearInput();
+                }, 2000);
+            }
+        }
+
+        function skipQuestion() {
+            wrongAnswers++;
+            clearInput();
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                questionCounter.textContent = `第 ${currentQuestion} / ${totalQuestions} 題`;
+                clearInput();
+                generateShape();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            canvas.style.display = 'none';
+            inputDisplay.style.display = 'none';
+            document.getElementById('keypad').style.display = 'none';
+            questionCounter.style.display = 'none';
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = `遊戲結束！你答錯了 ${wrongAnswers} 題。`;
+        }
+
+        // 初始化遊戲
+        drawGrid();
+        generateShape();
+    </script>
+</body>
+</html>
