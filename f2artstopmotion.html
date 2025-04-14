@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定格動畫生成器 4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .upload-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            min-height: 100px;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .preview-image {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #cccccc;
+        }
+        .output-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            text-align: center;
+        }
+        #gifOutput {
+            max-width: 100%;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        input[type="number"] {
+            padding: 8px;
+            width: 60px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
+        .status-message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+        }
+        .error-message {
+            color: #d32f2f;
+            background-color: #ffebee;
+        }
+    </style>
+</head>
+<body>
+    <h1>定格動畫生成器</h1>
+    
+    <div class="upload-container">
+        <h2>上傳圖片</h2>
+        <input type="file" id="imageUpload" accept="image/jpeg, image/png" multiple>
+        <div class="preview-container" id="imagePreview"></div>
+        
+        <div class="controls">
+            <label for="fps">每秒幀數 (FPS):</label>
+            <input type="number" id="fps" min="1" max="30" value="5">
+            <button id="generateBtn" disabled>生成GIF</button>
+            <button id="clearBtn">清除所有</button>
+            <button id="testBtn">測試生成</button>
+        </div>
+    </div>
+    
+    <div class="output-container">
+        <h2>生成的GIF動畫</h2>
+        <div id="statusMessage" class="status-message">準備就緒</div>
+        <div id="gifOutputContainer">
+            <p>生成的GIF將顯示在這裡</p>
+            <img id="gifOutput" style="display: none;">
+        </div>
+        <div id="progressInfo" style="display: none;">
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar">0%</div>
+            </div>
+            <p id="progressText">準備開始處理...</p>
+        </div>
+        <button id="downloadBtn" style="display: none; margin-top: 10px;">下載GIF</button>
+    </div>
+    
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <!-- 引入 gif.js 庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
+    <script>
+        // 檢查 gif.js 是否加載成功
+        if (typeof GIF === 'undefined') {
+            console.error('gif.js 未加載成功');
+            document.getElementById('statusMessage').textContent = '錯誤：無法加載GIF生成庫，請檢查網絡連接或稍後重試';
+            document.getElementById('statusMessage').classList.add('error-message');
+        }
+
+        // 全局變量
+        let uploadedImages = [];
+        
+        // DOM元素
+        const imageUpload = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const testBtn = document.getElementById('testBtn');
+        const fpsInput = document.getElementById('fps');
+        const gifOutputContainer = document.getElementById('gifOutputContainer');
+        const gifOutput = document.getElementById('gifOutput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const progressInfo = document.getElementById('progressInfo');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // 上傳圖片處理
+        imageUpload.addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length === 0) return;
+            
+            statusMessage.textContent = `正在處理 ${files.length} 張圖片...`;
+            statusMessage.classList.remove('error-message');
+            
+            let processedCount = 0;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.match('image.*')) {
+                    processedCount++;
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        // 創建一個canvas來統一處理圖片大小
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        // 設置canvas大小為400x300以加快處理速度
+                        canvas.width = 400;
+                        canvas.height = 300;
+                        
+                        // 繪製圖片到canvas，保持比例並居中
+                        const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
+                        const newWidth = img.width * ratio;
+                        const newHeight = img.height * ratio;
+                        const x = (canvas.width - newWidth) / 2;
+                        const y = (canvas.height - newHeight) / 2;
+                        
+                        // 填充白色背景
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        ctx.drawImage(img, x, y, newWidth, newHeight);
+                        
+                        // 添加處理後的圖片到數組
+                        const processedImg = new Image();
+                        processedImg.src = canvas.toDataURL('image/png');
+                        processedImg.width = canvas.width;
+                        processedImg.height = canvas.height;
+                        uploadedImages.push(processedImg);
+                        
+                        processedCount++;
+                        statusMessage.textContent = `已處理 ${processedCount}/${files.length} 張圖片`;
+                        
+                        // 更新預覽
+                        if (processedCount === files.length) {
+                            updatePreview();
+                            statusMessage.textContent = `已成功加載 ${uploadedImages.length} 張圖片`;
+                        }
+                    };
+                    img.onerror = function() {
+                        processedCount++;
+                        statusMessage.textContent = `跳過無法讀取的圖片 (${processedCount}/${files.length})`;
+                        statusMessage.classList.add('error-message');
+                        
+                        if (processedCount === files.length) {
+                            updatePreview();
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.onerror = function() {
+                    processedCount++;
+                    statusMessage.textContent = `跳過無法讀取的圖片 (${processedCount}/${files.length})`;
+                    statusMessage.classList.add('error-message');
+                    
+                    if (processedCount === files.length) {
+                        updatePreview();
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // 更新預覽
+        function updatePreview() {
+            imagePreview.innerHTML = '';
+            if (uploadedImages.length === 0) {
+                generateBtn.disabled = true;
+                return;
+            }
+            
+            generateBtn.disabled = false;
+            
+            uploadedImages.forEach((img, index) => {
+                const previewImg = document.createElement('img');
+                previewImg.src = img.src;
+                previewImg.className = 'preview-image';
+                previewImg.title = `圖片 ${index + 1}: ${img.width}x${img.height}`;
+                imagePreview.appendChild(previewImg);
+            });
+        }
+        
+        // 生成GIF - 使用 gif.js
+        generateBtn.addEventListener('click', async function() {
+            if (uploadedImages.length === 0) return;
+            
+            if (typeof GIF === 'undefined') {
+                statusMessage.textContent = '錯誤：GIF生成庫未加載，請檢查網絡或刷新頁面';
+                statusMessage.classList.add('error-message');
+                return;
+            }
+            
+            const fps = parseInt(fpsInput.value) || 5;
+            const delay = 1000 / fps;
+            
+            gifOutputContainer.innerHTML = '<p>準備生成GIF...</p>';
+            gifOutput.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            progressInfo.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressText.textContent = '準備開始處理...';
+            
+            try {
+                statusMessage.textContent = "正在生成GIF...";
+                
+                // 初始化 gif.js
+                const gif = new GIF({
+                    workers: 2,
+                    quality: 10,
+                    width: uploadedImages[0].width,
+                    height: uploadedImages[0].height,
+                    workerScript: 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js'
+                });
+                
+                // 添加每一幀
+                for (let i = 0; i < uploadedImages.length; i++) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = uploadedImages[i].width;
+                    canvas.height = uploadedImages[i].height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(uploadedImages[i], 0, 0);
+                    
+                    gif.addFrame(canvas, { delay: delay });
+                    
+                    // 更新進度
+                    const percent = Math.round((i + 1) / uploadedImages.length * 100);
+                    progressBar.style.width = percent + '%';
+                    progressBar.textContent = percent + '%';
+                    progressText.textContent = `正在處理第 ${i + 1} 張圖片，共 ${uploadedImages.length} 張`;
+                    
+                    // 讓瀏覽器有時間更新UI
+                    await new Promise(resolve => setTimeout(resolve, 0));
+                }
+                
+                // 渲染GIF
+                gif.on('finished', function(blob) {
+                    const gifUrl = URL.createObjectURL(blob);
+                    
+                    gifOutput.src = gifUrl;
+                    gifOutput.style.display = 'block';
+                    gifOutputContainer.innerHTML = '';
+                    gifOutputContainer.appendChild(gifOutput);
+                    downloadBtn.style.display = 'inline-block';
+                    progressInfo.style.display = 'none';
+                    statusMessage.textContent = `GIF生成完成! 尺寸: ${blob.size > 1024000 ? 
+                        (blob.size/1024/1024).toFixed(1) + 'MB' : 
+                        Math.round(blob.size/1024) + 'KB'}`;
+                    statusMessage.classList.remove('error-message');
+                    
+                    // 設置下載按鈕
+                    downloadBtn.onclick = function() {
+                        const a = document.createElement('a');
+                        a.href = gifUrl;
+                        a.download = 'animation.gif';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
+                });
+                
+                gif.render();
+                
+            } catch (error) {
+                console.error("GIF生成錯誤:", error);
+                statusMessage.textContent = "生成GIF時出錯: " + error.message;
+                statusMessage.classList.add('error-message');
+                progressInfo.style.display = 'none';
+                
+                // 回退到顯示第一張圖片
+                gifOutput.src = uploadedImages[0].src;
+                gifOutput.style.display = 'block';
+                gifOutputContainer.innerHTML = '';
+                gifOutputContainer.appendChild(gifOutput);
+            }
+        });
+        
+        // 測試生成
+        testBtn.addEventListener('click', async function() {
+            // 創建3張測試圖片
+            uploadedImages = [];
+            
+            for (let i = 0; i < 3; i++) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 400;
+                canvas.height = 300;
+                const ctx = canvas.getContext('2d');
+                
+                // 繪製不同顏色的矩形
+                ctx.fillStyle = ['#ff0000', '#00ff00', '#0000ff'][i];
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 添加文字
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '30px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`測試圖片 ${i+1}`, canvas.width/2, canvas.height/2);
+                
+                const img = new Image();
+                img.src = canvas.toDataURL();
+                img.width = canvas.width;
+                img.height = canvas.height;
+                uploadedImages.push(img);
+            }
+            
+            updatePreview();
+            generateBtn.click();
+        });
+        
+        // 清除所有
+        clearBtn.addEventListener('click', function() {
+            uploadedImages = [];
+            updatePreview();
+            gifOutputContainer.innerHTML = '<p>生成的GIF將顯示在這裡</p>';
+            gifOutput.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            progressInfo.style.display = 'none';
+            imageUpload.value = '';
+            statusMessage.textContent = "已清除所有圖片";
+            statusMessage.classList.remove('error-message');
+        });
+    </script>
+</body>
+</html>
