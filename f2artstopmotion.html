@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>定格動畫生成器 4</title>
+    <title>定格動畫生成器 5</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -145,13 +145,22 @@
         <p>© 2025 ukawai</p>
     </footer>
 
-    <!-- 引入本地的 gif.js 庫 -->
-    <script src="/js/gif.min.js"></script>
+    <!-- 引入 gif.js 庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
     <script>
+        // 創建內聯 Worker 腳本
+        const workerScript = `
+            self.onmessage = function(e) {
+                importScripts('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js');
+            };
+        `;
+        const workerBlob = new Blob([workerScript], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(workerBlob);
+
         // 檢查 gif.js 是否加載成功
         if (typeof GIF === 'undefined') {
             console.error('gif.js 未加載成功');
-            document.getElementById('statusMessage').textContent = '錯誤：無法加載 GIF 生成庫，請檢查文件是否正確部署';
+            document.getElementById('statusMessage').textContent = '錯誤：無法加載 GIF 生成庫，請檢查網絡或稍後重試';
             document.getElementById('statusMessage').classList.add('error-message');
             document.getElementById('generateBtn').disabled = true;
             document.getElementById('testBtn').disabled = true;
@@ -281,7 +290,7 @@
             if (uploadedImages.length === 0) return;
             
             if (typeof GIF === 'undefined') {
-                statusMessage.textContent = '錯誤：GIF 生成庫未加載，請檢查文件是否正確部署';
+                statusMessage.textContent = '錯誤：GIF 生成庫未加載，請檢查網絡或刷新頁面';
                 statusMessage.classList.add('error-message');
                 return;
             }
@@ -306,9 +315,15 @@
                     quality: 10,
                     width: uploadedImages[0].width,
                     height: uploadedImages[0].height,
-                    workerScript: '/js/gif.worker.js' // 使用倉庫中的 Worker 腳本
+                    workerScript: workerUrl // 使用內聯 Worker
                 });
                 
+                // 添加 清理函數
+                function cleanup() {
+                    URL.revokeObjectURL(gifOutput.src);
+                }
+                // 添加清理事件
+                gifOutput.addEventListener('load', cleanup);
                 // 添加每一幀
                 for (let i = 0; i < uploadedImages.length; i++) {
                     const canvas = document.createElement('canvas');
@@ -374,7 +389,7 @@
         // 測試生成
         testBtn.addEventListener('click', async function() {
             if (typeof GIF === 'undefined') {
-                statusMessage.textContent = '錯誤：GIF 生成庫未加載，請檢查文件是否正確部署';
+                statusMessage.textContent = '錯誤：GIF 生成庫未加載，請檢查網絡或刷新頁面';
                 statusMessage.classList.add('error-message');
                 return;
             }
