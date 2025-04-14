@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>定格動畫生成器 4</title>
+    <title>定格動畫生成器 5</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -148,10 +148,19 @@
     <!-- 引入 gif.js 庫 -->
     <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
     <script>
+        // 檢查是否在 file:// 協議下運行
+        if (window.location.protocol === 'file:') {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = '錯誤：請通過本地服務器（HTTP/HTTPS）運行此頁面，無法在 file:// 協議下生成 GIF';
+            statusMessage.classList.add('error-message');
+            document.getElementById('generateBtn').disabled = true;
+            document.getElementById('testBtn').disabled = true;
+        }
+
         // 檢查 gif.js 是否加載成功
         if (typeof GIF === 'undefined') {
             console.error('gif.js 未加載成功');
-            document.getElementById('statusMessage').textContent = '錯誤：無法加載GIF生成庫，請檢查網絡連接或稍後重試';
+            document.getElementById('statusMessage').textContent = '錯誤：無法加載 GIF 生成庫，請檢查網絡連接或稍後重試';
             document.getElementById('statusMessage').classList.add('error-message');
         }
 
@@ -263,7 +272,7 @@
                 return;
             }
             
-            generateBtn.disabled = false;
+            generateBtn.disabled = window.location.protocol === 'file:';
             
             uploadedImages.forEach((img, index) => {
                 const previewImg = document.createElement('img');
@@ -278,8 +287,14 @@
         generateBtn.addEventListener('click', async function() {
             if (uploadedImages.length === 0) return;
             
+            if (window.location.protocol === 'file:') {
+                statusMessage.textContent = '錯誤：請通過本地服務器（HTTP/HTTPS）運行此頁面，無法在 file:// 協議下生成 GIF';
+                statusMessage.classList.add('error-message');
+                return;
+            }
+            
             if (typeof GIF === 'undefined') {
-                statusMessage.textContent = '錯誤：GIF生成庫未加載，請檢查網絡或刷新頁面';
+                statusMessage.textContent = '錯誤：GIF 生成庫未加載，請檢查網絡或刷新頁面';
                 statusMessage.classList.add('error-message');
                 return;
             }
@@ -371,6 +386,12 @@
         
         // 測試生成
         testBtn.addEventListener('click', async function() {
+            if (window.location.protocol === 'file:') {
+                statusMessage.textContent = '錯誤：請通過本地服務器（HTTP/HTTPS）運行此頁面，無法在 file:// 協議下生成 GIF';
+                statusMessage.classList.add('error-message');
+                return;
+            }
+
             // 創建3張測試圖片
             uploadedImages = [];
             
