@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>定格動畫生成器 5</title>
+    <title>定格動畫生成器 4</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -148,19 +148,10 @@
     <!-- 引入 gif.js 庫 -->
     <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
     <script>
-        // 創建內聯 Worker 腳本
-        const workerScript = `
-            self.onmessage = function(e) {
-                importScripts('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js');
-            };
-        `;
-        const workerBlob = new Blob([workerScript], { type: 'application/javascript' });
-        const workerUrl = URL.createObjectURL(workerBlob);
-
         // 檢查 gif.js 是否加載成功
         if (typeof GIF === 'undefined') {
             console.error('gif.js 未加載成功');
-            document.getElementById('statusMessage').textContent = '錯誤：無法加載 GIF 生成庫，請檢查網絡或稍後重試';
+            document.getElementById('statusMessage').textContent = '錯誤：無法加載 GIF 生成庫，請檢查網絡或刷新頁面';
             document.getElementById('statusMessage').classList.add('error-message');
             document.getElementById('generateBtn').disabled = true;
             document.getElementById('testBtn').disabled = true;
@@ -195,7 +186,7 @@
             let processedCount = 0;
             
             for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+                const file = files |i];
                 if (!file.type.match('image.*')) {
                     processedCount++;
                     continue;
@@ -209,9 +200,9 @@
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         
-                        // 設置canvas大小為400x300以加快處理速度
-                        canvas.width = 400;
-                        canvas.height = 300;
+                        // 設置canvas大小為200x150以減少內存使用
+                        canvas.width = 200;
+                        canvas.height = 150;
                         
                         // 繪製圖片到canvas，保持比例並居中
                         const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
@@ -312,18 +303,12 @@
                 // 初始化 gif.js
                 const gif = new GIF({
                     workers: 2,
-                    quality: 10,
+                    quality: 20, // 提高質量值以減少內存使用
                     width: uploadedImages[0].width,
                     height: uploadedImages[0].height,
-                    workerScript: workerUrl // 使用內聯 Worker
+                    workerScript: 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js'
                 });
                 
-                // 添加 清理函數
-                function cleanup() {
-                    URL.revokeObjectURL(gifOutput.src);
-                }
-                // 添加清理事件
-                gifOutput.addEventListener('load', cleanup);
                 // 添加每一幀
                 for (let i = 0; i < uploadedImages.length; i++) {
                     const canvas = document.createElement('canvas');
@@ -344,8 +329,15 @@
                     await new Promise(resolve => setTimeout(resolve, 0));
                 }
                 
+                // 添加超時檢測
+                const renderTimeout = setTimeout(() => {
+                    gif.abort();
+                    throw new Error('GIF 渲染超時，請嘗試減少圖片數量或降低分辨率');
+                }, 30000); // 30秒超時
+                
                 // 渲染GIF
                 gif.on('finished', function(blob) {
+                    clearTimeout(renderTimeout);
                     const gifUrl = URL.createObjectURL(blob);
                     
                     gifOutput.src = gifUrl;
@@ -368,6 +360,11 @@
                         a.click();
                         document.body.removeChild(a);
                     };
+                });
+                
+                gif.on('error', function(err) {
+                    clearTimeout(renderTimeout);
+                    throw new Error('GIF 渲染失敗: ' + err.message);
                 });
                 
                 gif.render();
@@ -399,8 +396,8 @@
             
             for (let i = 0; i < 3; i++) {
                 const canvas = document.createElement('canvas');
-                canvas.width = 400;
-                canvas.height = 300;
+                canvas.width = 200;
+                canvas.height = 150;
                 const ctx = canvas.getContext('2d');
                 
                 // 繪製不同顏色的矩形
@@ -409,7 +406,7 @@
                 
                 // 添加文字
                 ctx.fillStyle = '#ffffff';
-                ctx.font = '30px Arial';
+                ctx.font = '20px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText(`測試圖片 ${i+1}`, canvas.width/2, canvas.height/2);
                 
