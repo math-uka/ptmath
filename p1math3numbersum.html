@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加法測驗 8</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            touch-action: manipulation;
+            background: linear-gradient(to bottom, #e6f3ff 0%, #ffebcc 100%);
+        }
+        h1 {
+            font-size: clamp(26px, 7vw, 32px);
+            margin: 10px 0;
+            color: #ff4500;
+            text-shadow: 1px 1px 2px #fff;
+        }
+        #stars {
+            font-size: clamp(20px, 5vw, 24px);
+            margin: 15px 0;
+            color: #ffd700;
+            min-height: 30px;
+        }
+        #question {
+            font-size: clamp(22px, 6vw, 26px);
+            margin: 20px 0;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #answer {
+            font-size: clamp(18px, 5vw, 20px);
+            width: clamp(100px, 25vw, 120px);
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #87ceeb;
+            border-radius: 8px;
+            margin: 15px auto;
+            display: block;
+            background: #fff;
+        }
+        #keyboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(10px, 2.5vw, 12px);
+            max-width: 360px;
+            margin: 20px auto;
+        }
+        #keyboard button {
+            padding: clamp(14px, 3.5vw, 16px);
+            font-size: clamp(18px, 4.5vw, 20px);
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(#f0f0f0, #d0d0d0);
+            cursor: pointer;
+            touch-action: manipulation;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        #keyboard button:active {
+            transform: scale(0.95);
+            background: linear-gradient(#d0d0d0, #b0b0b0);
+        }
+        #clearBtn {
+            background: linear-gradient(#32cd32, #228b22);
+            color: white;
+        }
+        #submitBtn {
+            background: linear-gradient(#00b7eb, #0077b6);
+            color: white;
+        }
+        #canvas {
+            border: 2px solid #4682b4;
+            margin: 20px auto;
+            display: block;
+            max-width: 90%;
+            width: clamp(280px, 85vw, 320px);
+            height: clamp(180px, 45vw, 220px);
+            touch-action: none;
+            background: #fff;
+            border-radius: 8px;
+        }
+        #clearCanvasBtn {
+            padding: clamp(10px, 2.5vw, 12px);
+            font-size: clamp(16px, 4vw, 18px);
+            margin: 10px auto;
+            background: linear-gradient(#ff6347, #dc143c);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #result {
+            font-size: clamp(18px, 4.5vw, 20px);
+            margin: 15px 0;
+            min-height: 30px;
+            color: #ff4500;
+        }
+        #wrongQuestions {
+            text-align: left;
+            margin: 20px auto;
+            max-width: 90%;
+            font-size: clamp(16px, 4vw, 18px);
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        footer {
+            font-size: clamp(14px, 3.5vw, 16px);
+            margin-top: 20px;
+            color: #4682b4;
+            text-shadow: 1px 1px 1px #fff;
+        }
+        .shake {
+            animation: shake 0.15s linear 10;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .correct-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .star {
+            position: absolute;
+            font-size: 28px;
+            color: #ffd700;
+            animation: fall 1.5s ease-out forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-50px) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+        }
+        @media (max-width: 600px) {
+            body { padding: 15px; }
+            #keyboard { max贵州快3网址多少max-width: 100%; }
+            #canvas { width: clamp(250px, 90vw, 280px); }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>加法測驗</h1>
+        <div id="stars"></div>
+        <div id="question"></div>
+        <input type="text" id="answer" readonly>
+        <div id="keyboard">
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button id="clearBtn" onclick="clearAnswer()">清除</button>
+            <button id="submitBtn" onclick="submitAnswer()">提交</button>
+        </div>
+        <h3>草圖區</h3>
+        <canvas id="canvas"></canvas>
+        <button id="clearCanvasBtn" onclick="clearCanvas()">清除草圖</button>
+        <div id="result"></div>
+        <div id="wrongQuestions"></div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        let questionCount = 0;
+        let stars = 0;
+        let wrongQuestions = new Set();
+        let currentAnswer;
+        let num1, num2, num3;
+        const maxQuestions = 10;
+
+        function generateQuestion() {
+            do {
+                num1 = Math.floor(Math.random() * 50) + 1;
+                num2 = Math.floor(Math.random() * 50) + 1;
+                num3 = Math.floor(Math.random() * 50) + 1;
+                currentAnswer = num1 + num2 + num3;
+            } while (currentAnswer >= 99);
+            document.getElementById('question').innerHTML = `\\(${num1} + ${num2} + ${num3} = ?\\)`;
+            MathJax.typeset();
+            document.getElementById('answer').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function appendNumber(num) {
+            const answerInput = document.getElementById('answer');
+            if (answerInput.value.length < 2) {
+                answerInput.value += num;
+            }
+        }
+
+        function clearAnswer() {
+            document.getElementById('answer').value = '';
+        }
+
+        function showCorrectAnimation() {
+            const animationDiv = document.createElement('div');
+            animationDiv.className = 'correct-animation';
+            document.body.appendChild(animationDiv);
+            for (let i = 0; i < 10; i++) {
+                const star = document.createElement('span');
+                star.className = 'star';
+                star.innerHTML = '🌟';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 0.5}s`;
+                animationDiv.appendChild(star);
+            }
+            setTimeout(() => animationDiv.remove(), 1500);
+        }
+
+        function updateStars() {
+            document.getElementById('stars').innerHTML = '🌟'.repeat(stars);
+        }
+
+        function submitAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            if (isNaN(userAnswer)) {
+                document.getElementById('result').innerHTML = '請輸入答案！';
+                return;
+            }
+            if (userAnswer === currentAnswer) {
+                document.getElementById('result').innerHTML = '正確！';
+                stars++;
+                questionCount++;
+                showCorrectAnimation();
+                updateStars();
+                clearCanvas(); // 答對後自動清除草圖
+                setTimeout(() => {
+                    if (questionCount < maxQuestions) {
+                        generateQuestion();
+                    } else {
+                        showResults();
+                    }
+                }, 1500);
+            } else {
+                document.getElementById('result').innerHTML = '錯誤！';
+                stars = Math.max(0, stars - 1);
+                wrongQuestions.add(`${num1} + ${num2} + ${num3} = ?`);
+                updateStars();
+                document.body.classList.add('shake');
+                setTimeout(() => {
+                    document.body.classList.remove('shake');
+                    document.getElementById('answer').value = '';
+                    document.getElementById('result').innerHTML = '';
+                }, 1500);
+            }
+        }
+
+        function showResults() {
+            document.getElementById('question').innerHTML = '';
+            document.getElementById('keyboard').style.display = 'none';
+            document.getElementById('answer').style.display = 'none';
+            document.getElementById('canvas').style.display = 'none';
+            document.getElementById('clearCanvasBtn').style.display = 'none';
+            document.getElementById('result').innerHTML = `測驗結束！你獲得了 ${'🌟'.repeat(stars)}！`;
+            let wrongList = '<h3>錯題回顧：</h3>';
+            if (wrongQuestions.size === 0) {
+                wrongList += '<p>恭喜你，沒有錯題！</p>';
+            } else {
+                wrongList += '<ul>';
+                wrongQuestions.forEach(q => {
+                    wrongList += `<li>\\( ${q} \\)</li>`;
+                });
+                wrongList += '</ul>';
+            }
+            document.getElementById('wrongQuestions').innerHTML = wrongList;
+            MathJax.typeset();
+            updateTitle();
+        }
+
+        function updateTitle() {
+            document.title = `加法測驗 ${parseInt(document.title.split(' ')[2]) + 1}`;
+        }
+
+        // 草圖區功能
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+        let lastX, lastY;
+
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#000';
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function getPosition(e) {
+            let x, y;
+            if (e.type.includes('touch')) {
+                x = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+                y = e.touches[0].clientY - canvas.getBoundingClientRect().top;
+            } else {
+                x = e.offsetX;
+                y = e.offsetY;
+            }
+            return { x, y };
+        }
+
+        function startDrawing(e) {
+            drawing = true;
+            const pos = getPosition(e);
+            lastX = pos.x;
+            lastY = pos.y;
+            e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            const pos = getPosition(e);
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            lastX = pos.x;
+            lastY = pos.y;
+            e.preventDefault();
+        }
+
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // 初始化
+        generateQuestion();
+        updateStars();
+    </script>
+</body>
+</html>
