@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加法測驗 8</title>
+    <title>加法測驗 14</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -25,6 +25,43 @@
             margin: 10px 0;
             color: #ff4500;
             text-shadow: 1px 1px 2px #fff;
+        }
+        #mode-selection {
+            margin: 40px auto;
+            max-width: 400px;
+        }
+        #mode-selection h2 {
+            font-size: clamp(20px, 5vw, 24px);
+            color: #4682b4;
+        }
+        .mode-btn {
+            padding: clamp(12px, 3vw, 15px);
+            margin: 10px;
+            font-size: clamp(16px, 4vw, 18px);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+            width: 120px;
+        }
+        .mode-btn:active {
+            transform: scale(0.95);
+        }
+        #easy-btn {
+            background: linear-gradient(#90ee90, #32cd32);
+            color: white;
+        }
+        #normal-btn {
+            background: linear-gradient(#ffd700, #ffa500);
+            color: white;
+        }
+        #hard-btn {
+            background: linear-gradient(#ff6347, #dc143c);
+            color: white;
+        }
+        #game {
+            display: none;
         }
         #stars {
             font-size: clamp(20px, 5vw, 24px);
@@ -81,28 +118,6 @@
             background: linear-gradient(#00b7eb, #0077b6);
             color: white;
         }
-        #canvas {
-            border: 2px solid #4682b4;
-            margin: 20px auto;
-            display: block;
-            max-width: 90%;
-            width: clamp(280px, 85vw, 320px);
-            height: clamp(180px, 45vw, 220px);
-            touch-action: none;
-            background: #fff;
-            border-radius: 8px;
-        }
-        #clearCanvasBtn {
-            padding: clamp(10px, 2.5vw, 12px);
-            font-size: clamp(16px, 4vw, 18px);
-            margin: 10px auto;
-            background: linear-gradient(#ff6347, #dc143c);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
         #result {
             font-size: clamp(18px, 4.5vw, 20px);
             margin: 15px 0;
@@ -154,13 +169,19 @@
         }
         @media (max-width: 600px) {
             body { padding: 15px; }
-            #keyboard { max贵州快3网址多少max-width: 100%; }
-            #canvas { width: clamp(250px, 90vw, 280px); }
+            #keyboard { max-width: 100%; }
+            .mode-btn { width: 100px; }
         }
     </style>
 </head>
 <body>
-    <div>
+    <div id="mode-selection">
+        <h2>選擇模式</h2>
+        <button id="easy-btn" class="mode-btn" onclick="startGame('easy')">簡單模式</button>
+        <button id="normal-btn" class="mode-btn" onclick="startGame('normal')">普通模式</button>
+        <button id="hard-btn" class="mode-btn" onclick="startGame('hard')">挑戰模式</button>
+    </div>
+    <div id="game">
         <h1>加法測驗</h1>
         <div id="stars"></div>
         <div id="question"></div>
@@ -179,9 +200,6 @@
             <button id="clearBtn" onclick="clearAnswer()">清除</button>
             <button id="submitBtn" onclick="submitAnswer()">提交</button>
         </div>
-        <h3>草圖區</h3>
-        <canvas id="canvas"></canvas>
-        <button id="clearCanvasBtn" onclick="clearCanvas()">清除草圖</button>
         <div id="result"></div>
         <div id="wrongQuestions"></div>
     </div>
@@ -195,7 +213,22 @@
         let wrongQuestions = new Set();
         let currentAnswer;
         let num1, num2, num3;
+        let mode = null;
         const maxQuestions = 10;
+
+        function startGame(selectedMode) {
+            mode = selectedMode;
+            document.getElementById('mode-selection').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            generateQuestion();
+            updateStars();
+        }
+
+        function checkNoCarry(a, b) {
+            const unitsSum = (a % 10) + (b % 10);
+            const totalSum = a + b;
+            return unitsSum < 10 && totalSum < 100;
+        }
 
         function generateQuestion() {
             do {
@@ -203,7 +236,70 @@
                 num2 = Math.floor(Math.random() * 50) + 1;
                 num3 = Math.floor(Math.random() * 50) + 1;
                 currentAnswer = num1 + num2 + num3;
+
+                if (mode === 'easy') {
+                    // 簡單模式：任意兩數相加無進位，所有加法順序無進位
+                    const valid =
+                        // 檢查所有兩數對
+                        checkNoCarry(num1, num2) &&
+                        checkNoCarry(num1, num3) &&
+                        checkNoCarry(num2, num3) &&
+                        // 檢查所有加法順序
+                        checkNoCarry(num1 + num2, num3) &&
+                        checkNoCarry(num1 + num3, num2) &&
+                        checkNoCarry(num2 + num3, num1) &&
+                        currentAnswer < 99;
+
+                    if (!valid) {
+                        continue;
+                    }
+                } else if (mode === 'normal') {
+                    // 普通模式：num1和num3 或 num2和num3 個位數和為10
+                    const caseChoice = Math.random() < 0.5 ? 'num1_num3' : 'num2_num3';
+                    if (caseChoice === 'num1_num3') {
+                        num1 = Math.floor(Math.random() * 50) + 1;
+                        const digit1 = num1 % 10;
+                        let digit3;
+                        if (digit1 === 0) {
+                            digit3 = 0;
+                        } else {
+                            digit3 = 10 - digit1;
+                        }
+                        const maxTens3 = Math.floor((50 - digit3) / 10);
+                        const tens3 = Math.floor(Math.random() * (maxTens3 + 1));
+                        num3 = tens3 * 10 + digit3;
+                        if (num3 === 0) num3 = 10;
+                        num2 = Math.floor(Math.random() * 50) + 1;
+                    } else {
+                        num2 = Math.floor(Math.random() * 50) + 1;
+                        const digit2 = num2 % 10;
+                        let digit3;
+                        if (digit2 === 0) {
+                            digit3 = 0;
+                        } else {
+                            digit3 = 10 - digit2;
+                        }
+                        const maxTens3 = Math.floor((50 - digit3) / 10);
+                        const tens3 = Math.floor(Math.random() * (maxTens3 + 1));
+                        num3 = tens3 * 10 + digit3;
+                        if (num3 === 0) num3 = 10;
+                        num1 = Math.floor(Math.random() * 50) + 1;
+                    }
+                    currentAnswer = num1 + num2 + num3;
+                } else if (mode === 'hard') {
+                    // 挑戰模式：至少一次進位
+                    num1 = Math.floor(Math.random() * 50) + 1;
+                    num2 = Math.floor(Math.random() * 50) + 1;
+                    num3 = Math.floor(Math.random() * 50) + 1;
+                    const unitsSum = (num1 % 10) + (num2 % 10) + (num3 % 10);
+                    const tensSum = Math.floor(num1 / 10) + Math.floor(num2 / 10) + Math.floor(num3 / 10);
+                    currentAnswer = num1 + num2 + num3;
+                    if (unitsSum < 10 && tensSum < 10 || currentAnswer >= 99) {
+                        continue;
+                    }
+                }
             } while (currentAnswer >= 99);
+
             document.getElementById('question').innerHTML = `\\(${num1} + ${num2} + ${num3} = ?\\)`;
             MathJax.typeset();
             document.getElementById('answer').value = '';
@@ -252,7 +348,6 @@
                 questionCount++;
                 showCorrectAnimation();
                 updateStars();
-                clearCanvas(); // 答對後自動清除草圖
                 setTimeout(() => {
                     if (questionCount < maxQuestions) {
                         generateQuestion();
@@ -278,8 +373,6 @@
             document.getElementById('question').innerHTML = '';
             document.getElementById('keyboard').style.display = 'none';
             document.getElementById('answer').style.display = 'none';
-            document.getElementById('canvas').style.display = 'none';
-            document.getElementById('clearCanvasBtn').style.display = 'none';
             document.getElementById('result').innerHTML = `測驗結束！你獲得了 ${'🌟'.repeat(stars)}！`;
             let wrongList = '<h3>錯題回顧：</h3>';
             if (wrongQuestions.size === 0) {
@@ -299,74 +392,6 @@
         function updateTitle() {
             document.title = `加法測驗 ${parseInt(document.title.split(' ')[2]) + 1}`;
         }
-
-        // 草圖區功能
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-        let lastX, lastY;
-
-        function resizeCanvas() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = '#000';
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        function getPosition(e) {
-            let x, y;
-            if (e.type.includes('touch')) {
-                x = e.touches[0].clientX - canvas.getBoundingClientRect().left;
-                y = e.touches[0].clientY - canvas.getBoundingClientRect().top;
-            } else {
-                x = e.offsetX;
-                y = e.offsetY;
-            }
-            return { x, y };
-        }
-
-        function startDrawing(e) {
-            drawing = true;
-            const pos = getPosition(e);
-            lastX = pos.x;
-            lastY = pos.y;
-            e.preventDefault();
-        }
-
-        function draw(e) {
-            if (!drawing) return;
-            const pos = getPosition(e);
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            lastX = pos.x;
-            lastY = pos.y;
-            e.preventDefault();
-        }
-
-        function stopDrawing() {
-            drawing = false;
-        }
-
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchmove', draw);
-        canvas.addEventListener('touchend', stopDrawing);
-
-        function clearCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        // 初始化
-        generateQuestion();
-        updateStars();
     </script>
 </body>
 </html>
