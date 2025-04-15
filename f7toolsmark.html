@@ -126,7 +126,7 @@
                     realScore = Math.floor(student.score / totalScore * 100);
                     formula1 = Math.floor(realScore * 0.9 + 10);
                     formula2 = Math.floor(realScore * 0.8 + 20);
-                    formula3 = Math.floor(realScore * 0.8 + 20);
+                    formula3 = Math.floor(Math.sqrt(realScore) * 10);
                     if (student.score === 0) {
                         normReference = 50; // 原始分數為0時，常模參照固定為50
                     } else {
