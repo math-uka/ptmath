@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>圖片循環播放器2</title>
+    <title>圖片循環播放器</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -193,7 +193,7 @@
             }
         }
     </style>
-    <script src="/assets/js/gif.min.js"></script>
+    <script src="/repo/assets/js/gif.min.js"></script>
 </head>
 <body>
     <h1>圖片循環播放器</h1>
@@ -231,17 +231,23 @@
                 reader.onload = (event) => {
                     const img = new Image();
                     img.src = event.target.result;
-                    images.push(img);
-                    preview.appendChild(img);
+                    img.onload = () => { // 確保圖片載入完成
+                        images.push(img);
+                        preview.appendChild(img);
 
-                    const imageItem = createImageItem(img);
-                    imageList.appendChild(imageItem);
+                        const imageItem = createImageItem(img);
+                        imageList.appendChild(imageItem);
 
-                    updateImageCount();
-                    if (images.length === 1) {
-                        img.classList.add('active');
-                        startSlideshow();
-                    }
+                        updateImageCount();
+                        if (images.length === 1) {
+                            img.classList.add('active');
+                            startSlideshow();
+                        }
+                    };
+                    img.onerror = () => {
+                        console.error('圖片載入失敗:', file.name);
+                        alert('無法載入圖片 ' + file.name + '，請檢查格式。');
+                    };
                 };
                 reader.readAsDataURL(file);
             });
@@ -422,8 +428,8 @@
                 return;
             }
 
-            if (images.length > 10) {
-                alert('圖片數量超過 10 張，可能導致生成失敗，請減少圖片數量。');
+            if (images.length > 8) {
+                alert('圖片數量超過 8 張，可能導致生成失敗，請減少圖片數量。');
                 return;
             }
 
@@ -434,30 +440,37 @@
             const fps = parseInt(fpsInput.value);
             const delay = 1000 / fps;
 
+            // 計算統一尺寸，選擇最大公共尺寸並限制
             const maxWidth = 800;
             const maxHeight = 600;
-            let width = images[0].naturalWidth;
-            let height = images[0].naturalHeight;
-            if (width > maxWidth || height > maxHeight) {
-                const ratio = Math.min(maxWidth / width, maxHeight / height);
-                width = Math.round(width * ratio);
-                height = Math.round(height * ratio);
-            }
+            let width = Math.min(Math.max(...images.map(img => img.naturalWidth)), maxWidth);
+            let height = Math.min(Math.max(...images.map(img => img.naturalHeight)), maxHeight);
+            const ratio = Math.min(maxWidth / width, maxHeight / height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
 
             try {
+                const workerPath = window.location.pathname.includes('/repo/') 
+                    ? '/repo/assets/js/gif.worker.js' 
+                    : '/assets/js/gif.worker.js';
                 const gif = new GIF({
-                    workers: 4,
-                    quality: 20,
+                    workers: 2, // 減少 Worker 數量以降低負擔
+                    quality: 30, // 提高 quality 值以加快生成
                     width: width,
                     height: height,
-                    workerScript: '/assets/js/gif.worker.js'
+                    workerScript: workerPath
                 });
 
-                images.forEach(img => {
+                images.forEach((img, index) => {
+                    if (!img.complete || img.naturalWidth === 0) {
+                        throw new Error(`圖片 ${index + 1} 未正確載入`);
+                    }
                     const canvas = document.createElement('canvas');
                     canvas.width = width;
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff'; // 添加白色背景以防透明
+                    ctx.fillRect(0, 0, width, height);
                     ctx.drawImage(img, 0, 0, width, height);
                     gif.addFrame(ctx, { delay: delay, copy: true });
                 });
@@ -468,7 +481,9 @@
                         const a = document.createElement('a');
                         a.href = url;
                         a.download = 'slideshow.gif';
+                        document.body.appendChild(a); // 確保 DOM 包含 a 元素
                         a.click();
+                        document.body.removeChild(a);
                         URL.revokeObjectURL(url);
                         status.textContent = 'GIF 下載完成！';
                         setTimeout(() => {
@@ -476,7 +491,7 @@
                         }, 3000);
                     } catch (e) {
                         console.error('下載失敗:', e);
-                        status.textContent = '下載失敗，請試試其他瀏覽器。';
+                        status.textContent = '下載失敗，請嘗試其他瀏覽器（如 Chrome 或 Firefox）。';
                     }
                 });
 
@@ -487,8 +502,8 @@
 
                 gif.render();
             } catch (e) {
-                console.error('GIF 初始化失敗:', e);
-                status.textContent = '無法生成 GIF，請檢查圖片或瀏覽器設置。';
+                console.error('GIF 初始化或處理失敗:', e.message);
+                status.textContent = `無法生成 GIF：${e.message}。請檢查圖片格式或試試其他瀏覽器。`;
             }
         });
     </script>
