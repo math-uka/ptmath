@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>圖片循環播放器</title>
+    <title>圖片循環播放器2</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -100,6 +100,10 @@
             background: #ccc;
             cursor: not-allowed;
         }
+        #gifStatus {
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
         #preview {
             width: 100%;
             max-width: 600px;
@@ -189,7 +193,7 @@
             }
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.min.js"></script>
+    <script src="/assets/js/gif.min.js"></script>
 </head>
 <body>
     <h1>圖片循環播放器</h1>
@@ -202,6 +206,7 @@
         <p id="imageCount">已上傳 0 張圖片</p>
         <button id="clearAll">清除所有圖片</button>
         <button id="downloadGif" disabled>下載為 GIF</button>
+        <p id="gifStatus" style="display: none; color: #007bff;"></p>
     </div>
     <div id="preview"></div>
     <div id="imageList"></div>
@@ -229,7 +234,6 @@
                     images.push(img);
                     preview.appendChild(img);
 
-                    // 添加到圖片列表
                     const imageItem = createImageItem(img);
                     imageList.appendChild(imageItem);
 
@@ -259,7 +263,6 @@
             imageItem.appendChild(listImg);
             imageItem.appendChild(removeBtn);
 
-            // 拖動事件（PC 和手機）
             let touchStartX, touchStartY, touchMoved;
             imageItem.addEventListener('dragstart', (e) => {
                 imageItem.classList.add('dragging');
@@ -281,7 +284,6 @@
                 }
             });
 
-            // 手機觸控拖動
             imageItem.addEventListener('touchstart', (e) => {
                 touchStartX = e.touches[0].clientX;
                 touchStartY = e.touches[0].clientY;
@@ -415,38 +417,79 @@
 
         // 生成並下載 GIF
         downloadGifBtn.addEventListener('click', () => {
-            if (images.length === 0) return;
+            if (images.length === 0) {
+                alert('請先上傳圖片！');
+                return;
+            }
+
+            if (images.length > 10) {
+                alert('圖片數量超過 10 張，可能導致生成失敗，請減少圖片數量。');
+                return;
+            }
+
+            const status = document.getElementById('gifStatus');
+            status.style.display = 'block';
+            status.textContent = '正在生成 GIF，請稍候...';
 
             const fps = parseInt(fpsInput.value);
             const delay = 1000 / fps;
 
-            const gif = new GIF({
-                workers: 4,
-                quality: 10,
-                width: images[0].naturalWidth,
-                height: images[0].naturalHeight,
-                workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
-            });
+            const maxWidth = 800;
+            const maxHeight = 600;
+            let width = images[0].naturalWidth;
+            let height = images[0].naturalHeight;
+            if (width > maxWidth || height > maxHeight) {
+                const ratio = Math.min(maxWidth / width, maxHeight / height);
+                width = Math.round(width * ratio);
+                height = Math.round(height * ratio);
+            }
 
-            images.forEach(img => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.naturalWidth;
-                canvas.height = img.naturalHeight;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                gif.addFrame(ctx, { delay: delay, copy: true });
-            });
+            try {
+                const gif = new GIF({
+                    workers: 4,
+                    quality: 20,
+                    width: width,
+                    height: height,
+                    workerScript: '/assets/js/gif.worker.js'
+                });
 
-            gif.on('finished', (blob) => {
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'slideshow.gif';
-                a.click();
-                URL.revokeObjectURL(url);
-            });
+                images.forEach(img => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    gif.addFrame(ctx, { delay: delay, copy: true });
+                });
 
-            gif.render();
+                gif.on('finished', (blob) => {
+                    try {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'slideshow.gif';
+                        a.click();
+                        URL.revokeObjectURL(url);
+                        status.textContent = 'GIF 下載完成！';
+                        setTimeout(() => {
+                            status.style.display = 'none';
+                        }, 3000);
+                    } catch (e) {
+                        console.error('下載失敗:', e);
+                        status.textContent = '下載失敗，請試試其他瀏覽器。';
+                    }
+                });
+
+                gif.on('error', (error) => {
+                    console.error('GIF 生成錯誤:', error);
+                    status.textContent = '生成 GIF 失敗，請檢查圖片格式或數量。';
+                });
+
+                gif.render();
+            } catch (e) {
+                console.error('GIF 初始化失敗:', e);
+                status.textContent = '無法生成 GIF，請檢查圖片或瀏覽器設置。';
+            }
         });
     </script>
     <footer>
