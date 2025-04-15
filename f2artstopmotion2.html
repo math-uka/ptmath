@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>圖片循環播放器</title>
+    <title>圖片循環播放器2</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -193,7 +193,7 @@
             }
         }
     </style>
-    <script src="/repo/assets/js/gif.min.js"></script>
+    <script src="/your-repo/assets/js/gif.min.js"></script>
 </head>
 <body>
     <h1>圖片循環播放器</h1>
@@ -231,7 +231,7 @@
                 reader.onload = (event) => {
                     const img = new Image();
                     img.src = event.target.result;
-                    img.onload = () => { // 確保圖片載入完成
+                    img.onload = () => {
                         images.push(img);
                         preview.appendChild(img);
 
@@ -376,7 +376,7 @@
         fpsInput.addEventListener('input', () => {
             const fps = fpsInput.value;
             fpsValue.textContent = fps;
-            startSlideshow();
+            startEliminateSlideshow();
         });
 
         // 更新圖片數量顯示
@@ -421,6 +421,16 @@
             downloadGifBtn.disabled = images.length === 0;
         }
 
+        // 檢查 GIF.js 是否載入
+        function waitForGifJs(callback) {
+            if (typeof GIF !== 'undefined') {
+                callback();
+            } else {
+                console.warn('GIF.js 未載入，嘗試等待...');
+                setTimeout(() => waitForGifJs(callback), 500);
+            }
+        }
+
         // 生成並下載 GIF
         downloadGifBtn.addEventListener('click', () => {
             if (images.length === 0) {
@@ -437,74 +447,75 @@
             status.style.display = 'block';
             status.textContent = '正在生成 GIF，請稍候...';
 
-            const fps = parseInt(fpsInput.value);
-            const delay = 1000 / fps;
+            waitForGifJs(() => {
+                const fps = parseInt(fpsInput.value);
+                const delay = 1000 / fps;
 
-            // 計算統一尺寸，選擇最大公共尺寸並限制
-            const maxWidth = 800;
-            const maxHeight = 600;
-            let width = Math.min(Math.max(...images.map(img => img.naturalWidth)), maxWidth);
-            let height = Math.min(Math.max(...images.map(img => img.naturalHeight)), maxHeight);
-            const ratio = Math.min(maxWidth / width, maxHeight / height);
-            width = Math.round(width * ratio);
-            height = Math.round(height * ratio);
+                const maxWidth = 800;
+                const maxHeight = 600;
+                let width = Math.min(Math.max(...images.map(img => img.naturalWidth)), maxWidth);
+                let height = Math.min(Math.max(...images.map(img => img.naturalHeight)), maxHeight);
+                const ratio = Math.min(maxWidth / width, maxHeight / height);
+                width = Math.round(width * ratio);
+                height = Math.round(height * ratio);
 
-            try {
-                const workerPath = window.location.pathname.includes('/repo/') 
-                    ? '/repo/assets/js/gif.worker.js' 
-                    : '/assets/js/gif.worker.js';
-                const gif = new GIF({
-                    workers: 2, // 減少 Worker 數量以降低負擔
-                    quality: 30, // 提高 quality 值以加快生成
-                    width: width,
-                    height: height,
-                    workerScript: workerPath
-                });
+                try {
+                    const workerPath = window.location.pathname.includes('/your-repo/') 
+                        ? '/your-repo/assets/js/gif.worker.js' 
+                        : '/assets/js/gif.worker.js';
+                    const gif = new GIF({
+                        workers: 1, // 減少 Worker 數量
+                        quality: 30, // 提高 quality 加快生成
+                        width: width,
+                        height: height,
+                        workerScript: workerPath
+                    });
 
-                images.forEach((img, index) => {
-                    if (!img.complete || img.naturalWidth === 0) {
-                        throw new Error(`圖片 ${index + 1} 未正確載入`);
-                    }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = '#ffffff'; // 添加白色背景以防透明
-                    ctx.fillRect(0, 0, width, height);
-                    ctx.drawImage(img, 0, 0, width, height);
-                    gif.addFrame(ctx, { delay: delay, copy: true });
-                });
+                    images.forEach((img, index) => {
+                        if (!img.complete || img.naturalWidth === 0) {
+                            throw new Error(`圖片 ${index + 1} 未正確載入`);
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.drawImage(img, 0, 0, width, height);
+                        gif.addFrame(ctx, { delay: delay, copy: true });
+                    });
 
-                gif.on('finished', (blob) => {
-                    try {
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'slideshow.gif';
-                        document.body.appendChild(a); // 確保 DOM 包含 a 元素
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                        status.textContent = 'GIF 下載完成！';
-                        setTimeout(() => {
-                            status.style.display = 'none';
-                        }, 3000);
-                    } catch (e) {
-                        console.error('下載失敗:', e);
-                        status.textContent = '下載失敗，請嘗試其他瀏覽器（如 Chrome 或 Firefox）。';
-                    }
-                });
+                    gif.on('finished', (blob) => {
+                        try {
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'slideshow.gif';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                            status.textContent = 'GIF 下載完成！';
+                            setTimeout(() => {
+                                status.style.display = 'none';
+                            }, 3000);
+                        } catch (e) {
+                            console.error('下載失敗:', e);
+                            status.textContent = '下載失敗，請嘗試其他瀏覽器（如 Chrome 或 Firefox）。';
+                        }
+                    });
 
-                gif.on('error', (error) => {
-                    console.error('GIF 生成錯誤:', error);
-                    status.textContent = '生成 GIF 失敗，請檢查圖片格式或數量。';
-                });
+                    gif.on('error', (error) => {
+                        console.error('GIF 生成錯誤:', error);
+                        status.textContent = '生成 GIF 失敗，請檢查圖片格式或數量。';
+                    });
 
-                gif.render();
-            } catch (e) {
-                console.error('GIF 初始化或處理失敗:', e.message);
-                status.textContent = `無法生成 GIF：${e.message}。請檢查圖片格式或試試其他瀏覽器。`;
-            }
+                    gif.render();
+                } catch (e) {
+                    console.error('GIF 初始化或處理失敗:', e.message);
+                    status.textContent = `無法生成 GIF：${e.message}。請檢查圖片格式或試試其他瀏覽器。`;
+                }
+            });
         });
     </script>
     <footer>
