@@ -193,11 +193,11 @@
             }
         }
     </style>
-    <script src="/your-repo/assets/js/gif.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.min.js"></script>
 </head>
 <body>
     <h1>圖片循環播放器</h1>
-    <input type="file" id="imageUpload" accept="image/*" multiple>
+    <input type="file" id="imageUpload" accept="image/png,image/jpeg" multiple>
     <div id="controls">
         <div id="fpsContainer">
             <label id="fpsLabel" for="fps">每秒張數: <span id="fpsValue">8</span></label>
@@ -226,12 +226,24 @@
         // 處理圖片上傳
         uploadInput.addEventListener('change', (e) => {
             const files = Array.from(e.target.files);
+            if (files.length + images.length > 4) {
+                alert('最多上傳 4 張圖片！');
+                return;
+            }
             files.forEach(file => {
+                if (!['image/png', 'image/jpeg'].includes(file.type)) {
+                    alert(`圖片 ${file.name} 格式不支持，僅允許 PNG 或 JPG！`);
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     const img = new Image();
                     img.src = event.target.result;
                     img.onload = () => {
+                        if (img.naturalWidth > 1000 || img.naturalHeight > 1000) {
+                            alert(`圖片 ${file.name} 尺寸過大，請使用 1000x1000 以下的圖片！`);
+                            return;
+                        }
                         images.push(img);
                         preview.appendChild(img);
 
@@ -246,7 +258,7 @@
                     };
                     img.onerror = () => {
                         console.error('圖片載入失敗:', file.name);
-                        alert('無法載入圖片 ' + file.name + '，請檢查格式（僅支援 PNG/JPG）。');
+                        alert(`無法載入圖片 ${file.name}，請檢查檔案！`);
                     };
                 };
                 reader.readAsDataURL(file);
@@ -421,16 +433,6 @@
             downloadGifBtn.disabled = images.length === 0;
         }
 
-        // 檢查 GIF.js 是否載入
-        function waitForGifJs(callback) {
-            if (typeof GIF !== 'undefined') {
-                callback();
-            } else {
-                console.warn('GIF.js 未載入，嘗試等待...');
-                setTimeout(() => waitForGifJs(callback), 500);
-            }
-        }
-
         // 生成並下載 GIF
         downloadGifBtn.addEventListener('click', () => {
             if (images.length === 0) {
@@ -438,103 +440,91 @@
                 return;
             }
 
-            if (images.length > 5) {
-                alert('圖片數量超過 5 張，可能導致生成失敗，請減少圖片數量。');
-                return;
-            }
-
             const status = document.getElementById('gifStatus');
             status.style.display = 'block';
             status.textContent = '正在生成 GIF，請稍候...';
 
-            waitForGifJs(() => {
-                const fps = parseInt(fpsInput.value);
-                const delay = 1000 / fps;
+            if (typeof GIF === 'undefined') {
+                status.textContent = 'GIF.js 載入失敗，請檢查網路或稍後重試。';
+                console.error('GIF.js 未載入');
+                return;
+            }
 
-                const maxWidth = 600; // 縮小尺寸
-                const maxHeight = 400;
-                let width = Math.min(Math.max(...images.map(img => img.naturalWidth)), maxWidth);
-                let height = Math.min(Math.max(...images.map(img => img.naturalHeight)), maxHeight);
-                const ratio = Math.min(maxWidth / width, maxHeight / height);
-                width = Math.round(width * ratio);
-                height = Math.round(height * ratio);
+            const fps = parseInt(fpsInput.value);
+            const delay = 1000 / fps;
 
-                try {
-                    const workerPath = window.location.pathname.includes('/your-repo/') 
-                        ? '/your-repo/assets/js/gif.worker.js' 
-                        : '/assets/js/gif.worker.js';
-                    const gif = new GIF({
-                        workers: 1,
-                        quality: 40, // 進一步提高 quality
-                        width: width,
-                        height: height,
-                        workerScript: workerPath
-                    });
+            const maxWidth = 400;
+            const maxHeight = 300;
+            let width = Math.min(Math.max(...images.map(img => img.naturalWidth)), maxWidth);
+            let height = Math.min(Math.max(...images.map(img => img.naturalHeight)), maxHeight);
+            const ratio = Math.min(maxWidth / width, maxHeight / height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
 
-                    // 檢查 Worker 是否可用
-                    fetch(workerPath)
-                        .then(res => {
-                            if (!res.ok) throw new Error(`無法載入 Worker: ${res.status}`);
-                        })
-                        .catch(err => {
-                            console.error('Worker 載入失敗:', err);
-                            status.textContent = '無法載入 GIF Worker，請檢查網路或試試其他瀏覽器。';
-                            return;
-                        });
+            try {
+                const gif = new GIF({
+                    workers: 1,
+                    quality: 50,
+                    width: width,
+                    height: height,
+                    workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
+                });
 
-                    images.forEach((img, index) => {
-                        if (!img.complete || img.naturalWidth === 0) {
-                            throw new Error(`圖片 ${index + 1} 未正確載入`);
-                        }
-                        const canvas = document.createElement('canvas');
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillRect(0, 0, width, height);
-                        ctx.drawImage(img, 0, 0, width, height);
-                        gif.addFrame(ctx, { delay: delay, copy: true });
-                    });
+                images.forEach((img, index) => {
+                    if (!img.complete || img.naturalWidth === 0) {
+                        throw new Error(`圖片 ${index + 1} 未正確載入`);
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, width, height);
+                    ctx.drawImage(img, 0, 0, width, height);
+                    gif.addFrame(ctx, { delay: delay, copy: true });
+                });
 
-                    // 設置超時
-                    const timeout = setTimeout(() => {
-                        status.textContent = 'GIF 生成超時，請減少圖片數量或使用 Chrome/Firefox 瀏覽器。';
-                        gif.abort(); // 中止渲染
-                    }, 30000); // 30 秒超時
+                const timeout = setTimeout(() => {
+                    status.textContent = 'GIF 生成超時，請使用 400x300 以下圖片並試用 Chrome 或 Firefox。';
+                    try {
+                        gif.abort();
+                    } catch (e) {
+                        console.warn('中止 GIF 渲染失敗:', e);
+                    }
+                }, 15000); // 15 秒超時
 
-                    gif.on('finished', (blob) => {
-                        clearTimeout(timeout);
-                        try {
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = 'slideshow.gif';
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
-                            status.textContent = 'GIF 下載完成！';
-                            setTimeout(() => {
-                                status.style.display = 'none';
-                            }, 3000);
-                        } catch (e) {
-                            console.error('下載失敗:', e);
-                            status.textContent = '下載失敗，請嘗試 Chrome 或 Firefox 瀏覽器。';
-                        }
-                    });
+                gif.on('finished', (blob) => {
+                    clearTimeout(timeout);
+                    try {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'slideshow.gif';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        status.textContent = 'GIF 下載完成！';
+                        setTimeout(() => {
+                            status.style.display = 'none';
+                        }, 3000);
+                    } catch (e) {
+                        console.error('下載失敗:', e);
+                        status.textContent = '下載失敗，請試用 Chrome 或 Firefox。';
+                    }
+                });
 
-                    gif.on('error', (error) => {
-                        clearTimeout(timeout);
-                        console.error('GIF 生成錯誤:', error);
-                        status.textContent = '生成 GIF 失敗，請檢查圖片格式或數量。';
-                    });
+                gif.on('error', (error) => {
+                    clearTimeout(timeout);
+                    console.error('GIF 生成錯誤:', error);
+                    status.textContent = '生成 GIF 失敗，請檢查圖片格式或數量。';
+                });
 
-                    gif.render();
-                } catch (e) {
-                    console.error('GIF 初始化或處理失敗:', e.message);
-                    status.textContent = `無法生成 GIF：${e.message}。請檢查圖片格式或試試 Chrome/Firefox。`;
-                }
-            });
+                gif.render();
+            } catch (e) {
+                console.error('GIF 初始化或處理失敗:', e.message);
+                status.textContent = `無法生成 GIF：${e.message}。請檢查圖片或試用 Chrome/Firefox。`;
+            }
         });
     </script>
     <footer>
