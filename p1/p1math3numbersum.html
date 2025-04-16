@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加法測驗 16</title>
+    <title>加法測驗 17</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -24,8 +24,7 @@
             font-size: clamp(26px, 7vw, 32px);
             margin: 10px 0;
             color: #ff4500;
-            text-shadow: 1px 1px 2px #...
-
+            text-shadow: 1px 1px 2px #fff;
         }
         #mode-selection {
             margin: 40px auto;
@@ -197,6 +196,7 @@
             <button onclick="appendNumber(7)">7</button>
             <button onclick="appendNumber(8)">8</button>
             <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(0)">0</button>
             <button id="clearBtn" onclick="clearAnswer()">清除</button>
             <button id="submitBtn" onclick="submitAnswer()">提交</button>
         </div>
@@ -230,6 +230,14 @@
             return (a % 10) + (b % 10) < 10 && a + b <= 99;
         }
 
+        function generateNonZeroDigitNumber(max) {
+            let num;
+            do {
+                num = Math.floor(Math.random() * max) + 1; // 從1開始，確保不為0
+            } while (num % 10 === 0); // 確保個位數不為0
+            return num;
+        }
+
         function generateQuestion() {
             let attempts = 0;
             const maxAttempts = 100;
@@ -240,10 +248,10 @@
                     break;
                 }
 
-                // 每個數字從1到99，確保不為0
-                num1 = Math.floor(Math.random() * 99) + 1;
-                num2 = Math.floor(Math.random() * (99 - num1)) + 1;
-                num3 = Math.floor(Math.random() * (99 - num1 - num2)) + 1;
+                // 生成數字，確保不為0且個位數不為0
+                num1 = generateNonZeroDigitNumber(90);
+                num2 = generateNonZeroDigitNumber(90 - num1);
+                num3 = generateNonZeroDigitNumber(99 - num1 - num2);
                 currentAnswer = num1 + num2 + num3;
 
                 const questionKey = `${num1}+${num2}+${num3}`;
@@ -266,25 +274,23 @@
                     // 普通模式：num1和num3 或 num2和num3 個位數和為10
                     const caseChoice = Math.random() < 0.5 ? 'num1_num3' : 'num2_num3';
                     if (caseChoice === 'num1_num3') {
-                        num1 = Math.floor(Math.random() * 90) + 1;
+                        num1 = generateNonZeroDigitNumber(90);
                         const digit1 = num1 % 10;
-                        if (digit1 === 0) continue; // 避免個位數為0
                         let digit3 = 10 - digit1;
                         const maxTens3 = Math.floor((90 - digit3) / 10);
                         const tens3 = Math.floor(Math.random() * (maxTens3 + 1));
                         num3 = tens3 * 10 + digit3;
-                        if (num3 === 0) num3 = 10; // 確保num3不為0
-                        num2 = Math.floor(Math.random() * (99 - num1 - num3)) + 1;
+                        if (num3 % 10 === 0 || num3 === 0) continue; // 確保num3個位數不為0
+                        num2 = generateNonZeroDigitNumber(99 - num1 - num3);
                     } else {
-                        num2 = Math.floor(Math.random() * 90) + 1;
+                        num2 = generateNonZeroDigitNumber(90);
                         const digit2 = num2 % 10;
-                        if (digit2 === 0) continue; // 避免個位數為0
                         let digit3 = 10 - digit2;
                         const maxTens3 = Math.floor((90 - digit3) / 10);
                         const tens3 = Math.floor(Math.random() * (maxTens3 + 1));
                         num3 = tens3 * 10 + digit3;
-                        if (num3 === 0) num3 = 10; // 確保num3不為0
-                        num1 = Math.floor(Math.random() * (99 - num2 - num3)) + 1;
+                        if (num3 % 10 === 0 || num3 === 0) continue; // 確保num3個位數不為0
+                        num1 = generateNonZeroDigitNumber(99 - num2 - num3);
                     }
                     currentAnswer = num1 + num2 + num3;
                     if (currentAnswer <= 99) {
@@ -293,9 +299,9 @@
                     }
                 } else if (mode === 'hard') {
                     // 挑戰模式：至少一次進位
-                    num1 = Math.floor(Math.random() * 90) + 1;
-                    num2 = Math.floor(Math.random() * (99 - num1)) + 1;
-                    num3 = Math.floor(Math.random() * (99 - num1 - num2)) + 1;
+                    num1 = generateNonZeroDigitNumber(90);
+                    num2 = generateNonZeroDigitNumber(90 - num1);
+                    num3 = generateNonZeroDigitNumber(99 - num1 - num2);
                     const unitsSum = (num1 % 10) + (num2 % 10) + (num3 % 10);
                     currentAnswer = num1 + num2 + num3;
                     if (currentAnswer <= 99 && unitsSum >= 10) {
@@ -343,8 +349,8 @@
 
         function submitAnswer() {
             const userAnswer = parseInt(document.getElementById('answer').value);
-            if (isNaN(userAnswer) || userAnswer === 0) {
-                document.getElementById('result').innerHTML = '請輸入有效答案（1到999）！';
+            if (isNaN(userAnswer)) {
+                document.getElementById('result').innerHTML = '請輸入答案！';
                 return;
             }
             if (userAnswer === currentAnswer) {
@@ -398,6 +404,5 @@
             document.title = `加法測驗 ${parseInt(document.title.split(' ')[2]) + 1}`;
         }
     </script>
-    
 </body>
 </html>
