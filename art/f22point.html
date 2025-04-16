@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>二點透視與線段工具7</title>
+    <title>二點透視與線段工具8</title>
     <style>
         body {
             margin: 0;
@@ -65,6 +65,7 @@
         <button id="btn-8" style="background: hsl(288, 100%, 50%)" onclick="togglePoint(8)">點 9</button>
         <button id="btn-9" style="background: hsl(324, 100%, 50%)" onclick="togglePoint(9)">點 10</button>
         <button style="background-color: #808080" onclick="startLineTool()">線段工具</button>
+        <button style="background-color: #808080" onclick="startEraser()">橡皮擦</button>
         <button style="background-color: #808080" onclick="undo()">上一步</button>
         <button style="background-color: #808080" onclick="confirmClearLines()">清除線段</button>
         <button style="background-color: #808080" onclick="confirmRefresh()">重畫</button>
@@ -100,6 +101,7 @@
     let history = [];
     let draggingPoint = null;
     let lineToolActive = false;
+    let eraserActive = false;
     let lineStart = null;
     const SNAP_DISTANCE = 20;
     const DETECT_RADIUS = 20;
@@ -116,7 +118,7 @@
                 end: { x: line.end.x, y: line.end.y }
             }))
         });
-        if (history.length > 50) history.shift(); // 限制歷史記錄長度
+        if (history.length > 50) history.shift();
     }
 
     function undo() {
@@ -132,6 +134,7 @@
                 updateButtonStyle(i);
             }
             lineToolActive = false;
+            eraserActive = false;
             lineStart = null;
             draggingPoint = null;
             draw();
@@ -218,6 +221,12 @@
             ctx.lineTo(draggingPoint.x, draggingPoint.y);
             ctx.stroke();
         }
+
+        if (eraserActive) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.font = '16px Arial';
+            ctx.fillText('橡皮擦模式：點擊線段以刪除', 10, 20);
+        }
     }
 
     function togglePoint(index) {
@@ -233,6 +242,15 @@
 
     function startLineTool() {
         lineToolActive = true;
+        eraserActive = false;
+        lineStart = null;
+        draggingPoint = null;
+        draw();
+    }
+
+    function startEraser() {
+        eraserActive = true;
+        lineToolActive = false;
         lineStart = null;
         draggingPoint = null;
         draw();
@@ -249,6 +267,7 @@
         lines = [];
         extraPoints = [];
         lineToolActive = false;
+        eraserActive = false;
         lineStart = null;
         draggingPoint = null;
         draw();
@@ -276,6 +295,38 @@
         return newPoint;
     }
 
+    function findPointAtPosition(x, y) {
+        const allPoints = [...points.filter(p => p), ...extraPoints];
+        return allPoints.find(point => 
+            point && Math.sqrt((point.x - x) ** 2 + (point.y - y) ** 2) < DETECT_RADIUS
+        );
+    }
+
+    function findLineAtPosition(x, y) {
+        const DETECT_DISTANCE = 10;
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const { start, end } = line;
+
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+            const lenSquared = dx * dx + dy * dy;
+            if (lenSquared === 0) continue;
+
+            let t = ((x - start.x) * dx + (y - start.y) * dy) / lenSquared;
+            t = Math.max(0, Math.min(1, t));
+
+            const projX = start.x + t * dx;
+            const projY = start.y + t * dy;
+
+            const dist = Math.sqrt((x - projX) ** 2 + (y - projY) ** 2);
+            if (dist < DETECT_DISTANCE) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     function getPosition(e) {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
@@ -298,17 +349,17 @@
         };
     }
 
-    function findPointAtPosition(x, y) {
-        const allPoints = [...points.filter(p => p), ...extraPoints];
-        return allPoints.find(point => 
-            point && Math.sqrt((point.x - x) ** 2 + (point.y - y) ** 2) < DETECT_RADIUS
-        );
-    }
-
     function handleStart(e) {
         e.preventDefault();
         const { x, y } = getPosition(e);
-        if (lineToolActive) {
+        if (eraserActive) {
+            const lineIndex = findLineAtPosition(x, y);
+            if (lineIndex !== -1) {
+                saveState();
+                lines.splice(lineIndex, 1);
+                draw();
+            }
+        } else if (lineToolActive) {
             if (!lineStart) {
                 lineStart = snapToPoint(x, y);
                 draw();
@@ -337,7 +388,10 @@
     function handleEnd(e) {
         e.preventDefault();
         const { x, y } = getPosition(e);
-        if (lineToolActive && lineStart && draggingPoint) {
+        if (eraserActive) {
+            eraserActive = false;
+            draw();
+        } else if (lineToolActive && lineStart && draggingPoint) {
             saveState();
             const endPoint = snapToPoint(x, y);
             lines.push({ start: lineStart, end: endPoint });
@@ -358,6 +412,9 @@
             lineStart = null;
             lineToolActive = false;
         }
+        if (eraserActive) {
+            eraserActive = false;
+        }
         draw();
     }
 
@@ -374,7 +431,7 @@
     }
     resizeCanvas();
 </script>
-     <footer>
+    <footer>
         <p>© 2025 ukawai</p>
     </footer>
 </body>
