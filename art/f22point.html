@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>二點透視與線段工具6</title>
+    <title>二點透視與線段工具7</title>
     <style>
         body {
             margin: 0;
@@ -65,8 +65,9 @@
         <button id="btn-8" style="background: hsl(288, 100%, 50%)" onclick="togglePoint(8)">點 9</button>
         <button id="btn-9" style="background: hsl(324, 100%, 50%)" onclick="togglePoint(9)">點 10</button>
         <button style="background-color: #808080" onclick="startLineTool()">線段工具</button>
-        <button style="background-color: #808080" onclick="clearLines()">清除線段</button>
-        <button style="background-color: #808080" onclick="refreshPage()">重畫</button>
+        <button style="background-color: #808080" onclick="undo()">上一步</button>
+        <button style="background-color: #808080" onclick="confirmClearLines()">清除線段</button>
+        <button style="background-color: #808080" onclick="confirmRefresh()">重畫</button>
     </div>
     <canvas id="canvas"></canvas>
 <script>
@@ -96,6 +97,7 @@
     let points = new Array(10).fill(null);
     let extraPoints = [];
     let lines = [];
+    let history = [];
     let draggingPoint = null;
     let lineToolActive = false;
     let lineStart = null;
@@ -104,6 +106,37 @@
 
     const pointColors = Array.from({ length: 10 }, (_, i) => `hsl(${i * 36}, 100%, 50%)`);
     const extraPointColor = '#808080';
+
+    function saveState() {
+        history.push({
+            points: points.map(p => p ? { x: p.x, y: p.y } : null),
+            extraPoints: extraPoints.map(p => ({ x: p.x, y: p.y })),
+            lines: lines.map(line => ({
+                start: { x: line.start.x, y: line.start.y },
+                end: { x: line.end.x, y: line.end.y }
+            }))
+        });
+        if (history.length > 50) history.shift(); // 限制歷史記錄長度
+    }
+
+    function undo() {
+        if (history.length > 0) {
+            const lastState = history.pop();
+            points = lastState.points.map(p => p ? { x: p.x, y: p.y } : null);
+            extraPoints = lastState.extraPoints.map(p => ({ x: p.x, y: p.y }));
+            lines = lastState.lines.map(line => ({
+                start: { x: line.start.x, y: line.start.y },
+                end: { x: line.end.x, y: line.end.y }
+            }));
+            for (let i = 0; i < 10; i++) {
+                updateButtonStyle(i);
+            }
+            lineToolActive = false;
+            lineStart = null;
+            draggingPoint = null;
+            draw();
+        }
+    }
 
     function updateButtonStyle(index) {
         const btn = document.getElementById(`btn-${index}`);
@@ -188,6 +221,7 @@
     }
 
     function togglePoint(index) {
+        saveState();
         if (points[index]) {
             points[index] = null;
         } else {
@@ -204,6 +238,13 @@
         draw();
     }
 
+    function confirmClearLines() {
+        if (confirm('確定要清除所有線段和額外點嗎？')) {
+            saveState();
+            clearLines();
+        }
+    }
+
     function clearLines() {
         lines = [];
         extraPoints = [];
@@ -213,8 +254,14 @@
         draw();
     }
 
+    function confirmRefresh() {
+        if (confirm('確定要重畫並清除所有內容嗎？')) {
+            refreshPage();
+        }
+    }
+
     function refreshPage() {
-        window.location.reload(); // 重新整理頁面
+        window.location.reload();
     }
 
     function snapToPoint(x, y) {
@@ -291,14 +338,18 @@
         e.preventDefault();
         const { x, y } = getPosition(e);
         if (lineToolActive && lineStart && draggingPoint) {
+            saveState();
             const endPoint = snapToPoint(x, y);
             lines.push({ start: lineStart, end: endPoint });
             lineToolActive = false;
             lineStart = null;
             draggingPoint = null;
             draw();
+        } else if (draggingPoint) {
+            saveState();
+            draggingPoint = null;
+            draw();
         }
-        draggingPoint = null;
     }
 
     function handleCancel(e) {
@@ -323,5 +374,8 @@
     }
     resizeCanvas();
 </script>
+     <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
 </body>
 </html>
