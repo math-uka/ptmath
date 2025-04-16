@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>一點透視與線段工具</title>
+    <title>一點透視與線段工具2</title>
     <style>
         body {
             margin: 0;
@@ -36,7 +36,7 @@
         canvas {
             border: 1px solid #ccc;
             width: 100%;
-            max-width: 800px;
+            max-width: 1600px; /* 畫布最大寬度加倍，從 800px 改為 1600px */
             height: auto;
             touch-action: none;
         }
@@ -76,22 +76,22 @@
     const ctx = canvas.getContext('2d');
 
     function resizeCanvas() {
-        const maxWidth = Math.min(window.innerWidth * 0.9, 800);
+        const maxWidth = Math.min(window.innerWidth * 0.9, 1600); /* 最大寬度加倍，從 800 改為 1600 */
         canvas.width = maxWidth;
-        canvas.height = maxWidth * 0.75;
+        canvas.height = maxWidth * 0.75; /* 保持寬高比 4:3 */
         updateVanishPoint();
         draw();
     }
 
     function updateVanishPoint() {
-        // 單一消失點位於畫布寬度中間，垂直 75% 處（靠下）
+        // 消失點位於畫布寬度中間，垂直 85% 處（更靠下）
         vanishPoint.x = canvas.width * 0.5;
-        vanishPoint.y = canvas.height * 0.75;
+        vanishPoint.y = canvas.height * 0.85; /* 從 0.75 改為 0.85 */
     }
 
     window.addEventListener('resize', resizeCanvas);
 
-    const vanishPoint = { x: 0, y: 0 }; // 改為單一消失點
+    const vanishPoint = { x: 0, y: 0 };
     
     let points = new Array(10).fill(null);
     let extraPoints = [];
@@ -151,13 +151,11 @@
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // 繪製單一消失點
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(vanishPoint.x, vanishPoint.y, 5, 0, Math.PI * 2);
         ctx.fill();
 
-        // 繪製主要點及其透視線
         points.forEach((point, index) => {
             if (point) {
                 ctx.beginPath();
@@ -165,7 +163,7 @@
                 ctx.strokeStyle = 'lightgreen';
                 ctx.lineWidth = 1;
                 ctx.moveTo(point.x, point.y);
-                ctx.lineTo(vanishPoint.x, vanishPoint.y); // 連接到單一消失點
+                ctx.lineTo(vanishPoint.x, vanishPoint.y);
                 ctx.stroke();
                 ctx.setLineDash([]);
 
@@ -176,7 +174,6 @@
             }
         });
 
-        // 繪製額外點及其透視線
         extraPoints.forEach(point => {
             if (point) {
                 ctx.beginPath();
@@ -184,7 +181,7 @@
                 ctx.strokeStyle = 'lightgreen';
                 ctx.lineWidth = 1;
                 ctx.moveTo(point.x, point.y);
-                ctx.lineTo(vanishPoint.x, vanishPoint.y); // 連接到單一消失點
+                ctx.lineTo(vanishPoint.x, vanishPoint.y);
                 ctx.stroke();
                 ctx.setLineDash([]);
 
@@ -195,7 +192,6 @@
             }
         });
 
-        // 繪製線段
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 2;
         lines.forEach(line => {
@@ -207,7 +203,6 @@
             }
         });
 
-        // 繪製線段工具預覽
         if (lineToolActive && lineStart && draggingPoint) {
             ctx.beginPath();
             ctx.strokeStyle = 'gray';
@@ -216,7 +211,6 @@
             ctx.stroke();
         }
 
-        // 橡皮擦模式提示
         if (eraserActive) {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
             ctx.font = '16px Arial';
@@ -229,7 +223,7 @@
         if (points[index]) {
             points[index] = null;
         } else {
-            points[index] = { x: canvas.width / 2, y: canvas.height * 0.5 }; // 新點初始位置稍靠上
+            points[index] = { x: canvas.width / 2, y: canvas.height * 0.5 };
         }
         updateButtonStyle(index);
         draw();
