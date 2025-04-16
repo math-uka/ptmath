@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>一點透視與線段工具2</title>
+    <title>一點透視與線段工具</title>
     <style>
         body {
             margin: 0;
@@ -36,7 +36,6 @@
         canvas {
             border: 1px solid #ccc;
             width: 100%;
-            max-width: 1600px; /* 畫布最大寬度加倍，從 800px 改為 1600px */
             height: auto;
             touch-action: none;
         }
@@ -48,6 +47,10 @@
             }
             #button-container {
                 gap: 3px;
+            }
+            canvas {
+                width: 100%;
+                height: auto;
             }
         }
     </style>
@@ -76,17 +79,24 @@
     const ctx = canvas.getContext('2d');
 
     function resizeCanvas() {
-        const maxWidth = Math.min(window.innerWidth * 0.9, 1600); /* 最大寬度加倍，從 800 改為 1600 */
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        const maxWidth = Math.min(window.innerWidth * 0.9, 1600) * devicePixelRatio;
         canvas.width = maxWidth;
-        canvas.height = maxWidth * 0.75; /* 保持寬高比 4:3 */
+        
+        // 手機模式下高度為原始的 1.5 倍
+        const isMobile = window.innerWidth <= 600;
+        canvas.height = maxWidth * 0.75 * (isMobile ? 1.5 : 1); // 手機模式高度 * 1.5
+
+        // 設置 CSS 尺寸以匹配邏輯像素
+        canvas.style.width = `${maxWidth / devicePixelRatio}px`;
+        canvas.style.height = `${canvas.height / devicePixelRatio}px`;
         updateVanishPoint();
         draw();
     }
 
     function updateVanishPoint() {
-        // 消失點位於畫布寬度中間，垂直 85% 處（更靠下）
         vanishPoint.x = canvas.width * 0.5;
-        vanishPoint.y = canvas.height * 0.85; /* 從 0.75 改為 0.85 */
+        vanishPoint.y = canvas.height * 0.85;
     }
 
     window.addEventListener('resize', resizeCanvas);
@@ -101,8 +111,9 @@
     let lineToolActive = false;
     let eraserActive = false;
     let lineStart = null;
-    const SNAP_DISTANCE = 20;
-    const DETECT_RADIUS = 20;
+    const SNAP_DISTANCE = 40;
+    const DETECT_RADIUS = 40;
+    const DETECT_DISTANCE = 20;
 
     const pointColors = Array.from({ length: 10 }, (_, i) => `hsl(${i * 36}, 100%, 50%)`);
     const extraPointColor = '#808080';
@@ -292,7 +303,6 @@
     }
 
     function findLineAtPosition(x, y) {
-        const DETECT_DISTANCE = 10;
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const { start, end } = line;
