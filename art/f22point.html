@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>二點透視與線段工具8</title>
+    <title>二點透視與矩形工具</title>
     <style>
         body {
             margin: 0;
@@ -65,6 +65,7 @@
         <button id="btn-8" style="background: hsl(288, 100%, 50%)" onclick="togglePoint(8)">點 9</button>
         <button id="btn-9" style="background: hsl(324, 100%, 50%)" onclick="togglePoint(9)">點 10</button>
         <button style="background-color: #808080" onclick="startLineTool()">線段工具</button>
+        <button style="background-color: #808080" onclick="startRectangleTool()">矩形工具</button>
         <button style="background-color: #808080" onclick="startEraser()">橡皮擦</button>
         <button style="background-color: #808080" onclick="undo()">上一步</button>
         <button style="background-color: #808080" onclick="confirmClearLines()">清除線段</button>
@@ -98,11 +99,14 @@
     let points = new Array(10).fill(null);
     let extraPoints = [];
     let lines = [];
+    let rectangles = [];
     let history = [];
     let draggingPoint = null;
     let lineToolActive = false;
+    let rectangleToolActive = false;
     let eraserActive = false;
     let lineStart = null;
+    let rectangleStart = null;
     const SNAP_DISTANCE = 20;
     const DETECT_RADIUS = 20;
 
@@ -116,6 +120,9 @@
             lines: lines.map(line => ({
                 start: { x: line.start.x, y: line.start.y },
                 end: { x: line.end.x, y: line.end.y }
+            })),
+            rectangles: rectangles.map(rect => ({
+                corners: rect.corners.map(p => ({ x: p.x, y: p.y }))
             }))
         });
         if (history.length > 50) history.shift();
@@ -130,12 +137,17 @@
                 start: { x: line.start.x, y: line.start.y },
                 end: { x: line.end.x, y: line.end.y }
             }));
+            rectangles = lastState.rectangles.map(rect => ({
+                corners: rect.corners.map(p => ({ x: p.x, y: p.y }))
+            }));
             for (let i = 0; i < 10; i++) {
                 updateButtonStyle(i);
             }
             lineToolActive = false;
+            rectangleToolActive = false;
             eraserActive = false;
             lineStart = null;
+            rectangleStart = null;
             draggingPoint = null;
             draw();
         }
@@ -153,12 +165,14 @@
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // Draw vanishing points
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(vanishPointLeft.x, vanishPointLeft.y, 5, 0, Math.PI * 2);
         ctx.arc(vanishPointRight.x, vanishPointRight.y, 5, 0, Math.PI * 2);
         ctx.fill();
 
+        // Draw main points and their lines to vanishing points
         points.forEach((point, index) => {
             if (point) {
                 ctx.beginPath();
@@ -181,6 +195,7 @@
             }
         });
 
+        // Draw extra points and their lines to vanishing points
         extraPoints.forEach(point => {
             if (point) {
                 ctx.beginPath();
@@ -203,6 +218,7 @@
             }
         });
 
+        // Draw lines
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 2;
         lines.forEach(line => {
@@ -214,6 +230,22 @@
             }
         });
 
+        // Draw rectangles
+        rectangles.forEach(rect => {
+            ctx.beginPath();
+            ctx.strokeStyle = 'blue';
+            ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.moveTo(rect.corners[0].x, rect.corners[0].y);
+            for (let i = 1; i < 4; i++) {
+                ctx.lineTo(rect.corners[i].x, rect.corners[i].y);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        });
+
+        // Draw line tool preview
         if (lineToolActive && lineStart && draggingPoint) {
             ctx.beginPath();
             ctx.strokeStyle = 'gray';
@@ -222,10 +254,27 @@
             ctx.stroke();
         }
 
+        // Draw rectangle tool preview
+        if (rectangleToolActive && rectangleStart && draggingPoint) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'gray';
+            ctx.fillStyle = 'rgba(0, 0, 255, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.rect(
+                rectangleStart.x,
+                rectangleStart.y,
+                draggingPoint.x - rectangleStart.x,
+                draggingPoint.y - rectangleStart.y
+            );
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        // Display eraser mode prompt
         if (eraserActive) {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
             ctx.font = '16px Arial';
-            ctx.fillText('橡皮擦模式：點擊線段以刪除', 10, 20);
+            ctx.fillText('橡皮擦模式：點擊線段或矩形以刪除', 10, 20);
         }
     }
 
@@ -242,8 +291,20 @@
 
     function startLineTool() {
         lineToolActive = true;
+        rectangleToolActive = false;
         eraserActive = false;
         lineStart = null;
+        rectangleStart = null;
+        draggingPoint = null;
+        draw();
+    }
+
+    function startRectangleTool() {
+        rectangleToolActive = true;
+        lineToolActive = false;
+        eraserActive = false;
+        lineStart = null;
+        rectangleStart = null;
         draggingPoint = null;
         draw();
     }
@@ -251,13 +312,15 @@
     function startEraser() {
         eraserActive = true;
         lineToolActive = false;
+        rectangleToolActive = false;
         lineStart = null;
+        rectangleStart = null;
         draggingPoint = null;
         draw();
     }
 
     function confirmClearLines() {
-        if (confirm('確定要清除所有線段和額外點嗎？')) {
+        if (confirm('確定要清除所有線段、矩形和額外點嗎？')) {
             saveState();
             clearLines();
         }
@@ -265,10 +328,13 @@
 
     function clearLines() {
         lines = [];
+        rectangles = [];
         extraPoints = [];
         lineToolActive = false;
+        rectangleToolActive = false;
         eraserActive = false;
         lineStart = null;
+        rectangleStart = null;
         draggingPoint = null;
         draw();
     }
@@ -327,6 +393,28 @@
         return -1;
     }
 
+    function findRectangleAtPosition(x, y) {
+        for (let i = 0; i < rectangles.length; i++) {
+            const rect = rectangles[i];
+            const [p1, p2, p3, p4] = rect.corners;
+
+            // Check if point (x, y) is inside the rectangle using point-in-polygon test
+            let inside = false;
+            for (let j = 0, k = 3; j < 4; k = j++) {
+                const sj = rect.corners[j];
+                const sk = rect.corners[k];
+                if (
+                    ((sj.y > y) !== (sk.y > y)) &&
+                    (x < (sk.x - sj.x) * (y - sj.y) / (sk.y - sj.y) + sj.x)
+                ) {
+                    inside = !inside;
+                }
+            }
+            if (inside) return i;
+        }
+        return -1;
+    }
+
     function getPosition(e) {
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
@@ -354,14 +442,30 @@
         const { x, y } = getPosition(e);
         if (eraserActive) {
             const lineIndex = findLineAtPosition(x, y);
+            const rectIndex = findRectangleAtPosition(x, y);
             if (lineIndex !== -1) {
                 saveState();
                 lines.splice(lineIndex, 1);
+                draw();
+            } else if (rectIndex !== -1) {
+                saveState();
+                const rect = rectangles[rectIndex];
+                // Remove corner points from extraPoints
+                rect.corners.forEach(corner => {
+                    const idx = extraPoints.findIndex(p => p === corner);
+                    if (idx !== -1) extraPoints.splice(idx, 1);
+                });
+                rectangles.splice(rectIndex, 1);
                 draw();
             }
         } else if (lineToolActive) {
             if (!lineStart) {
                 lineStart = snapToPoint(x, y);
+                draw();
+            }
+        } else if (rectangleToolActive) {
+            if (!rectangleStart) {
+                rectangleStart = snapToPoint(x, y);
                 draw();
             }
         } else {
@@ -382,6 +486,9 @@
         } else if (lineToolActive && lineStart) {
             draggingPoint = { x, y };
             draw();
+        } else if (rectangleToolActive && rectangleStart) {
+            draggingPoint = { x, y };
+            draw();
         }
     }
 
@@ -399,6 +506,21 @@
             lineStart = null;
             draggingPoint = null;
             draw();
+        } else if (rectangleToolActive && rectangleStart && draggingPoint) {
+            saveState();
+            const endPoint = snapToPoint(x, y);
+            // Create the four corners of the rectangle
+            const corners = [
+                rectangleStart,
+                snapToPoint(endPoint.x, rectangleStart.y),
+                endPoint,
+                snapToPoint(rectangleStart.x, endPoint.y)
+            ];
+            rectangles.push({ corners });
+            rectangleToolActive = false;
+            rectangleStart = null;
+            draggingPoint = null;
+            draw();
         } else if (draggingPoint) {
             saveState();
             draggingPoint = null;
@@ -411,6 +533,10 @@
         if (lineToolActive) {
             lineStart = null;
             lineToolActive = false;
+        }
+        if (rectangleToolActive) {
+            rectangleStart = null;
+            rectangleToolActive = false;
         }
         if (eraserActive) {
             eraserActive = false;
