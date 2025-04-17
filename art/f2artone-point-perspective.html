@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>一點透視與線段工具</title>
+    <title>一點透視與線段工具10</title>
     <style>
         body {
             margin: 0;
@@ -36,6 +36,7 @@
         canvas {
             border: 1px solid #ccc;
             width: 100%;
+            max-width: 800px;
             height: auto;
             touch-action: none;
         }
@@ -47,10 +48,6 @@
             }
             #button-container {
                 gap: 3px;
-            }
-            canvas {
-                width: 100%;
-                height: auto;
             }
         }
     </style>
@@ -79,30 +76,22 @@
     const ctx = canvas.getContext('2d');
 
     function resizeCanvas() {
-        const devicePixelRatio = window.devicePixelRatio || 1;
-        const maxWidth = Math.min(window.innerWidth * 0.9, 1600) * devicePixelRatio;
+        const maxWidth = Math.min(window.innerWidth * 0.9, 800);
         canvas.width = maxWidth;
-        
-        // 手機模式下高度為原始的 1.5 倍
-        const isMobile = window.innerWidth <= 600;
-        canvas.height = maxWidth * 0.75 * (isMobile ? 1.5 : 1); // 手機模式高度 * 1.5
-
-        // 設置 CSS 尺寸以匹配邏輯像素
-        canvas.style.width = `${maxWidth / devicePixelRatio}px`;
-        canvas.style.height = `${canvas.height / devicePixelRatio}px`;
-        updateVanishPoint();
+        canvas.height = maxWidth * 0.75 * 1.5; // 高度增加0.5倍
+        updateVanishPoints();
         draw();
     }
 
-    function updateVanishPoint() {
-        vanishPoint.x = canvas.width * 0.5;
-        vanishPoint.y = canvas.height * 0.85;
+    function updateVanishPoints() {
+        vanishPoint.x = canvas.width / 2; // 消失點位於中間
+        vanishPoint.y = canvas.height * 0.9; // 消失點往上平移到高度的90%
     }
 
     window.addEventListener('resize', resizeCanvas);
 
-    const vanishPoint = { x: 0, y: 0 };
-    
+    const vanishPoint = { x: 0, y: 0 }; // 單一消失點
+
     let points = new Array(10).fill(null);
     let extraPoints = [];
     let lines = [];
@@ -111,9 +100,8 @@
     let lineToolActive = false;
     let eraserActive = false;
     let lineStart = null;
-    const SNAP_DISTANCE = 40;
-    const DETECT_RADIUS = 40;
-    const DETECT_DISTANCE = 20;
+    const SNAP_DISTANCE = 20;
+    const DETECT_RADIUS = 20;
 
     const pointColors = Array.from({ length: 10 }, (_, i) => `hsl(${i * 36}, 100%, 50%)`);
     const extraPointColor = '#808080';
@@ -162,11 +150,13 @@
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // 繪製消失點
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(vanishPoint.x, vanishPoint.y, 5, 0, Math.PI * 2);
         ctx.fill();
 
+        // 繪製主要點及其連接到消失點的線
         points.forEach((point, index) => {
             if (point) {
                 ctx.beginPath();
@@ -185,6 +175,7 @@
             }
         });
 
+        // 繪製額外點及其連接到消失點的線
         extraPoints.forEach(point => {
             if (point) {
                 ctx.beginPath();
@@ -203,6 +194,7 @@
             }
         });
 
+        // 繪製線段
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 2;
         lines.forEach(line => {
@@ -214,6 +206,7 @@
             }
         });
 
+        // 繪製線段工具的預覽線
         if (lineToolActive && lineStart && draggingPoint) {
             ctx.beginPath();
             ctx.strokeStyle = 'gray';
@@ -222,6 +215,7 @@
             ctx.stroke();
         }
 
+        // 顯示橡皮擦模式提示
         if (eraserActive) {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
             ctx.font = '16px Arial';
@@ -234,7 +228,7 @@
         if (points[index]) {
             points[index] = null;
         } else {
-            points[index] = { x: canvas.width / 2, y: canvas.height * 0.5 };
+            points[index] = { x: canvas.width / 2, y: canvas.height * 0.67 };
         }
         updateButtonStyle(index);
         draw();
@@ -303,6 +297,7 @@
     }
 
     function findLineAtPosition(x, y) {
+        const DETECT_DISTANCE = 10;
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const { start, end } = line;
@@ -429,6 +424,7 @@
         updateButtonStyle(i);
     }
     resizeCanvas();
+
 </script>
     <footer>
         <p>© 2025 ukawai</p>
