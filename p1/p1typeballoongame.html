@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>氣球打字遊戲</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #game-container {
+            width: 800px;
+            height: 400px;
+            border: 2px solid #333;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+            display: none; /* 初始隱藏 */
+        }
+        #mountains {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            clip-path: polygon(0 100%, 20% 40%, 40% 70%, 60% 30%, 80% 60%, 100% 40%, 100% 100%);
+            z-index: 1;
+        }
+        #clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: drift 20s linear infinite;
+        }
+        @keyframes drift {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(900px); }
+        }
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            user-select: none;
+            z-index: 3;
+            transition: transform 0.1s;
+        }
+        .explode {
+            background: radial-gradient(circle, yellow, orange, transparent);
+            transform: scale(2);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+        #stats {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            z-index: 4;
+        }
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            z-index: 4;
+        }
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: none;
+            z-index: 4;
+        }
+        #input-box {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 18px;
+            width: 200px;
+            display: none; /* 初始隱藏 */
+        }
+        #error-message {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: red;
+            font-size: 24px;
+            display: none;
+            z-index: 4;
+        }
+        #start-screen {
+            text-align: center;
+        }
+        #start-screen h2 {
+            margin-bottom: 20px;
+        }
+        #start-screen input {
+            padding: 10px;
+            font-size: 16px;
+            width: 50px;
+            margin: 0 10px;
+        }
+        #speed-selection {
+            text-align: center;
+            display: none; /* 初始隱藏 */
+        }
+        #speed-selection h2 {
+            margin-bottom: 20px;
+        }
+        #speed-selection button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="start-screen">
+        <h2>輸入兩個字母（A-Z）</h2>
+        <input type="text" id="letter1" maxlength="1" placeholder="字母1">
+        <input type="text" id="letter2" maxlength="1" placeholder="字母2">
+        <br><br>
+        <button onclick="proceedToSpeedSelection()">下一步</button>
+    </div>
+    <div id="speed-selection">
+        <h2>選擇遊戲速度</h2>
+        <button onclick="startGameWithSpeed('slow')">慢</button>
+        <button onclick="startGameWithSpeed('medium')">中</button>
+        <button onclick="startGameWithSpeed('fast')">快的</button>
+    </div>
+    <div id="game-container">
+        <div id="stats">得分: 0 | 生命: </div>
+        <div id="timer">剩餘時間: 2:00</div>
+        <div id="mountains"></div>
+        <div id="clouds"></div>
+        <div id="game-over">
+            <h1>遊戲結束</h1>
+            <p>最終得分: <span id="final-score">0</span></p>
+            <button onclick="showStartScreen()">重新開始</button>
+        </div>
+        <div id="error-message">你打錯了</div>
+    </div>
+    <input type="text" id="input-box" maxlength="1" autocomplete="off">
+
+    <script>
+        const container = document.getElementById('game-container');
+        const stats = document.getElementById('stats');
+        const timer = document.getElementById('timer');
+        const gameOver = document.getElementById('game-over');
+        const finalScore = document.getElementById('final-score');
+        const inputBox = document.getElementById('input-box');
+        const errorMessage = document.getElementById('error-message');
+        const cloudsDiv = document.getElementById('clouds');
+        const speedSelection = document.getElementById('speed-selection');
+        const startScreen = document.getElementById('start-screen');
+        const letter1Input = document.getElementById('letter1');
+        const letter2Input = document.getElementById('letter2');
+        
+        let score = 0;
+        let lives = 5; // 初始值，會根據速度調整
+        let balloons = [];
+        let gameActive = false;
+        let usedLetters = new Set();
+        let timeLeft = 120; // 2分鐘（120秒）
+        let timerInterval;
+        let balloonSpeed;
+        let maxBalloons; // 根據速度設置的最大氣球數
+        const baseSpeed = 2; // 中速基準值
+        let minLetterCode, maxLetterCode; // 用於限制字母範圍
+
+        // 字母與顏色的映射
+        const letterColors = {
+            'Q': 'orange', 'A': 'orange', 'Z': 'orange', // QAZ 橙色
+            'W': 'blue', 'S': 'blue', 'X': 'blue',      // WSX 藍色
+            'E': 'red', 'D': 'red', 'C': 'red',         // EDC 紅色
+            'R': 'green', 'T': 'green', 'G': 'green', 'F': 'green', 'V': 'green', 'B': 'green', // RTGFVB 綠色
+            'Y': '#00008B', 'U': '#00008B', 'H': '#00008B', 'J': '#00008B', 'N': '#00008B', 'M': '#00008B', // YUHJNM 深藍色
+            'I': 'purple', 'K': 'purple',               // IK 紫色
+            'O': 'gray', 'L': 'gray',                   // OL 灰色
+            'P': 'pink'                                 // P 粉紅色
+        };
+
+        // 添加雲朵並啟動移動
+        function addClouds() {
+            cloudsDiv.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'cloud';
+                cloud.style.width = `${100 + Math.random() * 100}px`;
+                cloud.style.height = `${40 + Math.random() * 40}px`;
+                cloud.style.top = `${Math.random() * 150}px`;
+                cloud.style.left = `${Math.random() * 700}px`;
+                cloudsDiv.appendChild(cloud);
+            }
+        }
+
+        function createBalloon() {
+            if (!gameActive || balloons.length >= maxBalloons) return; // 使用 maxBalloons 限制數量
+
+            let letter;
+            do {
+                // 在 minLetterCode 和 maxLetterCode 之間隨機生成字母
+                const randomCode = Math.floor(Math.random() * (maxLetterCode - minLetterCode + 1)) + minLetterCode;
+                letter = String.fromCharCode(randomCode);
+            } while (usedLetters.has(letter));
+
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.textContent = letter;
+            balloon.style.backgroundColor = letterColors[letter] || 'red'; // 根據字母設置顏色，默認為紅色
+            balloon.style.top = Math.random() * (container.offsetHeight - 70 - 150) + 'px';
+            balloon.style.left = '-50px';
+            balloon.dataset.letter = letter.toLowerCase();
+            container.appendChild(balloon);
+            balloons.push(balloon);
+            usedLetters.add(letter);
+
+            animateBalloon(balloon);
+        }
+
+        function animateBalloon(balloon) {
+            let position = -50;
+            const speed = balloonSpeed + Math.random() * 2; // 基礎速度 + 隨機變化
+
+            const animation = setInterval(() => {
+                if (!gameActive) {
+                    clearInterval(animation);
+                    return;
+                }
+
+                position += speed;
+                balloon.style.left = position + 'px';
+
+                if (position > container.offsetWidth) {
+                    removeBalloon(balloon, false);
+                    clearInterval(animation);
+                }
+            }, 1000 / 60);
+        }
+
+        function removeBalloon(balloon, hit) {
+            const index = balloons.indexOf(balloon);
+            if (index > -1) {
+                const letter = balloon.dataset.letter.toUpperCase();
+                balloons.splice(index, 1);
+                if (hit) {
+                    balloon.classList.add('explode');
+                    setTimeout(() => balloon.remove(), 300);
+                } else {
+                    balloon.remove();
+                }
+                usedLetters.delete(letter);
+                if (!hit) {
+                    lives--;
+                    updateStats();
+                    if (lives <= 0) {
+                        endGame();
+                    }
+                }
+            }
+        }
+
+        function updateStats() {
+            stats.textContent = `得分: ${score} | 生命: ${'♥'.repeat(lives)}`;
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timer.textContent = `剩餘時間: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            if (timeLeft <= 0) {
+                endGame();
+            }
+            timeLeft--;
+        }
+
+        function handleInput(event) {
+            if (!gameActive) return;
+
+            const key = event.target.value.toLowerCase();
+            if (key.length === 0) return;
+
+            let hit = false;
+            for (let balloon of balloons) {
+                if (balloon.dataset.letter === key) {
+                    score += 1;
+                    removeBalloon(balloon, true);
+                    hit = true;
+                    updateStats();
+                    break;
+                }
+            }
+
+            if (!hit && key.match(/[a-z]/)) {
+                lives--;
+                updateStats();
+                showErrorMessage();
+                if (lives <= 0) {
+                    endGame();
+                }
+            }
+
+            inputBox.value = '';
+        }
+
+        function showErrorMessage() {
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(timerInterval);
+            balloons.forEach(balloon => {
+                usedLetters.delete(balloon.dataset.letter.toUpperCase());
+                balloon.remove();
+            });
+            balloons = [];
+            gameOver.style.display = 'block';
+            const totalScore = score + (lives * 10);
+            finalScore.textContent = totalScore;
+            inputBox.disabled = true;
+        }
+
+        function startGame() {
+            gameOver.style.display = 'none';
+            score = 0;
+            timeLeft = 120;
+            gameActive = true;
+            usedLetters.clear();
+            updateStats();
+            updateTimer();
+            inputBox.disabled = false;
+            inputBox.style.display = 'block';
+            inputBox.focus();
+            cloudsDiv.innerHTML = '';
+            addClouds();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            setInterval(createBalloon, 1500);
+            container.style.display = 'block';
+        }
+
+        function proceedToSpeedSelection() {
+            const letter1 = letter1Input.value.toUpperCase();
+            const letter2 = letter2Input.value.toUpperCase();
+
+            // 驗證輸入是否為單個字母
+            if (!letter1.match(/[A-Z]/) || !letter2.match(/[A-Z]/)) {
+                alert('請輸入有效的字母（A-Z）');
+                return;
+            }
+
+            // 設置字母範圍
+            minLetterCode = Math.min(letter1.charCodeAt(0), letter2.charCodeAt(0));
+            maxLetterCode = Math.max(letter1.charCodeAt(0), letter2.charCodeAt(0));
+
+            // 顯示速度選擇畫面
+            startScreen.style.display = 'none';
+            speedSelection.style.display = 'block';
+        }
+
+        function startGameWithSpeed(speed) {
+            speedSelection.style.display = 'none';
+            if (speed === 'slow') {
+                balloonSpeed = baseSpeed / 4; // 慢速：中速的1/4
+                lives = 15; // 慢速：15個心
+                maxBalloons = 2; // 慢速：最多2個氣球
+            } else if (speed === 'medium') {
+                balloonSpeed = baseSpeed; // 中速
+                lives = 10; // 中速：10個心
+                maxBalloons = 3; // 中速：最多3個氣球
+            } else if (speed === 'fast') {
+                balloonSpeed = baseSpeed * 3; // 快速：中速的3倍
+                lives = 5; // 快速：5個心
+                maxBalloons = 4; // 快速：最多4個氣球
+            }
+            startGame();
+        }
+
+        function showStartScreen() {
+            gameOver.style.display = 'none';
+            container.style.display = 'none';
+            inputBox.style.display = 'none';
+            speedSelection.style.display = 'none';
+            startScreen.style.display = 'block';
+            letter1Input.value = '';
+            letter2Input.value = '';
+        }
+
+        inputBox.addEventListener('input', handleInput);
+        // 初始顯示開始畫面
+        showStartScreen();
+    </script>
+  <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+</body>
+</html>
