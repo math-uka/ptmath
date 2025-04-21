@@ -112,6 +112,14 @@
                 return charA.localeCompare(charB, 'zh-TW');
             });
 
+            // 計算常模參照：最高分100，最低分60，0分50
+            let normReference = '';
+            const validScores = students
+                .filter(student => student.score !== '' && !isNaN(student.score))
+                .map(student => student.score);
+            const maxScore = validScores.length > 0 ? Math.max(...validScores) : 0;
+            const minScore = validScores.length > 0 ? Math.min(...validScores) : 0;
+
             // 計算並生成表格
             const tbody = document.querySelector('#resultTable tbody');
             tbody.innerHTML = '';
@@ -120,17 +128,30 @@
                 let formula1 = '';
                 let formula2 = '';
                 let formula3 = '';
-                let normReference = '';
+                normReference = '';
 
                 if (student.score !== '' && !isNaN(totalScore) && totalScore > 0) {
                     realScore = Math.floor(student.score / totalScore * 100);
                     formula1 = Math.floor(realScore * 0.9 + 10);
                     formula2 = Math.floor(realScore * 0.8 + 20);
                     formula3 = Math.floor(Math.sqrt(realScore) * 10);
+
+                    // 常模參照計算
                     if (student.score === 0) {
-                        normReference = 50; // 原始分數為0時，常模參照固定為50
+                        normReference = 50; // 0分對應50
+                    } else if (validScores.length === 0) {
+                        normReference = 60; // 無有效分數時，給60
+                    } else if (maxScore === minScore) {
+                        normReference = student.score === maxScore ? 100 : 60; // 所有分數相同時，給100或60
+                    } else if (student.score === maxScore) {
+                        normReference = 100; // 最高分對應100
+                    } else if (student.score === minScore) {
+                        normReference = 60; // 最低分對應60
                     } else {
-                        normReference = Math.floor(60 + (realScore / 100) * (100 - 60));
+                        // 線性插值：(score - min) / (max - min) * (100 - 60) + 60
+                        normReference = Math.floor(
+                            ((student.score - minScore) / (maxScore - minScore)) * (100 - 60) + 60
+                        );
                     }
                 }
 
@@ -162,7 +183,7 @@
             });
         }
     </script>
- <footer>
+    <footer>
         <p>© 2025 ukawai</p>
     </footer>
 </body>
