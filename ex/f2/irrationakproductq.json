@@ -1,4 +1,250 @@
 [
+ {
+    "question": "估計 \\( 2\\sqrt{3} \\times \\sqrt{\\frac{1}{2}} \\) 的值應在",
+    "options": ["1 和 2 之間", "2 和 3 之間", "3 和 4 之間", "4 和 5 之間"],
+    "answer": "2 和 3 之間",
+    "explanation": "\\( 2\\sqrt{3} \\times \\sqrt{\\frac{1}{2}} = \\sqrt{4 \\times 3 \\times \\frac{1}{2}} = \\sqrt{6} \\)。因 \\( \\sqrt{4} = 2 < \\sqrt{6} < \\sqrt{9} = 3 \\)，故 \\( 2 < \\sqrt{6} < 3 \\)。選 2 和 3 之間。"
+  },
+  {
+    "question": "下列二次根式是最簡二次根式的是",
+    "options": ["\\sqrt{\\frac{1}{3}}", "\\sqrt{8}", "\\sqrt{14}", "\\sqrt{12}"],
+    "answer": "\\sqrt{14}",
+    "explanation": "最簡二次根式要求被開方數不含分母且無可開方因數。\\( \\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3} \\)；\\( \\sqrt{8} = 2\\sqrt{2} \\)；\\( \\sqrt{12} = 2\\sqrt{3} \\)；\\( \\sqrt{14} \\) 滿足條件。選 \\( \\sqrt{14} \\)。"
+  },
+  {
+    "question": "已知 \\( a < b \\)，則化簡二次根式 \\( \\sqrt{-a^3 b} \\) 的正確結果是",
+    "options": ["-a\\sqrt{-ab}", "-a\\sqrt{ab}", "a\\sqrt{ab}", "a\\sqrt{-ab}"],
+    "answer": "-a\\sqrt{-ab}",
+    "explanation": "\\( \\sqrt{-a^3 b} \\) 要求 \\( -a^3 b \\geq 0 \\)，即 \\( a^3 b \\leq 0 \\)。因 \\( a < b \\)，則 \\( a < 0 \\)，\\( b \\geq 0 \\)。\\( \\sqrt{-a^3 b} = \\sqrt{a^3 (-b)} = \\sqrt{a^2 \\cdot a(-b)} = -a\\sqrt{-ab} \\)。選 \\( -a\\sqrt{-ab} \\)。"
+  },
+  {
+    "question": "下列根式中不是最簡二次根式的是",
+    "options" : ["\\sqrt{2}", "\\sqrt{6}", "\\sqrt{8}", "\\sqrt{10}"],
+    "answer": "\\sqrt{8}",
+    "explanation": "\\( \\sqrt{2} \\)、\\( \\sqrt{6} \\)、\\( \\sqrt{10} \\) 無可開方因數；\\( \\sqrt{8} = 2\\sqrt{2} \\) 含可開方因數，非最簡。選 \\( \\sqrt{8} \\)。"
+  },
+  {
+    "question": "已知 \\( -2 < m < 3 \\)，化簡 \\( \\sqrt{(m-3)^2} + |m+2| \\) 的結果是",
+    "options": ["5", "1", "2m-1", "2m-5"],
+    "answer": "5",
+    "explanation": "因 \\( -2 < m < 3 \\)，則 \\( m-3 < 0 \\)，\\( m+2 > 0 \\)。故 \\( \\sqrt{(m-3)^2} = -(m-3) = 3-m \\)，\\( |m+2| = m+2 \\)。結果為 \\( (3-m) + (m+2) = 5 \\)。選 5。"
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["2m + 3n = 5mn", "(m-n)^2 = m^2 - n^2", "2\\sqrt{3} \\times 3\\sqrt{3} = 6\\sqrt{3}", "\\sqrt{12} \\div 2 = \\sqrt{3}"],
+    "answer": "\\sqrt{12} \\div 2 = \\sqrt{3}",
+    "explanation": "\\( 2m + 3n \\neq 5mn \\)；\\( (m-n)^2 = m^2 - 2mn + n^2 \\)；\\( 2\\sqrt{3} \\times 3\\sqrt{3} = 6 \\cdot 3 = 18 \\)；\\( \\sqrt{12} \\div 2 = \\frac{\\sqrt{12}}{2} = \\sqrt{3} \\)。選 \\( \\sqrt{12} \\div 2 = \\sqrt{3} \\)。"
+  },
+  {
+    "question": "把式子 \\( (a-1) \\sqrt{\\frac{-1}{a-1}} \\) 中根號外的 \\( (a-1) \\) 移到根號內，結果是",
+    "options": ["\\sqrt{a-1}", "\\sqrt{1-a}", "-\\sqrt{1-a}", "-\\sqrt{a-1}"],
+    "answer": "-\\sqrt{1-a}",
+    "explanation": "\\( \\frac{-1}{a-1} \\geq 0 \\)，則 \\( a-1 < 0 \\)。\\( (a-1) \\sqrt{\\frac{-1}{a-1}} = -\\sqrt{(a-1)^2 \\cdot \\frac{-1}{a-1}} = -\\sqrt{-(a-1)} = -\\sqrt{1-a} \\)。選 \\( -\\sqrt{1-a} \\)。"
+  },
+  {
+    "question": "把代數式 \\( (a-1) \\cdot \\sqrt{\\frac{1}{1-a}} \\) 中的 \\( a-1 \\) 移到根號內，那麼這個代數式等於",
+    "options": ["-\\sqrt{1-a}", "\\sqrt{a-1}", "\\sqrt{1-a}", "-\\sqrt{a-1}"],
+    "answer": "-\\sqrt{1-a}",
+    "explanation": "\\( \\frac{1}{1-a} \\geq 0 \\)，則 \\( 1-a > 0 \\)，即 \\( a < 1 \\)，故 \\( a-1 < 0 \\)。\\( (a-1) \\cdot \\sqrt{\\frac{1}{1-a}} = -(1-a) \\cdot \\sqrt{\\frac{1}{1-a}} = -\\sqrt{(1-a)^2 \\cdot \\frac{1}{1-a}} = -\\sqrt{1-a} \\)。選 \\( -\\sqrt{1-a} \\)。"
+  },
+  {
+    "question": "下列二次根式中，屬於最簡二次根式的是",
+    "options": ["\\sqrt{\\frac{1}{2}}", "\\sqrt{5}", "\\sqrt{4}", "\\sqrt{0.8}"],
+    "answer": "\\sqrt{5}",
+    "explanation": "\\( \\sqrt{\\frac{1}{2}} = \\frac{\\sqrt{2}}{2} \\)；\\( \\sqrt{4} = 2 \\)；\\( \\sqrt{0.8} = \\frac{\\sqrt{8}}{5} \\)；\\( \\sqrt{5} \\) 滿足最簡條件。選 \\( \\sqrt{5} \\)。"
+  },
+  {
+    "question": "下列二次根式中屬於最簡二次根式的是",
+    "options": ["\\sqrt{24}", "\\sqrt{36}", "\\sqrt{\\frac{a}{b}}", "\\sqrt{a+4}"],
+    "answer": "\\sqrt{a+4}",
+    "explanation": "\\( \\sqrt{24} = 2\\sqrt{6} \\)；\\( \\sqrt{36} = 6 \\)；\\( \\sqrt{\\frac{a}{b}} = \\frac{\\sqrt{ab}}{b} \\)；\\( \\sqrt{a+4} \\) 無法化簡，滿足最簡條件。選 \\( \\sqrt{a+4} \\)。"
+  },
+  {
+    "question": "已知 \\( m = (-\\sqrt{3}/3) \\times (-2\\sqrt{21}) \\)，則有",
+    "options": ["5 < m < 6", "4 < m < 5", "-5 < m < -4", "-6 < m < -5"],
+    "answer": "5 < m < 6",
+    "explanation": "\\( m = (-\\sqrt{3}/3) \\times (-2\\sqrt{21}) = \\frac{2\\sqrt{3 \\times 21}}{3} = \\frac{2 \\cdot 3\\sqrt{7}}{3} = 2\\sqrt{7} \\)。因 \\( \\sqrt{7} \\approx 2.65 \\)，\\( 2\\sqrt{7} \\approx 5.3 \\)，故 \\( 5 < m < 6 \\)。選 5 < m < 6。"
+  },
+  {
+    "question": "在下列各式中，是最簡二次根式的是",
+    "options": ["\\sqrt{18}", "\\sqrt{\\frac{a}{2}}", "\\sqrt{a^2 + 4a^4}", "\\sqrt{a^2 - b^2}"],
+    "answer": "\\sqrt{a^2 - b^2}",
+    "explanation": "\\( \\sqrt{18} = 3\\sqrt{2} \\)；\\( \\sqrt{\\frac{a}{2}} = \\frac{\\sqrt{2a}}{2} \\)；\\( \\sqrt{a^2 + 4a^4} = |a|\\sqrt{1 + 4a^2} \\)；\\( \\sqrt{a^2 - b^2} \\) 無法化簡，滿足最簡條件。選 \\( \\sqrt{a^2 - b^2} \\)。"
+  },
+  {
+    "question": "下列各式中，與 \\( \\sqrt{2} \\) 的積為有理數的是",
+    "options": ["\\sqrt{8}", "\\sqrt{12}", "\\sqrt{24}", "\\sqrt{27}"],
+    "answer": "\\sqrt{8}",
+    "explanation": "\\( \\sqrt{8} \\times \\sqrt{2} = \\sqrt{16} = 4 \\)；\\( \\sqrt{12} \\times \\sqrt{2} = \\sqrt{24} \\)；\\( \\sqrt{24} \\times \\sqrt{2} = \\sqrt{48} \\)；\\( \\sqrt{27} \\times \\sqrt{2} = \\sqrt{54} \\)。僅 \\( \\sqrt{8} \\) 積為有理數。選 \\( \\sqrt{8} \\)。"
+  },
+  {
+    "question": "下列根式中，是最簡二次根式的是",
+    "options": ["\\sqrt{0.2b}", "\\sqrt{12a - 12b}", "\\sqrt{x^2 - y^2}", "\\sqrt{5ab^2}"],
+    "answer": "\\sqrt{x^2 - y^2}",
+    "explanation": "\\( \\sqrt{0.2b} = \\frac{\\sqrt{2b}}{5} \\)；\\( \\sqrt{12a - 12b} = 2\\sqrt{3a - 3b} \\)；\\( \\sqrt{5ab^2} = |b|\\sqrt{5a} \\)；\\( \\sqrt{x^2 - y^2} \\) 無法化簡，滿足最簡條件。選 \\( \\sqrt{x^2 - y^2} \\)。"
+  },
+  {
+    "question": "下列二次根式屬於最簡二次根式的是",
+    "options": ["\\sqrt{32}", "\\sqrt{4x + 8}", "\\sqrt{\\frac{2}{a}}", "\\sqrt{b^2 + 4}"],
+    "answer": "\\sqrt{b^2 + 4}",
+    "explanation": "\\( \\sqrt{32} = 4\\sqrt{2} \\)；\\( \\sqrt{4annoys4x + 8} = 2\\sqrt{x + 2} \\)；\\( \\sqrt{\\frac{2}{a}} = \\frac{\\sqrt{2a}}{a} \\)；\\( \\sqrt{b^2 + 4} \\) 無法化簡，滿足最簡條件。選 \\( \\sqrt{b^2 + 4} \\)。"
+  },
+  {
+    "question": "下列二次根式化成最簡二次根式後不能與 \\( \\sqrt{3} \\) 合併的是",
+    "options": ["\\sqrt{27}", "\\sqrt{\\frac{1}{3}}", "\\sqrt{18}", "\\sqrt{\\frac{3}{4}}"],
+    "answer": "\\sqrt{18}",
+    "explanation": "\\( \\sqrt{27} = 3\\sqrt{3} \\)；\\( \\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3} \\)；\\( \\sqrt{\\frac{3}{4}} = \\frac{\\sqrt{3}}{2} \\) 均可與 \\( \\sqrt{3} \\) 合併；\\( \\sqrt{18} = 3\\sqrt{2} \\) 不可合併。選 \\( \\sqrt{18} \\)。"
+  },
+  {
+    "question": "下列式子中，屬於最簡二次根式的是",
+    "options": ["\\sqrt{\\frac{1}{2}}", "\\sqrt{3}", "\\sqrt{4}", "\\sqrt{8}"],
+    "answer": "\\sqrt{3}",
+    "explanation": "\\( \\sqrt{\\frac{1}{2}} = \\frac{\\sqrt{2}}{2} \\)；\\( \\sqrt{4} = 2 \\)；\\( \\sqrt{8} = 2\\sqrt{2} \\)；\\( \\sqrt{3} \\) 滿足最簡條件。選 \\( \\sqrt{3} \\)。"
+  },
+  {
+    "question": "下列無理數中，與 \\( \\sqrt{24} \\) 相乘積為有理數的是",
+    "options": ["\\sqrt{2}", "\\sqrt{3}", "\\sqrt{5}", "\\sqrt{6}"],
+    "answer": "\\sqrt{6}",
+    "explanation": "\\( \\sqrt{24} = 2\\sqrt{6} \\)。\\( 2\\sqrt{6} \\times \\sqrt{6} = 2 \\cdot 6 = 12 \\)，為有理數。其餘選項積非有理數。選 \\( \\sqrt{6} \\)。"
+  },
+  {
+    "question": "下列計算錯誤的是",
+    "options": ["\\sqrt{\\frac{4}{9}} = \\frac{2}{3}", "\\sqrt{\\frac{27}{64}} = \\frac{3\\sqrt{3}}{8}", "\\sqrt{4 \\frac{2}{9}} = \\frac{2\\sqrt{2}}{3}", "\\sqrt{4 \\times \\frac{2}{9}} = \\frac{2\\sqrt{2}}{3}"],
+    "answer": "\\sqrt{4 \\frac{2}{9}} = \\frac{2\\sqrt{2}}{3}",
+    "explanation": "\\( \\sqrt{\\frac{4}{9}} = \\frac{2}{3} \\)；\\( \\sqrt{\\frac{27}{64}} = \\frac{3\\sqrt{3}}{8} \\)；\\( \\sqrt{4 \\frac{2}{9}} = \\sqrt{\\frac{38}{9}} = \\frac{\\sqrt{38}}{3} \\)；\\( \\sqrt{4 \\times \\frac{2}{9}} = \\frac{2\\sqrt{2}}{3} \\)。選 \\( \\sqrt{4 \\frac{2}{9}} = \\frac{2\\sqrt{2}}{3} \\)。"
+  },
+  {
+    "question": "如果 \\( ab > 0 \\)，\\( a + b < 0 \\)，那麼下面各式：① \\( \\sqrt{\\frac{a}{b}} \\cdot \\sqrt{\\frac{b}{a}} = 1 \\)；② \\( \\sqrt{\\frac{a}{b}} = \\frac{\\sqrt{a}}{\\sqrt{b}} \\)；③ \\( \\sqrt{ab} \\div \\sqrt{\\frac{a}{b}} = -b \\)，其中正確的有",
+    "options": ["①②", "①③", "②③", "①②③"],
+    "answer": "①③",
+    "explanation": "\\( ab > 0 \\)，\\( a + b < 0 \\)，則 \\( a < 0 \\)，\\( b < 0 \\)。① \\( \\sqrt{\\frac{a}{b}} \\cdot \\sqrt{\\frac{b}{a}} = \\sqrt{1} = 1 \\)；② \\( \\sqrt{\\frac{a}{b}} \\) 無意義（\\( \\frac{a}{b} < 0 \\)）；③ \\( \\sqrt{ab} \\div \\sqrt{\\frac{a}{b}} = \\sqrt{ab \\cdot \\frac{b}{a}} = \\sqrt{b^2} = -b \\)。選 ①③。"
+  },
+  {
+    "question": "把 \\( x\\sqrt{\\frac{-1}{x}} \\) 根號外的因數移到根號內，結果是",
+    "options": ["\\sqrt{x}", "\\sqrt{-x}", "-\\sqrt{-x}", "-\\sqrt{x}"],
+    "answer": "-\\sqrt{-x}",
+    "explanation": "\\( \\frac{-1}{x} \\geq 0 \\)，則 \\( x < 0 \\)。\\( x\\sqrt{\\frac{-1}{x}} = -\\sqrt{x^2 \\cdot \\frac{-1}{x}} = -\\sqrt{-x} \\)。選 \\( -\\sqrt{-x} \\)。"
+  },
+  {
+    "question": "計算 \\( \\sqrt{14} \\times \\sqrt{7} \\) 的結果為",
+    "options": ["2\\sqrt{7}", "7\\sqrt{2}", "3\\sqrt{7}", "\\sqrt{98}"],
+    "answer": "7\\sqrt{2}",
+    "explanation": "\\( \\sqrt{14} \\times \\sqrt{7} = \\sqrt{14 \\times 7} = \\sqrt{98} = \\sqrt{49 \\times 2} = 7\\sqrt{2} \\)。選 \\( 7\\sqrt{2} \\)。"
+  },
+  {
+    "question": "下列各式中，正確的是",
+    "options": ["\\sqrt{\\frac{5}{3}} = 3\\sqrt{15}", "\\sqrt{\\frac{1}{2}} = \\pm \\frac{1}{2}\\sqrt{2}", "\\sqrt{a^4 b} = a^2 \\sqrt{b}", "\\sqrt{x^3 - x^2} = -x\\sqrt{x-1}"],
+    "answer": "\\sqrt{a^4 b} = a^2 \\sqrt{b}",
+    "explanation": "\\( \\sqrt{\\frac{5}{3}} = \\frac{\\sqrt{15}}{3} \\)；\\( \\sqrt{\\frac{1}{2}} = \\frac{\\sqrt{2}}{2} \\)；\\( \\sqrt{a^4 b} = a^2 \\sqrt{b} \\)（\\( b \\geq 0 \\)）；\\( \\sqrt{x^3 - x^2} = |x|\\sqrt{x-1} \\)。選 \\( \\sqrt{a^4 b} = a^2 \\sqrt{b} \\)。"
+  },
+  {
+    "question": "下列二次根式中，最簡二次根式是",
+    "options": ["\\sqrt{9}", "\\sqrt{7}", "\\sqrt{20}", "\\sqrt{\\frac{1}{9}}"],
+    "answer": "\\sqrt{7}",
+    "explanation": "\\( \\sqrt{9} = 3 \\)；\\( \\sqrt{20} = 2\\sqrt{5} \\)；\\( \\sqrt{\\frac{1}{9}} = \\frac{1}{3} \\)；\\( \\sqrt{7} \\) 滿足最簡條件。選 \\( \\sqrt{7} \\)。"
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["2\\sqrt{5} \\times 3\\sqrt{5} = 6 \\times 25 = 150", "2\\sqrt{5} \\times 3\\sqrt{5} = 6 \\times 5 = 30", "2\\sqrt{5} \\times 3\\sqrt{5} = 6\\sqrt{5}", "2\\sqrt{5} \\times 3\\sqrt{5} = 5\\sqrt{5}"],
+    "answer": "2\\sqrt{5} \\times 3\\sqrt{5} = 6 \\times 5 = 30",
+    "explanation": "\\( 2\\sqrt{5} \\times 3\\sqrt{5} = 6 \\cdot 5 = 30 \\)。選 \\( 2\\sqrt{5} \\times 3\\sqrt{5} = 6 \\times 5 = 30 \\)。"
+  },
+  {
+    "question": "下列根式是最簡二次根式的是",
+    "options": ["\\sqrt{8}", "\\sqrt{24}", "\\sqrt{3}", "\\sqrt{20}"],
+    "answer": "\\sqrt{3}",
+    "explanation": "\\( \\sqrt{8} = 2\\sqrt{2} \\)；\\( \\sqrt{24} = 2\\sqrt{6} \\)；\\( \\sqrt{20} = 2\\sqrt{5} \\)；\\( \\sqrt{3} \\) 滿足最簡條件。選 \\( \\sqrt{3} \\)。"
+  },
+  {
+    "question": "計算 \\( \\sqrt{45} \\div 3\\sqrt{3} \\times \\sqrt{\\frac{3}{5}} \\) 的結果正確的是",
+    "options": ["1", "\\frac{5}{3}", "5", "9"],
+    "answer": "1",
+    "explanation": "\\( \\sqrt{45} \\div 3\\sqrt{3} \\times \\sqrt{\\frac{3}{5}} = \\frac{\\sqrt{45}}{3\\sqrt{3}} \\times \\sqrt{\\frac{3}{5}} = \\frac{\\sqrt{15}}{3} \\times \\frac{\\sqrt{15}}{5} = \\frac{15}{15} = 1 \\)。選 1。"
+  },
+  {
+    "question": "等式 \\( \\sqrt{\\frac{x-3}{4-x}} = \\frac{\\sqrt{x-3}}{\\sqrt{4-x}} \\) 有意義，則 \\( x \\) 的取值範圍為",
+    "options": ["3 < x \\leq 4", "3 < x < 4", "3 \\leq x < 4", "3 \\leq x \\leq 4"],
+    "answer": "3 \\leq x < 4",
+    "explanation": "\\( \\frac{x-3}{4-x} \\geq 0 \\)，且 \\( 4-x \\neq 0 \\)。解不等式 \\( x-3 \\geq 0 \\)，\\( 4-x > 0 \\)，得 \\( 3 \\leq x < 4 \\)。選 \\( 3 \\leq x < 4 \\)。"
+  },
+  {
+    "question": "式子 \\( \\sqrt{(x-1)(x+1)} = \\sqrt{x-1} \\cdot \\sqrt{x+1} \\) 成立的 \\( x \\) 的取值範圍是",
+    "options": ["x \\geq 1", "x > 1", "-1 \\leq x \\leq 1", "-1 < x < 1"],
+    "answer": "x \\geq 1",
+    "explanation": "\\( \\sqrt{(x-1)(x+1)} = \\sqrt{x-1} \\cdot \\sqrt{x+1} \\) 要求 \\( x-1 \\geq 0 \\)，\\( x+1 \\geq 0 \\)，解得 \\( x \\geq 1 \\)。選 \\( x \\geq 1 \\)。"
+  },
+  {
+    "question": "下列式子為最簡二次根式的是",
+    "options": ["\\sqrt{5}", "\\sqrt{12}", "\\sqrt{a^2}", "\\sqrt{\\frac{1}{a}}"],
+    "answer": "\\sqrt{5}",
+    "explanation": "\\( \\sqrt{12} = 2\\sqrt{3} \\)；\\( \\sqrt{a^2} = |a| \\)；\\( \\sqrt{\\frac{1}{a}} = \\frac{\\sqrt{a}}{a} \\)；\\( \\sqrt{5} \\) 滿足最簡條件。選 \\( \\sqrt{5} \\)。"
+  },
+  {
+    "question": "下列二次根式中是最簡二次根式的是",
+    "options": ["\\sqrt{12}", "\\sqrt{\\frac{1}{3}}", "3\\sqrt{a^2}", "\\sqrt{a^2 + 1}"],
+    "answer": "\\sqrt{a^2 + 1}",
+    "explanation": "\\( \\sqrt{12} = 2\\sqrt{3} \\)；\\( \\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3} \\)；\\( 3\\sqrt{a^2} = 3|a| \\)；\\( \\sqrt{a^2 + 1} \\) 無法化簡，滿足最簡條件。選 \\( \\sqrt{a^2 + 1} \\)。"
+  },
+  {
+    "question": "已知 \\( \\sqrt{\\frac{x-3}{4-x}} = \\frac{\\sqrt{x-3}}{\\sqrt{4-x}} \\) 成立，則 \\( x \\) 的取值範圍為",
+    "options": ["3 < x \\leq 4", "3 < x < 4", "3 \\leq x < 4", "3 \\leq x \\leq 4"],
+    "answer": "3 \\leq x < 4",
+    "explanation": "\\( \\frac{x-3}{4-x} \\geq 0 \\)，且 \\( 4-x \\neq 0 \\)。解不等式 \\( x-3 \\geq 0 \\)，\\( 4-x > 0 \\)，得 \\( 3 \\leq x < 4 \\)。選 \\( 3 \\leq x < 4 \\)。"
+  },
+  {
+    "question": "若 \\( \\sqrt{5} = a \\)，\\( \\sqrt{17} = b \\)，則 \\( \\sqrt{0.85} \\) 的值用 \\( a \\)，\\( b \\) 可以表示為",
+    "options": ["\\frac{a + b}{10}", "\\frac{a + b}{100}", "\\frac{ab}{10}", "\\frac{ab}{100}"],
+    "answer": "\\frac{ab}{10}",
+    "explanation": "\\( \\sqrt{0.85} = \\sqrt{\\frac{85}{100}} = \\frac{\\sqrt{5 \\times 17}}{10} = \\frac{\\sqrt{5} \\cdot \\sqrt{17}}{10} = \\frac{ab}{10} \\)。選 \\( \\frac{ab}{10} \\)。"
+  },
+  {
+    "question": "下列二次根式是最簡二次根式的是",
+    "options": ["\\sqrt{\\frac{1}{3}}", "\\sqrt{8}", "\\sqrt{24}", "\\sqrt{7}"],
+    "answer": "\\sqrt{7}",
+    "explanation": "\\( \\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3} \\)；\\( \\sqrt{8} = 2\\sqrt{2} \\)；\\( \\sqrt{24} = 2\\sqrt{6} \\)；\\( \\sqrt{7} \\) 滿足最簡條件。選 \\( \\sqrt{7} \\)。"
+  },
+  {
+    "question": "將 \\( \\sqrt{\\\-\frac{2}{5} \\) 化為最簡二次根式，其結果是",
+    "options": ["\\frac{\\sqrt{10}}{5}", "\\frac{2}{\\sqrt{5}}", "\\frac{\\sqrt{2}}{\\sqrt{5}}", "\\frac{2\\sqrt{5}}{5}"],
+    "answer": "\\frac{\\sqrt{10}}{5}",
+    "explanation": "\\( \\sqrt{\\frac{2}{5}} = \\sqrt{2 \\times \\frac{1}{5}} = \\frac{\\sqrt{2}}{\\sqrt{5}} \\cdot \\frac{\\sqrt{5}}{\\sqrt{5}} = \\frac{\\sqrt{10}}{5} \\)。選 \\( \\frac{\\sqrt{10}}{5} \\)。"
+  },
+  {
+    "question": "在根式 \\( \\sqrt{3} \\)，\\( \\sqrt{4x} \\)，\\( \\sqrt{x} \\)，\\( \\sqrt{5x^3} \\)，\\( \\frac{2}{\\sqrt{3}} \\)，\\( \\sqrt{0.25} \\) 中，是最簡二次根式的有",
+    "options": ["1 個", "2 個", "3 個", "4 個"],
+    "answer": "2 個",
+    "explanation": "\\( \\sqrt{3} \\)、\\( \\sqrt{x} \\) 滿足最簡條件；\\( \\sqrt{4x} = 2\\sqrt{x} \\)；\\( \\sqrt{5x^3} = x\\sqrt{5x} \\)；\\( \\frac{2}{\\sqrt{3}} = \\frac{2\\sqrt{3}}{3} \\)；\\( \\sqrt{0.25} = \\frac{1}{2} \\)。共 2 個。選 2 個。"
+  },
+  {
+    "question": "下列各式計算不正確的是",
+    "options": ["\\sqrt{\\frac{4}{3}} = \\frac{\\sqrt{4}}{\\sqrt{3}} = \\frac{2\\sqrt{3}}{(\\sqrt{3})^2} = \\frac{2\\sqrt{3}}{3}", "\\sqrt{75} \\div \\sqrt{3} = \\sqrt{\\frac{75}{3}} = \\sqrt{25} = 5", "\\sqrt{18} / \\sqrt{8} = \\frac{3\\sqrt{2}}{2\\sqrt{2}} = \\frac{3}{2}", "\\sqrt{\\frac{1}{32}} \\div \\sqrt{\\frac{1}{16}} = \\sqrt{\\frac{32}{4}} = \\sqrt{8} = 2\\sqrt{2}"],
+    "answer": "\\sqrt{\\frac{1}{32}} \\div \\sqrt{\\frac{1}{16}} = \\sqrt{\\frac{32}{4}} = \\sqrt{8} = 2\\sqrt{2}",
+    "explanation": "\\( \\sqrt{\\frac{4}{3}} = \\frac{2\\sqrt{3}}{3} \\)；\\( \\sqrt{75} \\div \\sqrt{3} = 5 \\)；\\( \\sqrt{18} / \\sqrt{8} = \\frac{3}{2} \\)；\\( \\sqrt{\\frac{1}{32}} \\div \\sqrt{\\frac{1}{16}} = \\sqrt{\\frac{16}{32}} = \\frac{1}{2} \\)。選 \\( \\sqrt{\\frac{1}{32}} \\div \\sqrt{\\frac{1}{16}} = \\sqrt{\\frac{32}{4}} = \\sqrt{8} = 2\\sqrt{2} \\)。"
+  },
+  {
+    "question": "已知二次根式 \\( \\sqrt{23 - a} \\) 與 \\( \\sqrt{8} \\) 化成最簡二次根式後，被開方數相同，若 \\( a \\) 是正整數，則 \\( a \\) 的最小值為",
+    "options": ["23", "21", "15", "5"],
+    "answer": "5",
+    "explanation": "\\( \\sqrt{8} = 2\\sqrt{2} \\)。\\( \\sqrt{23 - a} = k\\sqrt{2} \\)，則 \\( 23 - a = 2k^2 \\)。\\( a \\) 為正整數，試 \\( k = 1, 2, 3 \\)：\\( a = 23 - 2 = 21 \\)，\\( a = 23 - 8 = 15 \\)，\\( a = 23 - 18 = 5 \\)。最小值為 5。選 5。"
+  },
+  {
+    "question": "下列式子中，屬於最簡二次根式的是",
+    "options": ["\\sqrt{1.5}", "\\sqrt{15}", "\\sqrt{\\frac{3}{2}}", "\\sqrt{2a^2}"],
+    "answer": "\\sqrt{15}",
+    "explanation": "\\( \\sqrt{1.5} = \\frac{\\sqrt{6}}{2} \\)；\\( \\sqrt{\\frac{3}{2}} = \\frac{\\sqrt{6}}{3} \\)；\\( \\sqrt{2a^2} = |a|\\sqrt{2} \\)；\\( \\sqrt{15} \\) 滿足最簡條件。選 \\( \\sqrt{15} \\)。"
+  },
+  {
+    "question": "二次根式 \\( \\sqrt{\\frac{1}{3}} \\)，\\( \\sqrt{18} \\)，\\( \\sqrt{30} \\)，\\( \\sqrt{11x^2} \\)，\\( \\sqrt{x^2 - y^2} \\) 中，最簡二次根式有",
+    "options": ["1 個", "2 個", "3 個", "4 個"],
+    "answer": "2 個",
+    "explanation": "\\( \\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3} \\)；\\( \\sqrt{18} = 3\\sqrt{2} \\)；\\( \\sqrt{11x^2} = |x|\\sqrt{11} \\)；\\( \\sqrt{30} \\)、\\( \\sqrt{x^2 - y^2} \\) 滿足最簡條件。共 2 個。選 2 個。"
+  },
+
+
+
+  
+
+  
   {
     "question": "下列各式是最簡二次根式的是",
     "options": ["\\sqrt{13}", "\\sqrt{12}", "\\sqrt{a^3}", "\\sqrt{\\frac{5}{3}}"],
