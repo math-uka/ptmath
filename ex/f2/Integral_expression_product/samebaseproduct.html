@@ -113,7 +113,7 @@
   </style>
 </head>
 <body>
-  <h1>同底數幂乘法練習</h1>
+  <h1>數學練習題</h1>
   <div class="mode-selection" id="mode-selection">
     <p>請選擇遊戲模式：</p>
     <button onclick="startStandardMode()">標準模式</button>
@@ -158,7 +158,7 @@
 
   <script>
     // 標準模式的題目數量（可修改）
-    const STANDARD_MODE_QUESTION_COUNT = 2; // 修改此處以更改標準模式的題目數
+    const STANDARD_MODE_QUESTION_COUNT = 10; // 修改此處以更改標準模式的題目數
 
     let questionBank = [];
     let passwordBank = {};
@@ -180,6 +180,7 @@
          * 請將此處的 'samebaseproduct.json' 替換為新的文件名。
          * 例如，若改為 'new_questions.json'，則更新為：
          * const questionResponse = await fetch('new_questions.json');
+         * 確保文件名與 GitHub 倉庫中的文件一致，否則可能加載錯誤的題庫！
          */
         const questionResponse = await fetch('samebaseproduct.json');
         if (!questionResponse.ok) {
@@ -193,6 +194,7 @@
          * 請將此處的 'samebaseproductpass.json' 替換為新的文件名。
          * 例如，若改為 'new_passwords.json'，則更新為：
          * const passwordResponse = await fetch('new_passwords.json');
+         * 確保文件名與 GitHub 倉庫中的文件一致！
          */
         const passwordResponse = await fetch('samebaseproductpass.json');
         if (!passwordResponse.ok) {
