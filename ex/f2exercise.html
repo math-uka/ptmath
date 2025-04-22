@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數學學習工具</title>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #2c3e50;
+            padding: 30px 0;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            vertical-align: top;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        td:hover {
+            transform: translateY(-3px);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+
+        /* 響應式設計 */
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                border-radius: 8px 8px 0 0;
+            }
+
+            td {
+                border-radius: 0 0 8px 8px;
+                position: relative;
+                padding-left: 15px;
+            }
+
+            td:before {
+                content: attr(data-label);
+                display: block;
+                font-weight: bold;
+                color: #3498db;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>數學學習工具</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>整式乘法</th>
+                <th>二次根式</th>
+                <th>勾股定理</th>
+                <th>一次函數</th>
+                <th>類據分析</th>
+            </tr>
+            <tr>
+                <td data-label="整式乘法">
+                    <ul>
+                        <li><a href="#">整式乘法連結1 (待填)</a></li>
+                        <li><a href="#">整式乘法連結2 (待填)</a></li>
+                        <li><a href="#">整式乘法連結3 (待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="二次根式">
+                    <ul>
+                        <li><a href="#">二次根式連結1 (待填)</a></li>
+                        <li><a href="#">二次根式連結2 (待填)</a></li>
+                        <li><a href="#">二次根式連結3 (待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="勾股定理">
+                    <ul>
+                        <li><a href="ex/f2/pyth.html">勾股定理章綜合複習</a></li>
+                        <li><a href="#">勾股定理連結2 (待填)</a></li>
+                        <li><a href="#">勾股定理連結3 (待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="一次函數">
+                    <ul>
+                        <li><a href="#">一次函數連結1 (待填)</a></li>
+                        <li><a href="#">一次函數連結2 (待填)</a></li>
+                        <li><a href="#">一次函數連結3 (待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="類據分析">
+                    <ul>
+                        <li><a href="#">類據分析連結1 (待填)</a></li>
+                        <li><a href="#">類據分析連結2 (待填)</a></li>
+                        <li><a href="#">類據分析連結3 (待填)</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>
