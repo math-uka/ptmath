@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>勾股定理互動演示3</title>
     <style>
         html, body {
@@ -10,15 +10,15 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
+            touch-action: none;
         }
         #container {
             display: flex;
             flex-direction: column;
             max-width: 1200px;
             margin: 0 auto;
-            height: 100%;
-            overflow-y: auto;
-            touch-action: pan-y;
+            height: 100vh;
+            touch-action: none;
         }
         #grid {
             position: relative;
@@ -61,6 +61,7 @@
             max-width: 400px;
             box-sizing: border-box;
             flex-grow: 1;
+            overflow-y: auto;
         }
         #info-header {
             display: flex;
@@ -104,13 +105,18 @@
         .long-side {
             color: blue;
         }
+        footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
 
         @media (min-width: 768px) {
             #container {
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 10px;
-                overflow-y: hidden;
             }
             #grid {
                 margin-right: 20px;
@@ -124,7 +130,31 @@
 
         @media (max-width: 767px) {
             #container {
-                padding-bottom: 20px;
+                padding-bottom: 0;
+            }
+            #grid {
+                max-width: 300px;
+                height: 280px; /* Reduced height for mobile */
+                margin: 10px auto;
+            }
+            #info {
+                max-width: 300px;
+                margin: 0 auto;
+                font-size: 12px; /* Smaller font for info */
+            }
+            table {
+                max-width: 300px;
+                font-size: 12px; /* Smaller font for tables */
+            }
+            .label {
+                font-size: 14px;
+            }
+            button {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+            .right-angle {
+                font-size: 16px; /* Adjust right-angle font size */
             }
         }
     </style>
@@ -146,6 +176,9 @@
             <div id="info-content"></div>
         </div>
     </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
 
     <script>
         const grid = document.getElementById('grid');
@@ -163,13 +196,16 @@
         let showRadical = false;
         let showSquares = false;
 
-        canvas.width = grid.offsetWidth;
-        canvas.height = grid.offsetHeight;
+        function resizeCanvas() {
+            canvas.width = grid.offsetWidth;
+            canvas.height = grid.offsetHeight;
+            updatePosition();
+        }
 
         let coords = {
-            A: { x: 5 * gridSize, y: 2 * gridSize },  // A(5,2)
-            B: { x: 8 * gridSize, y: 2 * gridSize },  // B(8,2)
-            C: { x: 5 * gridSize, y: 5 * gridSize }   // C(5,5)
+            A: { x: 3 * gridSize, y: 2 * gridSize },  // A(3,2) shifted left
+            B: { x: 6 * gridSize, y: 2 * gridSize },  // B(6,2) shifted left
+            C: { x: 3 * gridSize, y: 5 * gridSize }   // C(3,5) shifted left
         };
 
         function snapToGrid(value) {
@@ -361,11 +397,10 @@
 
             html += '<table style="margin-top: 10px">';
             html += '<tr><th>角</th><th>角度</th></tr>';
-            // 根據你的建議重新對應角度名稱
             const angleDisplayOrder = [
-                { label: 'C', value: angles.A }, // 原 ∠A 顯示為 ∠C
-                { label: 'A', value: angles.B }, // 原 ∠B 顯示為 ∠A
-                { label: 'B', value: angles.C }  // 原 ∠C 顯示為 ∠B
+                { label: 'C', value: angles.A },
+                { label: 'A', value: angles.B },
+                { label: 'B', value: angles.C }
             ];
             angleDisplayOrder.forEach(angle => {
                 const isRightAngle = Math.abs(angle.value - 90) < 0.5;
@@ -397,16 +432,8 @@
             updateInfo();
         }
 
-        window.addEventListener('resize', () => {
-            canvas.width = grid.offsetWidth;
-            canvas.height = grid.offsetHeight;
-            updatePosition();
-        });
-
-        updatePosition();
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
     </script>
-     <footer>
-        <p>&copy; 2025 ukawai</p>
-    </footer>
 </body>
 </html>
