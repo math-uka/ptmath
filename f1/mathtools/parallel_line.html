@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parallel Lines Test 10</title>
+    <title>Parallel Lines Test 11</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <style>
         body {
@@ -63,6 +63,7 @@
             }
             canvas {
                 width: 100%;
+                max-width: 300px; /* 手機上縮小畫布 */
                 height: auto;
             }
             table {
@@ -80,7 +81,7 @@
     <h1>平行線性質實驗</h1>
     <button id="toggleAnglesBtn">顯示額外角度</button>
     <div class="container">
-        <canvas id="canvas" width="500" height="500"></canvas>
+        <canvas id="canvas"></canvas>
         <table id="angleTable">
             <tr><th>角</th><th>大小</th></tr>
             <tr><td>\(\angle 1\)</td><td id="angle1">-</td></tr>
@@ -101,8 +102,8 @@
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const gridSize = 20;
-        const offsetX = 50, offsetY = 50;
+        let gridSize = 20;
+        const offsetX = 30, offsetY = 30; // 縮小邊距以適配手機
         const gridMax = 20;
 
         // 控制點初始位置（確保在邊界、不重合，且紅線和藍線有交點）
@@ -116,7 +117,7 @@
         ];
 
         let selectedPoint = null;
-        let showExtraAngles = false; // 控制角 5-8 標籤和表格行顯示
+        let showExtraAngles = false;
 
         function isBoundaryPoint(x, y) {
             return x === 0 || x === gridMax || y === 0 || y === gridMax;
@@ -232,61 +233,51 @@
         }
 
         function drawAngleLabels() {
-            ctx.font = '14px Arial';
+            ctx.font = window.innerWidth <= 600 ? '12px Arial' : '14px Arial'; // 手機上縮小字體
             ctx.fillStyle = 'black';
-            const labelDistance = 20; // 標籤距交點的距離
-            const leftOffset = -15; // 角 2, 4, 5, 7 的左偏移
-            const downOffset = 10; // 角 1, 3 的下偏移
+            const labelDistance = window.innerWidth <= 600 ? 15 : 20; // 手機上縮小標籤距離
+            const leftOffset = window.innerWidth <= 600 ? -10 : -15;
+            const downOffset = window.innerWidth <= 600 ? 8 : 10;
 
-            // L1 和 L3 交點（角 1, 角 2, 角 5, 角 6）
             const inter1 = getIntersection(points[0], points[1], points[4], points[5]);
             if (inter1) {
                 const canvasX = inter1.x * gridSize + offsetX;
                 const canvasY = inter1.y * gridSize + offsetY;
-                const v1 = normalizeVector({ x: points[1].x - points[0].x, y: points[1].y - points[0].y }); // L1 方向
-                const v3 = normalizeVector({ x: points[5].x - points[4].x, y: points[5].y - points[4].y }); // L3 方向
+                const v1 = normalizeVector({ x: points[1].x - points[0].x, y: points[1].y - points[0].y });
+                const v3 = normalizeVector({ x: points[5].x - points[4].x, y: points[5].y - points[4].y });
                 const v1_neg = { x: -v1.x, y: -v1.y };
                 const v3_neg = { x: -v3.x, y: -v3.y };
 
-                // 角 1 的平分線（v1 和 v3）
                 let bisector1 = normalizeVector({ x: v1.x + v3.x, y: v1.y + v3.y });
                 ctx.fillText('∠1', canvasX + bisector1.x * labelDistance, canvasY + bisector1.y * labelDistance + downOffset);
-                // 角 2 的平分線（v1_neg 和 v3_neg，對頂於角 1）
                 let bisector2 = normalizeVector({ x: v1_neg.x + v3_neg.x, y: v1_neg.y + v3_neg.y });
                 ctx.fillText('∠2', canvasX + bisector2.x * labelDistance + leftOffset, canvasY + bisector2.y * labelDistance);
 
                 if (showExtraAngles) {
-                    // 角 5 的平分線（v1_neg 和 v3）
                     let bisector5 = normalizeVector({ x: v1_neg.x + v3.x, y: v1_neg.y + v3.y });
                     ctx.fillText('∠5', canvasX + bisector5.x * labelDistance + leftOffset, canvasY + bisector5.y * labelDistance);
-                    // 角 6 的平分線（v1 和 v3_neg，對頂於角 5）
                     let bisector6 = normalizeVector({ x: v1.x + v3_neg.x, y: v1.y + v3_neg.y });
                     ctx.fillText('∠6', canvasX + bisector6.x * labelDistance, canvasY + bisector6.y * labelDistance);
                 }
             }
 
-            // L2 和 L3 交點（角 3, 角 4, 角 7, 角 8）
             const inter2 = getIntersection(points[2], points[3], points[4], points[5]);
             if (inter2) {
                 const canvasX = inter2.x * gridSize + offsetX;
                 const canvasY = inter2.y * gridSize + offsetY;
-                const v2 = normalizeVector({ x: points[3].x - points[2].x, y: points[3].y - points[2].y }); // L2 方向
-                const v3 = normalizeVector({ x: points[5].x - points[4].x, y: points[5].y - points[4].y }); // L3 方向
+                const v2 = normalizeVector({ x: points[3].x - points[2].x, y: points[3].y - points[2].y });
+                const v3 = normalizeVector({ x: points[5].x - points[4].x, y: points[5].y - points[4].y });
                 const v2_neg = { x: -v2.x, y: -v2.y };
                 const v3_neg = { x: -v3.x, y: -v3.y };
 
-                // 角 3 的平分線（v2 和 v3）
                 let bisector3 = normalizeVector({ x: v2.x + v3.x, y: v2.y + v3.y });
                 ctx.fillText('∠3', canvasX + bisector3.x * labelDistance, canvasY + bisector3.y * labelDistance + downOffset);
-                // 角 4 的平分線（v2_neg 和 v3_neg，對頂於角 3）
                 let bisector4 = normalizeVector({ x: v2_neg.x + v3_neg.x, y: v2_neg.y + v3_neg.y });
                 ctx.fillText('∠4', canvasX + bisector4.x * labelDistance + leftOffset, canvasY + bisector4.y * labelDistance);
 
                 if (showExtraAngles) {
-                    // 角 7 的平分線（v2_neg 和 v3）
                     let bisector7 = normalizeVector({ x: v2_neg.x + v3.x, y: v2_neg.y + v3.y });
                     ctx.fillText('∠7', canvasX + bisector7.x * labelDistance + leftOffset, canvasY + bisector7.y * labelDistance);
-                    // 角 8 的平分線（v2 和 v3_neg，對頂於角 7）
                     let bisector8 = normalizeVector({ x: v2.x + v3_neg.x, y: v2.y + v3_neg.y });
                     ctx.fillText('∠8', canvasX + bisector8.x * labelDistance, canvasY + bisector8.y * labelDistance);
                 }
@@ -294,26 +285,26 @@
         }
 
         function updateAnglesAndParallel() {
-            const inter1 = getIntersection(points[0], points[1], points[4], points[5]); // L1 和 L3
-            const inter2 = getIntersection(points[2], points[3], points[4], points[5]); // L2 和 L3
+            const inter1 = getIntersection(points[0], points[1], points[4], points[5]);
+            const inter2 = getIntersection(points[2], points[3], points[4], points[5]);
 
             const angles = Array(8).fill(null);
 
             if (inter1) {
-                const v1 = { x: points[1].x - points[0].x, y: points[1].y - points[0].y }; // L1 方向
-                const v3 = { x: points[5].x - points[4].x, y: points[5].y - points[4].y }; // L3 方向
-                angles[0] = getAngle(v1, v3); // 角 1
-                angles[1] = angles[0]; // 角 2（對頂角）
-                angles[4] = 180 - angles[0]; // 角 5（互補角）
-                angles[5] = angles[4]; // 角 6（對頂角）
+                const v1 = { x: points[1].x - points[0].x, y: points[1].y - points[0].y };
+                const v3 = { x: points[5].x - points[4].x, y: points[5].y - points[4].y };
+                angles[0] = getAngle(v1, v3);
+                angles[1] = angles[0];
+                angles[4] = 180 - angles[0];
+                angles[5] = angles[4];
             }
             if (inter2) {
-                const v2 = { x: points[3].x - points[2].x, y: points[3].y - points[2].y }; // L2 方向
-                const v3 = { x: points[5].x - points[4].x, y: points[5].y - points[4].y }; // L3 方向
-                angles[2] = getAngle(v2, v3); // 角 3
-                angles[3] = angles[2]; // 角 4（對頂角）
-                angles[6] = 180 - angles[2]; // 角 7（互補角）
-                angles[7] = angles[6]; // 角 8（對頂角）
+                const v2 = { x: points[3].x - points[2].x, y: points[3].y - points[2].y };
+                const v3 = { x: points[5].x - points[4].x, y: points[5].y - points[4].y };
+                angles[2] = getAngle(v2, v3);
+                angles[3] = angles[2];
+                angles[6] = 180 - angles[2];
+                angles[7] = angles[6];
             }
 
             for (let i = 1; i <= 8; i++) {
@@ -328,7 +319,7 @@
             const parallel = Math.abs(slope1 - slope2) < 1e-6;
             if (parallel) {
                 parallelStatus.textContent = '紅線是否平行：是';
-                parallelStatus.style.backgroundColor = '#FFC1CC'; // 粉紅色底色
+                parallelStatus.style.backgroundColor = '#FFC1CC';
                 parallelStatus.style.fontWeight = 'bold';
                 parallelStatus.style.fontSize = '16px';
             } else {
@@ -346,7 +337,6 @@
             updateAnglesAndParallel();
         }
 
-        // 處理滑鼠和觸控事件
         function handleStart(e) {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
@@ -357,7 +347,7 @@
             points.forEach((p, i) => {
                 const px = p.x * gridSize + offsetX;
                 const py = p.y * gridSize + offsetY;
-                if (Math.hypot(mouseX - px, mouseY - py) < 15) { // 增大點擊範圍
+                if (Math.hypot(mouseX - px, mouseY - py) < 20) { // 增大觸控範圍
                     selectedPoint = i;
                 }
             });
@@ -385,34 +375,39 @@
             selectedPoint = null;
         }
 
-        // 滑鼠事件
         canvas.addEventListener('mousedown', handleStart);
         canvas.addEventListener('mousemove', handleMove);
         canvas.addEventListener('mouseup', handleEnd);
 
-        // 觸控事件
         canvas.addEventListener('touchstart', handleStart);
         canvas.addEventListener('touchmove', handleMove);
         canvas.addEventListener('touchend', handleEnd);
 
-        // 按鈕切換角 5-8 顯示
         const toggleAnglesBtn = document.getElementById('toggleAnglesBtn');
         toggleAnglesBtn.addEventListener('click', () => {
             showExtraAngles = !showExtraAngles;
             toggleAnglesBtn.textContent = showExtraAngles ? '隱藏額外角度' : '顯示額外角度';
-            // 更新表格行顯示
             document.querySelectorAll('.extra-angle').forEach(row => {
                 row.classList.toggle('show', showExtraAngles);
             });
             draw();
         });
 
-        // 自適應畫布大小
         function resizeCanvas() {
             const container = document.querySelector('.container');
-            const maxWidth = container.clientWidth * 0.6; // 畫布佔容器寬度的 60%
-            canvas.width = Math.min(500, maxWidth);
-            canvas.height = canvas.width; // 保持正方形
+            if (window.innerWidth <= 600) {
+                // 手機設備
+                const maxWidth = Math.min(300, container.clientWidth * 0.95); // 限制最大寬度
+                canvas.width = maxWidth;
+                canvas.height = maxWidth; // 保持正方形
+                gridSize = (maxWidth - 2 * offsetX) / gridMax; // 動態調整網格大小
+            } else {
+                // 桌面設備
+                const maxWidth = Math.min(500, container.clientWidth * 0.6);
+                canvas.width = maxWidth;
+                canvas.height = maxWidth;
+                gridSize = (maxWidth - 2 * offsetX) / gridMax;
+            }
             draw();
         }
 
