@@ -1,0 +1,242 @@
+[
+  {
+    "question": "下列運算正確的是",
+    "options": ["2a + 5b = 10ab", "x^2 \\cdot x^3 = x^6", "(m^2 n)^3 = m^5 n^4", "12m^2 n \\div 3mn = 4m"],
+    "answer": "12m^2 n \\div 3mn = 4m",
+    "explanation": "\\( 2a + 5b \\neq 10ab \\); \\( x^2 \\cdot x^3 = x^5 \\); \\( (m^2 n)^3 = m^6 n^3 \\); \\( 12m^2 n \\div 3mn = 4m \\). 選 \\( 12m^2 n \\div 3mn = 4m \\)."
+  },
+  {
+    "question": "成人每天維生素D的攝入量約為0.0000046克．數據“0.0000046”用科學記數法表示為",
+    "options": ["46 \\times 10^{-7}", "4.6 \\times 10^{-7}", "4.6 \\times 10^{-6}", "0.46 \\times 10^{-5}"],
+    "answer": "4.6 \\times 10^{-6}",
+    "explanation": "\\( 0.0000046 = 4.6 \\times 10^{-6} \\). 選 \\( 4.6 \\times 10^{-6} \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["a^3 \\cdot a^4 = a^{12}", "(ab^2)^3 = ab^6", "a^{10} \\div a^2 = a^5", "(-a^4)^2 = a^8"],
+    "answer": "(-a^4)^2 = a^8",
+    "explanation": "\\( a^3 \\cdot a^4 = a^7 \\); \\( (ab^2)^3 = a^3 b^6 \\); \\( a^{10} \\div a^2 = a^8 \\); \\( (-a^4)^2 = a^8 \\). 選 \\( (-a^4)^2 = a^8 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["a^2 \\cdot a^3 = a^6", "(a^2)^3 = a^5", "(ab)^2 = a^2 b^2", "a^6 \\div a^3 = a^2"],
+    "answer": "(ab)^2 = a^2 b^2",
+    "explanation": "\\( a^2 \\cdot a^3 = a^5 \\); \\( (a^2)^3 = a^6 \\); \\( (ab)^2 = a^2 b^2 \\); \\( a^6 \\div a^3 = a^3 \\). 選 \\( (ab)^2 = a^2 b^2 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["a^3 \\cdot a^2 = a^6", "2a(3a-1) = 6a^2", "a^8 \\div a^4 = x^2", "(2a)^3 = 8a^3"],
+    "answer": "(2a)^3 = 8a^3",
+    "explanation": "\\( a^3 \\cdot a^2 = a^5 \\); \\( 2a(3a-1) = 6a^2 - 2a \\); \\( a^8 \\div a^4 = a^4 \\); \\( (2a)^3 = 8a^3 \\). 選 \\( (2a)^3 = 8a^3 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["a^3 - a^2 = a", "a^2 \\cdot a^3 = a^6", "a^6 \\div a^2 = a^3", "(a^2)^{-3} = a^{-6}"],
+    "answer": "(a^2)^{-3} = a^{-6}",
+    "explanation": "\\( a^3 - a^2 \\neq a \\); \\( a^2 \\cdot a^3 = a^5 \\); \\( a^6 \\div a^2 = a^4 \\); \\( (a^2)^{-3} = a^{-6} \\). 選 \\( (a^2)^{-3} = a^{-6} \\)."
+  },
+  {
+    "question": "墨跡覆蓋了等式“\\( x^3 \\Box x = x^2 (x \\neq 0) \\)”中的運算符號，則覆蓋的是",
+    "options": ["+", "-", "\\times", "\\div"],
+    "answer": "\\div",
+    "explanation": "\\( x^3 \\div x = x^{3-1} = x^2 \\). 選 \\( \\div \\)."
+  },
+  {
+    "question": "長方形的面積是 \\( 12a^2 - 6ab \\). 若一邊長是 \\( 3a \\)，則另一邊長是",
+    "options": ["4a + 2b", "4a - 2b", "2a - 4b", "2a + 4b"],
+    "answer": "4a - 2b",
+    "explanation": "\\( (12a^2 - 6ab) \\div 3a = 4a - 2b \\). 選 \\( 4a - 2b \\)."
+  },
+  {
+    "question": "計算 \\( 2a^2 b^3 \\cdot (-3a) \\) 的結果是",
+    "options": ["-6a^3 b^3", "6a^2 b^3", "6a^3 b^3", "-6a^2 b^3"],
+    "answer": "-6a^3 b^3",
+    "explanation": "\\( 2a^2 b^3 \\cdot (-3a) = -6a^3 b^3 \\). 選 \\( -6a^3 b^3 \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["2x^2 \\cdot 3x^3 = 6x^6", "x^3 \\div x^3 = 0", "(2xy)^3 = 6x^3 y^3", "(x^3)^m \\div x^{2m} = x^m"],
+    "answer": "(x^3)^m \\div x^{2m} = x^m",
+    "explanation": "\\( 2x^2 \\cdot 3x^3 = 6x^5 \\); \\( x^3 \\div x^3 = 1 \\); \\( (2xy)^3 = 8x^3 y^3 \\); \\( (x^3)^m \\div x^{2m} = x^{3m-2m} = x^m \\). 選 \\( (x^3)^m \\div x^{2m} = x^m \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["3a - a = 2", "a \\cdot a^2 = a^3", "a^6 \\div a^2 = a^3", "(3a^2)^2 = 6a^4"],
+    "answer": "a \\cdot a^2 = a^3",
+    "explanation": "\\( 3a - a = 2a \\); \\( a \\cdot a^2 = a^3 \\); \\( a^6 \\div a^2 = a^4 \\); \\( (3a^2)^2 = 9a^4 \\). 選 \\( a \\cdot a^2 = a^3 \\)."
+  },
+  {
+    "question": "下列運算中，正確的是",
+    "options": ["a^4 \\cdot a^4 = a^{16}", "a + 2a^2 = 3a^3", "a^3 \\div (-a) = -a^2", "(-a^3)^2 = a^5"],
+    "answer": "a^3 \\div (-a) = -a^2",
+    "explanation": "\\( a^4 \\cdot a^4 = a^8 \\); \\( a + 2a^2 \\neq 3a^3 \\); \\( a^3 \\div (-a) = -a^2 \\); \\( (-a^3)^2 = a^6 \\). 選 \\( a^3 \\div (-a) = -a^2 \\)."
+  },
+  {
+    "question": "下列運算，正確的是",
+    "options": ["a^2 \\cdot a = a^2", "a + a = a^2", "a^6 \\div a^3 = a^2", "(a^3)^2 = a^6"],
+    "answer": "(a^3)^2 = a^6",
+    "explanation": "\\( a^2 \\cdot a = a^3 \\); \\( a + a = 2a \\); \\( a^6 \\div a^3 = a^3 \\); \\( (a^3)^2 = a^6 \\). 選 \\( (a^3)^2 = a^6 \\)."
+  },
+  {
+    "question": "化簡 \\( x(2x - 1) - x^2 (2 - x) \\) 的結果是",
+    "options": ["-x^3 - x", "x^3 - x", "-x^2 - 1", "x^3 - 1"],
+    "answer": "x^3 - x",
+    "explanation": "\\( x(2x - 1) - x^2 (2 - x) = 2x^2 - x - 2x^2 + x^3 = x^3 - x \\). 選 \\( x^3 - x \\)."
+  },
+  {
+    "question": "有一個長方形內部剪掉了一個小長方形，尺寸如解析所示，則餘下的部分（陰影部分）的面積為",
+    "options": ["4a^2", "4a^2 - ab", "4a^2 + ab", "4a^2 - ab - 2b^2"],
+    "answer": "4a^2 - ab",
+    "explanation": "大長方形面積 \\( (2a + b)(2a - b) = 4a^2 - b^2 \\)，小長方形面積 \\( b(a - b) = ab - b^2 \\). 陰影面積 \\( 4a^2 - b^2 - (ab - b^2) = 4a^2 - ab \\). 選 \\( 4a^2 - ab \\)."
+  },
+  {
+    "question": "下列運算式中，正確的是",
+    "options": ["a^2 \\cdot a^3 = a^6", "(a^3)^3 = a^9", "(2a^2)^2 = 2a^4", "a^6 \\div a^3 = a^2"],
+    "answer": "(a^3)^3 = a^9",
+    "explanation": "\\( a^2 \\cdot a^3 = a^5 \\); \\( (a^3)^3 = a^9 \\); \\( (2a^2)^2 = 4a^4 \\); \\( a^6 \\div a^3 = a^3 \\). 選 \\( (a^3)^3 = a^9 \\)."
+  },
+  {
+    "question": "下列運算中正確的是",
+    "options": ["x^2 \\cdot x^5 = x^{10}", "(a^4)^4 = a^8", "(xy^2)^2 = xy^4", "x^8 \\div x^2 = x^6"],
+    "answer": "x^8 \\div x^2 = x^6",
+    "explanation": "\\( x^2 \\cdot x^5 = x^7 \\); \\( (a^4)^4 = a^{16} \\); \\( (xy^2)^2 = x^2 y^4 \\); \\( x^8 \\div x^2 = x^6 \\). 選 \\( x^8 \\div x^2 = x^6 \\)."
+  },
+  {
+    "question": "下列運算的結果為 \\( a^6 \\) 的是",
+    "options": ["a^3 + a^3", "(a^3)^3", "a^3 \\cdot a^3", "a^{12} \\div a^2"],
+    "answer": "a^3 \\cdot a^3",
+    "explanation": "\\( a^3 + a^3 = 2a^3 \\); \\( (a^3)^3 = a^9 \\); \\( a^3 \\cdot a^3 = a^6 \\); \\( a^{12} \\div a^2 = a^{10} \\). 選 \\( a^3 \\cdot a^3 \\)."
+  },
+  {
+    "question": "下列運算中正確的是",
+    "options": ["x^2 \\cdot x^5 = x^{10}", "(-x^2)^4 = -x^8", "(-xy^2)^2 = xy^4", "x^5 \\div x^3 = x^2"],
+    "answer": "x^5 \\div x^3 = x^2",
+    "explanation": "\\( x^2 \\cdot x^5 = x^7 \\); \\( (-x^2)^4 = x^8 \\); \\( (-xy^2)^2 = x^2 y^4 \\); \\( x^5 \\div x^3 = x^2 \\). 選 \\( x^5 \\div x^3 = x^2 \\)."
+  },
+  {
+    "question": "計算 \\( (-8m^4 n + 12m^3 n^2 - 4m^2 n^3) \\div (-4m^2 n) \\) 的結果等於",
+    "options": ["2m^2 n - 3mn + n^2", "2n^2 - 3mn^2 + n^2", "2m^2 - 3mn + n^2", "2m^2 - 3mn + n"],
+    "answer": "2m^2 - 3mn + n^2",
+    "explanation": "\\( (-8m^4 n) \\div (-4m^2 n) = 2m^2 \\), \\( 12m^3 n^2 \\div (-4m^2 n) = -3mn \\), \\( (-4m^2 n^3) \\div (-4m^2 n) = n^2 \\). 結果 \\( 2m^2 - 3mn + n^2 \\). 選 \\( 2m^2 - 3mn + n^2 \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["(a^2)^3 = a^6", "a^2 \\cdot a^3 = a^6", "(2a)^3 = 2a^3", "a^{10} \\div a^2 = a^5"],
+    "answer": "(a^2)^3 = a^6",
+    "explanation": "\\( (a^2)^3 = a^6 \\); \\( a^2 \\cdot a^3 = a^5 \\); \\( (2a)^3 = 8a^3 \\); \\( a^{10} \\div a^2 = a^8 \\). 選 \\( (a^2)^3 = a^6 \\)."
+  },
+  {
+    "question": "計算 \\( (x^2)^3 \\div (-x)^2 \\) 的結果是",
+    "options": ["x^2", "x^3", "-x^3", "x^4"],
+    "answer": "x^4",
+    "explanation": "\\( (x^2)^3 = x^6 \\), \\( (-x)^2 = x^2 \\). 則 \\( x^6 \\div x^2 = x^4 \\). 選 \\( x^4 \\)."
+  },
+  {
+    "question": "下列計算，正確的是",
+    "options": ["a^2 \\cdot a^3 = a^6", "2a^2 - a = a", "a^6 \\div a^2 = a^3", "(a^2)^3 = a^6"],
+    "answer": "(a^2)^3 = a^6",
+    "explanation": "\\( a^2 \\cdot a^3 = a^5 \\); \\( 2a^2 - a \\neq a \\); \\( a^6 \\div a^2 = a^4 \\); \\( (a^2)^3 = a^6 \\). 選 \\( (a^2)^3 = a^6 \\)."
+  },
+  {
+    "question": "下面的運算正確的是",
+    "options": ["a + a^2 = a^3", "a^2 \\cdot a^3 = a^5", "6a - 5a = 1", "a^6 \\div a^2 = a^3"],
+    "answer": "a^2 \\cdot a^3 = a^5",
+    "explanation": "\\( a + a^2 \\neq a^3 \\); \\( a^2 \\cdot a^3 = a^5 \\); \\( 6a - 5a = a \\); \\( a^6 \\div a^2 = a^4 \\). 選 \\( a^2 \\cdot a^3 = a^5 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["a \\cdot a^2 = a^2", "5a \\cdot 5b = 5ab", "a^5 \\div a^3 = a^2", "2a + 3b = 5ab"],
+    "answer": "a^5 \\div a^3 = a^2",
+    "explanation": "\\( a \\cdot a^2 = a^3 \\); \\( 5a \\cdot 5b = 25ab \\); \\( a^5 \\div a^3 = a^2 \\); \\( 2a + 3b \\neq 5ab \\). 選 \\( a^5 \\div a^3 = a^2 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["a^8 - a^7 = a", "a^8 \\div a^4 = a^2", "a^2 \\cdot a^3 = a^6", "(-a^3)^2 = a^6"],
+    "answer": "(-a^3)^2 = a^6",
+    "explanation": "\\( a^8 - a^7 \\neq a \\); \\( a^8 \\div a^4 = a^4 \\); \\( a^2 \\cdot a^3 = a^5 \\); \\( (-a^3)^2 = a^6 \\). 選 \\( (-a^3)^2 = a^6 \\)."
+  },
+  {
+    "question": "定義：三角表示 \\( \\frac{1}{3} abc \\)，\\( |\\Box(x,w@y,z)| \\) 表示 \\( xz - wy \\)，則 \\( \\triangle \\times |\\Box(3,2@\\frac{1}{2} n,m^2)| \\) 的結果為",
+    "options": ["3m^2 n - mn^2", "3nm^3 - mn^2", "3m^3 n + mn^2", "3m^2 n + mn^2"],
+    "answer": "3nm^3 - mn^2",
+    "explanation": "\\( |\\Box(3,2@\\frac{1}{2} n,m^2)| = 3 \\cdot m^2 - 2 \\cdot \\frac{1}{2} n = 3m^2 - n \\). 則 \\( \\frac{1}{3} \\cdot 3mn \\cdot (3m^2 - n) = 3nm^3 - mn^2 \\). 選 \\( 3nm^3 - mn^2 \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["a + a^2 = a^3", "a^6 \\div a^3 = a^2", "(-a^2 b)^3 = a^6 b^3", "(a-2)(a+2) = a^2 - 4"],
+    "answer": "(a-2)(a+2) = a^2 - 4",
+    "explanation": "\\( a + a^2 \\neq a^3 \\); \\( a^6 \\div a^3 = a^3 \\); \\( (-a^2 b)^3 = -a^6 b^3 \\); \\( (a-2)(a+2) = a^2 - 4 \\). 選 \\( (a-2)(a+2) = a^2 - 4 \\)."
+  },
+  {
+    "question": "\\( (x-1)(2x+3) \\) 的計算結果是",
+    "options": ["2x^2 + x - 3", "2x^2 - x - 3", "2x^2 - x + 3", "x^2 - 2x - 3"],
+    "answer": "2x^2 + x - 3",
+    "explanation": "\\( (x-1)(2x+3) = 2x^2 + 3x - 2x - 3 = 2x^2 + x - 3 \\). 選 \\( 2x^2 + x - 3 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["(-a^3)^2 = a^6", "a^8 \\div a^2 = a^4", "a^3 + a^3 = a^6", "a \\cdot a^5 = a^5"],
+    "answer": "(-a^3)^2 = a^6",
+    "explanation": "\\( (-a^3)^2 = a^6 \\); \\( a^8 \\div a^2 = a^6 \\); \\( a^3 + a^3 = 2a^3 \\); \\( a \\cdot a^5 = a^6 \\). 選 \\( (-a^3)^2 = a^6 \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["x^2 \\cdot x = x^3", "(x^2)^3 = x^5", "x^2 + x^3 = x^5", "x^6 \\div x^3 = x^2"],
+    "answer": "x^2 \\cdot x = x^3",
+    "explanation": "\\( x^2 \\cdot x = x^3 \\); \\( (x^2)^3 = x^6 \\); \\( x^2 + x^3 \\neq x^5 \\); \\( x^6 \\div x^3 = x^3 \\). 選 \\( x^2 \\cdot x = x^3 \\)."
+  },
+  {
+    "question": "計算：\\( (x+3)(x-2) = \\)",
+    "options": ["x^2 - x - 6", "x^2 + x - 6", "x^2 - 6x + 1", "x^2 + 6x - 1"],
+    "answer": "x^2 + x - 6",
+    "explanation": "\\( (x+3)(x-2) = x^2 - 2x + 3x - 6 = x^2 + x - 6 \\). 選 \\( x^2 + x - 6 \\)."
+  },
+  {
+    "question": "計算 \\( (-4)^0 + \\left(-\\frac{1}{2}\\right) \\) 的結果是",
+    "options": ["\\frac{7}{2}", "-\\frac{1}{2}", "\\frac{1}{2}", "-\\frac{9}{2}"],
+    "answer": "\\frac{1}{2}",
+    "explanation": "\\( (-4)^0 = 1 \\), \\( 1 + \\left(-\\frac{1}{2}\\right) = \\frac{1}{2} \\). 選 \\( \\frac{1}{2} \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["b^2 \\cdot b^3 = 2b^3", "(a^5)^2 = a^7", "(-2a)^2 = 4a^2", "(ab)^5 \\div (ab)^2 = ab^3"],
+    "answer": "(-2a)^2 = 4a^2",
+    "explanation": "\\( b^2 \\cdot b^3 = b^5 \\); \\( (a^5)^2 = a^{10} \\); \\( (-2a)^2 = 4a^2 \\); \\( (ab)^5 \\div (ab)^2 = (ab)^3 \\). 選 \\( (-2a)^2 = 4a^2 \\)."
+  },
+  {
+    "question": "計算 \\( 5a \\cdot (2a^2 - ab) \\)，結果是",
+    "options": ["-10a^3 - 5ab", "10a^3 - 5a^2 b", "-10a^2 + 5a^2 b", "-10a^3 + 5a^2 b"],
+    "answer": "10a^3 - 5a^2 b",
+    "explanation": "\\( 5a \\cdot (2a^2 - ab) = 10a^3 - 5a^2 b \\). 選 \\( 10a^3 - 5a^2 b \\)."
+  },
+  {
+    "question": "已知單項式 \\( 3x^2 y^3 \\) 與 \\( -2xy^2 \\) 的積為 \\( mx^3 y^n \\)，那麼 \\( m - n \\) 的值為",
+    "options": ["-11", "5", "1", "-1"],
+    "answer": "-11",
+    "explanation": "\\( 3x^2 y^3 \\cdot (-2xy^2) = -6x^3 y^5 \\). 則 \\( m = -6 \\), \\( n = 5 \\), \\( m - n = -6 - 5 = -11 \\). 選 \\( -11 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["2a + 3a = 5a^2", "6m^2 - 5m^2 = 1", "a^6 \\div a^3 = a^2", "(-a^2)^3 = -a^6"],
+    "answer": "(-a^2)^3 = -a^6",
+    "explanation": "\\( 2a + 3a = 5a \\); \\( 6m^2 - 5m^2 = m^2 \\); \\( a^6 \\div a^3 = a^3 \\); \\( (-a^2)^3 = -a^6 \\). 選 \\( (-a^2)^3 = -a^6 \\)."
+  },
+  {
+    "question": "若 \\( \\Box \\cdot xy = 3x^2 y + 2xy \\)，則 \\( \\Box \\) 內應填的式子是",
+    "options": ["3x + 2", "x + 2", "3xy + 2", "xy + 2"],
+    "answer": "3x + 2",
+    "explanation": "\\( (3x^2 y + 2xy) \\div xy = 3x + 2 \\). 選 \\( 3x + 2 \\)."
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["a^2 \\cdot a = 2a", "(a^2)^3 = a^6", "(ab)^2 = ab^2", "a^8 \\div a^2 = a^4"],
+    "answer": "(a^2)^3 = a^6",
+    "explanation": "\\( a^2 \\cdot a = a^3 \\); \\( (a^2)^3 = a^6 \\); \\( (ab)^2 = a^2 b^2 \\); \\( a^8 \\div a^2 = a^6 \\). 選 \\( (a^2)^3 = a^6 \\)."
+  },
+  {
+    "question": "下列運算正確的是",
+    "options": ["a^2 + a^3 = a^5", "a^2 \\cdot a^2 = 2a^2", "6a^5 \\div 3a^3 = 2a^2", "(-a^2)^3 = -a^5"],
+    "answer": "6a^5 \\div 3a^3 = 2a^2",
+    "explanation": "\\( a^2 + a^3 \\neq a^5 \\); \\( a^2 \\cdot a^2 = a^4 \\); \\( 6a^5 \\div 3a^3 = 2a^2 \\); \\( (-a^2)^3 = -a^6 \\). 選 \\( 6a^5 \\div 3a^3 = 2a^2 \\)."
+  }
+]
