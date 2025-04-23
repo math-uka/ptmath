@@ -155,12 +155,7 @@
     "answer": "(-a^3)^2 = a^6",
     "explanation": "\\( a^8 - a^7 \\neq a \\); \\( a^8 \\div a^4 = a^4 \\); \\( a^2 \\cdot a^3 = a^5 \\); \\( (-a^3)^2 = a^6 \\). 選 \\( (-a^3)^2 = a^6 \\)."
   },
-  {
-    "question": "定義：三角表示 \\( \\frac{1}{3} abc \\)，\\( |\\Box(x,w@y,z)| \\) 表示 \\( xz - wy \\)，則 \\( \\triangle \\times |\\Box(3,2@\\frac{1}{2} n,m^2)| \\) 的結果為",
-    "options": ["3m^2 n - mn^2", "3nm^3 - mn^2", "3m^3 n + mn^2", "3m^2 n + mn^2"],
-    "answer": "3nm^3 - mn^2",
-    "explanation": "\\( |\\Box(3,2@\\frac{1}{2} n,m^2)| = 3 \\cdot m^2 - 2 \\cdot \\frac{1}{2} n = 3m^2 - n \\). 則 \\( \\frac{1}{3} \\cdot 3mn \\cdot (3m^2 - n) = 3nm^3 - mn^2 \\). 選 \\( 3nm^3 - mn^2 \\)."
-  },
+
   {
     "question": "下列計算正確的是",
     "options": ["a + a^2 = a^3", "a^6 \\div a^3 = a^2", "(-a^2 b)^3 = a^6 b^3", "(a-2)(a+2) = a^2 - 4"],
