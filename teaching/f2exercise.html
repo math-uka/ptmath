@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數學學習工具</title>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #2c3e50;
+            padding: 30px 0;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            vertical-align: top;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        td:hover {
+            transform: translateY(-3px);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+
+        /* 響應式設計 */
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                border-radius: 8px 8px 0 0;
+            }
+
+            td {
+                border-radius: 0 0 8px 8px;
+                position: relative;
+                padding-left: 15px;
+            }
+
+            td:before {
+                content: attr(data-label);
+                display: block;
+                font-weight: bold;
+                color: #3498db;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>數學學習工具</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>整式乘法</th>
+                <th>二次根式</th>
+                <th>勾股定理</th>
+                <th>一次函數</th>
+                <th>類據分析</th>
+            </tr>
+            <tr>
+                <td data-label="整式乘法">
+                    <ul>
+                        <li><a href="f2/Integral_expression_product/samebaseproduct.html">同底數幂的乘法</a></li>
+                        <li><a href="f2/exponentiation/exponentiation.html">幂的乘方</a></li>
+                        <li><a href="f2/power_of_product/power_of_product.html">積的乘方</a></li>
+                         <li><a href="f2/polynomial_multiplication/polynomial_multiplication.html">整式的乘法</a></li>
+                         <li><a href="#">乘法公式-平方差公式(待填)</a></li>
+                        <li><a href="#">乘法公式-完全平方公式(待填)</a></li>
+                               <li><a href="#">因式分解-提公因式(待填)</a></li>
+                               <li><a href="#">因式分解-公式法(待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="二次根式">
+                    <ul>
+                        <li><a href="f2/irrational.html">二次根式章綜合複習</a></li>
+                        <li><a href="f2/irrationalproduct.html">二次根式乘除</a></li>
+                        <li><a href="#">二次根式連結3 (待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="勾股定理">
+                    <ul>
+                        <li><a href="f2/pythagorean_theorem/pythagorean_theorem.html">勾股定理</a></li>
+                        <li><a href="f2/converse_pythagorean_theorem/converse_pythagorean_theorem.html">勾股定理的逆定理</a></li>
+                        <li><a href="#">勾股定理連結3 (待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="一次函數">
+                    <ul>
+                        <li><a href="f2/variables_and_functions/variables_and_functions.html">一次函數-變量與函數</a></li>
+                        <li><a href="f2/proportional_functions/proportional_functions.html">一次函數-正比例函數 </a></li>
+                        <li><a href="f2/linear_functions/linear_functions.html">一次函數-一次函數 </a></li>
+                        <li><a href="#">一次函數-一次函數與方程、不等式 (待填)</a></li>
+                    </ul>
+                </td>
+                <td data-label="類據分析">
+                    <ul>
+                        <li><a href="#">類據分析連結1 (待填)</a></li>
+                        <li><a href="#">類據分析連結2 (待填)</a></li>
+                        <li><a href="#">類據分析連結3 (待填)</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>
