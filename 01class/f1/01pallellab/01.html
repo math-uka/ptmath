@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel Lines Test 11</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #f5f5f7; /* 淺灰色背景 */
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            gap: 20px;
+        }
+        canvas {
+            border: 1px solid black;
+            max-width: 100%;
+            touch-action: none; /* 防止觸控縮放 */
+            background-color: white; /* 畫布背景設為白色 */
+        }
+        table {
+            border-collapse: collapse;
+            width: 300px;
+            max-width: 100%;
+            font-size: 14px;
+            background-color: white; /* 表格背景設為白色 */
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+        }
+        .extra-angle {
+            display: none; /* 初始隱藏角 5-8 的表格行 */
+        }
+        .extra-angle.show {
+            display: table-row; /* 顯示時設為 table-row */
+        }
+        button {
+            padding: 12px 24px; /* 內邊距 */
+            background: #0071e3; /* 藍色背景 */
+            color: white; /* 白色文字 */
+            border: none; /* 無邊框 */
+            border-radius: 10px; /* 圓角 */
+            cursor: pointer; /* 鼠標指針 */
+            font-size: 16px; /* 字體大小 */
+            font-weight: 500; /* 字體粗細 */
+            transition: background 0.3s ease; /* 背景色過渡動畫 */
+            touch-action: manipulation; /* 優化觸控點擊 */
+        }
+        button:hover {
+            background: #005bb5; /* 懸停時的深藍色 */
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            canvas {
+                width: 100%;
+                max-width: 300px; /* 手機上縮小畫布 */
+                height: auto;
+            }
+            table {
+                width: 100%;
+                font-size: 12px;
+            }
+            button {
+                padding: 10px 20px; /* 手機上略小內邊距 */
+                font-size: 14px; /* 手機上縮小字體 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>平行線性質實驗</h1>
+    <button id="toggleAnglesBtn">顯示額外角度</button>
+    <div class="container">
+        <canvas id="canvas"></canvas>
+        <table id="angleTable">
+            <tr><th>角</th><th>大小</th></tr>
+            <tr><td>\(\angle 1\)</td><td id="angle1">-</td></tr>
+            <tr><td>\(\angle 2\)</td><td id="angle2">-</td></tr>
+            <tr><td>\(\angle 3\)</td><td id="angle3">-</td></tr>
+            <tr><td>\(\angle 4\)</td><td id="angle4">-</td></tr>
+            <tr class="extra-angle"><td>\(\angle 5\)</td><td id="angle5">-</td></tr>
+            <tr class="extra-angle"><td>\(\angle 6\)</td><td id="angle6">-</td></tr>
+            <tr class="extra-angle"><td>\(\angle 7\)</td><td id="angle7">-</td></tr>
+            <tr class="extra-angle"><td>\(\angle 8\)</td><td id="angle8">-</td></tr>
+            <tr><td colspan="2" id="parallelStatus">紅線是否平行：未知</td></tr>
+        </table>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let gridSize = 20;
+        const offsetX = 30, offsetY = 30; // 縮小邊距以適配手機
+        const gridMax = 20;
+
+        // 控制點初始位置（確保在邊界、不重合，且紅線和藍線有交點）
+        let points = [
+            { x: 0, y: 2 },   // P1
+            { x: 20, y: 8 },  // P2
+            { x: 0, y: 10 },  // P3
+            { x: 20, y: 4 },  // P4
+            { x: 5, y: 0 },   //เฉ P5
+            { x: 15, y: 20 }  // P6
+        ];
+
+        let selectedPoint = null;
+        let showExtraAngles = false;
+
+        function isBoundaryPoint(x, y) {
+            return x === 0 || x === gridMax || y === 0 || y === gridMax;
+        }
+
+        function isPointUnique(x, y, excludeIndex) {
+            return points.every((p, i) => i === excludeIndex || p.x !== x || p.y !== y);
+        }
+
+        function findNearestBoundaryPoint(mouseX, mouseY) {
+            const candidates = [];
+            for (let x = 0; x <= gridMax; x += gridMax) {
+                for (let y = 0; y <= gridMax; y++) {
+                    if (isBoundaryPoint(x, y)) candidates.push({ x, y });
+                }
+            }
+            for (let y = 0; y <= gridMax; y += gridMax) {
+                for (let x = 0; x <= gridMax; x++) {
+                    if (isBoundaryPoint(x, y)) candidates.push({ x, y });
+                }
+            }
+
+            let nearest = null;
+            let minDist = Infinity;
+            candidates.forEach(({ x, y }) => {
+                const canvasX = x * gridSize;
+                const canvasY = y * gridSize;
+                const dist = Math.hypot(mouseX - canvasX, mouseY - canvasY);
+                if (dist < minDist && isPointUnique(x, y, selectedPoint)) {
+                    minDist = dist;
+                    nearest = { x, y };
+                }
+            });
+            return nearest;
+        }
+
+        function drawGrid() {
+            // 填充白色背景，不繪製網格線
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawLines() {
+            // 紅線 L1 (P1-P2)
+            ctx.beginPath();
+            ctx.moveTo(points[0].x * gridSize + offsetX, points[0].y * gridSize + offsetY);
+            ctx.lineTo(points[1].x * gridSize + offsetX, points[1].y * gridSize + offsetY);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 紅線 L2 (P3-P4)
+            ctx.beginPath();
+            ctx.moveTo(points[2].x * gridSize + offsetX, points[2].y * gridSize + offsetY);
+            ctx.lineTo(points[3].x * gridSize + offsetX, points[3].y * gridSize + offsetY);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 藍線 L3 (P5-P6)
+            ctx.beginPath();
+            ctx.moveTo(points[4].x * gridSize + offsetX, points[4].y * gridSize + offsetY);
+            ctx.lineTo(points[5].x * gridSize + offsetX, points[5].y * gridSize + offsetY);
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 繪製控制點
+            points.forEach((p, i) => {
+                ctx.beginPath();
+                ctx.arc(p.x * gridSize + offsetX, p.y * gridSize + offsetY, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = i < 4 ? 'red' : 'blue';
+                ctx.fill();
+            });
+        }
+
+        function getIntersection(p1, p2, p3, p4) {
+            const denom = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x);
+            if (Math.abs(denom) < 1e-6) return null;
+            const t = ((p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)) / denom;
+            const u = -((p1.x - p2.x) * (p1.y - p3.y) - (p1.y - p2.y) * (p1.x - p3.x)) / denom;
+            if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+                return {
+                    x: p1.x + t * (p2.x - p1.x),
+                    y: p1.y + t * (p2.y - p1.y)
+                };
+            }
+            return null;
+        }
+
+        function getAngle(v1, v2) {
+            const dot = v1.x * v2.x + v1.y * v2.y;
+            const det = v1.x * v2.y - v1.y * v2.x;
+            let angle = Math.atan2(det, dot) * 180 / Math.PI;
+            if (angle < 0) angle += 360;
+            if (angle > 180) angle = 360 - angle;
+            return angle;
+        }
+
+        function normalizeVector(v) {
+            const mag = Math.hypot(v.x, v.y);
+            return mag > 0 ? { x: v.x / mag, y: v.y / mag } : { x: 0, y: 0 };
+        }
+
+        function drawAngleLabels() {
+            ctx.font = window.innerWidth <= 600 ? '12px Arial' : '14px Arial'; // 手機上縮小字體
+            ctx.fillStyle = 'black';
+            const labelDistance = window.innerWidth <= 600 ? 15 : 20; // 手機上縮小標籤距離
+            const leftOffset = window.innerWidth <= 600 ? -10 : -15;
+            const downOffset = window.innerWidth <= 600 ? 8 : 10;
+
+            const inter1 = getIntersection(points[0], points[1], points[4], points[5]);
+            if (inter1) {
+                const canvasX = inter1.x * gridSize + offsetX;
+                const canvasY = inter1.y * gridSize + offsetY;
+                const v1 = normalizeVector({ x: points[1].x - points[0].x, y: points[1].y - points[0].y });
+                const v3 = normalizeVector({ x: points[5].x - points[4].x, y: points[5].y - points[4].y });
+                const v1_neg = { x: -v1.x, y: -v1.y };
+                const v3_neg = { x: -v3.x, y: -v3.y };
+
+                let bisector1 = normalizeVector({ x: v1.x + v3.x, y: v1.y + v3.y });
+                ctx.fillText('∠1', canvasX + bisector1.x * labelDistance, canvasY + bisector1.y * labelDistance + downOffset);
+                let bisector2 = normalizeVector({ x: v1_neg.x + v3_neg.x, y: v1_neg.y + v3_neg.y });
+                ctx.fillText('∠2', canvasX + bisector2.x * labelDistance + leftOffset, canvasY + bisector2.y * labelDistance);
+
+                if (showExtraAngles) {
+                    let bisector5 = normalizeVector({ x: v1_neg.x + v3.x, y: v1_neg.y + v3.y });
+                    ctx.fillText('∠5', canvasX + bisector5.x * labelDistance + leftOffset, canvasY + bisector5.y * labelDistance);
+                    let bisector6 = normalizeVector({ x: v1.x + v3_neg.x, y: v1.y + v3_neg.y });
+                    ctx.fillText('∠6', canvasX + bisector6.x * labelDistance, canvasY + bisector6.y * labelDistance);
+                }
+            }
+
+            const inter2 = getIntersection(points[2], points[3], points[4], points[5]);
+            if (inter2) {
+                const canvasX = inter2.x * gridSize + offsetX;
+                const canvasY = inter2.y * gridSize + offsetY;
+                const v2 = normalizeVector({ x: points[3].x - points[2].x, y: points[3].y - points[2].y });
+                const v3 = normalizeVector({ x: points[5].x - points[4].x, y: points[5].y - points[4].y });
+                const v2_neg = { x: -v2.x, y: -v2.y };
+                const v3_neg = { x: -v3.x, y: -v3.y };
+
+                let bisector3 = normalizeVector({ x: v2.x + v3.x, y: v2.y + v3.y });
+                ctx.fillText('∠3', canvasX + bisector3.x * labelDistance, canvasY + bisector3.y * labelDistance + downOffset);
+                let bisector4 = normalizeVector({ x: v2_neg.x + v3_neg.x, y: v2_neg.y + v3_neg.y });
+                ctx.fillText('∠4', canvasX + bisector4.x * labelDistance + leftOffset, canvasY + bisector4.y * labelDistance);
+
+                if (showExtraAngles) {
+                    let bisector7 = normalizeVector({ x: v2_neg.x + v3.x, y: v2_neg.y + v3.y });
+                    ctx.fillText('∠7', canvasX + bisector7.x * labelDistance + leftOffset, canvasY + bisector7.y * labelDistance);
+                    let bisector8 = normalizeVector({ x: v2.x + v3_neg.x, y: v2.y + v3_neg.y });
+                    ctx.fillText('∠8', canvasX + bisector8.x * labelDistance, canvasY + bisector8.y * labelDistance);
+                }
+            }
+        }
+
+        function updateAnglesAndParallel() {
+            const inter1 = getIntersection(points[0], points[1], points[4], points[5]);
+            const inter2 = getIntersection(points[2], points[3], points[4], points[5]);
+
+            const angles = Array(8).fill(null);
+
+            if (inter1) {
+                const v1 = { x: points[1].x - points[0].x, y: points[1].y - points[0].y };
+                const v3 = { x: points[5].x - points[4].x, y: points[5].y - points[4].y };
+                angles[0] = getAngle(v1, v3);
+                angles[1] = angles[0];
+                angles[4] = 180 - angles[0];
+                angles[5] = angles[4];
+            }
+            if (inter2) {
+                const v2 = { x: points[3].x - points[2].x, y: points[3].y - points[2].y };
+                const v3 = { x: points[5].x - points[4].x, y: points[5].y - points[4].y };
+                angles[2] = getAngle(v2, v3);
+                angles[3] = angles[2];
+                angles[6] = 180 - angles[2];
+                angles[7] = angles[6];
+            }
+
+            for (let i = 1; i <= 8; i++) {
+                const cell = document.getElementById(`angle${i}`);
+                cell.innerHTML = angles[i-1] !== null ? `\\(${angles[i-1].toFixed(1)}^\\circ\\)` : '-';
+            }
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
+            const parallelStatus = document.getElementById('parallelStatus');
+            const slope1 = (points[1].y - points[0].y) / (points[1].x - points[0].x + 1e-6);
+            const slope2 = (points[3].y - points[2].y) / (points[3].x - points[2].x + 1e-6);
+            const parallel = Math.abs(slope1 - slope2) < 1e-6;
+            if (parallel) {
+                parallelStatus.textContent = '紅線是否平行：是';
+                parallelStatus.style.backgroundColor = '#FFC1CC';
+                parallelStatus.style.fontWeight = 'bold';
+                parallelStatus.style.fontSize = '16px';
+            } else {
+                parallelStatus.textContent = '紅線是否平行：否';
+                parallelStatus.style.backgroundColor = '';
+                parallelStatus.style.fontWeight = 'normal';
+                parallelStatus.style.fontSize = '14px';
+            }
+        }
+
+        function draw() {
+            drawGrid();
+            drawLines();
+            drawAngleLabels();
+            updateAnglesAndParallel();
+        }
+
+        function handleStart(e) {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            const mouseX = clientX - rect.left;
+            const mouseY = clientY - rect.top;
+            points.forEach((p, i) => {
+                const px = p.x * gridSize + offsetX;
+                const py = p.y * gridSize + offsetY;
+                if (Math.hypot(mouseX - px, mouseY - py) < 20) { // 增大觸控範圍
+                    selectedPoint = i;
+                }
+            });
+        }
+
+        function handleMove(e) {
+            if (selectedPoint !== null) {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+                const mouseX = clientX - rect.left - offsetX;
+                const mouseY = clientY - rect.top - offsetY;
+                const nearest = findNearestBoundaryPoint(mouseX, mouseY);
+                if (nearest) {
+                    points[selectedPoint].x = nearest.x;
+                    points[selectedPoint].y = nearest.y;
+                    draw();
+                }
+            }
+        }
+
+        function handleEnd(e) {
+            e.preventDefault();
+            selectedPoint = null;
+        }
+
+        canvas.addEventListener('mousedown', handleStart);
+        canvas.addEventListener('mousemove', handleMove);
+        canvas.addEventListener('mouseup', handleEnd);
+
+        canvas.addEventListener('touchstart', handleStart);
+        canvas.addEventListener('touchmove', handleMove);
+        canvas.addEventListener('touchend', handleEnd);
+
+        const toggleAnglesBtn = document.getElementById('toggleAnglesBtn');
+        toggleAnglesBtn.addEventListener('click', () => {
+            showExtraAngles = !showExtraAngles;
+            toggleAnglesBtn.textContent = showExtraAngles ? '隱藏額外角度' : '顯示額外角度';
+            document.querySelectorAll('.extra-angle').forEach(row => {
+                row.classList.toggle('show', showExtraAngles);
+            });
+            draw();
+        });
+
+        function resizeCanvas() {
+            const container = document.querySelector('.container');
+            if (window.innerWidth <= 600) {
+                // 手機設備
+                const maxWidth = Math.min(300, container.clientWidth * 0.95); // 限制最大寬度
+                canvas.width = maxWidth;
+                canvas.height = maxWidth; // 保持正方形
+                gridSize = (maxWidth - 2 * offsetX) / gridMax; // 動態調整網格大小
+            } else {
+                // 桌面設備
+                const maxWidth = Math.min(500, container.clientWidth * 0.6);
+                canvas.width = maxWidth;
+                canvas.height = maxWidth;
+                gridSize = (maxWidth - 2 * offsetX) / gridMax;
+            }
+            draw();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        draw();
+    </script>
+</body>
+</html>
