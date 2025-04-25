@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
             background: #f5f5f7;
@@ -18,7 +17,6 @@
             min-height: 100vh;
             line-height: 1.5;
         }
-
         h1 {
             text-align: center;
             font-size: 48px;
@@ -27,20 +25,17 @@
             color: #1d1d1f;
             letter-spacing: -0.02em;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-
         .category-list {
             display: flex;
             flex-direction: column;
             gap: 20px;
             padding: 20px;
         }
-
         .category-item {
             display: flex;
             align-items: center;
@@ -49,66 +44,55 @@
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
-
         .category-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-
         .category-image {
             width: 200px;
             height: 150px;
             margin-right: 20px;
-            cursor: pointer;
             border-radius: 12px;
             overflow: hidden;
         }
-
         .category-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-
         .category-content h2 {
             font-size: 24px;
             font-weight: 600;
             color: #1d1d1f;
             margin-bottom: 10px;
         }
-
         .category-content p {
             font-size: 16px;
             color: #6e6e73;
         }
-
         footer {
             text-align: center;
             padding: 20px;
             color: #6e6e73;
             font-size: 14px;
         }
-
-        /* 響應式設計 */
         @media screen and (max-width: 768px) {
             h1 {
                 font-size: 36px;
                 padding: 40px 20px 20px;
             }
-
             .category-item {
                 flex-direction: column;
                 align-items: flex-start;
             }
-
             .category-image {
                 width: 100%;
                 height: 200px;
                 margin-right: 0;
                 margin-bottom: 15px;
             }
-
             .category-content {
                 width: 100%;
             }
@@ -120,100 +104,193 @@
     <h1>AI應用工具</h1>
     <div class="container">
         <div class="category-list">
-            <!-- 教學互動工具 -->
-            <div class="category-item">
-                <div class="category-image" onclick="window.location.href='#'">
-                    <img src="images/a01.png" alt="教學互動工具">
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/a01.png" alt="工具1">
                 </div>
                 <div class="category-content">
-                    <h2>教學互動工具</h2>
+                    <h2>工具1</h2>
                     <p>提供多種互動式教學工具，幫助教師提升課堂參與度，激發學生學習興趣。</p>
                 </div>
             </div>
 
-            <!-- 年級題庫 -->
-            <div class="category-item">
-                <div class="category-image" onclick="window.location.href='teaching/f2exercise.html'">
-                    <img src="images/b01.png" alt="年級題庫">
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具2">
                 </div>
                 <div class="category-content">
-                    <h2>年級題庫</h2>
-                    <p>針對不同年級的練習題庫，涵蓋多學科內容，幫助學生鞏固知識。</p>
+                    <h2>工具2</h2>
+                    <p>針對小學一年級的動態課件</p>
                 </div>
             </div>
 
-            <!-- 學科練習 -->
-            <div class="category-item">
-                <div class="category-image" onclick="window.location.href='subject/index.html'">
-                    <img src="images/c01.png" alt="學科練習">
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具3">
                 </div>
                 <div class="category-content">
-                    <h2>學科練習</h2>
-                    <p>提供各學科的專項練習，幫助學生針對性提升學術能力。</p>
+                    <h2>工具3</h2>
+                    <p>針對小學二年級的動態課件</p>
                 </div>
             </div>
 
-            <!-- 美術設計工具 -->
-            <div class="category-item">
-                <div class="category-image" onclick="window.location.href='art/index.html'">
-                    <img src="images/d01.png" alt="美術設計工具">
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具4">
                 </div>
                 <div class="category-content">
-                    <h2>美術設計工具</h2>
+                    <h2>工具4</h2>
+                    <p>針對小學三年的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具5">
+                </div>
+                <div class="category-content">
+                    <h2>工具5</h2>
+                    <p>針對小學四年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具6">
+                </div>
+                <div class="category-content">
+                    <h2>工具6</h2>
+                    <p>針對小學五年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具7">
+                </div>
+                <div class="category-content">
+                    <h2>工具7</h2>
+                    <p>針對小學六年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具8">
+                </div>
+                <div class="category-content">
+                    <h2>工具8</h2>
+                    <p>針對初中一年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具9">
+                </div>
+                <div class="category-content">
+                    <h2>工具9</h2>
+                    <p>針對初中二年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具10">
+                </div>
+                <div class="category-content">
+                    <h2>工具10</h2>
+                    <p>針對初中三年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/d01.png" alt="工具11">
+                </div>
+                <div class="category-content">
+                    <h2>工具11</h2>
                     <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
                 </div>
             </div>
 
-            <!-- 其他實用工具 -->
-            <div class="category-item">
-                <div class="category-image" onclick="window.location.href='other/index.html'">
-                    <img src="images/e01.png" alt="其他實用工具">
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/e01.png" alt="工具12">
                 </div>
                 <div class="category-content">
-                    <h2>其他實用工具</h2>
+                    <h2>工具12</h2>
                     <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
                 </div>
             </div>
-
-            <!-- 
-            示例：數位學習工具（用於展示如何新增項目）
-            <div class="category-item">
-                <div class="category-image" onclick="window.location.href='digital/index.html'">
-                    <div class="slideshow-container digital">
-                        <div class="slide active"></div>
-                        <div class="slide"></div>
-                        <div class="slide"></div>
-                    </div>
-                </div>
-                <div class="category-content">
-                    <h2>數位學習工具</h2>
-                    <p>提供數位化學習資源，幫助學生隨時隨地學習。</p>
-                </div>
-            </div>
-
-            如何新增項目：
-            1. 複製以下模板，插入到 <div class="category-list"> 內（可放在任何現有項目之前或之後）：
-               <div class="category-item">
-                   <div class="category-image" onclick="window.location.href='你的連結路徑'">
-                       <img src="圖片路徑" alt="項目名稱">
-                   </div>
-                   <div class="category-content">
-                       <h2>你的項目標題</h2>
-                       <p>你的項目描述</p>
-                   </div>
-               </div>
-            2. 修改以下內容：
-               - `window.location.href='你的連結路徑'`：設置點擊圖片後的跳轉連結（例如 'digital/index.html'）。
-               - `src="圖片路徑"`：指定圖片的路徑（例如 'images/f01.png'），確保圖片文件存在。
-               - `alt="項目名稱"`：設置圖片的替代文字，描述圖片內容。
-               - `<h2>你的項目標題</h2>`：設置項目的標題。
-               - `<p>你的項目描述</p>`：設置項目的描述文字。
-            3. 確保圖片文件已放在正確的目錄（例如 'images/'），且連結的頁面存在。
-            4. 測試新項目，確認圖片顯示正常，點擊後能正確跳轉。
-            -->
         </div>
     </div>
-
     <footer>
         <p>© 2025 ukawai</p>
     </footer>
