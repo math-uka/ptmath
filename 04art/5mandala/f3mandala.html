@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>對稱圖形設計</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: clamp(18px, 5vw, 28px);
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #canvas {
+            border: 2px solid #3498db;
+            background: white;
+            cursor: crosshair;
+            transition: border-radius 0.3s, box-shadow 0.3s;
+            width: min(500px, 90vw);
+            height: min(500px, 90vw);
+            max-width: 100%;
+            touch-action: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #controls, #tools {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* 增加整體內部間距 */
+        }
+
+        #controls label {
+            font-size: 16px;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        button {
+            padding: 12px 20px; /* 增加按鈕內邊距 */
+            font-size: clamp(12px, 3vw, 16px);
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: all 0.3s ease;
+            width: 100%; /* 統一按鈕寬度 */
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        #symmetryButtons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 每行3個按鈕 */
+            gap: 10px; /* 增加對稱軸按鈕間距 */
+            justify-content: center;
+        }
+
+        #symmetryButtons button {
+            width: 100%; /* 統一寬度 */
+            height: 45px; /* 固定高度 */
+            font-size: 14px;
+            background: #2ecc71;
+            padding: 0; /* 重置內邊距，讓文字居中 */
+        }
+
+        #symmetryButtons button:hover {
+            background: #27ae60;
+        }
+
+        #tools div {
+            font-size: 16px;
+            color: #34495e;
+            margin: 10px 0 5px;
+        }
+
+        #colorPicker {
+            width: 160px;
+            height: 200px;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 3px;
+            margin: 0 auto;
+        }
+
+        .colorBox {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            aspect-ratio: 1 / 1;
+            transition: transform 0.2s;
+        }
+
+        .colorBox:hover {
+            transform: scale(1.1);
+            border-color: #3498db;
+        }
+
+        #currentColor {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin: 10px auto 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 767px) {
+            #colorPicker {
+                width: 120px;
+                height: 150px;
+                gap: 2px;
+            }
+            .colorBox {
+                border-width: 0.5px;
+            }
+            #canvas {
+                width: min(400px, 90vw);
+                height: min(400px, 90vw);
+            }
+            #symmetryButtons {
+                grid-template-columns: repeat(2, 1fr); /* 手機版每行2個 */
+                gap: 8px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 30px;
+                padding: 30px;
+            }
+            #controls {
+                width: 240px; /* 增加寬度以容納更大按鈕 */
+            }
+            #tools {
+                width: 240px;
+            }
+            #canvas {
+                width: 500px;
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <h1> 對稱圖形設計</h1>
+        <label>選擇對稱軸數量:</label>
+        <div id="symmetryButtons">
+            <button onclick="setSymmetry(1)">1</button>
+            <button onclick="setSymmetry(2)">2</button>
+            <button onclick="setSymmetry(4)">4</button>
+            <button onclick="setSymmetry(6)">6</button>
+            <button onclick="setSymmetry(8)">8</button>
+            <button onclick="setSymmetry(10)">10</button>
+        </div>
+        <button onclick="resetCanvas()">重新作畫</button>
+        <button onclick="undo()">上一步</button>
+        <button onclick="setCanvasShape('square')">正方形畫框</button>
+        <button onclick="setCanvasShape('circle')">圓形畫框</button>
+        <button id="toggleAxes" onclick="toggleSymmetryAxes()">顯示對稱軸</button>
+    </div>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div id="tools">
+        <button onclick="setShape('heart')">心形</button>
+        <button onclick="setShape('star')">星形</button>
+        <button onclick="setShape('triangle')">三角形</button>
+        <button onclick="setShape('circle')">圓形</button>
+        <button onclick="setShape('line')">直線</button>
+        <button onclick="setShape('free')">自由繪畫</button>
+        <div>顏色選擇:</div>
+        <div id="colorPicker"></div>
+        <div>當前顏色:</div>
+        <div id="currentColor"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let symmetry = 1;
+        let drawing = false;
+        let shape = 'free';
+        let points = [];
+        let startX, startY, scale = 1;
+        let endX, endY;
+        let currentColor = '#000000';
+        let showAxes = false;
+        let drawings = [];
+        let history = [];
+        const currentColorDisplay = document.getElementById('currentColor');
+
+        const colors = [
+            '#FFC1CC', '#FF9999', '#FF6666', '#FF3333', '#FF0000', '#CC0000', '#990000', '#660000',
+            '#FFE5B4', '#FFD700', '#FFC107', '#FFA500', '#FF8C00', '#FF4500', '#D2691E', '#8B4513',
+            '#FFFFCC', '#FFFF99', '#FFFF66', '#FFFF00', '#FFD700', '#FFC107', '#DAA520', '#B8860B',
+            '#CCFFCC', '#99FF99', '#66FF66', '#33FF33', '#00FF00', '#00CC00', '#009900', '#006600',
+            '#CCFFFF', '#99FFFF', '#66FFFF', '#33FFFF', '#00FFFF', '#00CED1', '#20B2AA', '#008B8B',
+            '#CCE5FF', '#99CCFF', '#6699FF', '#3366FF', '#0000FF', '#0000CC', '#000099', '#000066',
+            '#FFCCFF', '#FF99FF', '#FF66FF', '#FF00FF', '#CC00CC', '#990099', '#800080', '#4B0082',
+            '#FFFFFF', '#F5F5F5', '#D3D3D3', '#B0B0B0', '#808080', '#666666', '#333333', '#000000'
+        ];
+
+        const colorPicker = document.getElementById('colorPicker');
+        colors.forEach(color => {
+            const div = document.createElement('div');
+            div.className = 'colorBox';
+            div.style.backgroundColor = color;
+            div.onclick = () => {
+                currentColor = color;
+                currentColorDisplay.style.backgroundColor = color;
+            };
+            colorPicker.appendChild(div);
+        });
+        currentColorDisplay.style.backgroundColor = currentColor;
+
+        function setSymmetry(num) {
+            symmetry = num;
+            redrawCanvas();
+        }
+
+        function resetCanvas() {
+            history = [];
+            drawings = [];
+            redrawCanvas();
+        }
+
+        function undo() {
+            if (history.length > 0) {
+                drawings = history.pop();
+                redrawCanvas();
+            }
+        }
+
+        function setShape(newShape) {
+            shape = newShape;
+        }
+
+        function setCanvasShape(shape) {
+            canvas.style.borderRadius = shape === 'circle' ? '50%' : '10px';
+        }
+
+        function toggleSymmetryAxes() {
+            showAxes = !showAxes;
+            document.getElementById('toggleAxes').textContent = showAxes ? '隱藏對稱軸' : '顯示對稱軸';
+            redrawCanvas();
+        }
+
+        function drawSymmetryAxes() {
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.strokeStyle = 'lightgreen';
+            ctx.setLineDash([5, 5]);
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < symmetry; i++) {
+                ctx.beginPath();
+                let angle = (i * Math.PI) / symmetry;
+                if (symmetry === 1) angle = Math.PI / 2;
+                ctx.moveTo(-250 * Math.cos(angle), -250 * Math.sin(angle));
+                ctx.lineTo(250 * Math.cos(angle), 250 * Math.sin(angle));
+                ctx.stroke();
+            }
+
+            ctx.setLineDash([]);
+            ctx.restore();
+        }
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawings.forEach(draw => drawDrawing(draw));
+            if (showAxes) drawSymmetryAxes();
+        }
+
+        function drawDrawing({ shape, points, color, scale, angle }) {
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+
+            for (let i = 0; i < symmetry; i++) {
+                ctx.rotate((2 * Math.PI) / symmetry);
+                drawShape(shape, points, scale, color, angle);
+                ctx.scale(-1, 1);
+                drawShape(shape, points, scale, color, angle);
+                ctx.scale(-1, 1);
+            }
+
+            ctx.restore();
+        }
+
+        function startDrawing(e) {
+            e.preventDefault();
+            drawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left - canvas.width / 2;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top - canvas.height / 2;
+            startX = x;
+            startY = y;
+            points = [{x: startX, y: startY}];
+            if (shape === 'free') draw(startX, startY);
+        }
+
+        function moveDrawing(e) {
+            if (!drawing) return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left - canvas.width / 2;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top - canvas.height / 2;
+
+            if (shape === 'free') {
+                points.push({x, y});
+                draw(x, y);
+            } else {
+                scale = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2) / 15;
+                endX = x;
+                endY = y;
+                redrawCanvas();
+                draw(startX, startY);
+            }
+        }
+
+        function stopDrawing(e) {
+            if (!drawing) return;
+            e.preventDefault();
+            drawing = false;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || (e.changedTouches && e.changedTouches[0].clientX)) - rect.left - canvas.width / 2;
+            const y = (e.clientY || (e.changedTouches && e.changedTouches[0].clientY)) - rect.top - canvas.height / 2;
+
+            let angle = shape === 'line' ? Math.atan2(y - startY, x - startX) : 0;
+
+            if (history.length >= 5) history.shift();
+            history.push([...drawings]);
+
+            if (shape === 'free') {
+                drawings.push({ shape, points: [...points], color: currentColor, scale });
+            } else {
+                points.push({x, y});
+                drawings.push({ shape, points: [...points], color: currentColor, scale, angle });
+            }
+
+            scale = 1;
+            points = [];
+            endX = null;
+            endY = null;
+            redrawCanvas();
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', moveDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', moveDrawing);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function draw(x, y) {
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+
+            for (let i = 0; i < symmetry; i++) {
+                ctx.rotate((2 * Math.PI) / symmetry);
+                drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
+                ctx.scale(-1, 1);
+                drawShape(shape, points, scale, currentColor, shape === 'line' ? Math.atan2(endY - startY, endX - startX) : 0);
+                ctx.scale(-1, 1);
+            }
+
+            ctx.restore();
+            if (showAxes) drawSymmetryAxes();
+        }
+
+        function drawShape(shapeType, points, scale, color, angle = 0) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+
+            if (shapeType === 'free') {
+                ctx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    ctx.lineTo(points[i].x, points[i].y);
+                }
+                ctx.stroke();
+            } else {
+                ctx.save();
+                ctx.translate(points[0].x, points[0].y);
+                if (shapeType === 'line') ctx.rotate(angle);
+                
+                if (shapeType === 'heart') {
+                    ctx.scale(scale, scale);
+                    ctx.moveTo(0, 10);
+                    ctx.bezierCurveTo(-15, -10, -5, -20, 0, 0);
+                    ctx.bezierCurveTo(5, -20, 15, -10, 0, 10);
+                    ctx.fill();
+                } else if (shapeType === 'star') {
+                    ctx.scale(scale, scale);
+                    for (let i = 0; i < 5; i++) {
+                        ctx.lineTo(15 * Math.cos((18 + i * 72) * Math.PI / 180), 
+                                 15 * Math.sin((18 + i * 72) * Math.PI / 180));
+                        ctx.lineTo(7 * Math.cos((54 + i * 72) * Math.PI / 180), 
+                                 7 * Math.sin((54 + i * 72) * Math.PI / 180));
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                } else if (shapeType === 'triangle') {
+                    ctx.scale(scale, scale);
+                    ctx.moveTo(0, -10);
+                    ctx.lineTo(-10, 10);
+                    ctx.lineTo(10, 10);
+                    ctx.closePath();
+                    ctx.fill();
+                } else if (shapeType === 'circle') {
+                    ctx.scale(scale, scale);
+                    ctx.arc(0, 0, 10, 0, 2 * Math.PI);
+                    ctx.fill();
+                } else if (shapeType === 'line') {
+                    ctx.scale(scale, scale);
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(15, 0);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
+        }
+    </script>
+     <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+</body>
+</html>
