@@ -1,0 +1,386 @@
+[
+  {
+    "question": "Sarah saw ___ at the park.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the object of the verb 'saw,' so an object pronoun is needed. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "The teacher gave ___ a book.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the indirect object of the verb 'gave,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "I called ___ yesterday.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the object of the verb 'called,' so an object pronoun is needed. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "The dog followed ___ home.",
+    "options": ["I", "me", "my", "myself"],
+    "answer": "me",
+    "explanation": "The pronoun is the object of the verb 'followed,' requiring an object pronoun. 'me' is the correct object pronoun for the first person singular. 'I' is a subject pronoun, 'my' is possessive, and 'myself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person singular object pronoun"
+  },
+  {
+    "question": "Tom invited ___ to the party.",
+    "options": ["we", "us", "our", "ourselves"],
+    "answer": "us",
+    "explanation": "The pronoun is the object of the verb 'invited,' so an object pronoun is needed. 'us' is the correct object pronoun for the first person plural. 'we' is a subject pronoun, 'our' is possessive, and 'ourselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person plural object pronoun"
+  },
+  {
+    "question": "The cat chased ___ in the garden.",
+    "options": ["it", "its", "itself", "he"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'chased,' requiring an object pronoun. 'it' is the correct object pronoun for a singular non-human (animal or thing). 'its' is possessive, 'itself' is reflexive, and 'he' is a subject pronoun for a male person, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  },
+  {
+    "question": "Lisa helped ___ with the homework.",
+    "options": ["you", "your", "yours", "yourself"],
+    "answer": "you",
+    "explanation": "The pronoun is the object of the verb 'helped,' so an object pronoun is needed. 'you' is the correct object pronoun for the second person (singular or plural). 'your' and 'yours' are possessive, and 'yourself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests second person object pronoun"
+  },
+  {
+    "question": "The coach trained ___ for the match.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the object of the verb 'trained,' requiring an object pronoun. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "I sent ___ a letter.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the indirect object of the verb 'sent,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The teacher praised ___ for the project.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the object of the verb 'praised,' so an object pronoun is needed. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "We visited ___ at the hospital.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the object of the verb 'visited,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The kids drew ___ on the board.",
+    "options": ["it", "its", "itself", "they"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'drew,' referring to the board (a singular non-human object). 'it' is the correct object pronoun. 'its' is possessive, 'itself' is reflexive, and 'they' is a subject pronoun for plural people, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  },
+  {
+    "question": "John told ___ a story.",
+    "options": ["I", "me", "my", "myself"],
+    "answer": "me",
+    "explanation": "The pronoun is the indirect object of the verb 'told,' requiring an object pronoun. 'me' is the correct object pronoun for the first person singular. 'I' is a subject pronoun, 'my' is possessive, and 'myself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person singular object pronoun"
+  },
+  {
+    "question": "The manager called ___ to the office.",
+    "options": ["we", "us", "our", "ourselves"],
+    "answer": "us",
+    "explanation": "The pronoun is the object of the verb 'called,' so an object pronoun is needed. 'us' is the correct object pronoun for the first person plural. 'we' is a subject pronoun, 'our' is possessive, and 'ourselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person plural object pronoun"
+  },
+  {
+    "question": "Emma showed ___ the picture.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the indirect object of the verb 'showed,' requiring an object pronoun. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "The waiter served ___ the food.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the indirect object of the verb 'served,' requiring an object pronoun. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "I gave ___ my old phone.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the indirect object of the verb 'gave,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The bird watched ___ from the tree.",
+    "options": ["it", "its", "itself", "he"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'watched,' referring to something (a singular non-human). 'it' is the correct object pronoun. 'its' is possessive, 'itself' is reflexive, and 'he' is a subject pronoun for a male person, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  },
+  {
+    "question": "Mark asked ___ for help.",
+    "options": ["you", "your", "yours", "yourself"],
+    "answer": "you",
+    "explanation": "The pronoun is the object of the verb 'asked,' so an object pronoun is needed. 'you' is the correct object pronoun for the second person. 'your' and 'yours' are possessive, and 'yourself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests second person object pronoun"
+  },
+  {
+    "question": "The principal met ___ in the hall.",
+    "options": ["we", "us", "our", "ourselves"],
+    "answer": "us",
+    "explanation": "The pronoun is the object of the verb 'met,' requiring an object pronoun. 'us' is the correct object pronoun for the first person plural. 'we' is a subject pronoun, 'our' is possessive, and 'ourselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person plural object pronoun"
+  },
+  {
+    "question": "Lily lent ___ her pen.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the indirect object of the verb 'lent,' requiring an object pronoun. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "The chef cooked ___ a meal.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the indirect object of the verb 'cooked,' requiring an object pronoun. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "I found ___ in the library.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the object of the verb 'found,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The kids kicked ___ in the yard.",
+    "options": ["it", "its", "itself", "they"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'kicked,' referring to a ball (implied, singular non-human). 'it' is the correct object pronoun. 'its' is possessive, 'itself' is reflexive, and 'they' is a subject pronoun for plural people, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  },
+  {
+    "question": "Sam wrote ___ a note.",
+    "options": ["I", "me", "my", "myself"],
+    "answer": "me",
+    "explanation": "The pronoun is the indirect object of the verb 'wrote,' requiring an object pronoun. 'me' is the correct object pronoun for the first person singular. 'I' is a subject pronoun, 'my' is possessive, and 'myself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person singular object pronoun"
+  },
+  {
+    "question": "The guide showed ___ the museum.",
+    "options": ["we", "us", "our", "ourselves"],
+    "answer": "us",
+    "explanation": "The pronoun is the indirect object of the verb 'showed,' requiring an object pronoun. 'us' is the correct object pronoun for the first person plural. 'we' is a subject pronoun, 'our' is possessive, and 'ourselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person plural object pronoun"
+  },
+  {
+    "question": "Tom pushed ___ off the swing.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the object of the verb 'pushed,' requiring an object pronoun. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "The librarian read ___ a book.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the indirect object of the verb 'read,' requiring an object pronoun. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "I taught ___ to swim.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the indirect object of the verb 'taught,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The puppy licked ___ on the face.",
+    "options": ["it", "its", "itself", "he"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'licked,' referring to a face (implied, singular non-human). 'it' is the correct object pronoun. 'its' is possessive, 'itself' is reflexive, and 'he' is a subject pronoun for a male person, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  },
+  {
+    "question": "Anna texted ___ about the trip.",
+    "options": ["you", "your", "yours", "yourself"],
+    "answer": "you",
+    "explanation": "The pronoun is the object of the verb 'texted,' so an object pronoun is needed. 'you' is the correct object pronoun for the second person. 'your' and 'yours' are possessive, and 'yourself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests second person object pronoun"
+  },
+  {
+    "question": "The coach selected ___ for the team.",
+    "options": ["we", "us", "our", "ourselves"],
+    "answer": "us",
+    "explanation": "The pronoun is the object of the verb 'selected,' requiring an object pronoun. 'us' is the correct object pronoun for the first person plural. 'we' is a subject pronoun, 'our' is possessive, and 'ourselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person plural object pronoun"
+  },
+  {
+    "question": "David offered ___ a ride.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the indirect object of the verb 'offered,' requiring an object pronoun. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "The host welcomed ___ to the event.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the object of the verb 'welcomed,' requiring an object pronoun. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "I handed ___ the keys.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the indirect object of the verb 'handed,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The robot delivered ___ to the lab.",
+    "options": ["it", "its", "itself", "they"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'delivered,' referring to a package (implied, singular non-human). 'it' is the correct object pronoun. 'its' is possessive, 'itself' is reflexive, and 'they' is a subject pronoun for plural people, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  },
+  {
+    "question": "Mia asked ___ a question.",
+    "options": ["I", "me", "my", "myself"],
+    "answer": "me",
+    "explanation": "The pronoun is the indirect object of the verb 'asked,' requiring an object pronoun. 'me' is the correct object pronoun for the first person singular. 'I' is a subject pronoun, 'my' is possessive, and 'myself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person singular object pronoun"
+  },
+  {
+    "question": "The teacher assigned ___ a task.",
+    "options": ["we", "us", "our", "ourselves"],
+    "answer": "us",
+    "explanation": "The pronoun is the indirect object of the verb 'assigned,' requiring an object pronoun. 'us' is the correct object pronoun for the first person plural. 'we' is a subject pronoun, 'our' is possessive, and 'ourselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person plural object pronoun"
+  },
+  {
+    "question": "James thanked ___ for the gift.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the object of the verb 'thanked,' requiring an object pronoun. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "The doctor examined ___ carefully.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the object of the verb 'examined,' requiring an object pronoun. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "I invited ___ to dinner.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the object of the verb 'invited,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The car hit ___ on the road.",
+    "options": ["it", "its", "itself", "he"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'hit,' referring to an object (implied, singular non-human). 'it' is the correct object pronoun. 'its' is possessive, 'itself' is reflexive, and 'he' is a subject pronoun for a male person, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  },
+  {
+    "question": "Sophie called ___ for advice.",
+    "options": ["you", "your", "yours", "yourself"],
+    "answer": "you",
+    "explanation": "The pronoun is the object of the verb 'called,' so an object pronoun is needed. 'you' is the correct object pronoun for the second person. 'your' and 'yours' are possessive, and 'yourself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests second person object pronoun"
+  },
+  {
+    "question": "The leader guided ___ through the forest.",
+    "options": ["we", "us", "our", "ourselves"],
+    "answer": "us",
+    "explanation": "The pronoun is the object of the verb 'guided,' requiring an object pronoun. 'us' is the correct object pronoun for the first person plural. 'we' is a subject pronoun, 'our' is possessive, and 'ourselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests first person plural object pronoun"
+  },
+  {
+    "question": "Ethan passed ___ the ball.",
+    "options": ["he", "him", "his", "himself"],
+    "answer": "him",
+    "explanation": "The pronoun is the indirect object of the verb 'passed,' requiring an object pronoun. 'him' is the correct object pronoun for a male singular person. 'he' is a subject pronoun, 'his' is possessive, and 'himself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular male object pronoun"
+  },
+  {
+    "question": "The singer performed for ___ at the concert.",
+    "options": ["they", "them", "their", "themselves"],
+    "answer": "them",
+    "explanation": "The pronoun is the object of the preposition 'for,' requiring an object pronoun. 'them' is the correct object pronoun for plural people. 'they' is a subject pronoun, 'their' is possessive, and 'themselves' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests plural object pronoun"
+  },
+  {
+    "question": "I baked ___ a cake.",
+    "options": ["she", "her", "hers", "herself"],
+    "answer": "her",
+    "explanation": "The pronoun is the indirect object of the verb 'baked,' requiring an object pronoun. 'her' is the correct object pronoun for a female singular person. 'she' is a subject pronoun, 'hers' is possessive, and 'herself' is reflexive, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular female object pronoun"
+  },
+  {
+    "question": "The drone followed ___ in the sky.",
+    "options": ["it", "its", "itself", "they"],
+    "answer": "it",
+    "explanation": "The pronoun is the object of the verb 'followed,' referring to an object (implied, singular non-human). 'it' is the correct object pronoun. 'its' is possessive, 'itself' is reflexive, and 'they' is a subject pronoun for plural people, so they are incorrect.",
+    "image": null,
+    "comment": "tests singular non-human object pronoun"
+  }
+]
