@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -119,15 +119,15 @@
   </style>
 </head>
 <body>
-  <h1>複數形式練習題</h1>
+  <h1>Plurals Practice Quiz</h1>
   <div class="mode-selection" id="mode-selection">
-    <p>請選擇遊戲模式：</p>
-    <button onclick="startStandardMode()">標準模式</button>
-    <button onclick="showCustomMode()">自訂模式</button>
+    <p>Please select a game mode:</p>
+    <button onclick="startStandardMode()">Standard Mode</button>
+    <button onclick="showCustomMode()">Custom Mode</button>
     <div class="custom-mode" id="custom-mode" style="display: none;">
-      <label>選擇題目數量：<span id="question-count">1</span></label>
+      <label>Choose number of questions: <span id="question-count">1</span></label>
       <input type="range" id="question-slider" min="1" value="1">
-      <button onclick="startCustomMode()">開始</button>
+      <button onclick="startCustomMode()">Start</button>
     </div>
   </div>
   <div class="question-container" id="question" style="display: none;"></div>
@@ -153,9 +153,9 @@
   </table>
   <div class="feedback" id="feedback"></div>
   <div class="password-input" id="password-input" style="display: none;">
-    <p>恭喜！你全對或只錯一題！輸入 1~50 的數字以獲取密碼：</p>
-    <input type="number" id="password-number" min="1" max="50" placeholder="輸入 1~50">
-    <button id="password-submit">提交</button>
+    <p>Congratulations! You got all correct or missed only one. Enter a number from 1 to 50 to get a password:</p>
+    <input type="number" id="password-number" min="1" max="50" placeholder="Enter 1-50">
+    <button id="password-submit">Submit</button>
     <div class="password-result" id="password-result"></div>
   </div>
   <div class="wrong-questions" id="wrong-questions"></div>
@@ -165,7 +165,7 @@
   </footer>
 
   <script>
-    // 標準模式的題目數量
+    // Number of questions in standard mode
     const STANDARD_MODE_QUESTION_COUNT = 10;
 
     let questionBank = [];
@@ -179,42 +179,42 @@
     let isStandardMode = false;
     let passwordRetrieved = false;
 
-    // 加載題庫和密碼表
+    // Load question bank and password table
     async function loadData() {
       try {
         const questionResponse = await fetch('mcq.json');
         if (!questionResponse.ok) {
-          throw new Error(`無法加載題庫，狀態碼: ${questionResponse.status}`);
+          throw new Error(`Failed to load question bank, status: ${questionResponse.status}`);
         }
         questionBank = await questionResponse.json();
-        console.log('題庫加載成功，題目數:', questionBank.length);
+        console.log('Question bank loaded successfully, number of questions:', questionBank.length);
 
         try {
           const passwordResponse = await fetch('pass.json');
           if (passwordResponse.ok) {
             passwordBank = await passwordResponse.json();
-            console.log('密碼表加載成功');
+            console.log('Password table loaded successfully');
           } else {
-            console.warn('無密碼表，啟用無密碼模式');
+            console.warn('No password table found, enabling no-password mode');
             document.getElementById('password-input').style.display = 'none';
           }
         } catch (passwordError) {
-          console.warn('無密碼表，啟用無密碼模式:', passwordError);
+          console.warn('No password table found, enabling no-password mode:', passwordError);
           document.getElementById('password-input').style.display = 'none';
         }
 
-        // 初始化滑條
+        // Initialize slider
         document.getElementById('question-slider').max = questionBank.length;
         document.getElementById('question-count').textContent = 1;
       } catch (error) {
-        console.error('加載數據失敗:', error);
-        document.getElementById('question').innerHTML = `無法加載題庫：${error.message}。請檢查 mcq.json 是否存在並格式正確。`;
+        console.error('Failed to load data:', error);
+        document.getElementById('question').innerHTML = `Failed to load question bank: ${error.message}. Please check if mcq.json exists and is correctly formatted.`;
         document.getElementById('question').style.display = 'block';
         document.getElementById('mode-selection').style.display = 'none';
       }
     }
 
-    // 隨機打亂陣列（Fisher-Yates 洗牌算法）
+    // Shuffle array (Fisher-Yates shuffle)
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -223,7 +223,7 @@
       return array;
     }
 
-    // 啟動標準模式
+    // Start standard mode
     function startStandardMode() {
       isStandardMode = true;
       wrongCount = 0;
@@ -238,7 +238,7 @@
       displayQuestion();
     }
 
-    // 顯示自訂模式滑條
+    // Show custom mode slider
     function showCustomMode() {
       document.getElementById('custom-mode').style.display = 'block';
       const slider = document.getElementById('question-slider');
@@ -249,7 +249,7 @@
       };
     }
 
-    // 啟動自訂模式
+    // Start custom mode
     function startCustomMode() {
       isStandardMode = false;
       wrongCount = 0;
@@ -264,7 +264,7 @@
       displayQuestion();
     }
 
-    // 禁用/啟用按鈕
+    // Enable/disable buttons
     function toggleButtons(disabled) {
       const buttons = document.querySelectorAll('.option-button');
       buttons.forEach(button => {
@@ -272,7 +272,7 @@
       });
     }
 
-    // 顯示題目和選項
+    // Display question and options
     function displayQuestion() {
       if (currentQuestionCount >= totalQuestions || availableQuestions.length === 0) {
         endGame();
@@ -284,7 +284,7 @@
       const questionIndex = questionBank.indexOf(question);
       document.getElementById('question').innerHTML = question.question;
 
-      // 處理圖片
+      // Handle image
       const imageContainer = document.getElementById('question-image-container');
       if (question.image) {
         imageContainer.innerHTML = `<img src="${question.image}" alt="Question Image" class="question-image">`;
@@ -294,9 +294,9 @@
         imageContainer.style.display = 'none';
       }
 
-      // 更新剩餘題目數
+      // Update remaining questions
       const remaining = totalQuestions - currentQuestionCount;
-      document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題`;
+      document.getElementById('remaining-questions').innerHTML = `Questions remaining: ${remaining}`;
 
       const shuffledOptions = shuffleArray([...question.options]);
       const correctAnswerIndex = shuffledOptions.indexOf(question.answer);
@@ -315,12 +315,12 @@
       toggleButtons(false);
     }
 
-    // 檢查答案
+    // Check answer
     function checkAnswer(selected, correctAnswerLabel, questionIndex) {
       const question = questionBank[questionIndex];
       const feedback = document.getElementById('feedback');
       if (selected === correctAnswerLabel) {
-        feedback.innerHTML = '正確！正在加載下一題...';
+        feedback.innerHTML = 'Correct! Loading next question...';
         feedback.style.color = 'green';
         toggleButtons(true);
         setTimeout(() => {
@@ -329,14 +329,14 @@
           displayQuestion();
         }, 1000);
       } else {
-        feedback.innerHTML = `錯誤！正確答案是 ${correctAnswerLabel}。解析：${question.explanation}`;
+        feedback.innerHTML = `Incorrect! The correct answer is ${correctAnswerLabel}. Explanation: ${question.explanation}`;
         feedback.style.color = 'red';
         wrongQuestions.add(questionIndex);
         wrongCount++;
       }
     }
 
-    // 處理密碼提交
+    // Handle password submission
     function handlePasswordSubmit() {
       if (passwordRetrieved) return;
 
@@ -345,27 +345,27 @@
       const resultDiv = document.getElementById('password-result');
 
       if (!number || number < 1 || number > 50) {
-        resultDiv.innerHTML = '請輸入 1~50 的數字！';
+        resultDiv.innerHTML = 'Please enter a number between 1 and 50!';
         resultDiv.style.color = 'red';
         return;
       }
 
       const password = passwordBank[number];
       if (password) {
-        resultDiv.innerHTML = `你的密碼是：${password}`;
+        resultDiv.innerHTML = `Your password is: ${password}`;
         resultDiv.style.color = 'green';
         passwordRetrieved = true;
         numberInput.disabled = true;
         document.getElementById('password-submit').disabled = true;
       } else {
-        resultDiv.innerHTML = '無效的數字！';
+        resultDiv.innerHTML = 'Invalid number!';
         resultDiv.style.color = 'red';
       }
     }
 
-    // 遊戲結束
+    // End game
     function endGame() {
-      document.getElementById('question').innerHTML = '遊戲結束！所有題目已完成。';
+      document.getElementById('question').innerHTML = 'Game Over! All questions completed.';
       document.getElementById('question-image-container').style.display = 'none';
       document.getElementById('remaining-questions').style.display = 'none';
       document.getElementById('options').style.display = 'none';
@@ -378,9 +378,9 @@
 
       const wrongQuestionsContainer = document.getElementById('wrong-questions');
       if (wrongQuestions.size === 0) {
-        wrongQuestionsContainer.innerHTML = '<p>恭喜！你全部答對，沒有錯題！</p>';
+        wrongQuestionsContainer.innerHTML = '<p>Congratulations! You got all questions correct!</p>';
       } else {
-        wrongQuestionsContainer.innerHTML = '<h2>答錯的題目</h2>';
+        wrongQuestionsContainer.innerHTML = '<h2>Incorrect Questions</h2>';
         wrongQuestions.forEach(index => {
           const question = questionBank[index];
           const div = document.createElement('div');
@@ -390,17 +390,17 @@
             imageHtml = `<img src="${question.image}" alt="Wrong Question Image" style="max-width: 200px; width: 100%; margin-top: 10px;">`;
           }
           div.innerHTML = `
-            <p><strong>題目：</strong>${question.question}</p>
+            <p><strong>Question:</strong> ${question.question}</p>
             ${imageHtml}
-            <p><strong>正確答案：</strong>${question.answer}</p>
-            <p><strong>解析：</strong>${question.explanation}</p>
+            <p><strong>Correct Answer:</strong> ${question.answer}</p>
+            <p><strong>Explanation:</strong> ${question.explanation}</p>
           `;
           wrongQuestionsContainer.appendChild(div);
         });
       }
     }
 
-    // 初始化：加載題庫和密碼表
+    // Initialize: Load question bank and password table
     loadData();
   </script>
 </body>
