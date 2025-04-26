@@ -23,14 +23,7 @@
     "image": null,
     "comment": "fraction equals fraction, solvable, two polynomial denominators"
   },
-  {
-    "question": "解方程 \\( \\frac{x+2}{x+3} - \\frac{x-2}{x-1} = \\frac{4}{5} \\)",
-    "options": ["1", "2", "3", "4"],
-    "answer": "2",
-    "explanation": "通分至共同分母 \\( (x+3)(x-1) \\)，得 \\( \\frac{(x+2)(x-1) - (x-2)(x+3)}{(x+3)(x-1)} = \\frac{4}{5} \\)。分子為 \\( (x^2 + x - 2) - (x^2 + x - 6) = x^2 + x - 2 - x^2 - x + 6 = 4 \\)。方程為 \\( \\frac{4}{(x+3)(x-1)} = \\frac{4}{5} \\)。交叉相乘，得 \\( 5 \\cdot 4 = 4 \\cdot (x+3)(x-1) \\)。右邊為 \\( 4(x^2 + 2x - 3) = 4x^2 + 8x - 12 \\)。方程為 \\( 20 = 4x^2 + 8x - 12 \\)。整理，得 \\( 4x^2 + 8x - 32 = 0 \\implies x^2 + 2x - 8 = 0 \\implies (x+4)(x-2) = 0 \\implies x = -4, 2 \\)。試 \\( x = 2 \\)，左邊 \\( \\frac{2+2}{2+3} - \\frac{2-2}{2-1} = \\frac{4}{5} - 0 = \\frac{4}{5} \\)，右邊 \\( \\frac{4}{5} \\)，相等。試 \\( x = -4 \\)，左邊 \\( \\frac{-4+2}{-4+3} - \\frac{-4-2}{-4-1} = \\frac{-2}{-1} - \\frac{-6}{-5} = 2 - \\frac{6}{5} = \\frac{4}{5} \\)，右邊 \\( \\frac{4}{5} \\)，相等。但選項僅包含 \\( x = 2 \\)。分母不為零（\\( x+3 = 5 \\)，\\( x-1 = 1 \\)）。故 \\( x = 2 \\)。選 2。",
-    "image": null,
-    "comment": "fraction subtraction, solvable, two polynomial denominators"
-  },
+
   {
     "question": "解方程 \\( \\frac{x+2}{x+1} = \\frac{x+3}{x+1} \\)",
     "options": ["0", "1", "2", "無解"],
