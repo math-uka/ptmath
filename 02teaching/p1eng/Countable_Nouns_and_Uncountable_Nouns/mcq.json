@@ -1,43 +1,43 @@
 [
   {
     "question": "下列哪個名詞是可數名詞？",
-    "options": ["water", "apple", "milk", "air"],
-    "answer": "apple",
-    "explanation": "可數名詞可以數量化，如 'an apple' 或 'two apples'。'water', 'milk', 'air' 是不可數名詞，無法直接數量化。",
+    "options": ["water", "book", "milk", "music"],
+    "answer": "book",
+    "explanation": "可數名詞可以數量化，如 'one book' 或 'two books'。'water', 'milk', 'music' 是不可數名詞，無法直接數量表示。",
     "image": "images/001.png",
     "comment": "基礎辨識題，含圖片"
   },
   {
-    "question": "下列哪個句子使用不可數名詞正確？",
+    "question": "下列哪個句子正確使用了不可數名詞？",
     "options": [
-      "I have two breads.",
-      "She needs some advice.",
-      "There are three furnitures.",
-      "He bought a sugar."
+      "I need two sugars.",
+      "She has some information.",
+      "There are three breads.",
+      "He bought a water."
     ],
-    "answer": "She needs some advice.",
-    "explanation": "'advice' 是不可數名詞，正確搭配 'some'，如 'some advice'。'bread', 'furniture', 'sugar' 雖為不可數，但選項中錯誤使用可數形式。",
+    "answer": "She has some information.",
+    "explanation": "'information' 是不可數名詞，正確搭配 'some'，如 'some information'。其他選項錯誤使用了可數形式。",
     "image": "images/002.png",
     "comment": "句子應用題，含圖片"
   },
   {
-    "question": "如圖所示，選擇正確的句子來描述圖片中的物品。",
+    "question": "如圖所示，選擇正確的句子描述圖片中的物品。",
     "options": [
-      "There is two books on the table.",
-      "There is some water in the glass.",
-      "There are three waters in the bottle.",
-      "There is a milk in the cup."
+      "There is three apples on the table.",
+      "There is some juice in the glass.",
+      "There are two juices in the bottle.",
+      "There is a coffee in the cup."
     ],
-    "answer": "There is some water in the glass.",
-    "explanation": "'water' 是不可數名詞，正確使用 'some water'。其他選項中，'books' 應為 'two books'，'waters' 錯誤，'a milk' 不正確。",
+    "answer": "There is some juice in the glass.",
+    "explanation": "'juice' 是不可數名詞，正確使用 'some juice'。其他選項中，'apples' 應為 'three apples'，'juices' 錯誤，'a coffee' 不正確（應為 'some coffee'）。",
     "image": "images/003.png",
     "comment": "圖片應用題，含圖片"
   },
   {
-    "question": "下列哪個名詞可以同時是可數和不可數名詞？",
-    "options": ["time", "money", "sand", "snow"],
-    "answer": "time",
-    "explanation": "'time' 可作可數名詞（如 'three times'）或不可數名詞（如 'some time'）。'money', 'sand', 'snow' 通常只作不可數名詞。",
+    "question": "下列哪個名詞可以同時作為可數和不可數名詞？",
+    "options": ["paper", "money", "sand", "snow"],
+    "answer": "paper",
+    "explanation": "'paper' 可作可數名詞（如 'two papers'，指報紙）或不可數名詞（如 'some paper'，指紙張）。'money', 'sand', 'snow' 通常只作不可數名詞。",
     "image": null,
     "comment": "進階辨識題，無圖片"
   }
