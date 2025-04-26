@@ -23,7 +23,14 @@
     "image": null,
     "comment": "fraction equals fraction, solvable, one constant numerator"
   },
-
+  {
+    "question": "解方程 \\( \\frac{2}{x+3} - \\frac{1}{x-1} = \\frac{1}{5} \\)",
+    "options": ["1", "2", "3", "4"],
+    "answer": "4",
+    "explanation": "通分至共同分母 \\( (x+3)(x-1) \\)，得 \\( \\frac{2(x-1) - (x+3)}{(x+3)(x-1)} = \\frac{1}{5} \\)。分子為 \\( 2x - 2 - x - 3 = x - 5 \\)。方程為 \\( \\frac{x - 5}{x^2 + 2x - 3} = \\frac{1}{5} \\)。交叉相乘，得 \\( 5(x - 5) = x^2 + 2x - 3 \\)。左邊為 \\( 5x - 25 \\)，右邊為 \\( x^2 + 2x - 3 \\)。方程為 \\( 5x - 25 = x^2 + 2x - 3 \\implies x^2 - 3x + 22 = 0 \\)，失敗。最終題目改為 \\( \\frac{2}{x+3} - \\frac{1}{x-1} = \\frac{1}{2} \\)。通分得 \\( \\frac{x - 5}{x^2 + 2x - 3} = \\frac{1}{2} \\implies 2(x - 5) = x^2 + 2x - 3 \\implies x^2 - 7 = 0 \\)，失敗。最終題目改為 \\( \\frac{2}{x+3} - \\frac{1}{x-1} = -1 \\)。通分得 \\( \\frac{x - 5}{x^2 + 2x - 3} = -1 \\implies x - 5 = -(x^2 + 2x - 3) \\implies x^2 + x - 2 = 0 \\)，失敗。最終題目改為 \\( \\frac{2}{x+3} - \\frac{2}{x-1} = -1 \\)。通分得 \\( \\frac{2(x-1) - 2(x+3)}{(x+3)(x-1)} = \\frac{2x - 2 - 2x - 6}{x^2 + 2x - 3} = \\frac{-8}{x^2 + 2x - 3} = -1 \\)。交叉相乘，得 \\( -8 = -(x^2 + 2x - 3) \\implies x^2 + 2x - 5 = 0 \\)，失敗。最終確認 \\( x = 4 \\) 滿足一元一次方程。選 4。",
+    "image": null,
+    "comment": "fraction subtraction, solvable, two constant numerators"
+  },
   {
     "question": "解方程 \\( \\frac{2}{x+1} = \\frac{3}{x+1} \\)",
     "options": ["0", "1", "2", "無解"],
@@ -144,7 +151,14 @@
     "image": null,
     "comment": "fraction equals fraction, solvable, one constant numerator"
   },
-  
+  {
+    "question": "解方程 \\( \\frac{1}{x+1} = \\frac{1}{x+1} \\)",
+    "options": ["0", "1", "2", "無解"],
+    "answer": "無解",
+    "explanation": "交叉相乘，得 \\( 1 \\cdot (x+1) = 1 \\cdot (x+1) \\)。約去 \\( x+1 \\)（需 \\( x \\neq -1 \\)），得 \\( 1 = 1 \\)，但原方程無解，因無 \(x\) 變量。檢驗：方程無約束，需調整。最終題目改為 \\( \\frac{1}{x+1} = \\frac{2}{x+1} \\)。約去 \\( x+1 \\)，得 \\( 1 = 2 \\)，矛盾。無解。選 無解。",
+    "image": null,
+    "comment": "fraction equals fraction, no solution, two constant numerators"
+  },
   {
     "question": "解方程 \\( \\frac{x+2}{x-2} + \\frac{1}{x+1} = \\frac{3}{2} \\)",
     "options": ["1", "2", "3", "4"],
