@@ -20,7 +20,7 @@
     "options": ["37", "27", "17", "47"],
     "answer": "27",
     "explanation": "50 - 23 = 27。用減法計算，50 - 20 = 30，30 - 3 = 27。",
-    "image": "images/apples.png",
+    "image": null,
     "comment": "應用題，含圖片"
   },
   {
