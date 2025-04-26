@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Countable Nouns and Uncountable Nouns Quiz 1</title>
-  <!-- MathJax 引入（保留以防未來需要） -->
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -168,7 +165,7 @@
   </footer>
 
   <script>
-    // 標準模式的題目數量（可修改）
+    // 標準模式的題目數量
     const STANDARD_MODE_QUESTION_COUNT = 10;
 
     let questionBank = [];
@@ -186,21 +183,23 @@
     async function loadData() {
       try {
         const questionResponse = await fetch('mcq.json');
-        if (!questionResponse.ok Increase the timeout for the fetch operation if needed) {
-          throw new Error('無法加載題庫');
+        if (!questionResponse.ok) {
+          throw new Error(`無法加載題庫，狀態碼: ${questionResponse.status}`);
         }
         questionBank = await questionResponse.json();
+        console.log('題庫加載成功，題目數:', questionBank.length);
 
         try {
           const passwordResponse = await fetch('pass.json');
           if (passwordResponse.ok) {
             passwordBank = await passwordResponse.json();
+            console.log('密碼表加載成功');
           } else {
             console.warn('無密碼表，啟用無密碼模式');
             document.getElementById('password-input').style.display = 'none';
           }
         } catch (passwordError) {
-          console.warn('無密碼表，啟用無密碼模式');
+          console.warn('無密碼表，啟用無密碼模式:', passwordError);
           document.getElementById('password-input').style.display = 'none';
         }
 
@@ -209,7 +208,8 @@
         document.getElementById('question-count').textContent = 1;
       } catch (error) {
         console.error('加載數據失敗:', error);
-        document.getElementById('question').innerHTML = '無法加載題庫，請稍後再試。';
+        document.getElementById('question').innerHTML = `無法加載題庫：${error.message}。請檢查 mcq.json 是否存在並格式正確。`;
+        document.getElementById('question').style.display = 'block';
         document.getElementById('mode-selection').style.display = 'none';
       }
     }
@@ -313,7 +313,6 @@
 
       document.getElementById('feedback').innerHTML = '';
       toggleButtons(false);
-      MathJax.typeset();
     }
 
     // 檢查答案
@@ -334,7 +333,6 @@
         feedback.style.color = 'red';
         wrongQuestions.add(questionIndex);
         wrongCount++;
-        MathJax.typeset();
       }
     }
 
@@ -400,7 +398,6 @@
           wrongQuestionsContainer.appendChild(div);
         });
       }
-      MathJax.typeset();
     }
 
     // 初始化：加載題庫和密碼表
