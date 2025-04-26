@@ -1,0 +1,402 @@
+[
+  {
+    "question": "Which of the following is a countable noun?",
+    "options": ["water", "apple", "milk", "sugar"],
+    "answer": "apple",
+    "explanation": "Apple is a countable noun because you can count apples (one apple, two apples). Water, milk, and sugar are uncountable nouns because they cannot be counted individually.",
+    "image": null,
+    "comment": "Basic countable noun identification"
+  },
+  {
+    "question": "Which of the following is an uncountable noun?",
+    "options": ["book", "juice", "pen", "chair"],
+    "answer": "juice",
+    "explanation": "Juice is an uncountable noun because you cannot count juice directly (you can count glasses of juice, but not juice itself). Book, pen, and chair are countable nouns.",
+    "image": null,
+    "comment": "Introduces uncountable liquids"
+  },
+  {
+    "question": "How do you make 'apple' plural?",
+    "options": ["apples", "applees", "appls", "apple's"],
+    "answer": "apples",
+    "explanation": "For most countable nouns like apple, add 's' to make it plural. So, apple becomes apples.",
+    "image": null,
+    "comment": "Tests plural form of countable noun"
+  },
+  {
+    "question": "Is 'water' a countable or uncountable noun?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Water is an uncountable noun because you cannot count water directly (e.g., one water, two waters is incorrect).",
+    "image": null,
+    "comment": "Simple classification question"
+  },
+  {
+    "question": "Which noun can you count?",
+    "options": ["rice", "bread", "egg", "soup"],
+    "answer": "egg",
+    "explanation": "Egg is a countable noun because you can count eggs (one egg, two eggs). Rice, bread, and soup are uncountable nouns.",
+    "image": null,
+    "comment": "Focus on food-related nouns"
+  },
+  {
+    "question": "Which of these is NOT a countable noun?",
+    "options": ["car", "table", "milk", "dog"],
+    "answer": "milk",
+    "explanation": "Milk is an uncountable noun. Car, table, and dog are countable nouns because you can count them (e.g., one car, two tables).",
+    "image": null,
+    "comment": "Negative question format"
+  },
+  {
+    "question": "How do you say 'one book, two ____'?",
+    "options": ["book", "books", "bookes", "book's"],
+    "answer": "books",
+    "explanation": "Book is a countable noun, and its plural form is books, made by adding 's'.",
+    "image": null,
+    "comment": "Plural form practice"
+  },
+  {
+    "question": "Is 'sand' countable or uncountable?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Sand is an uncountable noun because you cannot count sand directly (e.g., one sand, two sands is incorrect).",
+    "image": null,
+    "comment": "Tests understanding of fine materials"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["furniture", "chair", "water", "air"],
+    "answer": "chair",
+    "explanation": "Chair is a countable noun (one chair, two chairs). Furniture, water, and air are uncountable nouns.",
+    "image": null,
+    "comment": "Contrasts furniture and chair"
+  },
+  {
+    "question": "Which of these is an uncountable noun?",
+    "options": ["pencil", "money", "desk", "cup"],
+    "answer": "money",
+    "explanation": "Money is an uncountable noun because you cannot count money directly (you can count coins or dollars, but not money itself). Pencil, desk, and cup are countable.",
+    "image": null,
+    "comment": "Introduces abstract uncountable noun"
+  },
+  {
+    "question": "How many ____ are there? (Fill in with a countable noun)",
+    "options": ["water", "cats", "milk", "sugar"],
+    "answer": "cats",
+    "explanation": "Cats is a countable noun, so you can ask 'How many cats are there?' Water, milk, and sugar are uncountable and use 'How much'.",
+    "image": null,
+    "comment": "Tests question phrasing"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["tree", "flower", "grass", "bird"],
+    "answer": "grass",
+    "explanation": "Grass is an uncountable noun because you cannot count grass directly. Tree, flower, and bird are countable nouns.",
+    "image": null,
+    "comment": "Nature-related nouns"
+  },
+  {
+    "question": "What is the plural of 'dog'?",
+    "options": ["dogs", "doges", "dog's", "doggies"],
+    "answer": "dogs",
+    "explanation": "The plural of dog, a countable noun, is dogs, formed by adding 's'.",
+    "image": null,
+    "comment": "Simple plural form"
+  },
+  {
+    "question": "Is 'homework' a countable or uncountable noun?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Homework is an uncountable noun because you cannot count it directly (e.g., one homework is incorrect).",
+    "image": null,
+    "comment": "Tests abstract noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["soup", "spoon", "juice", "bread"],
+    "answer": "spoon",
+    "explanation": "Spoon is a countable noun (one spoon, two spoons). Soup, juice, and bread are uncountable nouns.",
+    "image": null,
+    "comment": "Kitchen-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["banana", "orange", "fruit", "apple"],
+    "answer": "fruit",
+    "explanation": "Fruit is an uncountable noun when referring to the general concept (e.g., I like fruit). Banana, orange, and apple are countable nouns.",
+    "image": null,
+    "comment": "Contrasts specific and general nouns"
+  },
+  {
+    "question": "How do you make 'cat' plural?",
+    "options": ["cats", "cates", "cat's", "catts"],
+    "answer": "cats",
+    "explanation": "The plural of cat, a countable noun, is cats, formed by adding 's'.",
+    "image": null,
+    "comment": "Plural form practice"
+  },
+  {
+    "question": "Is 'sugar' countable or uncountable?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Sugar is an uncountable noun because you cannot count sugar directly (e.g., one sugar, two sugars is incorrect for raw sugar).",
+    "image": null,
+    "comment": "Tests common uncountable noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["milk", "cheese", "egg", "butter"],
+    "answer": "egg",
+    "explanation": "Egg is a countable noun (one egg, two eggs). Milk, cheese, and butter are uncountable nouns.",
+    "image": null,
+    "comment": "Dairy-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["car", "bus", "traffic", "bike"],
+    "answer": "traffic",
+    "explanation": "Traffic is an uncountable noun because you cannot count traffic directly. Car, bus, and bike are countable nouns.",
+    "image": null,
+    "comment": "Tests abstract noun"
+  },
+  {
+    "question": "What is the plural of 'pen'?",
+    "options": ["pens", "pen's", "pennes", "penses"],
+    "answer": "pens",
+    "explanation": "The plural of pen, a countable noun, is pens, formed by adding 's'.",
+    "image": null,
+    "comment": "Simple plural form"
+  },
+  {
+    "question": "Is 'time' a countable or uncountable noun?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Time is usually an uncountable noun when referring to duration or general time (e.g., I have time). It can be countable in specific cases, but not here.",
+    "image": null,
+    "comment": "Tests abstract noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["air", "cloud", "rain", "wind"],
+    "answer": "cloud",
+    "explanation": "Cloud is a countable noun (one cloud, two clouds). Air, rain, and wind are uncountable nouns.",
+    "image": null,
+    "comment": "Weather-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["table", "chair", "furniture", "lamp"],
+    "answer": "furniture",
+    "explanation": "Furniture is an uncountable noun because you cannot count furniture directly (e.g., one furniture is incorrect). Table, chair, and lamp are countable.",
+    "image": null,
+    "comment": "Contrasts general and specific nouns"
+  },
+  {
+    "question": "How do you make 'bird' plural?",
+    "options": ["birds", "birdes", "bird's", "birddies"],
+    "answer": "birds",
+    "explanation": "The plural of bird, a countable noun, is birds, formed by adding 's'.",
+    "image": null,
+    "comment": "Plural form practice"
+  },
+  {
+    "question": "Is 'rice' countable or uncountable?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Rice is an uncountable noun because you cannot count rice directly (e.g., one rice, two rices is incorrect).",
+    "image": null,
+    "comment": "Tests common uncountable noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["bread", "cake", "jam", "sugar"],
+    "answer": "cake",
+    "explanation": "Cake is a countable noun when referring to whole cakes (one cake, two cakes). Bread, jam, and sugar are uncountable nouns.",
+    "image": null,
+    "comment": "Food-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["cup", "plate", "food", "spoon"],
+    "answer": "food",
+    "explanation": "Food is an uncountable noun when referring to it generally (e.g., I like food). Cup, plate, and spoon are countable nouns.",
+    "image": null,
+    "comment": "Tests general noun"
+  },
+  {
+    "question": "What is the plural of 'tree'?",
+    "options": ["trees", "tree's", "treess", "treeses"],
+    "answer": "trees",
+    "explanation": "The plural of tree, a countable noun, is trees, formed by adding 's'.",
+    "image": null,
+    "comment": "Simple plural form"
+  },
+  {
+    "question": "Is 'music' a countable or uncountable noun?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Music is an uncountable noun because you cannot count music directly (e.g., one music is incorrect).",
+    "image": null,
+    "comment": "Tests abstract noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["snow", "ice", "flake", "rain"],
+    "answer": "flake",
+    "explanation": "Flake (as in snowflake) is a countable noun (one flake, two flakes). Snow, ice, and rain are uncountable nouns.",
+    "image": null,
+    "comment": "Weather-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["book", "page", "paper", "pen"],
+    "answer": "paper",
+    "explanation": "Paper is an uncountable noun when referring to the material (e.g., I need paper). Book, page, and pen are countable nouns.",
+    "image": null,
+    "comment": "Contrasts specific and general nouns"
+  },
+  {
+    "question": "How do you make 'house' plural?",
+    "options": ["houses", "house's", "houss", "houseses"],
+    "answer": "houses",
+    "explanation": "The plural of house, a countable noun, is houses, formed by adding 's'.",
+    "image": null,
+    "comment": "Plural form practice"
+  },
+  {
+    "question": "Is 'salt' countable or uncountable?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Salt is an uncountable noun because you cannot count salt directly (e.g., one salt, two salts is incorrect).",
+    "image": null,
+    "comment": "Tests common uncountable noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["tea", "coffee", "cup", "milk"],
+    "answer": "cup",
+    "explanation": "Cup is a countable noun (one cup, two cups). Tea, coffee, and milk are uncountable nouns.",
+    "image": null,
+    "comment": "Kitchen-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["car", "bus", "road", "traffic"],
+    "answer": "traffic",
+    "explanation": "Traffic is an uncountable noun because you cannot count traffic directly. Car, bus, and road are countable nouns.",
+    "image": null,
+    "comment": "Tests abstract noun"
+  },
+  {
+    "question": "What is the plural of 'flower'?",
+    "options": ["flowers", "flower's", "floweres", "flors"],
+    "answer": "flowers",
+    "explanation": "The plural of flower, a countable noun, is flowers, formed by adding 's'.",
+    "image": null,
+    "comment": "Simple plural form"
+  },
+  {
+    "question": "Is 'advice' a countable or uncountable noun?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Advice is an uncountable noun because you cannot count advice directly (e.g., one advice is incorrect).",
+    "image": null,
+    "comment": "Tests abstract noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["water", "bottle", "juice", "soup"],
+    "answer": "bottle",
+    "explanation": "Bottle is a countable noun (one bottle, two bottles). Water, juice, and soup are uncountable nouns.",
+    "image": null,
+    "comment": "Container-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["dog", "cat", "pet", "food"],
+    "answer": "food",
+    "explanation": "Food is an uncountable noun when referring to it generally. Dog, cat, and pet are countable nouns.",
+    "image": null,
+    "comment": "Tests general noun"
+  },
+  {
+    "question": "How do you make 'ball' plural?",
+    "options": ["balls", "ball's", "balles", "bals"],
+    "answer": "balls",
+    "explanation": "The plural of ball, a countable noun, is balls, formed by adding 's'.",
+    "image": null,
+    "comment": "Plural form practice"
+  },
+  {
+    "question": "Is 'butter' countable or uncountable?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Butter is an uncountable noun because you cannot count butter directly (e.g., one butter, two butters is incorrect).",
+    "image": null,
+    "comment": "Tests common uncountable noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["sand", "stone", "dust", "mud"],
+    "answer": "stone",
+    "explanation": "Stone is a countable noun (one stone, two stones). Sand, dust, and mud are uncountable nouns.",
+    "image": null,
+    "comment": "Nature-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["pen", "paper", "book", "pencil"],
+    "answer": "paper",
+    "explanation": "Paper is an uncountable noun when referring to the material. Pen, book, and pencil are countable nouns.",
+    "image": null,
+    "comment": "Contrasts specific and general nouns"
+  },
+  {
+    "question": "What is the plural of 'chair'?",
+    "options": ["chairs", "chair's", "chaires", "chairss"],
+    "answer": "chairs",
+    "explanation": "The plural of chair, a countable noun, is chairs, formed by adding 's'.",
+    "image": null,
+    "comment": "Simple plural form"
+  },
+  {
+    "question": "Is 'news' a countable or uncountable noun?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "News is an uncountable noun because you cannot count news directly (e.g., one news is incorrect).",
+    "image": null,
+    "comment": "Tests abstract noun"
+  },
+  {
+    "question": "Which is a countable noun?",
+    "options": ["milk", "cheese", "yogurt", "bottle"],
+    "answer": "bottle",
+    "explanation": "Bottle is a countable noun (one bottle, two bottles). Milk, cheese, and yogurt are uncountable nouns.",
+    "image": null,
+    "comment": "Container-related nouns"
+  },
+  {
+    "question": "Which noun is uncountable?",
+    "options": ["tree", "leaf", "forest", "branch"],
+    "answer": "forest",
+    "explanation": "Forest is an uncountable noun when referring to the general concept (e.g., I like forest). Tree, leaf, and branch are countable nouns.",
+    "image": null,
+    "comment": "Tests general noun"
+  },
+  {
+    "question": "How do you make 'car' plural?",
+    "options": ["cars", "car's", "cares", "carrs"],
+    "answer": "cars",
+    "explanation": "The plural of car, a countable noun, is cars, formed by adding 's'.",
+    "image": null,
+    "comment": "Plural form practice"
+  },
+  {
+    "question": "Is 'honey' countable or uncountable?",
+    "options": ["Countable", "Uncountable"],
+    "answer": "Uncountable",
+    "explanation": "Honey is an uncountable noun because you cannot count honey directly (e.g., one honey, two honeys is incorrect).",
+    "image": null,
+    "comment": "Tests common uncountable noun"
+  }
+]
