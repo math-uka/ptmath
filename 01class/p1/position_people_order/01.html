@@ -378,7 +378,7 @@
                         }
                     }
 
-                    questionText = `${person1.name} is ________ ${person2.name}?`;
+                    questionText = `${person1.name} is ________ ${person2.name}.`;
                     options = positions;
                 } else if (questionType < 0.6 && nonStartBlocks.length >= 3) {
                     // 類型 2: between
@@ -395,14 +395,14 @@
                     person1 = nonStartBlocks[index];
                     const ordinalIndex = startLeft ? index : nonStartBlocks.length - 1 - index;
                     correctAnswer = ordinals[ordinalIndex];
-                    questionText = `The ________ is ${person1.name}?`;
+                    questionText = ` ________ is ${person1.name}.`;
                     options = ordinals.slice(0, nonStartBlocks.length);
                 } else {
                     // 類型 4: on the left / on the right
                     const isLeft = Math.random() < 0.5;
                     person1 = isLeft ? nonStartBlocks[0] : nonStartBlocks[nonStartBlocks.length - 1];
                     correctAnswer = isLeft ? 'on the left' : 'on the right';
-                    questionText = `The ${person1.name} is ________?`;
+                    questionText = ` ${person1.name} is ________.`;
                     options = positions;
                     leftOrRightCount++;
                 }
