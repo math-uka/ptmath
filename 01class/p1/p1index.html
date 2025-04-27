@@ -1,168 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Position Game 1</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <title>AI應用工具</title>
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #1e1e2f, #2a2a4a);
-            color: #fff;
-            font-family: Arial, sans-serif;
+            line-height: 1.5;
         }
         h1 {
-            margin: 10px 0;
-            font-size: 2em;
-        }
-        .question {
-            font-size: 1.2em;
-            margin: 20px 0;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            z-index: 10;
-            position: relative;
             text-align: center;
-            width: 80%;
-            max-width: 600px;
+            font-size: 48px;
+            font-weight: 700;
+            padding: 60px 20px 40px;
+            color: #1d1d1f;
+            letter-spacing: -0.02em;
         }
-        /* 水果名稱樣式 */
-        .color-apple {
-            color: #FF0000;
-            font-weight: bold;
-            font-size: 1.4em;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .color-banana {
-            color: #FFFF00;
-            font-weight: bold;
-            font-size: 1.4em;
-        }
-        .color-blueberry {
-            color: #87CEEB; /* 淺藍色 */
-            font-weight: bold;
-            font-size: 1.4em;
-        }
-        .color-watermelon {
-            color: #00FF00;
-            font-weight: bold;
-            font-size: 1.4em;
-        }
-        .game-container {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        canvas {
-            border: 1px solid #ccc;
-            background: #fff;
-        }
-        .options {
+        .category-list {
             display: flex;
             flex-direction: column;
-            margin-left: 20px;
+            gap: 20px;
+            padding: 20px;
         }
-        button {
-            margin: 10px 0;
-            padding: 10px 20px;
-            font-size: 1em;
+        .category-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            background: #fff;
-            border: none;
-            border-radius: 5px;
-            color: #1e1e2f;
-            min-width: 120px;
         }
-        button:hover:not(:disabled) {
-            background: #ddd;
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        .category-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 20px;
+            border-radius: 12px;
+            overflow: hidden;
         }
-        .next-button {
-            background: #4CAF50;
-            color: #fff;
-            margin-top: 10px;
-        }
-        .next-button:hover:not(:disabled) {
-            background: #45a049;
-        }
-        .feedback {
-            font-size: 1.1em;
-            margin: 10px 0;
-        }
-        #score {
-            margin: 10px 0;
-            font-size: 1.1em;
-        }
-        footer {
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-        #stars {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .category-image img {
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            object-fit: contain;
         }
-        .star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 1.5s infinite alternate;
+        .category-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
         }
-        @keyframes twinkle {
-            from { opacity: 0.2; }
-            to { opacity: 1; }
+        .category-content p {
+            font-size: 16px;
+            color: #6e6e73;
         }
-        @media (max-width: 600px) {
-            .game-container {
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6e6e73;
+            font-size: 14px;
+        }
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+                padding: 40px 20px 20px;
+            }
+            .category-item {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
             }
-            .options {
-                margin-left: 0;
-                margin-top: 20px;
+            .category-image {
+                width: 100%;
+                height: 200px;
+                margin-right: 0;
+                margin-bottom: 15px;
             }
-            canvas {
-                width: 300px;
-                height: 300px;
-            }
-            .question {
-                font-size: 1em;
-            }
-            .color-apple, .color-banana, .color-blueberry, .color-watermelon {
-                font-size: 1.2em;
+            .category-content {
+                width: 100%;
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="stars"></div>
-    <h1>Position Game</h1>
-    <div class="question" id="question"></div>
-    <div class="game-container">
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
-        <div class="options" id="options"></div>
+    <h1>AI應用工具</h1>
+    <div class="container">
+        <div class="category-list">
+            <div class="category-item" onclick="window.location.href='1sudoku/01.html'">
+                <div class="category-image">
+                    <img src="images/a01.png" alt="數獨4X4">
+                </div>
+                <div class="category-content">
+                    <h2>數獨4X4</h2>
+                    <p> Rule1: Each number appears only once in each row and each column.</p>
+                     <p> Rule2: Each number appears only once in each 田.</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='add-and-subtraction/ans01.html'">
+                <div class="category-image">
+                    <img src="images/02.png" alt="加減混合直式計算">
+                </div>
+                <div class="category-content">
+                    <h2>加減混合直式計算</h2>
+                    <p>隨機生成加法或減法的直式運算，必定會出現進位或借位</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='position/01.html'">
+                <div class="category-image">
+                    <img src="images/03.png" alt="Position">
+                </div>
+                <div class="category-content">
+                    <h2>Position</h2>
+                    <p>Random position quiz about :in front of, behind, over, under , between</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具4">
+                </div>
+                <div class="category-content">
+                    <h2>工具4</h2>
+                    <p>針對小學三年的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具5">
+                </div>
+                <div class="category-content">
+                    <h2>工具5</h2>
+                    <p>針對小學四年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具6">
+                </div>
+                <div class="category-content">
+                    <h2>工具6</h2>
+                    <p>針對小學五年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具7">
+                </div>
+                <div class="category-content">
+                    <h2>工具7</h2>
+                    <p>針對小學六年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具8">
+                </div>
+                <div class="category-content">
+                    <h2>工具8</h2>
+                    <p>針對初中一年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具9">
+                </div>
+                <div class="category-content">
+                    <h2>工具9</h2>
+                    <p>針對初中二年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具10">
+                </div>
+                <div class="category-content">
+                    <h2>工具10</h2>
+                    <p>針對初中三年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/d01.png" alt="工具11">
+                </div>
+                <div class="category-content">
+                    <h2>工具11</h2>
+                    <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/e01.png" alt="工具12">
+                </div>
+                <div class="category-content">
+                    <h2>工具12</h2>
+                    <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="feedback" id="feedback"></div>
-    <div id="score">Score: 0 / 10</div>
     <footer>
         <p>© 2025 ukawai</p>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
