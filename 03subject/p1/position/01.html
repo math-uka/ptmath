@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Position Game 1</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a4a);
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin: 10px 0;
+            font-size: 2em;
+        }
+        .question {
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            z-index: 10;
+            position: relative;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        /* 水果名稱樣式 */
+        .color-apple {
+            color: #FF0000;
+            font-weight: bold;
+            font-size: 1.4em;
+        }
+        .color-banana {
+            color: #FFFF00;
+            font-weight: bold;
+            font-size: 1.4em;
+        }
+        .color-blueberry {
+            color: #87CEEB; /* 淺藍色 */
+            font-weight: bold;
+            font-size: 1.4em;
+        }
+        .color-watermelon {
+            color: #00FF00;
+            font-weight: bold;
+            font-size: 1.4em;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            background: #fff;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #fff;
+            border: none;
+            border-radius: 5px;
+            color: #1e1e2f;
+            min-width: 120px;
+        }
+        button:hover:not(:disabled) {
+            background: #ddd;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .next-button {
+            background: #4CAF50;
+            color: #fff;
+            margin-top: 10px;
+        }
+        .next-button:hover:not(:disabled) {
+            background: #45a049;
+        }
+        .feedback {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        #score {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite alternate;
+        }
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 600px) {
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .options {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            canvas {
+                width: 300px;
+                height: 300px;
+            }
+            .question {
+                font-size: 1em;
+            }
+            .color-apple, .color-banana, .color-blueberry, .color-watermelon {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="stars"></div>
+    <h1>Position Game</h1>
+    <div class="question" id="question"></div>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div class="options" id="options"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div id="score">Score: 0 / 10</div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
