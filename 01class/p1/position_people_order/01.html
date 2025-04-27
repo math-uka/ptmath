@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Blocks Position Practice 12</title>
+    <title>Order and Position Practice 13</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <style>
         body {
@@ -147,7 +147,7 @@
 </head>
 <body>
     <div id="stars"></div>
-    <h1>Color Blocks Position Practice</h1>
+    <h1>Order and Position Practice</h1>
     <div class="question" id="question"></div>
     <div class="game-container">
         <canvas id="gameCanvas" width="1670" height="450"></canvas>
@@ -177,8 +177,9 @@
         }
         createStars();
 
-        // 人物數據
+        // 人物數據（包含 start）
         const people = [
+            { name: 'start', image: 'images/start.png', color: '#333', colorClass: 'start' },
             { name: 'Tom', image: 'images/red.png', color: '#FF0000', colorClass: 'red' },
             { name: 'May', image: 'images/orange.png', color: '#FFA500', colorClass: 'orange' },
             { name: 'Sam', image: 'images/yellow.png', color: '#FFFF00', colorClass: 'yellow' },
@@ -211,11 +212,11 @@
         // 隨機生成人物序列
         function generateBlocks() {
             const numBlocks = Math.floor(Math.random() * 3) + 5; // 5 到 7
-            const shuffledPeople = people.sort(() => Math.random() - 0.5).slice(0, numBlocks);
+            const shuffledPeople = people.filter(p => p.name !== 'start').sort(() => Math.random() - 0.5).slice(0, numBlocks);
             startLeft = Math.random() < 0.5;
             blocks = startLeft 
-                ? [{ name: 'start', color: '#333', colorClass: 'start' }, ...shuffledPeople]
-                : [...shuffledPeople, { name: 'start', color: '#333', colorClass: 'start' }];
+                ? [people.find(p => p.name === 'start'), ...shuffledPeople]
+                : [...shuffledPeople, people.find(p => p.name === 'start')];
             return startLeft;
         }
 
@@ -279,24 +280,18 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const imageWidth = 200;
             const imageHeight = 400;
-            const startBlockSize = 50;
             const spacing = 10;
             const startX = (canvas.width - (blocks.length * (imageWidth + spacing) - spacing)) / 2;
             const startY = (canvas.height - imageHeight) / 2;
 
             blocks.forEach((block, index) => {
                 const x = startX + index * (imageWidth + spacing);
-                if (block.name === 'start') {
-                    ctx.fillStyle = block.color;
-                    ctx.fillRect(x + (imageWidth - startBlockSize) / 2, startY + (imageHeight - startBlockSize) / 2, startBlockSize, startBlockSize);
+                const img = imageCache[block.name];
+                if (img.complete) {
+                    ctx.drawImage(img, x, startY, imageWidth, imageHeight);
                 } else {
-                    const img = imageCache[block.name];
-                    if (img.complete) {
-                        ctx.drawImage(img, x, startY, imageWidth, imageHeight);
-                    } else {
-                        ctx.fillStyle = '#ccc';
-                        ctx.fillRect(x, startY, imageWidth, imageHeight);
-                    }
+                    ctx.fillStyle = '#ccc';
+                    ctx.fillRect(x, startY, imageWidth, imageHeight);
                 }
                 ctx.fillStyle = block.name === 'start' ? '#fff' : '#000';
                 ctx.font = '16px Arial';
