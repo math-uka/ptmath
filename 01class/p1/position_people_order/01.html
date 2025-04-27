@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Blocks Position Practice 11</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a4a);
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin: 10px 0;
+            font-size: 2em;
+        }
+        .question {
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            z-index: 10;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        .color-red { color: #FF0000; font-weight: bold; font-size: 1.4em; }
+        .color-orange { color: #FFA500; font-weight: bold; font-size: 1.4em; }
+        .color-yellow { color: #FFFF00; font-weight: bold; font-size: 1.4em; }
+        .color-green { color: #00FF00; font-weight: bold; font-size: 1.4em; }
+        .color-cyan { color: #00FFFF; font-weight: bold; font-size: 1.4em; }
+        .color-blue { color: #0000FF; font-weight: bold; font-size: 1.4em; }
+        .color-purple { color: #800080; font-weight: bold; font-size: 1.4em; }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            background: #fff;
+        }
+        .options {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #fff;
+            border: none;
+            border-radius: 5px;
+            color: #1e1e2f;
+            min-width: 120px;
+        }
+        button:hover:not(:disabled) {
+            background: #ddd;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .next-button {
+            background: #4CAF50;
+            color: #fff;
+            margin: 10px;
+        }
+        .next-button:hover:not(:disabled) {
+            background: #45a049;
+        }
+        .feedback {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        #score {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite alternate;
+        }
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 600px) {
+            canvas {
+                width: 300px;
+                height: 100px;
+            }
+            .question {
+                font-size: 1em;
+                width: 90%;
+            }
+            .color-red, .color-orange, .color-yellow, .color-green, .color-cyan, .color-blue, .color-purple {
+                font-size: 1.2em;
+            }
+            button {
+                min-width: 100px;
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="stars"></div>
+    <h1>Color Blocks Position Practice</h1>
+    <div class="question" id="question"></div>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="600" height="100"></canvas>
+        <div class="options" id="options"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div id="score">Score: 0 / 15</div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // 生成星空背景
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 2 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 1.5}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // 人物數據
+        const people = [
+            { name: 'Tom', image: 'images/red.png', color: '#FF0000', colorClass: 'red' },
+            { name: 'May', image: 'images/orange.png', color: '#FFA500', colorClass: 'orange' },
+            { name: 'Sam', image: 'images/yellow.png', color: '#FFFF00', colorClass: 'yellow' },
+            { name: 'Kath', image: 'images/green.png', color: '#00FF00', colorClass: 'green' },
+            { name: 'Leo', image: 'images/cyan.png', color: '#00FFFF', colorClass: 'cyan' },
+            { name: 'Joe', image: 'images/blue.png', color: '#0000FF', colorClass: 'blue' },
+            { name: 'Zoe', image: 'images/purple.png', color: '#800080', colorClass: 'purple' }
+        ];
+
+        // 預載圖片
+        const imageCache = {};
+        people.forEach(person => {
+            const img = new Image();
+            img.src = person.image;
+            imageCache[person.name] = img;
+        });
+
+        const positions = ['in front of', 'behind', 'between', 'on the left', 'on the right'];
+        const ordinals = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
+        let currentQuestion = 0;
+        let score = 0;
+        let leftOrRightCount = 0;
+        const maxQuestions = 15;
+        const maxLeftOrRightQuestions = 2;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let blocks = [];
+        let startLeft = true;
+
+        // 隨機生成人物序列
+        function generateBlocks() {
+            const numBlocks = Math.floor(Math.random() * 3) + 5; // 5 到 7
+            const shuffledPeople = people.sort(() => Math.random() - 0.5).slice(0, numBlocks);
+            startLeft = Math.random() < 0.5;
+            blocks = startLeft 
+                ? [{ name: 'start', color: '#333', colorClass: 'start' }, ...shuffledPeople]
+                : [...shuffledPeople, { name: 'start', color: '#333', colorClass: 'start' }];
+            return startLeft;
+        }
+
+        // 粒子動畫數據
+        let particles = [];
+        const particleColors = ['#FF0000', '#FFA500', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#800080'];
+
+        // 創建粒子
+        function createParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: canvas.height,
+                radius: Math.random() * 5 + 2,
+                color: particleColors[Math.floor(Math.random() * particleColors.length)],
+                vx: Math.random() * 4 - 2,
+                vy: -(Math.random() * 5 + 5),
+                alpha: 1
+            };
+        }
+
+        // 更新和繪製粒子
+        function updateParticles() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#000';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Final Score: ${score} / ${maxQuestions}`, canvas.width / 2, canvas.height / 2);
+
+            particles.forEach(particle => {
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                particle.alpha -= 0.005;
+                if (particle.alpha < 0) particle.alpha = 0;
+
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${parseInt(particle.color.slice(1, 3), 16)}, ${parseInt(particle.color.slice(3, 5), 16)}, ${parseInt(particle.color.slice(5, 7), 16)}, ${particle.alpha})`;
+                ctx.fill();
+            });
+
+            particles = particles.filter(p => p.alpha > 0);
+            if (particles.length > 0) {
+                requestAnimationFrame(updateParticles);
+            }
+        }
+
+        // 啟動慶祝動畫
+        function startCelebration() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(createParticle());
+            }
+            updateParticles();
+            setTimeout(() => particles = [], 5000);
+        }
+
+        // 繪製場景
+        function drawScene() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const blockSize = 50;
+            const spacing = 10;
+            const startX = (canvas.width - (blocks.length * (blockSize + spacing) - spacing)) / 2;
+            const startY = canvas.height / 2 - blockSize / 2;
+
+            blocks.forEach((block, index) => {
+                if (block.name === 'start') {
+                    ctx.fillStyle = block.color;
+                    ctx.fillRect(startX + index * (blockSize + spacing), startY, blockSize, blockSize);
+                } else {
+                    const img = imageCache[block.name];
+                    if (img.complete) {
+                        ctx.drawImage(img, startX + index * (blockSize + spacing), startY, blockSize, blockSize);
+                    } else {
+                        ctx.fillStyle = '#ccc';
+                        ctx.fillRect(startX + index * (blockSize + spacing), startY, blockSize, blockSize);
+                    }
+                }
+                ctx.fillStyle = block.name === 'start' ? '#fff' : '#000';
+                ctx.font = '14px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(block.name.charAt(0).toUpperCase() + block.name.slice(1), startX + index * (blockSize + spacing) + blockSize / 2, startY + blockSize / 2 + 5);
+            });
+        }
+
+        // 格式化題目文字
+        function formatQuestionText(text, person1, person2, person3) {
+            return text.replace(
+                new RegExp(`\\b(${person1?.name}|${person2?.name}|${person3?.name})\\b`, 'g'),
+                match => `<span class="color-${match === 'Tom' ? 'red' : match === 'May' ? 'orange' : match === 'Sam' ? 'yellow' : match === 'Kath' ? 'green' : match === 'Leo' ? 'cyan' : match === 'Joe' ? 'blue' : 'purple'}">${match}</span>`
+            );
+        }
+
+        // 鎖定/解鎖選項按鈕
+        function toggleButtons(disabled) {
+            const buttons = document.querySelectorAll('.options button:not(.next-button)');
+            buttons.forEach(button => button.disabled = disabled);
+        }
+
+        // 生成隨機問題
+        function generateQuestion() {
+            if (currentQuestion >= maxQuestions) {
+                endGame();
+                return;
+            }
+
+            generateBlocks();
+            const nonStartBlocks = blocks.filter(b => b.name !== 'start');
+            let questionText, correctAnswer, person1, person2, person3, options;
+
+            // 最後 5 題（第 11 至 15 題）強制為序數問題
+            if (currentQuestion >= 10) {
+                const index = Math.floor(Math.random() * nonStartBlocks.length);
+                person1 = nonStartBlocks[index];
+                const ordinalIndex = startLeft ? index : nonStartBlocks.length - 1 - index;
+                correctAnswer = ordinals[ordinalIndex];
+                questionText = `The ________ is ${person1.name}?`;
+                options = ordinals.slice(0, nonStartBlocks.length);
+            } else {
+                // 前 10 題
+                const forceLeftOrRight = currentQuestion === 9 && leftOrRightCount === 0;
+                const disableLeftOrRight = leftOrRightCount >= maxLeftOrRightQuestions;
+                const questionType = forceLeftOrRight ? 0.9 : (disableLeftOrRight ? Math.random() * 0.9 : Math.random());
+
+                if (questionType < 0.4 && nonStartBlocks.length >= 2) {
+                    // 類型 1: in front of / behind
+                    let index1, index2;
+                    const preferInFront = Math.random() < 0.5;
+                    do {
+                        index1 = Math.floor(Math.random() * (nonStartBlocks.length - 1));
+                        index2 = index1 + 1;
+                    } while (index2 >= nonStartBlocks.length);
+
+                    person1 = nonStartBlocks[index1];
+                    person2 = nonStartBlocks[index2];
+
+                    const blockIndex1 = blocks.findIndex(b => b.name === person1.name);
+                    const blockIndex2 = blocks.findIndex(b => b.name === person2.name);
+
+                    if (preferInFront) {
+                        correctAnswer = 'in front of';
+                        if (startLeft) {
+                            if (blockIndex1 > blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        } else {
+                            if (blockIndex1 < blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        }
+                    } else {
+                        correctAnswer = 'behind';
+                        if (startLeft) {
+                            if (blockIndex1 < blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        } else {
+                            if (blockIndex1 > blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        }
+                    }
+
+                    questionText = `${person1.name} is ________ ${person2.name}?`;
+                    options = positions;
+                } else if (questionType < 0.6 && nonStartBlocks.length >= 3) {
+                    // 類型 2: between
+                    const index = Math.floor(Math.random() * (nonStartBlocks.length - 2)) + 1;
+                    person1 = nonStartBlocks[index];
+                    person2 = nonStartBlocks[index - 1];
+                    person3 = nonStartBlocks[index + 1];
+                    correctAnswer = 'between';
+                    questionText = `${person1.name} is ________ ${person2.name} and ${person3.name}?`;
+                    options = positions;
+                } else if (questionType < 0.9) {
+                    // 類型 3: 序數問題
+                    const index = Math.floor(Math.random() * nonStartBlocks.length);
+                    person1 = nonStartBlocks[index];
+                    const ordinalIndex = startLeft ? index : nonStartBlocks.length - 1 - index;
+                    correctAnswer = ordinals[ordinalIndex];
+                    questionText = `The ________ is ${person1.name}?`;
+                    options = ordinals.slice(0, nonStartBlocks.length);
+                } else {
+                    // 類型 4: on the left / on the right
+                    const isLeft = Math.random() < 0.5;
+                    person1 = isLeft ? nonStartBlocks[0] : nonStartBlocks[nonStartBlocks.length - 1];
+                    correctAnswer = isLeft ? 'on the left' : 'on the right';
+                    questionText = `The ${person1.name} is ________?`;
+                    options = positions;
+                    leftOrRightCount++;
+                }
+            }
+
+            const questionDiv = document.getElementById('question');
+            if (questionDiv) {
+                questionDiv.innerHTML = formatQuestionText(questionText, person1, person2, person3);
+            }
+
+            drawScene();
+
+            const optionsDiv = document.getElementById('options');
+            if (optionsDiv) {
+                optionsDiv.innerHTML = '';
+                options.forEach(opt => {
+                    const button = document.createElement('button');
+                    button.innerText = opt;
+                    button.onclick = () => checkAnswer(opt, correctAnswer);
+                    optionsDiv.appendChild(button);
+                });
+            }
+
+            const feedbackDiv = document.getElementById('feedback');
+            if (feedbackDiv) {
+                feedbackDiv.innerText = '';
+            }
+            toggleButtons(false);
+            currentQuestion++;
+        }
+
+        // 檢查答案
+        function checkAnswer(selected, correct) {
+            const feedback = document.getElementById('feedback');
+            const optionsDiv = document.getElementById('options');
+            if (!feedback || !optionsDiv) return;
+            toggleButtons(true);
+
+            if (selected === correct) {
+                feedback.innerText = 'Correct!';
+                score++;
+                const scoreDiv = document.getElementById('score');
+                if (scoreDiv) {
+                    scoreDiv.innerText = `Score: ${score} / ${maxQuestions}`;
+                }
+                setTimeout(generateQuestion, 1000);
+            } else {
+                feedback.innerText = `Wrong! The correct answer is "${correct}".`;
+                const nextButton = document.createElement('button');
+                nextButton.innerText = 'Next Question';
+                nextButton.className = 'next-button';
+                nextButton.onclick = () => {
+                    optionsDiv.removeChild(nextButton);
+                    generateQuestion();
+                };
+                optionsDiv.appendChild(nextButton);
+            }
+        }
+
+        // 結束遊戲
+        function endGame() {
+            const questionDiv = document.getElementById('question');
+            const optionsDiv = document.getElementById('options');
+            const feedbackDiv = document.getElementById('feedback');
+            if (questionDiv) questionDiv.innerText = 'Game Over!';
+            if (optionsDiv) optionsDiv.innerHTML = '';
+            if (feedbackDiv) feedbackDiv.innerText = `Final Score: ${score} / ${maxQuestions}`;
+            startCelebration();
+        }
+
+        // 初始化遊戲
+        try {
+            let loadedImages = 0;
+            const totalImages = people.length;
+            people.forEach(person => {
+                const img = imageCache[person.name];
+                if (img.complete) {
+                    loadedImages++;
+                } else {
+                    img.onload = () => {
+                        loadedImages++;
+                        if (loadedImages === totalImages) {
+                            generateQuestion();
+                        }
+                    };
+                    img.onerror = () => {
+                        console.error(`Failed to load image: ${person.image}`);
+                        const feedbackDiv = document.getElementById('feedback');
+                        if (feedbackDiv) {
+                            feedbackDiv.innerText = `Error loading image: ${person.image}. Please check file path.`;
+                        }
+                    };
+                }
+            });
+            if (loadedImages === totalImages) {
+                generateQuestion();
+            }
+        } catch (error) {
+            console.error('Initialization failed:', error);
+            const feedbackDiv = document.getElementById('feedback');
+            if (feedbackDiv) {
+                feedbackDiv.innerText = 'Error starting game. Please try refreshing or check console for details.';
+            }
+        }
+    </script>
+</body>
+</html>
