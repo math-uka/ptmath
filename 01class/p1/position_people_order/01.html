@@ -45,6 +45,7 @@
             align-items: center;
             margin: 20px 0;
             width: 100%;
+            box-sizing: border-box;
         }
         canvas {
             border: 1px solid #ccc;
@@ -297,10 +298,14 @@
 
             // 根據螢幕尺寸動態調整圖片大小
             const isMobile = window.innerWidth <= 1000;
-            const imageWidth = isMobile ? window.innerWidth / 5 : 200; // 手機端圖片寬度為螢幕寬度的 1/5
-            const imageHeight = isMobile ? imageWidth * 2 : 400; // 保持比例
-            const spacing = isMobile ? 5 : 10;
-            const startX = (canvas.width - (blocks.length * (imageWidth + spacing) - spacing)) / 2;
+            const maxCanvasWidth = isMobile ? window.innerWidth - 20 : 1670;
+            const imageWidth = isMobile 
+                ? Math.min((maxCanvasWidth - (blocks.length - 1) * 2) / blocks.length, 100) // 每個圖片最大 100px
+                : 200;
+            const imageHeight = isMobile ? imageWidth * 1.5 : 400; // 保持比例
+            const spacing = isMobile ? 2 : 10;
+            const totalWidth = blocks.length * imageWidth + (blocks.length - 1) * spacing;
+            const startX = (canvas.width - totalWidth) / 2;
             const startY = (canvas.height - imageHeight) / 2;
 
             blocks.forEach((block, index) => {
@@ -313,7 +318,7 @@
                     ctx.fillRect(x, startY, imageWidth, imageHeight);
                 }
                 ctx.fillStyle = block.name === 'start' ? '#fff' : '#000';
-                ctx.font = isMobile ? '20px Arial' : '16px Arial';
+                ctx.font = isMobile ? '18px Arial' : '16px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText(block.name.charAt(0).toUpperCase() + block.name.slice(1), x + imageWidth / 2, startY + imageHeight + 20);
             });
@@ -435,7 +440,7 @@
             // 動態調整 canvas 尺寸
             const isMobile = window.innerWidth <= 1000;
             canvas.width = isMobile ? window.innerWidth - 20 : 1670;
-            canvas.height = isMobile ? canvas.width * 0.5 : 450;
+            canvas.height = isMobile ? canvas.width * 0.4 : 450;
             drawScene();
 
             const optionsDiv = document.getElementById('options');
@@ -535,7 +540,7 @@
         window.addEventListener('resize', () => {
             const isMobile = window.innerWidth <= 1000;
             canvas.width = isMobile ? window.innerWidth - 20 : 1670;
-            canvas.height = isMobile ? canvas.width * 0.5 : 450;
+            canvas.height = isMobile ? canvas.width * 0.4 : 450;
             drawScene();
         });
     </script>
