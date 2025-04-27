@@ -44,6 +44,7 @@
             flex-direction: column;
             align-items: center;
             margin: 20px 0;
+            width: 100%;
         }
         canvas {
             border: 1px solid #ccc;
@@ -115,32 +116,47 @@
             from { opacity: 0.2; }
             to { opacity: 1; }
         }
-        @media (max-width: 1700px) {
-            canvas {
-                transform: scale(0.8);
-                transform-origin: top center;
-            }
-        }
-        @media (max-width: 1400px) {
-            canvas {
-                transform: scale(0.6);
-            }
-        }
         @media (max-width: 1000px) {
-            canvas {
-                transform: scale(0.4);
+            h1 {
+                font-size: 1.8em;
             }
             .question {
-                font-size: 1em;
+                font-size: 1.2em;
                 width: 90%;
+                padding: 15px;
             }
             .color-red, .color-orange, .color-yellow, .color-green, .color-cyan, .color-blue, .color-purple {
-                font-size: 1.2em;
+                font-size: 1.3em;
+            }
+            canvas {
+                width: 100%;
+                height: auto;
             }
             button {
-                min-width: 100px;
-                padding: 8px 16px;
-                font-size: 0.9em;
+                min-width: 140px;
+                padding: 12px 24px;
+                font-size: 1.1em;
+                margin: 8px;
+            }
+            .game-container {
+                padding: 0 10px;
+            }
+            .feedback, #score {
+                font-size: 1.2em;
+            }
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            .question {
+                font-size: 1.1em;
+                width: 95%;
+            }
+            button {
+                min-width: 160px;
+                padding: 14px 28px;
+                font-size: 1.2em;
             }
         }
     </style>
@@ -278,9 +294,12 @@
         function drawScene() {
             if (!ctx) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const imageWidth = 200;
-            const imageHeight = 400;
-            const spacing = 10;
+
+            // 根據螢幕尺寸動態調整圖片大小
+            const isMobile = window.innerWidth <= 1000;
+            const imageWidth = isMobile ? window.innerWidth / 5 : 200; // 手機端圖片寬度為螢幕寬度的 1/5
+            const imageHeight = isMobile ? imageWidth * 2 : 400; // 保持比例
+            const spacing = isMobile ? 5 : 10;
             const startX = (canvas.width - (blocks.length * (imageWidth + spacing) - spacing)) / 2;
             const startY = (canvas.height - imageHeight) / 2;
 
@@ -294,7 +313,7 @@
                     ctx.fillRect(x, startY, imageWidth, imageHeight);
                 }
                 ctx.fillStyle = block.name === 'start' ? '#fff' : '#000';
-                ctx.font = '16px Arial';
+                ctx.font = isMobile ? '20px Arial' : '16px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText(block.name.charAt(0).toUpperCase() + block.name.slice(1), x + imageWidth / 2, startY + imageHeight + 20);
             });
@@ -413,6 +432,10 @@
                 questionDiv.innerHTML = formatQuestionText(questionText, person1, person2, person3);
             }
 
+            // 動態調整 canvas 尺寸
+            const isMobile = window.innerWidth <= 1000;
+            canvas.width = isMobile ? window.innerWidth - 20 : 1670;
+            canvas.height = isMobile ? canvas.width * 0.5 : 450;
             drawScene();
 
             const optionsDiv = document.getElementById('options');
@@ -507,6 +530,14 @@
                 feedbackDiv.innerText = 'Error starting game. Please try refreshing or check console for details.';
             }
         }
+
+        // 窗口大小變化時重新繪製
+        window.addEventListener('resize', () => {
+            const isMobile = window.innerWidth <= 1000;
+            canvas.width = isMobile ? window.innerWidth - 20 : 1670;
+            canvas.height = isMobile ? canvas.width * 0.5 : 450;
+            drawScene();
+        });
     </script>
 </body>
 </html>
