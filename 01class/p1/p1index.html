@@ -1,299 +1,517 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI應用工具</title>
+    <title>Color Blocks Position Practice 12</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
-            background: #f5f5f7;
-            color: #1d1d1f;
+            margin: 0;
             min-height: 100vh;
-            line-height: 1.5;
-        }
-        h1 {
-            text-align: center;
-            font-size: 48px;
-            font-weight: 700;
-            padding: 60px 20px 40px;
-            color: #1d1d1f;
-            letter-spacing: -0.02em;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .category-list {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-        }
-        .category-item {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            background: white;
-            border-radius: 18px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a4a);
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin: 10px 0;
+            font-size: 2em;
+        }
+        .question {
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            z-index: 10;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        .color-red { color: #FF0000; font-weight: bold; font-size: 1.4em; }
+        .color-orange { color: #FFA500; font-weight: bold; font-size: 1.4em; }
+        .color-yellow { color: #FFFF00; font-weight: bold; font-size: 1.4em; }
+        .color-green { color: #00FF00; font-weight: bold; font-size: 1.4em; }
+        .color-cyan { color: #00FFFF; font-weight: bold; font-size: 1.4em; }
+        .color-blue { color: #0000FF; font-weight: bold; font-size: 1.4em; }
+        .color-purple { color: #800080; font-weight: bold; font-size: 1.4em; }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            background: #fff;
+            max-width: 100%;
+            height: auto;
+        }
+        .options {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
             cursor: pointer;
+            background: #fff;
+            border: none;
+            border-radius: 5px;
+            color: #1e1e2f;
+            min-width: 120px;
         }
-        .category-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        button:hover:not(:disabled) {
+            background: #ddd;
         }
-        .category-image {
-            width: 200px;
-            height: 150px;
-            margin-right: 20px;
-            border-radius: 12px;
-            overflow: hidden;
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
-        .category-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .next-button {
+            background: #4CAF50;
+            color: #fff;
+            margin: 10px;
         }
-        .category-content h2 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 10px;
+        .next-button:hover:not(:disabled) {
+            background: #45a049;
         }
-        .category-content p {
-            font-size: 16px;
-            color: #6e6e73;
+        .feedback {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        #score {
+            margin: 10px 0;
+            font-size: 1.1em;
         }
         footer {
-            text-align: center;
-            padding: 20px;
-            color: #6e6e73;
-            font-size: 14px;
+            margin-top: 20px;
+            font-size: 0.9em;
         }
-        @media screen and (max-width: 768px) {
-            h1 {
-                font-size: 36px;
-                padding: 40px 20px 20px;
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite alternate;
+        }
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 1700px) {
+            canvas {
+                transform: scale(0.8);
+                transform-origin: top center;
             }
-            .category-item {
-                flex-direction: column;
-                align-items: flex-start;
+        }
+        @media (max-width: 1400px) {
+            canvas {
+                transform: scale(0.6);
             }
-            .category-image {
-                width: 100%;
-                height: 200px;
-                margin-right: 0;
-                margin-bottom: 15px;
+        }
+        @media (max-width: 1000px) {
+            canvas {
+                transform: scale(0.4);
             }
-            .category-content {
-                width: 100%;
+            .question {
+                font-size: 1em;
+                width: 90%;
+            }
+            .color-red, .color-orange, .color-yellow, .color-green, .color-cyan, .color-blue, .color-purple {
+                font-size: 1.2em;
+            }
+            button {
+                min-width: 100px;
+                padding: 8px 16px;
+                font-size: 0.9em;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>AI應用工具</h1>
-    <div class="container">
-        <div class="category-list">
-            <div class="category-item" onclick="window.location.href='1sudoku/01.html'">
-                <div class="category-image">
-                    <img src="images/a01.png" alt="數獨4X4">
-                </div>
-                <div class="category-content">
-                    <h2>數獨4X4</h2>
-                    <p> Rule1: Each number appears only once in each row and each column.</p>
-                     <p> Rule2: Each number appears only once in each 田.</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='add-and-subtraction/ans01.html'">
-                <div class="category-image">
-                    <img src="images/02.png" alt="加減混合直式計算">
-                </div>
-                <div class="category-content">
-                    <h2>加減混合直式計算</h2>
-                    <p>隨機生成加法或減法的直式運算，必定會出現進位或借位</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='position/01.html'">
-                <div class="category-image">
-                    <img src="images/03.png" alt="Position">
-                </div>
-                <div class="category-content">
-                    <h2>Position</h2>
-                    <p>Random position quiz about :in front of, behind, over, under , between</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='position_people_order/01.html'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="Order and position">
-                </div>
-                <div class="category-content">
-                    <h2>Order and position</h2>
-                    <p>Choose the correct word to show the order and position</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具5">
-                </div>
-                <div class="category-content">
-                    <h2>工具5</h2>
-                    <p>針對小學四年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具6">
-                </div>
-                <div class="category-content">
-                    <h2>工具6</h2>
-                    <p>針對小學五年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具7">
-                </div>
-                <div class="category-content">
-                    <h2>工具7</h2>
-                    <p>針對小學六年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具8">
-                </div>
-                <div class="category-content">
-                    <h2>工具8</h2>
-                    <p>針對初中一年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具9">
-                </div>
-                <div class="category-content">
-                    <h2>工具9</h2>
-                    <p>針對初中二年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具10">
-                </div>
-                <div class="category-content">
-                    <h2>工具10</h2>
-                    <p>針對初中三年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/d01.png" alt="工具11">
-                </div>
-                <div class="category-content">
-                    <h2>工具11</h2>
-                    <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/e01.png" alt="工具12">
-                </div>
-                <div class="category-content">
-                    <h2>工具12</h2>
-                    <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
-                </div>
-            </div>
-        </div>
+    <div id="stars"></div>
+    <h1>Color Blocks Position Practice</h1>
+    <div class="question" id="question"></div>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="1670" height="450"></canvas>
+        <div class="options" id="options"></div>
     </div>
+    <div class="feedback" id="feedback"></div>
+    <div id="score">Score: 0 / 15</div>
     <footer>
         <p>© 2025 ukawai</p>
     </footer>
+
+    <script>
+        // 生成星空背景
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 2 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 1.5}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // 人物數據
+        const people = [
+            { name: 'Tom', image: 'images/red.png', color: '#FF0000', colorClass: 'red' },
+            { name: 'May', image: 'images/orange.png', color: '#FFA500', colorClass: 'orange' },
+            { name: 'Sam', image: 'images/yellow.png', color: '#FFFF00', colorClass: 'yellow' },
+            { name: 'Kath', image: 'images/green.png', color: '#00FF00', colorClass: 'green' },
+            { name: 'Leo', image: 'images/cyan.png', color: '#00FFFF', colorClass: 'cyan' },
+            { name: 'Joe', image: 'images/blue.png', color: '#0000FF', colorClass: 'blue' },
+            { name: 'Zoe', image: 'images/purple.png', color: '#800080', colorClass: 'purple' }
+        ];
+
+        // 預載圖片
+        const imageCache = {};
+        people.forEach(person => {
+            const img = new Image();
+            img.src = person.image;
+            imageCache[person.name] = img;
+        });
+
+        const positions = ['in front of', 'behind', 'between', 'on the left', 'on the right'];
+        const ordinals = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
+        let currentQuestion = 0;
+        let score = 0;
+        let leftOrRightCount = 0;
+        const maxQuestions = 15;
+        const maxLeftOrRightQuestions = 2;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let blocks = [];
+        let startLeft = true;
+
+        // 隨機生成人物序列
+        function generateBlocks() {
+            const numBlocks = Math.floor(Math.random() * 3) + 5; // 5 到 7
+            const shuffledPeople = people.sort(() => Math.random() - 0.5).slice(0, numBlocks);
+            startLeft = Math.random() < 0.5;
+            blocks = startLeft 
+                ? [{ name: 'start', color: '#333', colorClass: 'start' }, ...shuffledPeople]
+                : [...shuffledPeople, { name: 'start', color: '#333', colorClass: 'start' }];
+            return startLeft;
+        }
+
+        // 粒子動畫數據
+        let particles = [];
+        const particleColors = ['#FF0000', '#FFA500', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#800080'];
+
+        // 創建粒子
+        function createParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: canvas.height,
+                radius: Math.random() * 5 + 2,
+                color: particleColors[Math.floor(Math.random() * particleColors.length)],
+                vx: Math.random() * 4 - 2,
+                vy: -(Math.random() * 5 + 5),
+                alpha: 1
+            };
+        }
+
+        // 更新和繪製粒子
+        function updateParticles() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#000';
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Final Score: ${score} / ${maxQuestions}`, canvas.width / 2, canvas.height / 2);
+
+            particles.forEach(particle => {
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                particle.alpha -= 0.005;
+                if (particle.alpha < 0) particle.alpha = 0;
+
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${parseInt(particle.color.slice(1, 3), 16)}, ${parseInt(particle.color.slice(3, 5), 16)}, ${parseInt(particle.color.slice(5, 7), 16)}, ${particle.alpha})`;
+                ctx.fill();
+            });
+
+            particles = particles.filter(p => p.alpha > 0);
+            if (particles.length > 0) {
+                requestAnimationFrame(updateParticles);
+            }
+        }
+
+        // 啟動慶祝動畫
+        function startCelebration() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(createParticle());
+            }
+            updateParticles();
+            setTimeout(() => particles = [], 5000);
+        }
+
+        // 繪製場景
+        function drawScene() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const imageWidth = 200;
+            const imageHeight = 400;
+            const startBlockSize = 50;
+            const spacing = 10;
+            const startX = (canvas.width - (blocks.length * (imageWidth + spacing) - spacing)) / 2;
+            const startY = (canvas.height - imageHeight) / 2;
+
+            blocks.forEach((block, index) => {
+                const x = startX + index * (imageWidth + spacing);
+                if (block.name === 'start') {
+                    ctx.fillStyle = block.color;
+                    ctx.fillRect(x + (imageWidth - startBlockSize) / 2, startY + (imageHeight - startBlockSize) / 2, startBlockSize, startBlockSize);
+                } else {
+                    const img = imageCache[block.name];
+                    if (img.complete) {
+                        ctx.drawImage(img, x, startY, imageWidth, imageHeight);
+                    } else {
+                        ctx.fillStyle = '#ccc';
+                        ctx.fillRect(x, startY, imageWidth, imageHeight);
+                    }
+                }
+                ctx.fillStyle = block.name === 'start' ? '#fff' : '#000';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(block.name.charAt(0).toUpperCase() + block.name.slice(1), x + imageWidth / 2, startY + imageHeight + 20);
+            });
+        }
+
+        // 格式化題目文字
+        function formatQuestionText(text, person1, person2, person3) {
+            return text.replace(
+                new RegExp(`\\b(${person1?.name}|${person2?.name}|${person3?.name})\\b`, 'g'),
+                match => `<span class="color-${match === 'Tom' ? 'red' : match === 'May' ? 'orange' : match === 'Sam' ? 'yellow' : match === 'Kath' ? 'green' : match === 'Leo' ? 'cyan' : match === 'Joe' ? 'blue' : 'purple'}">${match}</span>`
+            );
+        }
+
+        // 鎖定/解鎖選項按鈕
+        function toggleButtons(disabled) {
+            const buttons = document.querySelectorAll('.options button:not(.next-button)');
+            buttons.forEach(button => button.disabled = disabled);
+        }
+
+        // 生成隨機問題
+        function generateQuestion() {
+            if (currentQuestion >= maxQuestions) {
+                endGame();
+                return;
+            }
+
+            generateBlocks();
+            const nonStartBlocks = blocks.filter(b => b.name !== 'start');
+            let questionText, correctAnswer, person1, person2, person3, options;
+
+            if (currentQuestion >= 10) {
+                // 最後 5 題：序數問題
+                const index = Math.floor(Math.random() * nonStartBlocks.length);
+                person1 = nonStartBlocks[index];
+                const ordinalIndex = startLeft ? index : nonStartBlocks.length - 1 - index;
+                correctAnswer = ordinals[ordinalIndex];
+                questionText = `The ________ is ${person1.name}?`;
+                options = ordinals.slice(0, nonStartBlocks.length);
+            } else {
+                // 前 10 題
+                const forceLeftOrRight = currentQuestion === 9 && leftOrRightCount === 0;
+                const disableLeftOrRight = leftOrRightCount >= maxLeftOrRightQuestions;
+                const questionType = forceLeftOrRight ? 0.9 : (disableLeftOrRight ? Math.random() * 0.9 : Math.random());
+
+                if (questionType < 0.4 && nonStartBlocks.length >= 2) {
+                    // 類型 1: in front of / behind
+                    let index1, index2;
+                    const preferInFront = Math.random() < 0.5;
+                    do {
+                        index1 = Math.floor(Math.random() * (nonStartBlocks.length - 1));
+                        index2 = index1 + 1;
+                    } while (index2 >= nonStartBlocks.length);
+
+                    person1 = nonStartBlocks[index1];
+                    person2 = nonStartBlocks[index2];
+
+                    const blockIndex1 = blocks.findIndex(b => b.name === person1.name);
+                    const blockIndex2 = blocks.findIndex(b => b.name === person2.name);
+
+                    if (preferInFront) {
+                        correctAnswer = 'in front of';
+                        if (startLeft) {
+                            if (blockIndex1 > blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        } else {
+                            if (blockIndex1 < blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        }
+                    } else {
+                        correctAnswer = 'behind';
+                        if (startLeft) {
+                            if (blockIndex1 < blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        } else {
+                            if (blockIndex1 > blockIndex2) {
+                                [person1, person2] = [person2, person1];
+                            }
+                        }
+                    }
+
+                    questionText = `${person1.name} is ________ ${person2.name}?`;
+                    options = positions;
+                } else if (questionType < 0.6 && nonStartBlocks.length >= 3) {
+                    // 類型 2: between
+                    const index = Math.floor(Math.random() * (nonStartBlocks.length - 2)) + 1;
+                    person1 = nonStartBlocks[index];
+                    person2 = nonStartBlocks[index - 1];
+                    person3 = nonStartBlocks[index + 1];
+                    correctAnswer = 'between';
+                    questionText = `${person1.name} is ________ ${person2.name} and ${person3.name}?`;
+                    options = positions;
+                } else if (questionType < 0.9) {
+                    // 類型 3: 序數問題
+                    const index = Math.floor(Math.random() * nonStartBlocks.length);
+                    person1 = nonStartBlocks[index];
+                    const ordinalIndex = startLeft ? index : nonStartBlocks.length - 1 - index;
+                    correctAnswer = ordinals[ordinalIndex];
+                    questionText = `The ________ is ${person1.name}?`;
+                    options = ordinals.slice(0, nonStartBlocks.length);
+                } else {
+                    // 類型 4: on the left / on the right
+                    const isLeft = Math.random() < 0.5;
+                    person1 = isLeft ? nonStartBlocks[0] : nonStartBlocks[nonStartBlocks.length - 1];
+                    correctAnswer = isLeft ? 'on the left' : 'on the right';
+                    questionText = `The ${person1.name} is ________?`;
+                    options = positions;
+                    leftOrRightCount++;
+                }
+            }
+
+            const questionDiv = document.getElementById('question');
+            if (questionDiv) {
+                questionDiv.innerHTML = formatQuestionText(questionText, person1, person2, person3);
+            }
+
+            drawScene();
+
+            const optionsDiv = document.getElementById('options');
+            if (optionsDiv) {
+                optionsDiv.innerHTML = '';
+                options.forEach(opt => {
+                    const button = document.createElement('button');
+                    button.innerText = opt;
+                    button.onclick = () => checkAnswer(opt, correctAnswer);
+                    optionsDiv.appendChild(button);
+                });
+            }
+
+            const feedbackDiv = document.getElementById('feedback');
+            if (feedbackDiv) {
+                feedbackDiv.innerText = '';
+            }
+            toggleButtons(false);
+            currentQuestion++;
+        }
+
+        // 檢查答案
+        function checkAnswer(selected, correct) {
+            const feedback = document.getElementById('feedback');
+            const optionsDiv = document.getElementById('options');
+            if (!feedback || !optionsDiv) return;
+            toggleButtons(true);
+
+            if (selected === correct) {
+                feedback.innerText = 'Correct!';
+                score++;
+                const scoreDiv = document.getElementById('score');
+                if (scoreDiv) {
+                    scoreDiv.innerText = `Score: ${score} / ${maxQuestions}`;
+                }
+                setTimeout(generateQuestion, 1000);
+            } else {
+                feedback.innerText = `Wrong! The correct answer is "${correct}".`;
+                const nextButton = document.createElement('button');
+                nextButton.innerText = 'Next Question';
+                nextButton.className = 'next-button';
+                nextButton.onclick = () => {
+                    optionsDiv.removeChild(nextButton);
+                    generateQuestion();
+                };
+                optionsDiv.appendChild(nextButton);
+            }
+        }
+
+        // 結束遊戲
+        function endGame() {
+            const questionDiv = document.getElementById('question');
+            const optionsDiv = document.getElementById('options');
+            const feedbackDiv = document.getElementById('feedback');
+            if (questionDiv) questionDiv.innerText = 'Game Over!';
+            if (optionsDiv) optionsDiv.innerHTML = '';
+            if (feedbackDiv) feedbackDiv.innerText = `Final Score: ${score} / ${maxQuestions}`;
+            startCelebration();
+        }
+
+        // 初始化遊戲
+        try {
+            let loadedImages = 0;
+            const totalImages = people.length;
+            people.forEach(person => {
+                const img = imageCache[person.name];
+                if (img.complete) {
+                    loadedImages++;
+                } else {
+                    img.onload = () => {
+                        loadedImages++;
+                        if (loadedImages === totalImages) {
+                            generateQuestion();
+                        }
+                    };
+                    img.onerror = () => {
+                        console.error(`Failed to load image: ${person.image}`);
+                        const feedbackDiv = document.getElementById('feedback');
+                        if (feedbackDiv) {
+                            feedbackDiv.innerText = `Error loading image: ${person.image}. Please check file path.`;
+                        }
+                    };
+                }
+            });
+            if (loadedImages === totalImages) {
+                generateQuestion();
+            }
+        } catch (error) {
+            console.error('Initialization failed:', error);
+            const feedbackDiv = document.getElementById('feedback');
+            if (feedbackDiv) {
+                feedbackDiv.innerText = 'Error starting game. Please try refreshing or check console for details.';
+            }
+        }
+    </script>
 </body>
 </html>
