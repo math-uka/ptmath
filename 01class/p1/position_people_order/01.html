@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Blocks Position Practice 11</title>
+    <title>Color Blocks Position Practice 12</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <style>
         body {
@@ -48,6 +48,8 @@
         canvas {
             border: 1px solid #ccc;
             background: #fff;
+            max-width: 100%;
+            height: auto;
         }
         .options {
             display: flex;
@@ -113,10 +115,20 @@
             from { opacity: 0.2; }
             to { opacity: 1; }
         }
-        @media (max-width: 600px) {
+        @media (max-width: 1700px) {
             canvas {
-                width: 300px;
-                height: 100px;
+                transform: scale(0.8);
+                transform-origin: top center;
+            }
+        }
+        @media (max-width: 1400px) {
+            canvas {
+                transform: scale(0.6);
+            }
+        }
+        @media (max-width: 1000px) {
+            canvas {
+                transform: scale(0.4);
             }
             .question {
                 font-size: 1em;
@@ -138,7 +150,7 @@
     <h1>Color Blocks Position Practice</h1>
     <div class="question" id="question"></div>
     <div class="game-container">
-        <canvas id="gameCanvas" width="600" height="100"></canvas>
+        <canvas id="gameCanvas" width="1670" height="450"></canvas>
         <div class="options" id="options"></div>
     </div>
     <div class="feedback" id="feedback"></div>
@@ -265,28 +277,31 @@
         function drawScene() {
             if (!ctx) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const blockSize = 50;
+            const imageWidth = 200;
+            const imageHeight = 400;
+            const startBlockSize = 50;
             const spacing = 10;
-            const startX = (canvas.width - (blocks.length * (blockSize + spacing) - spacing)) / 2;
-            const startY = canvas.height / 2 - blockSize / 2;
+            const startX = (canvas.width - (blocks.length * (imageWidth + spacing) - spacing)) / 2;
+            const startY = (canvas.height - imageHeight) / 2;
 
             blocks.forEach((block, index) => {
+                const x = startX + index * (imageWidth + spacing);
                 if (block.name === 'start') {
                     ctx.fillStyle = block.color;
-                    ctx.fillRect(startX + index * (blockSize + spacing), startY, blockSize, blockSize);
+                    ctx.fillRect(x + (imageWidth - startBlockSize) / 2, startY + (imageHeight - startBlockSize) / 2, startBlockSize, startBlockSize);
                 } else {
                     const img = imageCache[block.name];
                     if (img.complete) {
-                        ctx.drawImage(img, startX + index * (blockSize + spacing), startY, blockSize, blockSize);
+                        ctx.drawImage(img, x, startY, imageWidth, imageHeight);
                     } else {
                         ctx.fillStyle = '#ccc';
-                        ctx.fillRect(startX + index * (blockSize + spacing), startY, blockSize, blockSize);
+                        ctx.fillRect(x, startY, imageWidth, imageHeight);
                     }
                 }
                 ctx.fillStyle = block.name === 'start' ? '#fff' : '#000';
-                ctx.font = '14px Arial';
+                ctx.font = '16px Arial';
                 ctx.textAlign = 'center';
-                ctx.fillText(block.name.charAt(0).toUpperCase() + block.name.slice(1), startX + index * (blockSize + spacing) + blockSize / 2, startY + blockSize / 2 + 5);
+                ctx.fillText(block.name.charAt(0).toUpperCase() + block.name.slice(1), x + imageWidth / 2, startY + imageHeight + 20);
             });
         }
 
@@ -315,8 +330,8 @@
             const nonStartBlocks = blocks.filter(b => b.name !== 'start');
             let questionText, correctAnswer, person1, person2, person3, options;
 
-            // 最後 5 題（第 11 至 15 題）強制為序數問題
             if (currentQuestion >= 10) {
+                // 最後 5 題：序數問題
                 const index = Math.floor(Math.random() * nonStartBlocks.length);
                 person1 = nonStartBlocks[index];
                 const ordinalIndex = startLeft ? index : nonStartBlocks.length - 1 - index;
