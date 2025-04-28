@@ -85,6 +85,8 @@
         table.price-table {
             border-collapse: collapse;
             width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
         }
         table.price-table th, table.price-table td {
             border: 1px solid #e0e0e0;
@@ -249,17 +251,9 @@
         <div class="right">
             <div class="price-list">
                 <h2>物品價格</h2>
-                <table class="price-table">
-                    <tr>
-                        <th><img src="images/a01.png" width="40" height="40"></th>
-                        <th><img src="images/b01.png" width="40" height="40"></th>
-                        <th><img src="images/c01.png" width="40" height="40"></th>
-                    </tr>
-                    <tr>
-                        <td id="price-a">\[ \text{價格} \]</td>
-                        <td id="price-b">\[ \text{價格} \]</td>
-                        <td id="price-c">\[ \text{價格} \]</td>
-                    </tr>
+                <table class="price-table" id="price-table">
+                    <tr id="price-images"></tr>
+                    <tr id="price-values"></tr>
                 </table>
             </div>
             <div class="keypad-container">
@@ -300,7 +294,9 @@
     <script>
         let gameCount = parseInt(localStorage.getItem('gameCount')) || 0;
         let currentRound = 0;
+        let sameItemRounds = 0;
         const maxRounds = 10;
+        const minSameItemRounds = 5;
         let money = 0;
         let totalCost = 0;
         let answer = '';
@@ -309,11 +305,12 @@
             { src: 'images/20.png', value: 20 },
             { src: 'images/50.png', value: 50 }
         ];
-        const items = [
-            { src: 'images/a01.png', name: '物品A' },
-            { src: 'images/b01.png', name: '物品B' },
-            { src: 'images/c01.png', name: '物品C' }
-        ];
+        // 動態生成物品列表，假設可能的額外圖片
+        const possibleItems = ['a01', 'b01', 'c01', 'd01', 'e01', 'f01', 'g01', 'h01', 'i01', 'j01'];
+        const items = possibleItems.map(id => ({
+            src: `images/${id}.png`,
+            name: `物品${id.toUpperCase()}`
+        }));
         let itemPrices = {};
 
         // 更新標題
@@ -343,28 +340,36 @@
             money = moneyChoice.value;
             document.getElementById('money-img').src = moneyChoice.src;
 
-            // 隨機生成物品價格
-            itemPrices = {
-                '物品A': Math.floor(Math.random() * 10) + 1,
-                '物品B': Math.floor(Math.random() * 10) + 1,
-                '物品C': Math.floor(Math.random() * 10) + 1
-            };
-            document.getElementById('price-a').innerHTML = `\\(${itemPrices['物品A']}\\ 元\\)`;
-            document.getElementById('price-b').innerHTML = `\\(${itemPrices['物品B']}\\ 元\\)`;
-            document.getElementById('price-c').innerHTML = `\\(${itemPrices['物品C']}\\ 元\\)`;
+            // 隨機生成所有物品價格
+            itemPrices = {};
+            items.forEach(item => {
+                itemPrices[item.name] = Math.floor(Math.random() * 10) + 1;
+            });
 
-            // 清空輸入
-            clearAnswer();
-
-            // 隨機選擇1到3個物品
+            // 隨機選擇1到3個物品，確保至少5題有相同物品
             const itemCount = Math.floor(Math.random() * 3) + 1;
             const selectedItems = [];
-            totalCost = 0;
-            for (let i = 0; i < itemCount; i++) {
+            let forceSameItem = (currentRound < minSameItemRounds || (sameItemRounds < minSameItemRounds && Math.random() < 0.7)) && itemCount >= 2;
+            if (forceSameItem) {
                 const item = items[Math.floor(Math.random() * items.length)];
-                selectedItems.push(item);
-                totalCost += itemPrices[item.name];
+                selectedItems.push(item, item); // 至少買兩次相同物品
+                sameItemRounds++;
+                if (itemCount === 3) {
+                    selectedItems.push(items[Math.floor(Math.random() * items.length)]);
+                }
+            } else {
+                for (let i = 0; i < itemCount; i++) {
+                    selectedItems.push(items[Math.floor(Math.random() * items.length)]);
+                }
             }
+
+            // 計算總價
+            totalCost = 0;
+            const itemCounts = {};
+            selectedItems.forEach(item => {
+                totalCost += itemPrices[item.name];
+                itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+            });
 
             // 顯示物品
             const itemsContainer = document.getElementById('items-container');
@@ -375,6 +380,32 @@
                 img.className = 'item-img';
                 itemsContainer.appendChild(img);
             });
+
+            // 動態生成價格表格（僅顯示要買的物品）
+            const uniqueItems = [...new Set(selectedItems.map(item => item.name))].map(name => ({
+                name,
+                src: items.find(item => item.name === name).src
+            }));
+            const priceImages = document.getElementById('price-images');
+            const priceValues = document.getElementById('price-values');
+            priceImages.innerHTML = '';
+            priceValues.innerHTML = '';
+            uniqueItems.forEach(item => {
+                const imgCell = document.createElement('th');
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.width = 40;
+                img.height = 40;
+                imgCell.appendChild(img);
+                priceImages.appendChild(imgCell);
+
+                const priceCell = document.createElement('td');
+                priceCell.innerHTML = `\\(${itemPrices[item.name]}\\ 元\\)`;
+                priceValues.appendChild(priceCell);
+            });
+
+            // 清空輸入
+            clearAnswer();
 
             // 更新遊戲次數
             currentRound++;
