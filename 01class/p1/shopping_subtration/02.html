@@ -344,6 +344,7 @@
         }));
         let itemPrices = {};
         let availableItems = [];
+        let usedCombinations = []; // 記錄已使用的物品組合
 
         // 圖片加載檢查
         function checkImage(src) {
@@ -431,21 +432,49 @@
                 return;
             }
 
-            // 隨機選擇2到4個物品，確保至少5題有相同物品
-            let selectedItems = [];
-            const itemCount = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4
-            let forceSameItem = (currentRound < minSameItemRounds || (sameItemRounds < minSameItemRounds && Math.random() < 0.7));
-            if (forceSameItem) {
-                const item = availableItems[Math.floor(Math.random() * availableItems.length)];
-                selectedItems.push(item, item); // 至少兩個相同
-                for (let i = 2; i < itemCount; i++) {
-                    selectedItems.push(availableItems[Math.floor(Math.random() * availableItems.length)]);
-                }
+            // 根據題號設置固定物品數量
+            let itemCount;
+            if (currentRound < 4) {
+                itemCount = 2; // 第1-4題：2件
+            } else if (currentRound < 8) {
+                itemCount = 3; // 第5-8題：3件
             } else {
-                for (let i = 0; i < itemCount; i++) {
-                    selectedItems.push(availableItems[Math.floor(Math.random() * availableItems.length)]);
-                }
+                itemCount = 4; // 第9-10題：4件
             }
+
+            // 隨機選擇物品，確保不重複組合
+            let selectedItems = [];
+            let combination;
+            let attempts = 0;
+            const maxAttempts = 100;
+            let forceSameItem = (currentRound < minSameItemRounds || (sameItemRounds < minSameItemRounds && Math.random() < 0.7));
+
+            do {
+                selectedItems = [];
+                if (forceSameItem) {
+                    const item = availableItems[Math.floor(Math.random() * availableItems.length)];
+                    selectedItems.push(item, item); // 至少兩個相同
+                    for (let i = 2; i < itemCount; i++) {
+                        selectedItems.push(availableItems[Math.floor(Math.random() * availableItems.length)]);
+                    }
+                } else {
+                    for (let i = 0; i < itemCount; i++) {
+                        selectedItems.push(availableItems[Math.floor(Math.random() * availableItems.length)]);
+                    }
+                }
+
+                // 生成組合標識（排序後的物品名稱）
+                combination = selectedItems.map(item => item.name).sort().join(',');
+                attempts++;
+                if (attempts > maxAttempts) {
+                    document.getElementById('error-message').innerText = '錯誤：無法生成不重複的物品組合！請增加物品圖片數量或檢查邏輯。';
+                    document.getElementById('keypad').style.pointerEvents = 'none';
+                    return;
+                }
+            } while (usedCombinations.includes(combination));
+
+            // 記錄當前組合
+            usedCombinations.push(combination);
 
             // 隨機生成價格（1-20元）
             itemPrices = {};
