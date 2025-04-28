@@ -106,7 +106,7 @@
          <div class="category-list">
              <div class="category-item" onclick="window.location.href='shopping_product/01.html'">
                  <div class="category-image">
-                     <img src="images/a01.png" alt="乘法真有趣">
+                     <img src="00images/a01.png" alt="乘法真有趣">
                  </div>
                  <div class="category-content">
                      <h2>乘法真有趣</h2>
@@ -124,11 +124,11 @@
  
              <div class="category-item" onclick="window.location.href='shopping_subtration/02.html'">
                  <div class="category-image">
-                     <img src="images/06.png" alt="購物真有趣（加法）">
+                     <img src="00images/06.png" alt="">
                  </div>
                  <div class="category-content">
-                     <h2>購物真有趣（加法）</h2>
-                     <p>算一下一共花多少元吧</p>
+                     <h2>        </h2>
+                     <p>         </p>
                  </div>
          </div>
      </div>
