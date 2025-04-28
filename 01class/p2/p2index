@@ -104,67 +104,17 @@
      <h1>AI應用工具</h1>
      <div class="container">
          <div class="category-list">
-             <div class="category-item" onclick="window.location.href='1sudoku/01.html'">
+             <div class="category-item" onclick="window.location.href='shopping_product/01.html'">
                  <div class="category-image">
-                     <img src="images/a01.png" alt="數獨4X4">
+                     <img src="images/a01.png" alt="乘法真有趣">
                  </div>
                  <div class="category-content">
-                     <h2>數獨4X4</h2>
-                     <p> Rule1: Each number appears only once in each row and each column.</p>
-                      <p> Rule2: Each number appears only once in each 田.</p>
+                     <h2>乘法真有趣</h2>
+                     <p> 用乘法的方式解決算算一共買了多少錢吧</p>
+                     
                  </div>
              </div>
  
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='add-and-subtraction/ans01.html'">
-                 <div class="category-image">
-                     <img src="images/02.png" alt="加減混合計算">
-                 </div>
-                 <div class="category-content">
-                     <h2>加減混合直式計算</h2>
-                     <p>隨機生成加法或減法的直式運算，必定會出現進位或借位</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='position/01.html'">
-                 <div class="category-image">
-                     <img src="images/03.png" alt="Position">
-                 </div>
-                 <div class="category-content">
-                     <h2>Position</h2>
-                     <p>Random position quiz about :in front of, behind, over, under , between</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             
-             <div class="category-item" onclick="window.location.href='position_people_order/01.html'">
-                 <div class="category-image">
-               
-                     <img src="images/04.png" alt="Order and position">
-                 </div>
-                 <div class="category-content">
-                  
-                     <h2>Order and position</h2>
-                     <p>Choose the correct word to show the order and position</p>
-                 </div>
-             </div>
  
  
  
@@ -180,118 +130,6 @@
                      <h2>購物真有趣（加法）</h2>
                      <p>算一下一共花多少元吧</p>
                  </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-                    <div class="category-item" onclick="window.location.href='shopping_subtration/01.html'">
-                 <div class="category-image">
-                     <img src="images/05.png" alt="購物真有趣（減法）">
-                 </div>
-                 <div class="category-content">
-                     <h2>購物真有趣（減法）</h2>
-                     <p>算一下還剩多少元吧</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具7">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具7</h2>
-                     <p>針對小學六年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具8">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具8</h2>
-                     <p>針對初中一年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具9">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具9</h2>
-                     <p>針對初中二年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具10">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具10</h2>
-                     <p>針對初中三年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/d01.png" alt="工具11">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具11</h2>
-                     <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/e01.png" alt="工具12">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具12</h2>
-                     <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
-                 </div>
-             </div>
          </div>
      </div>
      <footer>
