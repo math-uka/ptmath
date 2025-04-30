@@ -362,11 +362,8 @@
                     CBA: calculateAngle(points[2], points[1], points[0])
                 };
 
-                // 收集值並過濾掉 '-'
                 const lengthValues = Object.values(lengths).filter(v => v !== '-');
                 const angleValues = Object.values(angles).filter(v => v !== '-');
-
-                // 計算每個值的出現次數
                 const lengthCounts = {};
                 const angleCounts = {};
                 lengthValues.forEach(val => {
@@ -376,7 +373,6 @@
                     angleCounts[val] = (angleCounts[val] || 0) + 1;
                 });
 
-                // 僅為出現次數大於 1 的值分配顏色
                 const lengthColors = {};
                 const angleColors = {};
                 const colors = ['#f06292', '#4fc3f7', '#81c784', '#fff176', '#ba68c8', '#bcaaa4'];
@@ -395,7 +391,6 @@
                     }
                 });
 
-                // 更新邊長表格，包括標籤格子
                 for (const [key, value] of Object.entries(lengths)) {
                     const valueElement = document.getElementById(`length${key}`);
                     const labelElement = document.getElementById(`label${key}`);
@@ -408,7 +403,6 @@
                     }
                 }
 
-                // 更新角度表格，包括標籤格子
                 for (const [key, value] of Object.entries(angles)) {
                     const valueElement = document.getElementById(`angle${key}`);
                     const labelElement = document.getElementById(`label${key}`);
@@ -626,6 +620,20 @@
             }
         }
 
+        function arePointsCollinear(p1, p2, p3) {
+            try {
+                // Calculate the area of the triangle formed by p1, p2, p3 using cross product
+                const area = Math.abs(
+                    (p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y)) / 2
+                );
+                // Points are collinear if the area is very small (accounting for floating-point precision)
+                return area < 0.05;
+            } catch (e) {
+                console.error('Error in arePointsCollinear:', e);
+                return true; // Conservatively assume collinear on error
+            }
+        }
+
         function isValidPosition(index, newX, newY) {
             try {
                 let tempPoints = points.map(p => ({ x: p.x, y: p.y }));
@@ -725,7 +733,16 @@
 
                 const area = calculateArea(tempPoints[0], tempPoints[1], tempPoints[2], tempPoints[3]);
                 const minArea = 0.05;
-                return inBounds && area > minArea;
+
+                // Check for collinearity among any three points
+                const pointCombos = [
+                    [0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]
+                ];
+                const isCollinear = pointCombos.some(([i, j, k]) => 
+                    arePointsCollinear(tempPoints[i], tempPoints[j], tempPoints[k])
+                );
+
+                return inBounds && area > minArea && !isCollinear;
             } catch (e) {
                 console.error('Error in isValidPosition:', e);
                 return false;
