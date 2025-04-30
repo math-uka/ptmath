@@ -148,6 +148,7 @@
         <button id="rectangleButton">矩形</button>
         <button id="rhombusButton">菱形</button>
         <button id="squareButton">正方形</button>
+        <button id="diagonalButton">對角線</button>
         <button id="exportButton">導出圖像</button>
     </div>
     <div class="container">
@@ -155,23 +156,23 @@
         <div class="table-container">
             <table id="lengthTable">
                 <tr><th>邊長</th><th>值</th></tr>
-                <tr><td>AB</td><td id="lengthAB">-</td></tr>
-                <tr><td>BC</td><td id="lengthBC">-</td></tr>
-                <tr><td>CD</td><td id="lengthCD">-</td></tr>
-                <tr><td>AD</td><td id="lengthAD">-</td></tr>
-                <tr><td>AC</td><td id="lengthAC">-</td></tr>
-                <tr><td>BD</td><td id="lengthBD">-</td></tr>
-                <tr><td>AO</td><td id="lengthAO">-</td></tr>
-                <tr><td>BO</td><td id="lengthBO">-</td></tr>
-                <tr><td>CO</td><td id="lengthCO">-</td></tr>
-                <tr><td>DO</td><td id="lengthDO">-</td></tr>
+                <tr><td id="labelAB">AB</td><td id="lengthAB">-</td></tr>
+                <tr><td id="labelBC">BC</td><td id="lengthBC">-</td></tr>
+                <tr><td id="labelCD">CD</td><td id="lengthCD">-</td></tr>
+                <tr><td id="labelAD">AD</td><td id="lengthAD">-</td></tr>
+                <tr><td id="labelAC">AC</td><td id="lengthAC">-</td></tr>
+                <tr><td id="labelBD">BD</td><td id="lengthBD">-</td></tr>
+                <tr><td id="labelAO">AO</td><td id="lengthAO">-</td></tr>
+                <tr><td id="labelBO">BO</td><td id="lengthBO">-</td></tr>
+                <tr><td id="labelCO">CO</td><td id="lengthCO">-</td></tr>
+                <tr><td id="labelDO">DO</td><td id="lengthDO">-</td></tr>
             </table>
             <table id="angleTable" style="display: none;">
                 <tr><th>角度</th><th>值</th></tr>
-                <tr><td>∠BAD</td><td id="angleBAD">-</td></tr>
-                <tr><td>∠ADC</td><td id="angleADC">-</td></tr>
-                <tr><td>∠DCB</td><td id="angleDCB">-</td></tr>
-                <tr><td>∠CBA</td><td id="angleCBA">-</td></tr>
+                <tr><td id="labelBAD">∠BAD</td><td id="angleBAD">-</td></tr>
+                <tr><td id="labelADC">∠ADC</td><td id="angleADC">-</td></tr>
+                <tr><td id="labelDCB">∠DCB</td><td id="angleDCB">-</td></tr>
+                <tr><td id="labelCBA">∠CBA</td><td id="angleCBA">-</td></tr>
             </table>
             <button id="toggleButton">角度</button>
         </div>
@@ -188,11 +189,13 @@
         const rectangleButton = document.getElementById('rectangleButton');
         const rhombusButton = document.getElementById('rhombusButton');
         const squareButton = document.getElementById('squareButton');
+        const diagonalButton = document.getElementById('diagonalButton');
         const exportButton = document.getElementById('exportButton');
         let gridSize = 20;
         const offsetX = 20, offsetY = 20;
         const gridMax = 20;
         let showAngles = false;
+        let showDiagonals = false;
         let currentShape = 'quadrilateral';
         let points = [
             { x: 5, y: 5 },   // A
@@ -294,29 +297,31 @@
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                ctx.beginPath();
-                ctx.moveTo(points[0].x * gridSize + offsetX, points[0].y * gridSize + offsetY);
-                ctx.lineTo(points[2].x * gridSize + offsetX, points[2].y * gridSize + offsetY);
-                ctx.strokeStyle = 'blue';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.moveTo(points[1].x * gridSize + offsetX, points[1].y * gridSize + offsetY);
-                ctx.lineTo(points[3].x * gridSize + offsetX, points[3].y * gridSize + offsetY);
-                ctx.strokeStyle = 'green';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                const inter = getIntersection(points[0], points[2], points[1], points[3]);
-                if (inter) {
+                if (showDiagonals) {
                     ctx.beginPath();
-                    ctx.arc(inter.x * gridSize + offsetX, inter.y * gridSize + offsetY, 3, 0, 2 * Math.PI);
-                    ctx.fillStyle = 'purple';
-                    ctx.fill();
-                    ctx.fillStyle = 'black';
-                    ctx.font = window.innerWidth <= 800 ? '10px Arial' : '16px Arial';
-                    ctx.fillText('O', inter.x * gridSize + offsetX + 5, inter.y * gridSize + offsetY - 5);
+                    ctx.moveTo(points[0].x * gridSize + offsetX, points[0].y * gridSize + offsetY);
+                    ctx.lineTo(points[2].x * gridSize + offsetX, points[2].y * gridSize + offsetY);
+                    ctx.strokeStyle = 'blue';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(points[1].x * gridSize + offsetX, points[1].y * gridSize + offsetY);
+                    ctx.lineTo(points[3].x * gridSize + offsetX, points[3].y * gridSize + offsetY);
+                    ctx.strokeStyle = 'green';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+
+                    const inter = getIntersection(points[0], points[2], points[1], points[3]);
+                    if (inter) {
+                        ctx.beginPath();
+                        ctx.arc(inter.x * gridSize + offsetX, inter.y * gridSize + offsetY, 3, 0, 2 * Math.PI);
+                        ctx.fillStyle = 'purple';
+                        ctx.fill();
+                        ctx.fillStyle = 'black';
+                        ctx.font = window.innerWidth <= 800 ? '10px Arial' : '16px Arial';
+                        ctx.fillText('O', inter.x * gridSize + offsetX + 5, inter.y * gridSize + offsetY - 5);
+                    }
                 }
 
                 const labels = ['A', 'B', 'C', 'D'];
@@ -357,17 +362,62 @@
                     CBA: calculateAngle(points[2], points[1], points[0])
                 };
 
+                // 收集值並過濾掉 '-'
+                const lengthValues = Object.values(lengths).filter(v => v !== '-');
+                const angleValues = Object.values(angles).filter(v => v !== '-');
+
+                // 計算每個值的出現次數
+                const lengthCounts = {};
+                const angleCounts = {};
+                lengthValues.forEach(val => {
+                    lengthCounts[val] = (lengthCounts[val] || 0) + 1;
+                });
+                angleValues.forEach(val => {
+                    angleCounts[val] = (angleCounts[val] || 0) + 1;
+                });
+
+                // 僅為出現次數大於 1 的值分配顏色
+                const lengthColors = {};
+                const angleColors = {};
+                const colors = ['#f06292', '#4fc3f7', '#81c784', '#fff176', '#ba68c8', '#bcaaa4'];
+                let colorIndex = 0;
+
+                Object.keys(lengthCounts).forEach(val => {
+                    if (lengthCounts[val] > 1) {
+                        lengthColors[val] = colors[colorIndex % colors.length];
+                        colorIndex++;
+                    }
+                });
+                Object.keys(angleCounts).forEach(val => {
+                    if (angleCounts[val] > 1) {
+                        angleColors[val] = colors[colorIndex % colors.length];
+                        colorIndex++;
+                    }
+                });
+
+                // 更新邊長表格，包括標籤格子
                 for (const [key, value] of Object.entries(lengths)) {
-                    const element = document.getElementById(`length${key}`);
-                    if (element) {
-                        element.textContent = value;
+                    const valueElement = document.getElementById(`length${key}`);
+                    const labelElement = document.getElementById(`label${key}`);
+                    if (valueElement) {
+                        valueElement.textContent = value;
+                        valueElement.style.backgroundColor = value !== '-' && lengthColors[value] ? lengthColors[value] : '';
+                    }
+                    if (labelElement) {
+                        labelElement.style.backgroundColor = value !== '-' && lengthColors[value] ? lengthColors[value] : '';
                     }
                 }
 
+                // 更新角度表格，包括標籤格子
                 for (const [key, value] of Object.entries(angles)) {
-                    const element = document.getElementById(`angle${key}`);
-                    if (element) {
-                        element.textContent = value !== '-' ? `${value}°` : '-';
+                    const valueElement = document.getElementById(`angle${key}`);
+                    const labelElement = document.getElementById(`label${key}`);
+                    if (valueElement) {
+                        valueElement.textContent = value !== '-' ? `${value}°` : '-';
+                        valueElement.style.backgroundColor = value !== '-' && angleColors[value] ? angleColors[value] : '';
+                    }
+                    if (labelElement) {
+                        labelElement.style.backgroundColor = value !== '-' && angleColors[value] ? angleColors[value] : '';
                     }
                 }
 
@@ -382,6 +432,12 @@
             showAngles = !showAngles;
             toggleButton.textContent = showAngles ? '邊長' : '角度';
             updateTable();
+        }
+
+        function toggleDiagonals() {
+            showDiagonals = !showDiagonals;
+            diagonalButton.classList.toggle('active', showDiagonals);
+            draw();
         }
 
         function updateButtonStyles(activeButton) {
@@ -460,6 +516,7 @@
         if (rectangleButton) rectangleButton.addEventListener('click', setRectangle);
         if (rhombusButton) rhombusButton.addEventListener('click', setRhombus);
         if (squareButton) squareButton.addEventListener('click', setSquare);
+        if (diagonalButton) diagonalButton.addEventListener('click', toggleDiagonals);
 
         function updateRhombusPoints(index, newX, newY) {
             let tempPoints = points.map(p => ({ x: p.x, y: p.y }));
@@ -467,15 +524,12 @@
             tempPoints[index].y = newY;
 
             try {
-                if (index === 0) { // 拖動 A
-                    // 固定 C，計算 B 和 D
+                if (index === 0) {
                     const sideLength = Math.hypot(newX - points[1].x, newY - points[1].y);
                     const midACx = (newX + points[2].x) / 2;
                     const midACy = (newY + points[2].y) / 2;
-                    // D 根據 AC 中點對稱於 B
                     tempPoints[3].x = 2 * midACx - points[1].x;
                     tempPoints[3].y = 2 * midACy - points[1].y;
-                    // B 調整到與 C 的距離等於 sideLength
                     const dxBC = points[2].x - points[1].x;
                     const dyBC = points[2].y - points[1].y;
                     const distBC = Math.hypot(dxBC, dyBC);
@@ -483,12 +537,10 @@
                         tempPoints[1].x = points[2].x - (dxBC / distBC) * sideLength;
                         tempPoints[1].y = points[2].y - (dyBC / distBC) * sideLength;
                     } else {
-                        // 若 B 和 C 太近，嘗試保持原有方向
                         tempPoints[1].x = points[2].x - (points[1].x - points[2].x);
                         tempPoints[1].y = points[2].y - (points[1].y - points[2].y);
                     }
-                } else if (index === 1) { // 拖動 B
-                    // 固定 D，計算 A 和 C
+                } else if (index === 1) {
                     const sideLength = Math.hypot(points[0].x - newX, points[0].y - newY);
                     const midBDx = (newX + points[3].x) / 2;
                     const midBDy = (newY + points[3].y) / 2;
@@ -504,8 +556,7 @@
                         tempPoints[2].x = newX + (points[2].x - points[1].x);
                         tempPoints[2].y = newY + (points[2].y - points[1].y);
                     }
-                } else if (index === 2) { // 拖動 C
-                    // 固定 A，計算 B 和 D
+                } else if (index === 2) {
                     const sideLength = Math.hypot(points[1].x - newX, points[1].y - newY);
                     const midACx = (points[0].x + newX) / 2;
                     const midACy = (points[0].y + newY) / 2;
@@ -521,8 +572,7 @@
                         tempPoints[3].x = newX + (points[3].x - points[2].x);
                         tempPoints[3].y = newY + (points[3].y - points[2].y);
                     }
-                } else if (index === 3) { // 拖動 D
-                    // 固定 B，計算 A 和 C
+                } else if (index === 3) {
                     const sideLength = Math.hypot(points[0].x - newX, points[0].y - newY);
                     const midBDx = (points[1].x + newX) / 2;
                     const midBDy = (points[1].y + newY) / 2;
@@ -540,7 +590,6 @@
                     }
                 }
 
-                // 驗證四邊長度
                 const lengths = [
                     Math.hypot(tempPoints[0].x - tempPoints[1].x, tempPoints[0].y - tempPoints[1].y),
                     Math.hypot(tempPoints[1].x - tempPoints[2].x, tempPoints[1].y - tempPoints[2].y),
@@ -548,36 +597,28 @@
                     Math.hypot(tempPoints[3].x - tempPoints[0].x, tempPoints[3].y - tempPoints[0].y)
                 ];
                 const maxDiff = Math.max(...lengths) - Math.min(...lengths);
-                console.log('Rhombus side lengths:', lengths.map(l => l.toFixed(4)), 'maxDiff:', maxDiff.toFixed(4));
                 if (maxDiff > 1.0) {
-                    console.warn('Rhombus side lengths not equal:', lengths);
                     return null;
                 }
 
-                // 檢查範圍
                 const inBounds = tempPoints.every(p => 
                     p.x >= -2 && p.x <= gridMax + 2 && 
                     p.y >= -2 && p.y <= gridMax + 2
                 );
                 if (!inBounds) {
-                    console.warn('Points out of bounds:', tempPoints);
                     return null;
                 }
 
-                // 檢查面積
                 const area = calculateArea(tempPoints[0], tempPoints[1], tempPoints[2], tempPoints[3]);
                 if (area < 0.05) {
-                    console.warn('Area too small:', area);
                     return null;
                 }
 
-                // 四捨五入最終坐標
                 tempPoints = tempPoints.map(p => ({
                     x: Math.round(p.x),
                     y: Math.round(p.y)
                 }));
 
-                console.log('Updated rhombus points:', tempPoints);
                 return tempPoints;
             } catch (e) {
                 console.error('Error in updateRhombusPoints:', e);
@@ -594,7 +635,6 @@
                 if (currentShape === 'rhombus') {
                     const updatedPoints = updateRhombusPoints(index, newX, newY);
                     if (!updatedPoints) {
-                        console.warn('Invalid rhombus position for index:', index, 'newX:', newX, 'newY:', newY);
                         return false;
                     }
                     tempPoints = updatedPoints;
@@ -685,7 +725,6 @@
 
                 const area = calculateArea(tempPoints[0], tempPoints[1], tempPoints[2], tempPoints[3]);
                 const minArea = 0.05;
-                console.log('isValidPosition: inBounds=', inBounds, 'area=', area, 'minArea=', minArea);
                 return inBounds && area > minArea;
             } catch (e) {
                 console.error('Error in isValidPosition:', e);
@@ -701,14 +740,13 @@
                 const clientY = e.clientY || (e.touches && e.touches[0].clientY);
                 const mouseX = (clientX - rect.left) * (canvas.width / rect.width);
                 const mouseY = (clientY - rect.top) * (canvas.height / rect.height);
-                selectedPoint = null; // 先重置
+                selectedPoint = null;
                 points.forEach((p, i) => {
                     const px = p.x * gridSize + offsetX;
                     const py = p.y * gridSize + offsetY;
                     const hitRadius = window.innerWidth <= 800 ? 30 : 20;
                     if (Math.hypot(mouseX - px, mouseY - py) < hitRadius) {
                         selectedPoint = i;
-                        console.log('Selected point:', i, 'at', { x: px, y: py });
                     }
                 });
             } catch (e) {
@@ -731,16 +769,13 @@
                     const mouseY = (clientY - rect.top) * (canvas.height / rect.height) - offsetY;
                     const newX = Math.max(-2, Math.min(gridMax + 2, Math.round(mouseX / gridSize)));
                     const newY = Math.max(-2, Math.min(gridMax + 2, Math.round(mouseY / gridSize)));
-                    console.log('Moving point:', selectedPoint, 'to', { newX, newY });
 
                     if (isValidPosition(selectedPoint, newX, newY)) {
                         if (currentShape === 'rhombus') {
                             const updatedPoints = updateRhombusPoints(selectedPoint, newX, newY);
                             if (updatedPoints) {
                                 points = updatedPoints;
-                                console.log('Rhombus updated points:', points);
                             } else {
-                                console.warn('Invalid rhombus update, skipping draw');
                                 return;
                             }
                         } else {
@@ -829,8 +864,6 @@
                         }
 
                         draw();
-                    } else {
-                        console.warn('Invalid position for point:', selectedPoint, 'at', { newX, newY });
                     }
                 } catch (e) {
                     console.error('Error in handleMove:', e);
@@ -842,7 +875,6 @@
             try {
                 e.preventDefault();
                 selectedPoint = null;
-                console.log('Drag ended, selectedPoint reset to null');
             } catch (e) {
                 console.error('Error in handleEnd:', e);
             }
@@ -887,12 +919,8 @@
                 canvas.width = maxWidth;
                 canvas.height = maxHeight;
                 gridSize = (maxWidth - 2 * offsetX) / gridMax;
-                console.log('Canvas resized: width=', canvas.width, 'height=', canvas.height, 
-                           'gridSize=', gridSize, 'containerWidth=', container.clientWidth);
                 if (canvas.width > 0 && canvas.height > 0) {
                     draw();
-                } else {
-                    console.error('Invalid canvas dimensions:', canvas.width, canvas.height);
                 }
             } catch (e) {
                 console.error('Error in resizeCanvas:', e);
@@ -901,7 +929,6 @@
 
         function draw() {
             try {
-                console.log('Drawing with points:', points);
                 drawCanvas();
                 drawParallelogram();
                 updateTable();
@@ -912,7 +939,6 @@
 
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('load', () => {
-            console.log('Window loaded, initializing canvas');
             resizeCanvas();
             setQuadrilateral();
         });
