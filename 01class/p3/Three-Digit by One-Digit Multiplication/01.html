@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Multiplication Teaching Tool 13</title>
+    <title>Multiplication Teaching Tool - Three-Digit by One-Digit</title>
     <!-- MathJax for mathematical expressions -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -89,9 +89,9 @@
     <main class="flex-grow flex flex-col p-4 gap-4">
         <!-- Input Box for Problem -->
         <div class="input-container">
-            <input type="text" id="three-digit" pattern="[1-9][0-9]{2}" value="123" required>
+            <input type="text" id="three-digit" pattern="[1-9][0-9]{2}" value="649" required>
             <span class="text-xl">×</span>
-            <input type="text" id="one-digit" pattern="[1-9]" value="5" required>
+            <input type="text" id="one-digit" pattern="[1-9]" value="6" required>
         </div>
         <div class="flex flex-col md:flex-row justify-center items-start gap-4">
             <!-- Left Side: Horizontal Multiplication -->
@@ -114,147 +114,7 @@
     <footer class="bg-gray-800 text-white text-center py-4">
         <p>© 2025 ukawai</p>
     </footer>
-    <script>
-        let threeDigit = 123;
-        let oneDigit = 5;
-        let hundreds, tens, unitsDigit;
-        let horizontalStep = 0;
-        let verticalStep = 0;
-
-        function updateProblem() {
-            hundreds = Math.floor(threeDigit / 100) * 100;
-            tens = Math.floor((threeDigit % 100) / 10) * 10;
-            unitsDigit = threeDigit % 10;
-            horizontalStep = 0;
-            verticalStep = 0;
-            updateHorizontalSteps();
-            updateVerticalSteps();
-        }
-
-        function generateProblem() {
-            const hundredsDigit = Math.floor(Math.random() * 9) + 1;
-            const tensDigit = Math.floor(Math.random() * 10);
-            const units = Math.floor(Math.random() * 9) + 1;
-            threeDigit = hundredsDigit * 100 + tensDigit * 10 + units;
-            oneDigit = Math.floor(Math.random() * 9) + 1;
-            document.getElementById('three-digit').value = threeDigit;
-            document.getElementById('one-digit').value = oneDigit;
-            updateProblem();
-        }
-
-        function getHorizontalSteps() {
-            return [
-                `${threeDigit} \\times ${oneDigit}`,
-                `(${hundreds} + ${tens} + ${unitsDigit}) \\times ${oneDigit}`,
-                `${hundreds} \\times ${oneDigit} + ${tens} \\times ${oneDigit} + ${unitsDigit} \\times ${oneDigit}`,
-                `${hundreds * oneDigit} + ${tens * oneDigit} + ${unitsDigit * oneDigit}`,
-                `${threeDigit * oneDigit}`
-            ];
-        }
-
-        function getVerticalSteps() {
-            return [
-                `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline \\end{array}`,
-                `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\end{array}`,
-                `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens * oneDigit / 10}\\phantom{0} \\end{array}`,
-                `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens * oneDigit / 10}\\phantom{0} \\\\ ${hundreds * oneDigit / 100}\\phantom{00} \\end{array}`,
-                `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens * oneDigit / 10}\\phantom{0} \\\\ ${hundreds * oneDigit / 100}\\phantom{00} \\\\ \\hline ${threeDigit * oneDigit} \\end{array}`
-            ];
-        }
-
-        const horizontalDiv = document.getElementById('horizontal-steps');
-        const verticalDiv = document.getElementById('vertical-steps');
-        const horizontalNextButton = document.getElementById('horizontal-next-step');
-        const verticalNextButton = document.getElementById('vertical-next-step');
-        const newProblemButton = document.getElementById('new-problem');
-        const threeDigitInput = document.getElementById('three-digit');
-        const oneDigitInput = document.getElementById('one-digit');
-
-        function updateHorizontalSteps() {
-            const horizontalSteps = getHorizontalSteps();
-            horizontalDiv.innerHTML = '';
-            for (let i = 0; i <= Math.min(horizontalStep, horizontalSteps.length - 1); i++) {
-                const stepDiv = document.createElement('div');
-                stepDiv.classList.add('equation-container', 'py-1');
-                const equalsDiv = document.createElement('div');
-                equalsDiv.classList.add('equals-sign');
-                equalsDiv.innerHTML = i === 0 ? '' : '=';
-                const mathDiv = document.createElement('div');
-                mathDiv.classList.add('math-expression');
-                mathDiv.innerHTML = `\\(${horizontalSteps[i]}\\)`;
-                stepDiv.appendChild(equalsDiv);
-                stepDiv.appendChild(mathDiv);
-                horizontalDiv.appendChild(stepDiv);
-            }
-
-            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting failed:', err));
-
-            horizontalNextButton.disabled = horizontalStep >= horizontalSteps.length - 1;
-            horizontalNextButton.classList.toggle('bg-green-500', !horizontalNextButton.disabled);
-            horizontalNextButton.classList.toggle('hover:bg-green-600', !horizontalNextButton.disabled);
-            horizontalNextButton.classList.toggle('bg-gray-400', horizontalNextButton.disabled);
-            horizontalNextButton.classList.toggle('cursor-not-allowed', horizontalNextButton.disabled);
-        }
-
-        function updateVerticalSteps() {
-            const verticalSteps = getVerticalSteps();
-            // Always display at least the first step
-            verticalDiv.innerHTML = `\\(${verticalSteps[Math.min(verticalStep, verticalSteps.length - 1)]}\\)`;
-            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting failed:', err));
-
-            verticalNextButton.disabled = verticalStep >= verticalSteps.length - 1;
-            verticalNextButton.classList.toggle('bg-green-500', !verticalNextButton.disabled);
-            verticalNextButton.classList.toggle('hover:bg-green-600', !verticalNextButton.disabled);
-            verticalNextButton.classList.toggle('bg-gray-400', verticalNextButton.disabled);
-            verticalNextButton.classList.toggle('cursor-not-allowed', verticalNextButton.disabled);
-        }
-
-        function validateAndUpdate() {
-            const newThreeDigit = parseInt(threeDigitInput.value);
-            const newOneDigit = parseInt(oneDigitInput.value);
-
-            if (newThreeDigit >= 100 && newThreeDigit <= 999 && newOneDigit >= 1 && newOneDigit <= 9) {
-                threeDigit = newThreeDigit;
-                oneDigit = newOneDigit;
-                updateProblem();
-            } else {
-                threeDigitInput.setCustomValidity('請輸入100-999');
-                oneDigitInput.setCustomValidity('請輸入1-9');
-            }
-        }
-
-        threeDigitInput.addEventListener('input', () => {
-            threeDigitInput.setCustomValidity('');
-            if (/^[1-9][0-9]{0,2}$/.test(threeDigitInput.value)) {
-                validateAndUpdate();
-            }
-        });
-
-        oneDigitInput.addEventListener('input', () => {
-            oneDigitInput.setCustomValidity('');
-            if (/^[1-9]$/.test(oneDigitInput.value)) {
-                validateAndUpdate();
-            }
-        });
-
-        horizontalNextButton.addEventListener('click', () => {
-            if (horizontalStep < getHorizontalSteps().length - 1) {
-                horizontalStep++;
-                updateHorizontalSteps();
-            }
-        });
-
-        verticalNextButton.addEventListener('click', () => {
-            if (verticalStep < getVerticalSteps().length - 1) {
-                verticalStep++;
-                updateVerticalSteps();
-            }
-        });
-
-        newProblemButton.addEventListener('click', generateProblem);
-
-        // Initialize with first problem
-        generateProblem();
-    </script>
+    <!-- External JavaScript -->
+    <script src="qs.js"></script>
 </body>
 </html>
