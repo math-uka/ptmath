@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Multiplication Teaching Tool 12</title>
+    <!-- MathJax for mathematical expressions -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .equation-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .equals-sign {
+            width: 20px;
+            text-align: right;
+            flex-shrink: 0;
+            padding-right: 5px;
+        }
+        .math-expression {
+            flex-grow: 1;
+            text-align: left;
+        }
+        #horizontal, #vertical {
+            min-height: 400px; /* Fixed height for all steps */
+            max-width: 50%; /* Half width */
+            display: flex;
+            flex-direction: column;
+        }
+        #horizontal-steps, #vertical-steps {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Vertically center content */
+        }
+        #vertical-steps {
+            justify-content: center;
+            align-items: center;
+        }
+        @media (max-width: 640px) {
+            #horizontal, #vertical {
+                max-width: 100%; /* Full width on mobile */
+                min-height: 350px;
+            }
+            .text-2xl {
+                font-size: 1.25rem; /* Slightly smaller on mobile */
+            }
+            .p-6 {
+                padding: 1rem;
+            }
+            .py-4 {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white py-4 text-center">
+        <h1 class="text-xl sm:text-2xl font-bold">兩位數乘一位數 / Two-Digit by One-Digit Multiplication</h1>
+    </header>
+    <main class="flex-grow flex flex-col p-4 gap-4">
+        <div class="flex flex-col md:flex-row justify-center items-start gap-4">
+            <!-- Left Side: Horizontal Multiplication -->
+            <section id="horizontal" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg sm:text-xl font-semibold mb-4 text-center">橫式乘法 / Horizontal Method</h2>
+                <div id="horizontal-steps" class="text-2xl mb-4 flex flex-col items-center"></div>
+                <button id="horizontal-next-step" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full text-base sm:text-lg">下一步 / Next Step</button>
+            </section>
+            <!-- Right Side: Vertical Multiplication -->
+            <section id="vertical" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg sm:text-xl font-semibold mb-4 text-center">直式乘法 / Vertical Method</h2>
+                <div id="vertical-steps" class="text-2xl mb-4"></div>
+                <button id="vertical-next-step" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full text-base sm:text-lg">下一步 / Next Step</button>
+            </section>
+        </div>
+        <div class="text-center mt-4">
+            <button id="new-problem" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 text-base sm:text-lg">重新出題 / Generate New Problem</button>
+        </div>
+    </main>
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>© 2025 ukawai</p>
+    </footer>
+    <script>
+        let twoDigit, oneDigit, tens, unitsDigit;
+        let horizontalStep = 0;
+        let verticalStep = 0;
+
+        function generateProblem() {
+            // Generate random two-digit number (units digit 1-9)
+            const tensDigit = Math.floor(Math.random() * 9) + 1; // 1-9
+            unitsDigit = Math.floor(Math.random() * 9) + 1; // 1-9
+            twoDigit = tensDigit * 10 + unitsDigit;
+            oneDigit = Math.floor(Math.random() * 9) + 1; // 1-9
+            tens = tensDigit * 10;
+            horizontalStep = 0;
+            verticalStep = 0;
+        }
+
+        // Initial problem generation
+        generateProblem();
+
+        function getHorizontalSteps() {
+            return [
+                `${twoDigit} \\times ${oneDigit}`,
+                `(${tens} + ${unitsDigit}) \\times ${oneDigit}`,
+                `${tens} \\times ${oneDigit} + ${unitsDigit} \\times ${oneDigit}`,
+                `${tens * oneDigit} + ${unitsDigit * oneDigit}`,
+                `${twoDigit * oneDigit}`
+            ];
+        }
+
+        function getVerticalSteps() {
+            return [
+                `\\begin{array}{r} ${twoDigit} \\\\ \\times ${oneDigit} \\\\ \\hline \\end{array}`,
+                `\\begin{array}{r} ${twoDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\end{array}`,
+                `\\begin{array}{r} ${twoDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens * oneDigit / 10}\\phantom{0} \\end{array}`,
+                `\\begin{array}{r} ${twoDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens * oneDigit / 10}\\phantom{0} \\\\ \\hline ${twoDigit * oneDigit} \\end{array}`
+            ];
+        }
+
+        const horizontalDiv = document.getElementById('horizontal-steps');
+        const verticalDiv = document.getElementById('vertical-steps');
+        const horizontalNextButton = document.getElementById('horizontal-next-step');
+        const verticalNextButton = document.getElementById('vertical-next-step');
+        const newProblemButton = document.getElementById('new-problem');
+
+        function updateHorizontalSteps() {
+            const horizontalSteps = getHorizontalSteps();
+            horizontalDiv.innerHTML = '';
+            for (let i = 0; i <= Math.min(horizontalStep, horizontalSteps.length - 1); i++) {
+                const stepDiv = document.createElement('div');
+                stepDiv.classList.add('equation-container', 'py-1');
+                const equalsDiv = document.createElement('div');
+                equalsDiv.classList.add('equals-sign');
+                equalsDiv.innerHTML = i === 0 ? '' : '=';
+                const mathDiv = document.createElement('div');
+                mathDiv.classList.add('math-expression');
+                mathDiv.innerHTML = `\\(${horizontalSteps[i]}\\)`;
+                stepDiv.appendChild(equalsDiv);
+                stepDiv.appendChild(mathDiv);
+                horizontalDiv.appendChild(stepDiv);
+            }
+
+            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting failed:', err));
+
+            horizontalNextButton.disabled = horizontalStep >= horizontalSteps.length - 1;
+            horizontalNextButton.classList.toggle('bg-green-500', !horizontalNextButton.disabled);
+            horizontalNextButton.classList.toggle('hover:bg-green-600', !horizontalNextButton.disabled);
+            horizontalNextButton.classList.toggle('bg-gray-400', horizontalNextButton.disabled);
+            horizontalNextButton.classList.toggle('cursor-not-allowed', horizontalNextButton.disabled);
+        }
+
+        function updateVerticalSteps() {
+            const verticalSteps = getVerticalSteps();
+            verticalDiv.innerHTML = `\\(${verticalSteps[Math.min(verticalStep, verticalSteps.length - 1)]}\\)`;
+            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting failed:', err));
+
+            verticalNextButton.disabled = verticalStep >= verticalSteps.length - 1;
+            verticalNextButton.classList.toggle('bg-green-500', !verticalNextButton.disabled);
+            verticalNextButton.classList.toggle('hover:bg-green-600', !verticalNextButton.disabled);
+            verticalNextButton.classList.toggle('bg-gray-400', verticalNextButton.disabled);
+            verticalNextButton.classList.toggle('cursor-not-allowed', verticalNextButton.disabled);
+        }
+
+        horizontalNextButton.addEventListener('click', () => {
+            if (horizontalStep < getHorizontalSteps().length - 1) {
+                horizontalStep++;
+                updateHorizontalSteps();
+            }
+        });
+
+        verticalNextButton.addEventListener('click', () => {
+            if (verticalStep < getVerticalSteps().length - 1) {
+                verticalStep++;
+                updateVerticalSteps();
+            }
+        });
+
+        newProblemButton.addEventListener('click', () => {
+            generateProblem();
+            updateHorizontalSteps();
+            updateVerticalSteps();
+        });
+
+        // Initialize with first steps
+        updateHorizontalSteps();
+        updateVerticalSteps();
+    </script>
+</body>
+</html>
