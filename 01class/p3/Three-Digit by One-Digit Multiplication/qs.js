@@ -38,16 +38,16 @@ function getHorizontalSteps() {
 
 function getVerticalSteps() {
     return [
-        // 修改：顯示題目，移除 \phantom{0}，與參考代碼一致
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline \\end{array}`,
+        // 修改：乘號對齊千位，使用 \phantom{0}
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${oneDigit} \\\\ \\hline \\end{array}`,
         // 修改：顯示個位乘法結果（例如 9 × 6 = 54），無橫線
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\end{array}`,
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\end{array}`,
         // 修改：顯示十位乘法結果（例如 4 × 6 = 24），無橫線
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens / 10 * oneDigit}\\phantom{0} \\end{array}`,
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens / 10 * oneDigit}\\phantom{0} \\end{array}`,
         // 修改：顯示百位乘法結果（例如 6 × 6 = 36），橫線在 36\phantom{00} 下
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens / 10 * oneDigit}\\phantom{0} \\\\ ${hundreds / 100 * oneDigit}\\phantom{00} \\\\ \\hline \\end{array}`,
-        // 修改：顯示最終答案（例如 3894），使用雙下劃線
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens / 10 * oneDigit}\\phantom{0} \\\\ ${hundreds / 100 * oneDigit}\\phantom{00} \\\\ \\hline \\underline{\\underline{${threeDigit * oneDigit}}} \\end{array}`
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens / 10 * oneDigit}\\phantom{0} \\\\ ${hundreds / 100 * oneDigit}\\phantom{00} \\\\ \\hline \\end{array}`,
+        // 修改：顯示最終答案（例如 3894），使用雙下劃線，保留百位結果的橫線
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${oneDigit} \\\\ \\hline ${unitsDigit * oneDigit} \\\\ ${tens / 10 * oneDigit}\\phantom{0} \\\\ ${hundreds / 100 * oneDigit}\\phantom{00} \\\\ \\hline \\underline{\\underline{${threeDigit * oneDigit}}} \\end{array}`
     ];
 }
 
