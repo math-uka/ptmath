@@ -1,15 +1,14 @@
-let threeDigit = 959;
-let twoDigit = 86;
-let hundreds, tens, units, secondTens, secondUnits;
+let firstTwoDigit = 59;
+let secondTwoDigit = 86;
+let firstTens, firstUnits, secondTens, secondUnits;
 let horizontalStep = 0;
 let verticalStep = 0;
 
 function updateProblem() {
-    hundreds = Math.floor(threeDigit / 100) * 100;
-    tens = Math.floor((threeDigit % 100) / 10) * 10;
-    units = threeDigit % 10;
-    secondTens = Math.floor(twoDigit / 10) * 10;
-    secondUnits = twoDigit % 10;
+    firstTens = Math.floor(firstTwoDigit / 10) * 10;
+    firstUnits = firstTwoDigit % 10;
+    secondTens = Math.floor(secondTwoDigit / 10) * 10;
+    secondUnits = secondTwoDigit % 10;
     horizontalStep = 0;
     verticalStep = 0;
     updateHorizontalSteps();
@@ -17,39 +16,38 @@ function updateProblem() {
 }
 
 function generateProblem() {
-    const hundredsDigit = Math.floor(Math.random() * 9) + 1;
-    const tensDigit = Math.floor(Math.random() * 10);
-    const unitsDigit = Math.floor(Math.random() * 9) + 1;
+    const firstTensDigit = Math.floor(Math.random() * 9) + 1;
+    const firstUnitsDigit = Math.floor(Math.random() * 9) + 1;
     const secondTensDigit = Math.floor(Math.random() * 9) + 1;
     const secondUnitsDigit = Math.floor(Math.random() * 9) + 1;
-    threeDigit = hundredsDigit * 100 + tensDigit * 10 + unitsDigit;
-    twoDigit = secondTensDigit * 10 + secondUnitsDigit;
-    document.getElementById('three-digit').value = threeDigit;
-    document.getElementById('two-digit').value = twoDigit;
+    firstTwoDigit = firstTensDigit * 10 + firstUnitsDigit;
+    secondTwoDigit = secondTensDigit * 10 + secondUnitsDigit;
+    document.getElementById('first-two-digit').value = firstTwoDigit;
+    document.getElementById('second-two-digit').value = secondTwoDigit;
     updateProblem();
 }
 
 function getHorizontalSteps() {
     return [
-        `${threeDigit} \\times ${twoDigit}`,
-        `${threeDigit} \\times (${secondTens} + ${secondUnits})`,
-        `${threeDigit} \\times ${secondTens} + ${threeDigit} \\times ${secondUnits}`,
-        `${threeDigit * secondTens} + ${threeDigit * secondUnits}`,
+        `${firstTwoDigit} \\times ${secondTwoDigit}`,
+        `${firstTwoDigit} \\times (${secondTens} + ${secondUnits})`,
+        `${firstTwoDigit} \\times ${secondTens} + ${firstTwoDigit} \\times ${secondUnits}`,
+        `${firstTwoDigit * secondTens} + ${firstTwoDigit * secondUnits}`,
         // 最終答案使用雙下劃線，但等號不包含雙下劃線
-        `\\underline{\\underline{${threeDigit * twoDigit}}}`
+        `\\underline{\\underline{${firstTwoDigit * secondTwoDigit}}}`
     ];
 }
 
 function getVerticalSteps() {
     return [
         // 乘號左移到千位位置，使用 \phantom{0}
-        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline \\end{array}`,
-        // 顯示個位乘法結果（例如 959 × 6 = 5754），不添加橫線
-        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\end{array}`,
-        // 顯示十位乘法結果（例如 959 × 8 = 7672），橫線在 7672\phantom{0} 下
-        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\\\ ${threeDigit * (secondTens / 10)}\\phantom{0} \\\\ \\hline \\end{array}`,
-        // 顯示最終答案（例如 5754 + 76720 = 82474），保留 7672\phantom{0} 的橫線，使用雙下劃線
-        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\\\ ${threeDigit * (secondTens / 10)}\\phantom{0} \\\\ \\hline \\underline{\\underline{${threeDigit * twoDigit}}} \\end{array}`
+        `\\begin{array}{r} \\phantom{0}${firstTwoDigit} \\\\ \\times \\phantom{0}${secondTwoDigit} \\\\ \\hline \\end{array}`,
+        // 顯示個位乘法結果（例如 59 × 6 = 354），不添加橫線
+        `\\begin{array}{r} \\phantom{0}${firstTwoDigit} \\\\ \\times \\phantom{0}${secondTwoDigit} \\\\ \\hline ${firstTwoDigit * secondUnits} \\end{array}`,
+        // 顯示十位乘法結果（例如 59 × 8 = 472），橫線在 472\phantom{0} 下
+        `\\begin{array}{r} \\phantom{0}${firstTwoDigit} \\\\ \\times \\phantom{0}${secondTwoDigit} \\\\ \\hline ${firstTwoDigit * secondUnits} \\\\ ${firstTwoDigit * (secondTens / 10)}\\phantom{0} \\\\ \\hline \\end{array}`,
+        // 顯示最終答案（例如 354 + 4720 = 5074），保留 472\phantom{0} 的橫線，使用雙下劃線
+        `\\begin{array}{r} \\phantom{0}${firstTwoDigit} \\\\ \\times \\phantom{0}${secondTwoDigit} \\\\ \\hline ${firstTwoDigit * secondUnits} \\\\ ${firstTwoDigit * (secondTens / 10)}\\phantom{0} \\\\ \\hline \\underline{\\underline{${firstTwoDigit * secondTwoDigit}}} \\end{array}`
     ];
 }
 
@@ -58,8 +56,8 @@ const verticalDiv = document.getElementById('vertical-steps');
 const horizontalNextButton = document.getElementById('horizontal-next-step');
 const verticalNextButton = document.getElementById('vertical-next-step');
 const newProblemButton = document.getElementById('new-problem');
-const threeDigitInput = document.getElementById('three-digit');
-const twoDigitInput = document.getElementById('two-digit');
+const firstTwoDigitInput = document.getElementById('first-two-digit');
+const secondTwoDigitInput = document.getElementById('second-two-digit');
 
 function updateHorizontalSteps() {
     const horizontalSteps = getHorizontalSteps();
@@ -100,29 +98,29 @@ function updateVerticalSteps() {
 }
 
 function validateAndUpdate() {
-    const newThreeDigit = parseInt(threeDigitInput.value);
-    const newTwoDigit = parseInt(twoDigitInput.value);
+    const newFirstTwoDigit = parseInt(firstTwoDigitInput.value);
+    const newSecondTwoDigit = parseInt(secondTwoDigitInput.value);
 
-    if (newThreeDigit >= 100 && newThreeDigit <= 999 && newTwoDigit >= 10 && newTwoDigit <= 99) {
-        threeDigit = newThreeDigit;
-        twoDigit = newTwoDigit;
+    if (newFirstTwoDigit >= 10 && newFirstTwoDigit <= 99 && newSecondTwoDigit >= 10 && newSecondTwoDigit <= 99) {
+        firstTwoDigit = newFirstTwoDigit;
+        secondTwoDigit = newSecondTwoDigit;
         updateProblem();
     } else {
-        threeDigitInput.setCustomValidity('請輸入100-999');
-        twoDigitInput.setCustomValidity('請輸入10-99');
+        firstTwoDigitInput.setCustomValidity('請輸入10-99');
+        secondTwoDigitInput.setCustomValidity('請輸入10-99');
     }
 }
 
-threeDigitInput.addEventListener('input', () => {
-    threeDigitInput.setCustomValidity('');
-    if (/^[1-9][0-9]{1,2}$/.test(threeDigitInput.value)) {
+firstTwoDigitInput.addEventListener('input', () => {
+    firstTwoDigitInput.setCustomValidity('');
+    if (/^[1-9][0-9]$/.test(firstTwoDigitInput.value)) {
         validateAndUpdate();
     }
 });
 
-twoDigitInput.addEventListener('input', () => {
-    twoDigitInput.setCustomValidity('');
-    if (/^[1-9][0-9]?$/.test(twoDigitInput.value)) {
+secondTwoDigitInput.addEventListener('input', () => {
+    secondTwoDigitInput.setCustomValidity('');
+    if (/^[1-9][0-9]$/.test(secondTwoDigitInput.value)) {
         validateAndUpdate();
     }
 });
