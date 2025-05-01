@@ -27,8 +27,8 @@
             text-align: left;
         }
         #horizontal, #vertical {
-            min-height: 400px; /* Fixed height for all steps */
-            max-width: 50%; /* Half width */
+            min-height: 400px;
+            max-width: 50%;
             display: flex;
             flex-direction: column;
         }
@@ -36,19 +36,38 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Vertically center content */
+            justify-content: center;
         }
         #vertical-steps {
             justify-content: center;
             align-items: center;
         }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+        .input-container input {
+            width: 80px;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        .input-container input:invalid {
+            border-color: red;
+        }
         @media (max-width: 640px) {
             #horizontal, #vertical {
-                max-width: 100%; /* Full width on mobile */
+                max-width: 100%;
                 min-height: 350px;
             }
             .text-2xl {
-                font-size: 1.25rem; /* Slightly smaller on mobile */
+                font-size: 1.25rem;
             }
             .p-6 {
                 padding: 1rem;
@@ -56,6 +75,9 @@
             .py-4 {
                 padding-top: 0.5rem;
                 padding-bottom: 0.5rem;
+            }
+            .input-container input {
+                width: 60px;
             }
         }
     </style>
@@ -65,6 +87,12 @@
         <h1 class="text-xl sm:text-2xl font-bold">兩位數乘一位數 / Two-Digit by One-Digit Multiplication</h1>
     </header>
     <main class="flex-grow flex flex-col p-4 gap-4">
+        <!-- Input Box for Problem -->
+        <div class="input-container">
+            <input type="text" id="two-digit" pattern="[1-9][0-9]" value="23" required>
+            <span class="text-xl">×</span>
+            <input type="text" id="one-digit" pattern="[1-9]" value="5" required>
+        </div>
         <div class="flex flex-col md:flex-row justify-center items-start gap-4">
             <!-- Left Side: Horizontal Multiplication -->
             <section id="horizontal" class="bg-white p-6 rounded-lg shadow-md">
@@ -87,23 +115,30 @@
         <p>© 2025 ukawai</p>
     </footer>
     <script>
-        let twoDigit, oneDigit, tens, unitsDigit;
+        let twoDigit = 23;
+        let oneDigit = 5;
+        let tens, unitsDigit;
         let horizontalStep = 0;
         let verticalStep = 0;
 
-        function generateProblem() {
-            // Generate random two-digit number (units digit 1-9)
-            const tensDigit = Math.floor(Math.random() * 9) + 1; // 1-9
-            unitsDigit = Math.floor(Math.random() * 9) + 1; // 1-9
-            twoDigit = tensDigit * 10 + unitsDigit;
-            oneDigit = Math.floor(Math.random() * 9) + 1; // 1-9
-            tens = tensDigit * 10;
+        function updateProblem() {
+            tens = Math.floor(twoDigit / 10) * 10;
+            unitsDigit = twoDigit % 10;
             horizontalStep = 0;
             verticalStep = 0;
+            updateHorizontalSteps();
+            updateVerticalSteps();
         }
 
-        // Initial problem generation
-        generateProblem();
+        function generateProblem() {
+            const tensDigit = Math.floor(Math.random() * 9) + 1;
+            const units = Math.floor(Math.random() * 9) + 1;
+            twoDigit = tensDigit * 10 + units;
+            oneDigit = Math.floor(Math.random() * 9) + 1;
+            document.getElementById('two-digit').value = twoDigit;
+            document.getElementById('one-digit').value = oneDigit;
+            updateProblem();
+        }
 
         function getHorizontalSteps() {
             return [
@@ -129,6 +164,8 @@
         const horizontalNextButton = document.getElementById('horizontal-next-step');
         const verticalNextButton = document.getElementById('vertical-next-step');
         const newProblemButton = document.getElementById('new-problem');
+        const twoDigitInput = document.getElementById('two-digit');
+        const oneDigitInput = document.getElementById('one-digit');
 
         function updateHorizontalSteps() {
             const horizontalSteps = getHorizontalSteps();
@@ -158,6 +195,7 @@
 
         function updateVerticalSteps() {
             const verticalSteps = getVerticalSteps();
+            // Always display at least the first step
             verticalDiv.innerHTML = `\\(${verticalSteps[Math.min(verticalStep, verticalSteps.length - 1)]}\\)`;
             MathJax.typesetPromise().catch(err => console.error('MathJax typesetting failed:', err));
 
@@ -167,6 +205,34 @@
             verticalNextButton.classList.toggle('bg-gray-400', verticalNextButton.disabled);
             verticalNextButton.classList.toggle('cursor-not-allowed', verticalNextButton.disabled);
         }
+
+        function validateAndUpdate() {
+            const newTwoDigit = parseInt(twoDigitInput.value);
+            const newOneDigit = parseInt(oneDigitInput.value);
+
+            if (newTwoDigit >= 10 && newTwoDigit <= 99 && newOneDigit >= 1 && newOneDigit <= 9) {
+                twoDigit = newTwoDigit;
+                oneDigit = newOneDigit;
+                updateProblem();
+            } else {
+                twoDigitInput.setCustomValidity('請輸入10-99');
+                oneDigitInput.setCustomValidity('請輸入1-9');
+            }
+        }
+
+        twoDigitInput.addEventListener('input', () => {
+            twoDigitInput.setCustomValidity('');
+            if (/^[1-9][0-9]?$/.test(twoDigitInput.value)) {
+                validateAndUpdate();
+            }
+        });
+
+        oneDigitInput.addEventListener('input', () => {
+            oneDigitInput.setCustomValidity('');
+            if (/^[1-9]$/.test(oneDigitInput.value)) {
+                validateAndUpdate();
+            }
+        });
 
         horizontalNextButton.addEventListener('click', () => {
             if (horizontalStep < getHorizontalSteps().length - 1) {
@@ -182,15 +248,12 @@
             }
         });
 
-        newProblemButton.addEventListener('click', () => {
-            generateProblem();
-            updateHorizontalSteps();
-            updateVerticalSteps();
-        });
+        newProblemButton.addEventListener('click', generateProblem);
 
-        // Initialize with first steps
-        updateHorizontalSteps();
-        updateVerticalSteps();
+        // Initialize with a random problem on first load
+        window.addEventListener('load', () => {
+            generateProblem();
+        });
     </script>
 </body>
 </html>
