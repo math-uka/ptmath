@@ -1,5 +1,5 @@
-let threeDigit = 123;
-let twoDigit = 45;
+let threeDigit = 959;
+let twoDigit = 86;
 let hundreds, tens, units, secondTens, secondUnits;
 let horizontalStep = 0;
 let verticalStep = 0;
@@ -35,16 +35,21 @@ function getHorizontalSteps() {
         `${threeDigit} \\times (${secondTens} + ${secondUnits})`,
         `${threeDigit} \\times ${secondTens} + ${threeDigit} \\times ${secondUnits}`,
         `${threeDigit * secondTens} + ${threeDigit * secondUnits}`,
-        `${threeDigit * twoDigit}`
+        // 最終答案使用雙下劃線，但等號不包含雙下劃線
+        `\\underline{\\underline{${threeDigit * twoDigit}}}`
     ];
 }
 
 function getVerticalSteps() {
     return [
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${twoDigit} \\\\ \\hline \\end{array}`,
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\end{array}`,
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\\\ ${threeDigit * (secondTens / 10)}\\phantom{0} \\end{array}`,
-        `\\begin{array}{r} ${threeDigit} \\\\ \\times ${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\\\ ${threeDigit * (secondTens / 10)}\\phantom{0} \\\\ \\hline ${threeDigit * twoDigit} \\end{array}`
+        // 乘號左移到千位位置，使用 \phantom{0}
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline \\end{array}`,
+        // 顯示個位乘法結果（例如 959 × 6 = 5754），不添加橫線
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\end{array}`,
+        // 顯示十位乘法結果（例如 959 × 8 = 7672），橫線在 7672\phantom{0} 下
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\\\ ${threeDigit * (secondTens / 10)}\\phantom{0} \\\\ \\hline \\end{array}`,
+        // 顯示最終答案（例如 5754 + 76720 = 82474），保留 7672\phantom{0} 的橫線，使用雙下劃線
+        `\\begin{array}{r} \\phantom{0}${threeDigit} \\\\ \\times \\phantom{0}${twoDigit} \\\\ \\hline ${threeDigit * secondUnits} \\\\ ${threeDigit * (secondTens / 10)}\\phantom{0} \\\\ \\hline \\underline{\\underline{${threeDigit * twoDigit}}} \\end{array}`
     ];
 }
 
