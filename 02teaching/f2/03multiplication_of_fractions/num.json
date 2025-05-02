@@ -1,0 +1,114 @@
+[
+  {
+    "question": "計算 \\((x^3 y^2)^2 \\cdot \\frac{x}{y^3}\\)，得到的結果是",
+    "options": "xy, x^7 y^4, x^7 y, x^5 y^6",
+    "answer": "x^7 y",
+    "explanation": "解：\\((x^3 y^2)^2 \\cdot \\frac{x}{y^3} = x^6 y^4 \\cdot \\frac{x}{y^3} = \\frac{x^6 x}{y^3} \\cdot y^4 = x^7 y^4 \\cdot y^{-3} = x^7 y^{4-3} = x^7 y\\)。故選 \\(x^7 y\\)。分析：本題考查分式的乘法運算，需熟練掌握同底數冪的乘法法則，化簡分式是解題關鍵。",
+    "image": null,
+    "comment": "第 1 題"
+  },
+  {
+    "question": "化簡 \\(\\frac{16-m^2}{m^2+6m+9} \\cdot \\frac{m+3}{4-m}\\) 的結果正確的是",
+    "options": ["\\frac{4+m}{m+3}", "\\frac{4-m}{m+3}", "\\frac{4+m}{m-3}", "\\frac{4-m}{m-3}"],
+    "answer": "\\frac{4+m}{m+3}",
+    "explanation": "分析：本題考查分式的乘除法，需將分子分母因式分解後約分。解：\\(\\frac{16-m^2}{m^2+6m+9} \\cdot \\frac{m+3}{4-m} = \\frac{(4-m)(4+m)}{(m+3)^2} \\cdot \\frac{m+3}{4-m} = \\frac{(4+m)(m+3)}{(m+3)^2} = \\frac{4+m}{m+3}\\)。故選 \\(\\frac{4+m}{m+3}\\)。",
+    "image": null,
+    "comment": "第 2 題"
+  },
+  {
+    "question": "下列計算正確的是",
+    "options": ["a^2 \\cdot a = a^2", "a^6 \\div a^2 = a^3", "a^2 b - 2ba^2 = -a^2 b", "\\left(-\\frac{3}{2a}\\right)^3 = -\\frac{9}{8a^3}"],
+    "answer": "a^2 b - 2ba^2 = -a^2 b",
+    "explanation": "解：A. \\(a^2 \\cdot a = a^3\\)，錯誤；B. \\(a^6 \\div a^2 = a^{6-2} = a^4\\)，錯誤；C. \\(a^2 b - 2ba^2 = a^2 b - 2a^2 b = -a^2 b\\)，正確；D. \\(\\left(-\\frac{3}{2a}\\right)^3 = \\frac{(-3)^3}{(2a)^3} = \\frac{-27}{8a^3}\\)，錯誤。故選 \\(a^2 b - 2ba^2 = -a^2 b\\)。分析：本題考查同底數冪的乘除法和合併同類項，需熟練掌握運算法則。",
+    "image": null,
+    "comment": "第 3 題"
+  },
+  {
+    "question": "計算 \\(8x^2 y^4 \\cdot \\left(-\\frac{3x}{4y^3}\\right) \\div \\left(-\\frac{x^2 y}{2}\\right)\\) 的結果是",
+    "options": ["-3x", "3x", "-12x", "12x"],
+    "answer": "12x",
+    "explanation": "分析：本題考查分式的乘除法。解：原式 = \\(8x^2 y^4 \\cdot \\left(-\\frac{3x}{4y^3}\\right) \\cdot \\left(-\\frac{2}{x^2 y}\\right) = \\frac{8x^2 y^4 \\cdot (-3x) \\cdot (-2)}{4y^3 \\cdot x^2 y} = \\frac{48x^3 y^4}{4x^2 y^4} = 12x\\)。故選 \\(12x\\)。",
+    "image": null,
+    "comment": "第 7 題"
+  },
+  {
+    "question": "計算 \\(\\frac{1}{a} \\div \\left(-\\frac{1}{a^2}\\right)\\) 的結果為",
+    "options": ["a", "-a", "-\\frac{1}{a^3}", "\\frac{1}{a^3}"],
+    "answer": "-a",
+    "explanation": "解：原式 = \\(\\frac{1}{a} \\cdot \\left(-a^2\\right) = \\frac{-a^2}{a} = -a\\)。故選 \\(-a\\)。",
+    "image": null,
+    "comment": "第 8 題"
+  },
+  {
+    "question": "已知 \\(\\left(\\frac{x^3}{y^2}\\right)^2 \\div \\left(-\\frac{x}{y^3}\\right)^2 = 6\\)，則 \\(x^4 y^2\\) 的值為",
+    "options": ["6", "36", "12", "3"],
+    "answer": "6",
+    "explanation": "分析：本題考查分式的乘除和代數式求值。解：\\(\\left(\\frac{x^3}{y^2}\\right)^2 \\div \\left(-\\frac{x}{y^3}\\right)^2 = \\frac{x^6}{y^4} \\div \\frac{x^2}{y^6} = \\frac{x^6}{y^4} \\cdot \\frac{y^6}{x^2} = x^{6-2} y^{6-4} = x^4 y^2 = 6\\)。故 \\(x^4 y^2 = 6\\)。故選 \\(6\\)。",
+    "image": null,
+    "comment": "第 10 題"
+  },
+  {
+    "question": "計算 \\(\\frac{x^2-xy}{x-y} \\div \\frac{x-y}{x}\\) 的結果是",
+    "options": ["x^2", "x^2-y", "(x-y)^2", "x"],
+    "answer": "x^2",
+    "explanation": "分析：本題考查分式的除法和約分。解：原式 = \\(\\frac{x^2-xy}{x-y} \\cdot \\frac{x}{x-y} = \\frac{x(x-y) \\cdot x}{(x-y)^2} = \\frac{x^2}{(x-y)} \\cdot (x-y) = x^2\\)。故選 \\(x^2\\)。",
+    "image": null,
+    "comment": "第 11 題"
+  },
+  {
+    "question": "化簡 \\(\\frac{x^2 y}{ab^2} \\div \\frac{xy}{3ab}\\)，正確的結果是",
+    "options": ["\\frac{3y}{a}", "\\frac{3x}{ab}", "\\frac{3y}{ab}", "\\frac{3x}{b}"],
+    "answer": "\\frac{3x}{b}",
+    "explanation": "解：\\(\\frac{x^2 y}{ab^2} \\div \\frac{xy}{3ab} = \\frac{x^2 y}{ab^2} \\cdot \\frac{3ab}{xy} = \\frac{x^2 y \\cdot 3ab}{ab^2 \\cdot xy} = \\frac{3x}{b}\\)。故選 \\(\\frac{3x}{b}\\)。",
+    "image": null,
+    "comment": "第 12 題"
+  },
+  {
+    "question": "計算 \\(\\frac{x^2}{y} \\div \\left(-\\frac{y}{x}\\right) \\cdot \\frac{y}{x}\\) 的結果是",
+    "options": ["-x", "-\\frac{x^2}{y}", "\\frac{y}{x}", "\\frac{x^2}{y}"],
+    "answer": "-\\frac{x^2}{y}",
+    "explanation": "解：原式 = \\(\\frac{x^2}{y} \\cdot \\left(-\\frac{x}{y}\\right) \\cdot \\frac{y}{x} = \\frac{x^2 \\cdot (-x) \\cdot y}{y \\cdot y \\cdot x} = \\frac{-x^3 y}{y^2 x} = \\frac{-x^2}{y}\\)。故選 \\(-\\frac{x^2}{y}\\)。",
+    "image": null,
+    "comment": "第 13 題"
+  },
+  {
+    "question": "大拖拉機 \\(n\\) 天耕地 \\(a\\) 公頃，小拖拉機 \\(m\\) 天耕地 \\(b\\) 公頃，大拖拉機的工作效率是小拖拉機工作效率的",
+    "options": ["\\frac{am}{bn} 倍", "\\frac{ab}{nm} 倍", "\\frac{an}{bm} 倍", "\\frac{bn}{am} 倍"],
+    "answer": "\\frac{am}{bn} 倍",
+    "explanation": "分析：本題考查工作效率的計算，效率 = 總量 \\(\\div\\) 時間。解：大拖拉機效率 = \\(\\frac{a}{n}\\) 公頃/天，小拖拉機效率 = \\(\\frac{b}{m}\\) 公頃/天。大拖拉機效率是小拖拉機的 \\(\\frac{a/n}{b/m} = \\frac{a}{n} \\cdot \\frac{m}{b} = \\frac{am}{bn}\\) 倍。故選 \\(\\frac{am}{bn} 倍\\)。",
+    "image": null,
+    "comment": "第 16 題"
+  },
+  {
+    "question": "下列計算中，正確的是",
+    "options": ["\\left(\\frac{b}{a}\\right)^2 = \\frac{b^2}{a}", "\\left(\\frac{-y}{2x^2}\\right)^3 = -\\frac{y^3}{2x^6}", "\\left(\\frac{a-b}{a+b}\\right)^2 = \\frac{(a-b)^2}{(a+b)^2}", "\\left(\\frac{3b^2}{2a}\\right)^3 = \\frac{27b^3}{8a^3}"],
+    "answer": "\\left(\\frac{a-b}{a+b}\\right)^2 = \\frac{(a-b)^2}{(a+b)^2}",
+    "explanation": "分析：本題考查分式的乘除和冪運算。解：A. \\(\\left(\\frac{b}{a}\\right)^2 = \\frac{b^2}{a^2} \\neq \\frac{b^2}{a}\\)，錯誤；B. \\(\\left(\\frac{-y}{2x^2}\\right)^3 = \\frac{(-y)^3}{(2x^2)^3} = \\frac{-y^3}{8x^6}\\)，錯誤；C. \\(\\left(\\frac{a-b}{a+b}\\right)^2 = \\frac{(a-b)^2}{(a+b)^2}\\)，正確；D. \\(\\left(\\frac{3b^2}{2a}\\right)^3 = \\frac{(3b^2)^3}{(2a)^3} = \\frac{27b^6}{8a^3} \\neq \\frac{27b^3}{8a^3}\\)，錯誤。故選 \\(\\left(\\frac{a-b}{a+b}\\right)^2 = \\frac{(a-b)^2}{(a+b)^2}\\)。",
+    "image": null,
+    "comment": "第 24 題"
+  },
+  {
+    "question": "下列計算中，錯誤的是",
+    "options": ["\\frac{b}{a} \\cdot \\frac{n}{m} \\div \\frac{y}{x} = \\frac{bnx}{amy}", "\\frac{b}{a} \\cdot \\frac{n}{m} \\div \\frac{y}{x} = \\frac{bmy}{anx}", "\\frac{b}{a} \\div \\frac{n}{m} \\div \\frac{y}{x} = \\frac{bmx}{any}", "\\frac{b}{a} \\div \\left(\\frac{n}{m} \\cdot \\frac{y}{x}\\right) = \\frac{bmx}{any}"],
+    "answer": "\\frac{b}{a} \\cdot \\frac{n}{m} \\div \\frac{y}{x} = \\frac{bmy}{anx}",
+    "explanation": "分析：本題考查分式的乘除運算。解：A. \\(\\frac{b}{a} \\cdot \\frac{n}{m} \\div \\frac{y}{x} = \\frac{b}{a} \\cdot \\frac{n}{m} \\cdot \\frac{x}{y} = \\frac{bnx}{amy}\\)，正確；B. \\(\\frac{b}{a} \\cdot \\frac{n}{m} \\cdot \\frac{x}{y} = \\frac{bnx}{amy} \\neq \\frac{bmy}{anx}\\)，錯誤；C. \\(\\frac{b}{a} \\div \\frac{n}{m} \\div \\frac{y}{x} = \\frac{b}{a} \\cdot \\frac{m}{n} \\cdot \\frac{x}{y} = \\frac{bmx}{any}\\)，正確；D. \\(\\frac{b}{a} \\div \\left(\\frac{n}{m} \\cdot \\frac{y}{x}\\right) = \\frac{b}{a} \\cdot \\frac{mx}{ny} = \\frac{bmx}{any}\\)，正確。故選 \\(\\frac{b}{a} \\cdot \\frac{n}{m} \\div \\frac{y}{x} = \\frac{bmy}{anx}\\)。",
+    "image": null,
+    "comment": "第 25 題"
+  },
+  {
+    "question": "化簡 \\(\\frac{x^2-1}{x^2-2x+1} \\div \\frac{x+1}{x-1} \\cdot \\frac{1-x}{1+x}\\) 後的結果為",
+    "options": ["\\frac{x+1}{x-1}", "\\frac{x-1}{x+1}", "\\frac{1-x}{1+x}", "\\frac{1+x}{1-x}"],
+    "answer": "\\frac{1-x}{1+x}",
+    "explanation": "分析：本題考查分式的乘除法，需因式分解後約分。解：原式 = \\(\\frac{(x-1)(x+1)}{(x-1)^2} \\cdot \\frac{x-1}{x+1} \\cdot \\frac{-(x-1)}{x+1} = \\frac{(x+1) \\cdot (x-1) \\cdot -(x-1)}{(x-1)^2 \\cdot (x+1)^2} = \\frac{-(x-1)}{x+1} = \\frac{1-x}{1+x}\\)。故選 \\(\\frac{1-x}{1+x}\\)。",
+    "image": null,
+    "comment": "第 26 題"
+  },
+  {
+    "question": "計算：\\(\\frac{t^2-2t+1}{t^2-4t+4} \\cdot \\frac{t^2-4}{t-1}\\) 的結果為",
+    "options": ["\\frac{t-2}{(t-1)(t+2)}", "\\frac{t+2}{(t+1)(t-2)}", "\\frac{(t-1)(t+2)}{t-2}", "\\frac{(t+1)(t-2)}{t+2}"],
+    "answer": "\\frac{(t-1)(t+2)}{t-2}",
+    "explanation": "分析：本題考查分式的乘法，需分解因式後約分。解：原式 = \\(\\frac{(t-1)^2}{(t-2)^2} \\cdot \\frac{(t-2)(t+2)}{t-1} = \\frac{(t-1)^2 (t-2)(t+2)}{(t-2)^2 (t-1)} = \\frac{(t-1)(t+2)}{t-2}\\)。故選 \\(\\frac{(t-1)(t+2)}{t-2}\\)。",
+    "image": null,
+    "comment": "第 27 題"
+  }
+]
