@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>數學填空題</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #answer {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            display: none; /* 初始隱藏答案 */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+        #nextBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #nextBtn:hover {
+            background-color: #45a049;
+        }
+        #showAnswerBtn {
+            background-color: #008CBA;
+            color: white;
+        }
+        #showAnswerBtn:hover {
+            background-color: #007399;
+        }
+    </style>
+</head>
+<body>
+    <div id="question"></div>
+    <div id="answer"></div>
+    <button id="showAnswerBtn" onclick="showAnswer()">顯示答案</button>
+    <button id="nextBtn" onclick="generateQuestion()">下一題</button>
+
+    <script>
+        let currentAnswer = 0; // 儲存當前題目的答案
+
+        function generateQuestion() {
+            // 隨機選擇加法或減法
+            const isAddition = Math.random() > 0.5;
+            // 隨機生成數字（1~100）
+            const knownNumber = Math.floor(Math.random() * 100) + 1;
+            let result, blankValue;
+            let question;
+
+            if (isAddition) {
+                // 加法：knownNumber + (   ) = result 或 (   ) + knownNumber = result
+                blankValue = Math.floor(Math.random() * (100 - knownNumber + 1)) + 1; // 確保答案不超過100
+                result = knownNumber + blankValue;
+                question = Math.random() > 0.5
+                    ? `${knownNumber} + (   ) = ${result}`
+                    : `(   ) + ${knownNumber} = ${result}`;
+                currentAnswer = blankValue;
+            } else {
+                // 減法：(   ) - knownNumber = result 或 knownNumber - (   ) = result
+                if (Math.random() > 0.5) {
+                    // (   ) - knownNumber = result
+                    result = Math.floor(Math.random() * 100) + 1;
+                    blankValue = result + knownNumber; // (   ) = result + knownNumber
+                    if (blankValue <= 100) {
+                        question = `(   ) - ${knownNumber} = ${result}`;
+                        currentAnswer = blankValue;
+                    } else {
+                        // 若答案超過100，改用另一形式
+                        blankValue = Math.floor(Math.random() * (knownNumber - 1)) + 1;
+                        result = knownNumber - blankValue;
+                        question = `${knownNumber} - (   ) = ${result}`;
+                        currentAnswer = blankValue;
+                    }
+                } else {
+                    // knownNumber - (   ) = result
+                    blankValue = Math.floor(Math.random() * (knownNumber - 1)) + 1;
+                    result = knownNumber - blankValue;
+                    question = `${knownNumber} - (   ) = ${result}`;
+                    currentAnswer = blankValue;
+                }
+            }
+
+            document.getElementById('question').textContent = question;
+            document.getElementById('answer').textContent = '';
+            document.getElementById('answer').style.display = 'none'; // 隱藏答案
+        }
+
+        function showAnswer() {
+            const answerDiv = document.getElementById('answer');
+            answerDiv.textContent = `答案：${currentAnswer}`;
+            answerDiv.style.display = 'block'; // 顯示答案
+        }
+
+        // 頁面載入時生成第一題
+        generateQuestion();
+    </script>
+</body>
+</html>
