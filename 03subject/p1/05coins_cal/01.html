@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>硬幣計算遊戲 | Coin Calculation Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 閃爍動畫 | Blinking Animation */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .blink {
+            animation: blink 1s infinite; /* 1 秒閃爍一次 | Blinks once per second */
+            display: inline-block; /* 確保整個元素閃爍 | Ensure the entire element blinks */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-between">
+    <!-- 難度選擇畫面 | Difficulty Selection Screen -->
+    <div id="difficulty-screen" class="flex flex-col items-center justify-center h-full">
+        <h1 class="text-3xl font-bold mb-8">選擇難度 | Select Difficulty</h1>
+        <div class="flex space-x-4">
+            <button id="easy-btn" class="px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 text-xl">簡單 | Easy</button>
+            <button id="normal-btn" class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 text-xl">普通 | Normal</button>
+            <button id="hard-btn" class="px-6 py-3 bg-red-500 text-white rounded hover:bg-red-600 text-xl">困難 | Hard</button>
+        </div>
+    </div>
+
+    <!-- 遊戲主畫面 | Main Game Screen -->
+    <div id="game-screen" class="hidden flex flex-col items-center justify-between w-full min-h-screen">
+        <!-- 頂部顯示星星 | Top Star Display -->
+        <div class="my-2 text-2xl font-bold flex items-center">
+            <span>星星數 | Star Count:</span>
+            <div id="star-count" class="flex ml-2"></div>
+        </div>
+
+        <!-- 中央輸入區域 | Central Input Area -->
+        <div class="my-2 text-4xl font-bold">
+            輸入金額 | Input Amount: <span id="input-amount">？ 圓 ？ 毫 | ? Patacas ? Avos</span>
+        </div>
+
+        <!-- 數字鍵盤 | Number Keypad -->
+        <div class="mb-4 grid grid-cols-3 gap-2 w-64">
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">1</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">2</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">3</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">4</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">5</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">6</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">7</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">8</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">9</button>
+            <button class="num-btn px-4 py-4 bg-gray-200 rounded hover:bg-gray-300 text-xl">0</button>
+            <button id="clear-btn" class="num-btn px-4 py-4 bg-red-500 text-white rounded hover:bg-red-600 text-xl">清除 | Clear</button>
+            <button id="submit-btn" class="num-btn px-4 py-4 bg-green-500 text-white rounded hover:bg-green-600 text-xl">確認 | Confirm</button>
+        </div>
+
+        <!-- 右邊：顯示隨機硬幣 | Right: Display Random Coins -->
+        <div class="w-full max-w-4xl p-4 bg-white rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">硬幣 | Coins</h2>
+            <div id="random-coins" class="flex flex-col"></div>
+        </div>
+
+        <!-- 動畫效果容器 | Animation Effect Container -->
+        <div id="celebration" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div class="text-6xl animate-bounce">🎉 正確！ | Correct!</div>
+        </div>
+
+        <!-- 遊戲結束畫面 | Game Over Screen -->
+        <div id="game-over" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                <h2 class="text-2xl font-bold mb-4">遊戲結束！ | Game Over!</h2>
+                <p id="final-stars" class="text-xl mb-2"></p>
+                <p id="final-time" class="text-xl mb-4"></p>
+                <input id="player-name" type="text" placeholder="輸入你的名字 | Enter Your Name" class="p-2 border rounded mb-4">
+                <button id="save-score" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">保存 | Save</button>
+                <h3 class="text-xl font-semibold mt-4">排行榜 | Leaderboard</h3>
+                <ul id="leaderboard" class="text-left"></ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-4">
+            <p>© 2025 ukawai</p>
+        </footer>
+    </div>
+
+    <script>
+        // 硬幣數據 | Coin Data
+        const imageFiles = ['01.jpg', '02.jpg', '05.jpg', '10.jpg', '50.jpg', '100.jpg'];
+        const coins = imageFiles.map(file => ({
+            name: file,
+            value: parseInt(file.split('.')[0]) / 10
+        }));
+
+        let totalValue = 0; // 當前題目總金額 | Current Question Total Amount
+        let inputValue = { dollars: null, cents: null }; // 用戶輸入的金額 | User Input Amount
+        let starCount = 0; // 星星數 | Star Count
+        let startTime = null; // 遊戲開始時間 | Game Start Time
+        let randomCoins = {}; // 當前題目硬幣 | Current Question Coins
+        let isInputCents = false; // 是否輸入毫 | Whether Inputting Cents
+        let difficulty = null; // 當前難度 | Current Difficulty
+        let usedCombinations = []; // 儲存已使用的硬幣組合 | Store Used Coin Combinations
+
+        // 難度設定 | Difficulty Settings
+        const difficultySettings = {
+            easy: { minCoins: 3, maxCoins: 5, maxTypes: 2, maxStars: 5 }, // 簡單 5 局結束 | Easy ends after 5 rounds
+            normal: { minCoins: 3, maxCoins: 8, maxTypes: 3, maxStars: 10 }, // 普通 10 局結束 | Normal ends after 10 rounds
+            hard: { minCoins: 5, maxCoins: 15, maxTypes: 5, maxStars: 10 } // 困難 10 局結束 | Hard ends after 10 rounds
+        };
+
+        // 格式化價值顯示 | Format Value Display
+        function formatValue(value) {
+            if (value < 1) {
+                return `${(value * 10).toFixed(0)}毫 | ${(value * 10).toFixed(0)} Avos`;
+            }
+            return `${value.toFixed(0)}圓 | ${value.toFixed(0)} Patacas`;
+        }
+
+        // 更新輸入金額顯示 | Update Input Amount Display
+        function updateInputAmount() {
+            const dollars = inputValue.dollars !== null ? inputValue.dollars : '？';
+            const cents = inputValue.cents !== null ? inputValue.cents : '？';
+            const dollarDisplay = !isInputCents ? `<span class="blink">${dollars}</span>` : dollars;
+            const centDisplay = isInputCents ? `<span class="blink">${cents}</span>` : cents;
+            const avosDisplay = cents === '？' ? '？' : cents * 10; // Only multiply by 10 if cents is a number
+            document.getElementById('input-amount').innerHTML = `${dollarDisplay} 圓 ${centDisplay} 毫 | ${dollarDisplay} Patacas ${avosDisplay} Avos`;
+        }
+
+        // 渲染星星數 | Render Star Count
+        function renderStars() {
+            const starDiv = document.getElementById('star-count');
+            starDiv.innerHTML = '';
+            for (let i = 0; i < starCount; i++) {
+                const img = document.createElement('img');
+                img.src = 'images/star.png'; // 使用指定的星星圖片 | Use specified star image
+                img.className = 'w-6 h-6';
+                starDiv.appendChild(img);
+            }
+        }
+
+        // 隨機選擇硬幣類型 | Randomly Select Coin Types
+        function getRandomCoinTypes(maxTypes) {
+            const shuffled = coins.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, Math.min(maxTypes, coins.length));
+        }
+
+        // 檢查硬幣組合是否已使用 | Check if Coin Combination is Used
+        function isCombinationUsed(newCombination) {
+            return usedCombinations.some(used => {
+                return Object.keys(newCombination).length === Object.keys(used).length &&
+                    Object.keys(newCombination).every(key => newCombination[key] === used[key]);
+            });
+        }
+
+        // 生成隨機硬幣（確保不重複） | Generate Random Coins (Ensure No Duplicates)
+        function generateRandomCoins() {
+            const settings = difficultySettings[difficulty];
+            let attempts = 0;
+            const maxAttempts = 100; // 防止無限循環 | Prevent infinite loop
+
+            do {
+                randomCoins = {};
+                totalValue = 0;
+                const coinCount = Math.floor(Math.random() * (settings.maxCoins - settings.minCoins + 1)) + settings.minCoins;
+                const selectedCoins = getRandomCoinTypes(settings.maxTypes);
+
+                for (let i = 0; i < coinCount; i++) {
+                    const coin = selectedCoins[Math.floor(Math.random() * selectedCoins.length)];
+                    randomCoins[coin.name] = (randomCoins[coin.name] || 0) + 1;
+                    totalValue += coin.value;
+                }
+
+                attempts++;
+                if (attempts >= maxAttempts) {
+                    console.warn('達到最大嘗試次數，可能無法生成更多唯一組合 | Maximum attempts reached, may not generate more unique combinations');
+                    break;
+                }
+            } while (isCombinationUsed(randomCoins));
+
+            // 保存新組合 | Save new combination
+            usedCombinations.push({ ...randomCoins });
+            renderRandomCoins();
+        }
+
+        // 渲染隨機硬幣（按價值排序） | Render Random Coins (Sorted by Value)
+        function renderRandomCoins() {
+            const coinDiv = document.getElementById('random-coins');
+            coinDiv.innerHTML = '';
+            const sortedCoins = Object.keys(randomCoins).sort((a, b) => {
+                return parseInt(a.split('.')[0]) - parseInt(b.split('.')[0]);
+            });
+            sortedCoins.forEach(name => {
+                const count = randomCoins[name];
+                const value = parseInt(name.split('.')[0]) / 10;
+                const div = document.createElement('div');
+                div.className = 'flex items-center mb-2';
+                let images = '';
+                for (let i = 0; i < count; i++) {
+                    images += `<img src="images/${name}" alt="${name}" class="w-10 h-10 mr-2">`;
+                }
+                div.innerHTML = `
+                    <div class="flex flex-wrap items-center">
+                        <span class="mr-2">${formatValue(value)}:</span>
+                        ${images}
+                    </div>
+                `;
+                coinDiv.appendChild(div);
+            });
+        }
+
+        // 處理數字鍵盤輸入 | Handle Number Keypad Input
+        function handleNumberInput(num) {
+            if (!isInputCents) {
+                // 輸入圓（限制最多 3 位） | Input Patacas (limit to 3 digits)
+                if (inputValue.dollars === null) {
+                    inputValue.dollars = num;
+                } else if (inputValue.dollars < 100) {
+                    inputValue.dollars = inputValue.dollars * 10 + num;
+                }
+            } else {
+                // 輸入毫 | Input Avos
+                inputValue.cents = num;
+            }
+            updateInputAmount();
+        }
+
+        // 清除輸入 | Clear Input
+        function clearInput() {
+            inputValue = { dollars: null, cents: null };
+            isInputCents = false;
+            updateInputAmount();
+        }
+
+        // 檢查答案 | Check Answer
+        function checkAnswer() {
+            const inputDollars = inputValue.dollars || 0;
+            const inputCents = inputValue.cents || 0;
+            const inputTotal = inputDollars + inputCents / 10;
+            if (Math.abs(inputTotal - totalValue) < 0.01) {
+                // 正確 | Correct
+                starCount++;
+                renderStars();
+                showCelebration();
+                setTimeout(nextQuestion, 1500);
+            }
+            clearInput();
+        }
+
+        // 顯示慶祝動畫 | Show Celebration Animation
+        function showCelebration() {
+            const celebration = document.getElementById('celebration');
+            celebration.classList.remove('hidden');
+            setTimeout(() => {
+                celebration.classList.add('hidden');
+            }, 1000);
+        }
+
+        // 進入下一題 | Proceed to Next Question
+        function nextQuestion() {
+            const settings = difficultySettings[difficulty];
+            if (starCount >= settings.maxStars) { // 根據難度檢查結束條件 | Check end condition based on difficulty
+                endGame();
+            } else {
+                generateRandomCoins();
+                clearInput();
+            }
+        }
+
+        // 結束遊戲 | End Game
+        function endGame() {
+            const endTime = new Date();
+            const timeTaken = Math.round((endTime - startTime) / 1000); // 秒 | Seconds
+            const gameOver = document.getElementById('game-over');
+            document.getElementById('final-stars').textContent = `獲得星星 | Stars Earned: ${starCount}`;
+            document.getElementById('final-time').textContent = `用時 | Time Taken: ${timeTaken} 秒 | Seconds`;
+            gameOver.classList.remove('hidden');
+        }
+
+        // 保存成績並顯示排行榜 | Save Score and Display Leaderboard
+        function saveScore() {
+            const name = document.getElementById('player-name').value || '匿名 | Anonymous';
+            const timeTaken = Math.round((new Date() - startTime) / 1000);
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            leaderboard.push({ name, time: timeTaken, stars: starCount, difficulty });
+            leaderboard.sort((a, b) => a.time - b.time); // 按用時排序 | Sort by time
+            leaderboard.splice(5); // 保留前 5 | Keep top 5
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+            renderLeaderboard();
+            // 鎖定輸入框和保存按鈕 | Lock input field and save button
+            document.getElementById('player-name').disabled = true;
+            document.getElementById('save-score').disabled = true;
+        }
+
+        // 渲染排行榜 | Render Leaderboard
+        function renderLeaderboard() {
+            const leaderboardList = document.getElementById('leaderboard');
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            leaderboardList.innerHTML = '';
+            leaderboard.forEach((entry, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${entry.name} - ${entry.stars} 星 | Stars, ${entry.time} 秒 | Seconds (${entry.difficulty})`;
+                leaderboardList.appendChild(li);
+            });
+        }
+
+        // 初始化 | Initialize
+        function init() {
+            clearInput(); // 設置初始顯示 | Set initial display
+            // 綁定難度選擇按鈕 | Bind difficulty selection buttons
+            document.getElementById('easy-btn').addEventListener('click', () => startGame('easy'));
+            document.getElementById('normal-btn').addEventListener('click', () => startGame('normal'));
+            document.getElementById('hard-btn').addEventListener('click', () => startGame('hard'));
+        }
+
+        // 開始遊戲 | Start Game
+        function startGame(selectedDifficulty) {
+            difficulty = selectedDifficulty;
+            startTime = new Date();
+            starCount = 0;
+            usedCombinations = []; // 清空已使用的硬幣組合 | Clear used coin combinations
+            document.getElementById('difficulty-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            generateRandomCoins();
+            renderStars();
+            renderLeaderboard();
+
+            // 綁定數字鍵盤 | Bind number keypad
+            document.querySelectorAll('.num-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.id === 'clear-btn') {
+                        clearInput();
+                    } else if (btn.id === 'submit-btn') {
+                        isInputCents = !isInputCents;
+                        if (!isInputCents) checkAnswer();
+                        updateInputAmount(); // 更新閃爍位置 | Update blinking position
+                    } else {
+                        handleNumberInput(parseInt(btn.textContent));
+                    }
+                });
+            });
+
+            // 保存成績 | Save score
+            document.getElementById('save-score').addEventListener('click', saveScore);
+        }
+
+        init();
+    </script>
+</body>
+</html>
