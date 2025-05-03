@@ -1,297 +1,188 @@
-
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI應用工具</title>
+    <title>學生分數計算器</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
-            background: #f5f5f7;
-            color: #1d1d1f;
-            min-height: 100vh;
-            line-height: 1.5;
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-        h1 {
-            text-align: center;
-            font-size: 48px;
-            font-weight: 700;
-            padding: 60px 20px 40px;
-            color: #1d1d1f;
-            letter-spacing: -0.02em;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .category-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-        }
-        .category-item {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: 18px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-        .category-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        .category-image {
-            width: 200px;
-            height: 150px;
-            margin-right: 20px;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .category-image img {
+        table {
+            border-collapse: collapse;
             width: 100%;
-            height: 100%;
-            object-fit: contain;
+            max-width: 800px;
         }
-        .category-content h2 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 10px;
-        }
-        .category-content p {
-            font-size: 16px;
-            color: #6e6e73;
-        }
-        footer {
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
             text-align: center;
-            padding: 20px;
-            color: #6e6e73;
-            font-size: 14px;
         }
-        @media screen and (max-width: 768px) {
-            h1 {
-                font-size: 36px;
-                padding: 40px 20px 20px;
-            }
-            .category-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .category-image {
-                width: 100%;
-                height: 200px;
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-            .category-content {
-                width: 100%;
-            }
+        th {
+            background-color: #f2f2f2;
+        }
+        .input-area {
+            margin-bottom: 20px;
+        }
+        textarea, input[type="number"] {
+            width: 300px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        .copy-btn {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 3px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+        /* 姓名欄寬度設定 */
+        th:nth-child(1), td:nth-child(1) {
+            width: 120px; /* 約4個中文字寬度 */
+            white-space: nowrap; /* 防止換行 */
+        }
+        /* 粉紅色底（小於60） */
+        .low-score {
+            background-color: #FFC1CC;
+        }
+        /* 粉藍色底（大於90） */
+        .high-score {
+            background-color: #ADD8E6;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>AI應用工具</h1>
-    <div class="container">
-        <div class="category-list">
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/a01.png" alt="工具1">
-                </div>
-                <div class="category-content">
-                    <h2>工具1</h2>
-                    <p>提供多種互動式教學工具，幫助教師提升課堂參與度，激發學生學習興趣。</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具2">
-                </div>
-                <div class="category-content">
-                    <h2>工具2</h2>
-                    <p>針對小學一年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具3">
-                </div>
-                <div class="category-content">
-                    <h2>工具3</h2>
-                    <p>針對小學二年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具4">
-                </div>
-                <div class="category-content">
-                    <h2>工具4</h2>
-                    <p>針對小學三年的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具5">
-                </div>
-                <div class="category-content">
-                    <h2>工具5</h2>
-                    <p>針對小學四年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具6">
-                </div>
-                <div class="category-content">
-                    <h2>工具6</h2>
-                    <p>針對小學五年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具7">
-                </div>
-                <div class="category-content">
-                    <h2>工具7</h2>
-                    <p>針對小學六年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具8">
-                </div>
-                <div class="category-content">
-                    <h2>工具8</h2>
-                    <p>針對初中一年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具9">
-                </div>
-                <div class="category-content">
-                    <h2>工具9</h2>
-                    <p>針對初中二年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/b01.png" alt="工具10">
-                </div>
-                <div class="category-content">
-                    <h2>工具10</h2>
-                    <p>針對初中三年級的動態課件</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/d01.png" alt="工具11">
-                </div>
-                <div class="category-content">
-                    <h2>工具11</h2>
-                    <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div class="category-item" onclick="window.location.href='#'">
-                <div class="category-image">
-                    <img src="images/e01.png" alt="工具12">
-                </div>
-                <div class="category-content">
-                    <h2>工具12</h2>
-                    <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
-                </div>
-            </div>
-        </div>
+    <div class="input-area">
+        <label for="totalScore">總分：</label><br>
+        <input type="number" id="totalScore" value="100"><br><br>
+        <label for="studentData">學生資料（姓名 分數）：</label><br>
+        <textarea id="studentData" rows="10"></textarea><br>
+        <button onclick="generateTable()">生成表格</button>
     </div>
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>分數 <button class="copy-btn" onclick="copyColumn(1)">複製</button></th>
+                <th>真實分 <button class="copy-btn" onclick="copyColumn(2)">複製</button></th>
+                <th>調整1 <button class="copy-btn" onclick="copyColumn(3)">複製</button></th>
+                <th>調整2 <button class="copy-btn" onclick="copyColumn(4)">複製</button></th>
+                <th>調整3 <button class="copy-btn" onclick="copyColumn(5)">複製</button></th>
+                <th>常模參照 <button class="copy-btn" onclick="copyColumn(6)">複製</button></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function generateTable() {
+            const totalScoreInput = document.getElementById('totalScore').value;
+            const totalScore = parseFloat(totalScoreInput);
+            const studentData = document.getElementById('studentData').value.trim().split('\n');
+            const students = [];
+
+            // 解析學生資料
+            studentData.forEach(line => {
+                const [name, score] = line.trim().split(/\s+/);
+                if (name && score) {
+                    const parsedScore = parseFloat(score);
+                    students.push({ name, score: isNaN(parsedScore) ? '' : parsedScore });
+                }
+            });
+
+            // 排序規則
+            students.sort((a, b) => {
+                const surnameA = a.name[0];
+                const surnameB = b.name[0];
+                if (surnameA !== surnameB) {
+                    return surnameA.localeCompare(surnameB, 'zh-TW');
+                }
+                const charA = a.name[1] || '';
+                const charB = b.name[1] || '';
+                if (a.name.length === 2 && b.name.length > 2) return -1;
+                if (b.name.length === 2 && a.name.length > 2) return 1;
+                return charA.localeCompare(charB, 'zh-TW');
+            });
+
+            // 計算常模參照：最高分100，最低分60，0分50
+            let normReference = '';
+            const validScores = students
+                .filter(student => student.score !== '' && !isNaN(student.score))
+                .map(student => student.score);
+            const maxScore = validScores.length > 0 ? Math.max(...validScores) : 0;
+            const minScore = validScores.length > 0 ? Math.min(...validScores) : 0;
+
+            // 計算並生成表格
+            const tbody = document.querySelector('#resultTable tbody');
+            tbody.innerHTML = '';
+            students.forEach(student => {
+                let realScore = '';
+                let formula1 = '';
+                let formula2 = '';
+                let formula3 = '';
+                normReference = '';
+
+                if (student.score !== '' && !isNaN(totalScore) && totalScore > 0) {
+                    realScore = Math.floor(student.score / totalScore * 100);
+                    formula1 = Math.floor(realScore * 0.9 + 10);
+                    formula2 = Math.floor(realScore * 0.8 + 20);
+                    formula3 = Math.floor(Math.sqrt(realScore) * 10);
+
+                    // 常模參照計算
+                    if (student.score === 0) {
+                        normReference = 50; // 0分對應50
+                    } else if (validScores.length === 0) {
+                        normReference = 60; // 無有效分數時，給60
+                    } else if (maxScore === minScore) {
+                        normReference = student.score === maxScore ? 100 : 60; // 所有分數相同時，給100或60
+                    } else if (student.score === maxScore) {
+                        normReference = 100; // 最高分對應100
+                    } else if (student.score === minScore) {
+                        normReference = 60; // 最低分對應60
+                    } else {
+                        // 線性插值：(score - min) / (max - min) * (100 - 60) + 60
+                        normReference = Math.floor(
+                            ((student.score - minScore) / (maxScore - minScore)) * (100 - 60) + 60
+                        );
+                    }
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.score !== '' ? student.score : ''}</td>
+                    <td class="${realScore !== '' && realScore < 60 ? 'low-score' : realScore > 90 ? 'high-score' : ''}">${realScore}</td>
+                    <td class="${formula1 !== '' && formula1 < 60 ? 'low-score' : formula1 > 90 ? 'high-score' : ''}">${formula1}</td>
+                    <td class="${formula2 !== '' && formula2 < 60 ? 'low-score' : formula2 > 90 ? 'high-score' : ''}">${formula2}</td>
+                    <td class="${formula3 !== '' && formula3 < 60 ? 'low-score' : formula3 > 90 ? 'high-score' : ''}">${formula3}</td>
+                    <td class="${normReference !== '' && normReference < 60 ? 'low-score' : normReference > 90 ? 'high-score' : ''}">${normReference}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function copyColumn(columnIndex) {
+            const rows = document.querySelectorAll('#resultTable tbody tr');
+            const data = Array.from(rows).map(row => {
+                return row.cells[columnIndex].textContent;
+            }).join('\n');
+
+            // 複製到剪貼簿
+            navigator.clipboard.writeText(data).then(() => {
+                console.log(`已複製第${columnIndex}列數值：\n${data}`);
+            }).catch(err => {
+                console.error('複製失敗：', err);
+            });
+        }
+    </script>
     <footer>
         <p>© 2025 ukawai</p>
     </footer>
