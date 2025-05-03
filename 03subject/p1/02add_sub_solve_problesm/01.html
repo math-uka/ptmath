@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Math Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e0f7fa, #b2ebf2);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        #question {
+            min-height: 4rem;
+        }
+        #answer {
+            min-height: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="text-3xl font-bold text-cyan-700 mb-6">Dynamic Math Quiz</h1>
+        <div id="question" class="text-lg text-gray-800 mb-6">Loading question...</div>
+        <div id="answer" class="text-md text-gray-600 mb-6 italic"></div>
+        <div class="flex justify-center gap-4">
+            <button id="showAnswer" class="btn bg-cyan-500 text-white hover:bg-cyan-600">Show Answer</button>
+            <button id="nextQuestion" class="btn bg-teal-500 text-white hover:bg-teal-600">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+        // Utility functions
+        const randomChoice = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+        // Data for randomization
+        const names = ['Emma', 'David', 'Lily', 'Jake', 'Sara', 'Tom', 'Lucy', 'Anna', 'Ben', 'Chloe'];
+        const places = {
+            shop: ['store', 'market', 'bakery', 'fruit shop', 'toy store'],
+            nature: ['tree', 'pond', 'garden', 'field'],
+            container: ['basket', 'box', 'jar', 'plate', 'shelf'],
+            institution: ['school', 'zoo', 'library', 'farm']
+        };
+        const items = {
+            food: ['apples', 'oranges', 'cookies', 'cupcakes', 'candies', 'jellybeans'],
+            collectible: ['stickers', 'toy cars', 'crayons', 'marbles', 'beads', 'pencils'],
+            animal: ['birds', 'ducks', 'lions', 'tigers', 'chickens', 'zebras'],
+            general: ['books', 'flowers', 'balloons', 'toys', 'students']
+        };
+        const actions = {
+            food: ['are eaten', 'are sold'],
+            animal: ['fly away', 'run away', 'are sold'],
+            collectible: ['are sold', 'are lost', 'are used'],
+            general: ['are sold', 'are taken']
+        };
+        const timePeriods = ['morning', 'afternoon', 'today', 'yesterday'];
+        const specificTypes = {
+            flowers: ['roses', 'tulips', 'daisies'],
+            books: ['storybooks', 'science books', 'math books'],
+            balloons: ['red', 'blue', 'green'],
+            students: ['boys', 'girls', 'Grade 1', 'Grade 2', 'Grade 3'],
+            animals: ['monkeys', 'giraffes', 'zebras']
+        };
+
+        // Question templates
+        const questionTemplates = [
+            // Comparison (More/Less)
+            () => {
+                const place = randomChoice(places.shop);
+                const itemPair = randomChoice([['apples', 'oranges'], ['pencils', 'erasers'], ['lions', 'tigers'], ['toy cars', 'dolls']]);
+                const quantity1 = randomInt(20, 100);
+                const quantity2 = randomInt(10, quantity1 - 1);
+                const question = `${place.charAt(0).toUpperCase() + place.slice(1)} has ${quantity1} ${itemPair[0]} and ${quantity2} ${itemPair[1]}. How many more ${itemPair[0]} are there?`;
+                const answer = `${quantity1} - ${quantity2} = ${quantity1 - quantity2}`;
+                return { question, answer };
+            },
+            // Addition (Gaining Items)
+            () => {
+                const name = randomChoice(names);
+                const item = randomChoice(items.collectible);
+                const quantity1 = randomInt(5, 50);
+                const quantity2 = randomInt(1, 20);
+                const action = randomChoice(['buys', 'gets', 'receives']);
+                const pronoun = ['Emma', 'Lily', 'Sara', 'Anna', 'Chloe'].includes(name) ? 'She' : 'He';
+                const question = `${name} has ${quantity1} ${item}. ${pronoun} ${action} ${quantity2} more. How many ${item} does ${name} have now?`;
+                const answer = `${quantity1} + ${quantity2} = ${quantity1 + quantity2}`;
+                return { question, answer };
+            },
+            // Subtraction (Losing Items)
+            () => {
+                const item = randomChoice([...items.food, ...items.animal, ...items.collectible]);
+                const placeType = items.food.includes(item) ? 'container' : items.animal.includes(item) ? 'nature' : 'container';
+                const place = randomChoice(places[placeType]);
+                const quantity1 = randomInt(10, 100);
+                const quantity2 = randomInt(1, quantity1 - 1);
+                const action = randomChoice(actions[items.food.includes(item) ? 'food' : items.animal.includes(item) ? 'animal' : 'collectible']);
+                const question = `There are ${quantity1} ${item} in ${place}. ${quantity2} ${action}. How many ${item} are left?`;
+                const answer = `${quantity1} - ${quantity2} = ${quantity1 - quantity2}`;
+                return { question, answer };
+            },
+            // Remaining Items (Not Something)
+            () => {
+                const item = randomChoice(['flowers', 'books', 'balloons', 'students']);
+                const place = randomChoice(places[item === 'students' ? 'institution' : item === 'books' ? 'institution' : 'nature']);
+                const specific = randomChoice(specificTypes[item]);
+                const quantity1 = randomInt(10, 100);
+                const quantity2 = randomInt(1, quantity1 - 1);
+                const question = `There are ${quantity1} ${item} in ${place}. ${quantity2} are ${specific}. How many are not ${specific}?`;
+                const answer = `${quantity1} - ${quantity2} = ${quantity1 - quantity2}`;
+                return { question, answer };
+            },
+            // Total Sum
+            () => {
+                const place = randomChoice(places.shop);
+                const item = randomChoice(items.food);
+                const quantity1 = randomInt(10, 50);
+                const quantity2 = randomInt(10, 50);
+                const time1 = randomChoice(timePeriods);
+                let time2 = randomChoice(timePeriods);
+                while (time2 === time1) time2 = randomChoice(timePeriods);
+                const action = randomChoice(['sold', 'made']);
+                const question = `${place.charAt(0).toUpperCase() + place.slice(1)} ${action} ${quantity1} ${item} in the ${time1} and ${quantity2} in the ${time2}. How many ${item} were ${action} in total?`;
+                const answer = `${quantity1} + ${quantity2} = ${quantity1 + quantity2}`;
+                return { question, answer };
+            },
+            // Partition (Rest of Items)
+            () => {
+                const item = randomChoice(['balloons', 'animals', 'books']);
+                const place = randomChoice(places[item === 'animals' ? 'institution' : item === 'books' ? 'institution' : 'shop']);
+                const types = specificTypes[item === 'animals' ? 'animals' : item];
+                const type1 = randomChoice(types);
+                let type2 = randomChoice(types);
+                while (type2 === type1) type2 = randomChoice(types);
+                let type3 = randomChoice(types);
+                while (type3 === type1 || type3 === type2) type3 = randomChoice(types);
+                const quantity1 = randomInt(50, 150);
+                const quantity2 = randomInt(10, Math.floor(quantity1 / 2));
+                const quantity3 = randomInt(10, quantity1 - quantity2 - 1);
+                const question = `${place.charAt(0).toUpperCase() + place.slice(1)} has ${quantity1} ${item}. ${quantity2} are ${type1}, ${quantity3} are ${type2}, and the rest are ${type3}. How many are ${type3}?`;
+                const answer = `${quantity1} - ${quantity2} - ${quantity3} = ${quantity1 - quantity2 - quantity3}`;
+                return { question, answer };
+            }
+        ];
+
+        // DOM elements
+        const questionElement = document.getElementById('question');
+        const answerElement = document.getElementById('answer');
+        const showAnswerButton = document.getElementById('showAnswer');
+        const nextQuestionButton = document.getElementById('nextQuestion');
+
+        let currentQuestion = null;
+
+        function loadQuestion() {
+            try {
+                const template = randomChoice(questionTemplates);
+                currentQuestion = template();
+                questionElement.textContent = currentQuestion.question;
+                answerElement.textContent = '';
+            } catch (error) {
+                console.error('Error loading question:', error);
+                questionElement.textContent = 'Error loading question. Please try again.';
+            }
+        }
+
+        showAnswerButton.addEventListener('click', () => {
+            if (currentQuestion) {
+                answerElement.textContent = currentQuestion.answer;
+            }
+        });
+
+        nextQuestionButton.addEventListener('click', () => {
+            loadQuestion();
+        });
+
+        // Load the first question
+        loadQuestion();
+    </script>
+</body>
+</html>
