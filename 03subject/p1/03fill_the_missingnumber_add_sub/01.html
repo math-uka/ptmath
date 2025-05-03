@@ -14,23 +14,33 @@
             margin: 0;
             background-color: #f0f0f0;
         }
+        #difficulty {
+            margin-bottom: 20px;
+        }
         #question {
-            font-size: 24px;
+            font-size: 64px; /* 題目字體放大 */
             margin-bottom: 20px;
         }
         #answer {
-            font-size: 20px;
+            font-size: 56px; /* 答案字體放大 */
             color: #333;
             margin-bottom: 20px;
             display: none; /* 初始隱藏答案 */
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px; /* 按鈕更大 */
+            font-size: 36px; /* 按鈕字體放大 */
             cursor: pointer;
-            margin: 5px;
+            margin: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+        }
+        #easyBtn, #hardBtn {
+            background-color: #FF9800;
+            color: white;
+        }
+        #easyBtn:hover, #hardBtn:hover {
+            background-color: #F57C00;
         }
         #nextBtn {
             background-color: #4CAF50;
@@ -46,28 +56,43 @@
         #showAnswerBtn:hover {
             background-color: #007399;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div id="question"></div>
-    <div id="answer"></div>
-    <button id="showAnswerBtn" onclick="showAnswer()">顯示答案</button>
-    <button id="nextBtn" onclick="generateQuestion()">下一題</button>
+    <div id="difficulty">
+        <button id="easyBtn" onclick="setDifficulty(10)">EASY</button>
+        <button id="hardBtn" onclick="setDifficulty(100)">HARD</button>
+    </div>
+    <div id="question" class="hidden"></div>
+    <div id="answer" class="hidden"></div>
+    <button id="showAnswerBtn" class="hidden" onclick="showAnswer()">顯示答案</button>
+    <button id="nextBtn" class="hidden" onclick="generateQuestion()">下一題</button>
 
     <script>
-        let currentAnswer = 0; // 儲存當前題目的答案
+        let currentAnswer = 0;
+        let maxNumber = 10; // 預設 EASY
+
+        function setDifficulty(max) {
+            maxNumber = max;
+            document.getElementById('difficulty').classList.add('hidden');
+            document.getElementById('question').classList.remove('hidden');
+            document.getElementById('showAnswerBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+            generateQuestion();
+        }
 
         function generateQuestion() {
-            // 隨機選擇加法或減法
             const isAddition = Math.random() > 0.5;
-            // 隨機生成數字（1~100）
-            const knownNumber = Math.floor(Math.random() * 100) + 1;
+            const knownNumber = Math.floor(Math.random() * maxNumber) + 1;
             let result, blankValue;
             let question;
 
             if (isAddition) {
                 // 加法：knownNumber + (   ) = result 或 (   ) + knownNumber = result
-                blankValue = Math.floor(Math.random() * (100 - knownNumber + 1)) + 1; // 確保答案不超過100
+                blankValue = Math.floor(Math.random() * (maxNumber - knownNumber)) + 1; // 答案 1~(maxNumber-knownNumber)
                 result = knownNumber + blankValue;
                 question = Math.random() > 0.5
                     ? `${knownNumber} + (   ) = ${result}`
@@ -77,21 +102,13 @@
                 // 減法：(   ) - knownNumber = result 或 knownNumber - (   ) = result
                 if (Math.random() > 0.5) {
                     // (   ) - knownNumber = result
-                    result = Math.floor(Math.random() * 100) + 1;
+                    result = Math.floor(Math.random() * knownNumber) + 1; // 結果 1~knownNumber
                     blankValue = result + knownNumber; // (   ) = result + knownNumber
-                    if (blankValue <= 100) {
-                        question = `(   ) - ${knownNumber} = ${result}`;
-                        currentAnswer = blankValue;
-                    } else {
-                        // 若答案超過100，改用另一形式
-                        blankValue = Math.floor(Math.random() * (knownNumber - 1)) + 1;
-                        result = knownNumber - blankValue;
-                        question = `${knownNumber} - (   ) = ${result}`;
-                        currentAnswer = blankValue;
-                    }
+                    question = `(   ) - ${knownNumber} = ${result}`;
+                    currentAnswer = blankValue;
                 } else {
                     // knownNumber - (   ) = result
-                    blankValue = Math.floor(Math.random() * (knownNumber - 1)) + 1;
+                    blankValue = Math.floor(Math.random() * (knownNumber - 1)) + 1; // 答案 1~(knownNumber-1)
                     result = knownNumber - blankValue;
                     question = `${knownNumber} - (   ) = ${result}`;
                     currentAnswer = blankValue;
@@ -100,17 +117,14 @@
 
             document.getElementById('question').textContent = question;
             document.getElementById('answer').textContent = '';
-            document.getElementById('answer').style.display = 'none'; // 隱藏答案
+            document.getElementById('answer').style.display = 'none';
         }
 
         function showAnswer() {
             const answerDiv = document.getElementById('answer');
             answerDiv.textContent = `答案：${currentAnswer}`;
-            answerDiv.style.display = 'block'; // 顯示答案
+            answerDiv.style.display = 'block';
         }
-
-        // 頁面載入時生成第一題
-        generateQuestion();
     </script>
 </body>
 </html>
