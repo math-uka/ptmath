@@ -18,18 +18,18 @@
             margin-bottom: 20px;
         }
         #question {
-            font-size: 64px; /* 題目字體放大 */
+            font-size: 64px;
             margin-bottom: 20px;
         }
         #answer {
-            font-size: 56px; /* 答案字體放大 */
+            font-size: 56px;
             color: #333;
             margin-bottom: 20px;
-            display: none; /* 初始隱藏答案 */
+            display: none;
         }
         button {
-            padding: 15px 30px; /* 按鈕更大 */
-            font-size: 36px; /* 按鈕字體放大 */
+            padding: 15px 30px;
+            font-size: 36px;
             cursor: pointer;
             margin: 10px;
             border: none;
@@ -85,32 +85,46 @@
         }
 
         function generateQuestion() {
-            const isAddition = Math.random() > 0.5;
-            const knownNumber = Math.floor(Math.random() * maxNumber) + 1;
-            let result, blankValue;
-            let question;
+            const questionType = Math.floor(Math.random() * 6); // 0~5，選擇題型
+            let knownNumber, result, blankValue, question;
 
-            if (isAddition) {
-                // 加法：knownNumber + (   ) = result 或 (   ) + knownNumber = result
+            if (questionType === 0) {
+                // 加法新題型：a + b = (　　　)
+                const a = Math.floor(Math.random() * (maxNumber - 1)) + 1; // 確保 a+b ≤ maxNumber
+                const b = Math.floor(Math.random() * (maxNumber - a)) + 1;
+                blankValue = a + b;
+                question = `${a} + ${b} = (　　　)`;
+                currentAnswer = blankValue;
+            } else if (questionType === 1) {
+                // 減法新題型：a - b = (　　　)
+                const a = Math.floor(Math.random() * maxNumber) + 2; // 確保 a-b ≥ 1
+                const b = Math.floor(Math.random() * (a - 1)) + 1; // b < a
+                blankValue = a - b;
+                question = `${a} - ${b} = (　　　)`;
+                currentAnswer = blankValue;
+            } else if (questionType === 2 || questionType === 3) {
+                // 加法：knownNumber + (　　　) = result 或 (　　　) + knownNumber = result
+                knownNumber = Math.floor(Math.random() * (maxNumber - 1)) + 1;
                 blankValue = Math.floor(Math.random() * (maxNumber - knownNumber)) + 1; // 答案 1~(maxNumber-knownNumber)
                 result = knownNumber + blankValue;
-                question = Math.random() > 0.5
-                    ? `${knownNumber} + (   ) = ${result}`
-                    : `(   ) + ${knownNumber} = ${result}`;
+                question = questionType === 2
+                    ? `${knownNumber} + (　　　) = ${result}`
+                    : `(　　　) + ${knownNumber} = ${result}`;
                 currentAnswer = blankValue;
             } else {
-                // 減法：(   ) - knownNumber = result 或 knownNumber - (   ) = result
-                if (Math.random() > 0.5) {
-                    // (   ) - knownNumber = result
+                // 減法：(　　　) - knownNumber = result 或 knownNumber - (　　　) = result
+                knownNumber = Math.floor(Math.random() * maxNumber) + 1;
+                if (questionType === 4) {
+                    // (　　　) - knownNumber = result
                     result = Math.floor(Math.random() * knownNumber) + 1; // 結果 1~knownNumber
-                    blankValue = result + knownNumber; // (   ) = result + knownNumber
-                    question = `(   ) - ${knownNumber} = ${result}`;
+                    blankValue = result + knownNumber; // (　　　) = result + knownNumber
+                    question = `(　　　) - ${knownNumber} = ${result}`;
                     currentAnswer = blankValue;
                 } else {
-                    // knownNumber - (   ) = result
+                    // knownNumber - (　　　) = result
                     blankValue = Math.floor(Math.random() * (knownNumber - 1)) + 1; // 答案 1~(knownNumber-1)
                     result = knownNumber - blankValue;
-                    question = `${knownNumber} - (   ) = ${result}`;
+                    question = `${knownNumber} - (　　　) = ${result}`;
                     currentAnswer = blankValue;
                 }
             }
