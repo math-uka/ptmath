@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>硬幣認識網頁</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="qs.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-between">
+    <!-- 中央總金額顯示 -->
+    <div class="my-2 text-4xl font-bold">
+        總金額: <span id="total-amount">0元0毫</span>
+    </div>
+
+    <!-- 按鈕區域 -->
+    <div class="mb-2 flex space-x-4">
+        <button id="clear-btn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">清除</button>
+        <button id="toggle-amount-btn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">不顯示金額</button>
+    </div>
+
+    <div class="flex w-full max-w-4xl h-3/4">
+        <!-- 左下表格：顯示所有硬幣 -->
+        <div class="w-1/2 p-4 bg-white rounded-lg shadow mr-4">
+            <h2 class="text-xl font-semibold mb-4">硬幣列表</h2>
+            <table class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th class="p-2">硬幣圖片</th>
+                        <th class="p-2">價值</th>
+                    </tr>
+                </thead>
+                <tbody id="coin-table"></tbody>
+            </table>
+        </div>
+
+        <!-- 右下：顯示被點擊的硬幣 -->
+        <div class="w-1/2 p-4 bg-white rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">已選擇的硬幣</h2>
+            <div id="selected-coins" class="flex flex-col"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-4">
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>
