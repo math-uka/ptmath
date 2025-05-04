@@ -114,7 +114,8 @@
         // 格式化價值顯示 | Format Value Display
         function formatValue(value) {
             if (value < 1) {
-                return `${(value * 10).toFixed(0)}毫 | ${(value * 10).toFixed(0)} Avos`;
+                const avos = (value * 100).toFixed(0); // Convert to Avos (1毫 = 10 Avos)
+                return `${(value * 10).toFixed(0)}毫 | ${avos} Avos`;
             }
             return `${value.toFixed(0)}圓 | ${value.toFixed(0)} Patacas`;
         }
