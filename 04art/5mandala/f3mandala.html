@@ -48,7 +48,7 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 15px; /* 增加整體內部間距 */
+            gap: 15px;
         }
 
         #controls label {
@@ -58,7 +58,7 @@
         }
 
         button {
-            padding: 12px 20px; /* 增加按鈕內邊距 */
+            padding: 12px 20px;
             font-size: clamp(12px, 3vw, 16px);
             background: #3498db;
             color: white;
@@ -67,7 +67,7 @@
             cursor: pointer;
             touch-action: manipulation;
             transition: all 0.3s ease;
-            width: 100%; /* 統一按鈕寬度 */
+            width: 100%;
             box-sizing: border-box;
         }
 
@@ -79,17 +79,17 @@
 
         #symmetryButtons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 每行3個按鈕 */
-            gap: 10px; /* 增加對稱軸按鈕間距 */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
             justify-content: center;
         }
 
         #symmetryButtons button {
-            width: 100%; /* 統一寬度 */
-            height: 45px; /* 固定高度 */
+            width: 100%;
+            height: 45px;
             font-size: 14px;
             background: #2ecc71;
-            padding: 0; /* 重置內邊距，讓文字居中 */
+            padding: 0;
         }
 
         #symmetryButtons button:hover {
@@ -148,7 +148,7 @@
                 height: min(400px, 90vw);
             }
             #symmetryButtons {
-                grid-template-columns: repeat(2, 1fr); /* 手機版每行2個 */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
             }
         }
@@ -162,7 +162,7 @@
                 padding: 30px;
             }
             #controls {
-                width: 240px; /* 增加寬度以容納更大按鈕 */
+                width: 240px;
             }
             #tools {
                 width: 240px;
@@ -176,7 +176,7 @@
 </head>
 <body>
     <div id="controls">
-        <h1> 對稱圖形設計</h1>
+        <h1>對稱圖形設計</h1>
         <label>選擇對稱軸數量:</label>
         <div id="symmetryButtons">
             <button onclick="setSymmetry(1)">1</button>
@@ -191,6 +191,7 @@
         <button onclick="setCanvasShape('square')">正方形畫框</button>
         <button onclick="setCanvasShape('circle')">圓形畫框</button>
         <button id="toggleAxes" onclick="toggleSymmetryAxes()">顯示對稱軸</button>
+        <button onclick="exportImage()">導出圖像</button>
     </div>
     <canvas id="canvas" width="500" height="500"></canvas>
     <div id="tools">
@@ -275,6 +276,27 @@
             showAxes = !showAxes;
             document.getElementById('toggleAxes').textContent = showAxes ? '隱藏對稱軸' : '顯示對稱軸';
             redrawCanvas();
+        }
+
+        function exportImage() {
+            // 創建一個臨時畫布以確保白色背景
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // 繪製白色背景
+            tempCtx.fillStyle = 'white';
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // 繪製原畫布內容
+            tempCtx.drawImage(canvas, 0, 0);
+            
+            // 創建下載鏈接
+            const link = document.createElement('a');
+            link.download = 'symmetry_design.png';
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
         }
 
         function drawSymmetryAxes() {
@@ -455,8 +477,8 @@
             }
         }
     </script>
-     <footer>
-        <p>&copy; 2025 ukawai</p>
+    <footer>
+        <p>© 2025 ukawai</p>
     </footer>
 </body>
 </html>
