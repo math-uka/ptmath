@@ -9,7 +9,7 @@
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-between">
     <!-- 中央總金額顯示 | Central Total Amount Display -->
     <div class="my-2 text-4xl font-bold">
-        總金額 | Total Amount: <span id="total-amount">0元0毫 | $0.00</span>
+        總金額 | Total Amount: <span id="total-amount">0圓0毫 | 0 Patacas 0 Avos</span>
     </div>
 
     <!-- 按鈕區域 | Button Area -->
@@ -62,18 +62,19 @@
             if (isAmountVisible) {
                 const dollars = Math.floor(totalValue);
                 const cents = Math.round((totalValue - dollars) * 10);
-                document.getElementById('total-amount').textContent = `${dollars}元${cents}毫 | $${dollars}.${cents.toString().padStart(2, '0')}`;
+                document.getElementById('total-amount').textContent = `${dollars}圓${cents}毫 | ${dollars} Patacas ${cents * 10} Avos`;
             } else {
                 document.getElementById('total-amount').textContent = '金額隱藏 | Amount Hidden';
             }
         }
 
-        // 格式化價值顯示（小於 1元顯示為毫） | Format value display (display as cents if less than 1 dollar)
+        // 格式化價值顯示（小於 1圓顯示為毫） | Format value display (display as Avos if less than 1 Pataca)
         function formatValue(value) {
             if (value < 1) {
-                return `${(value * 10).toFixed(0)}毫 | ${(value * 10).toFixed(0)} cents`;
+                const avos = (value * 100).toFixed(0); // 1毫 = 10 Avos
+                return `${(value * 10).toFixed(0)}毫 | ${avos} Avos`;
             }
-            return `${value.toFixed(0)}元 | $${value.toFixed(0)}`;
+            return `${value.toFixed(0)}圓 | ${value.toFixed(0)} Patacas`;
         }
 
         // 渲染硬幣表格 | Render coin table
