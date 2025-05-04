@@ -61,7 +61,7 @@ function generateQuestion() {
 
 function appendNumber(num) {
     const input = document.getElementById('answerInput');
-    if (input.value.length < 2) {
+    if (input.value.length < 3) {
         input.value += num;
     }
 }
