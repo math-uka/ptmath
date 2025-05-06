@@ -47,7 +47,7 @@
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer; /* 添加手型指針 */
+            cursor: pointer;
         }
 
         .category-card:hover {
@@ -63,7 +63,6 @@
             text-align: center;
         }
 
-        /* 幻燈片樣式 */
         .slideshow-container {
             position: relative;
             width: 100%;
@@ -71,7 +70,7 @@
             overflow: hidden;
             border-radius: 12px;
             margin-bottom: 10px;
-            background: #fff; /* 填充圖片未覆蓋的區域 */
+            background: #fff;
         }
 
         .slide {
@@ -88,7 +87,6 @@
             opacity: 1;
         }
 
-        /* 導航點 */
         .dots-container {
             text-align: center;
             padding: 5px 0;
@@ -109,7 +107,6 @@
             background: #0071e3;
         }
 
-        /* 密碼保護樣式 */
         #content {
             display: none;
         }
@@ -167,7 +164,6 @@
             font-size: 14px;
         }
 
-        /* 響應式設計 */
         @media screen and (max-width: 768px) {
             h1 {
                 font-size: 36px;
@@ -192,9 +188,9 @@
             }
         }
 
-        /* 幻燈片動畫（每個分類獨立） */
         .teaching .slide:nth-child(1) { background: url('images/a01.png') center/contain no-repeat; animation: slide1 15s infinite; }
-        .teaching .slide:nth-child(2) { background: url('images/a02.png') center/contain no-repeat; animation: slide2 15s infinite; }
+        .
+teaching .slide:nth-child(2) { background: url('images/a02.png') center/contain no-repeat; animation: slide2 15s infinite; }
         .teaching .slide:nth-child(3) { background: url('images/a03.png') center/contain no-repeat; animation: slide3 15s infinite; }
 
         .grade .slide:nth-child(1) { background: url('images/b01.png') center/contain no-repeat; animation: slide1 15s infinite; }
@@ -243,10 +239,6 @@
         <h1>AI應用工具</h1>
         <div class="container">
             <div class="category-grid">
-
-
-
-                
                 <!-- 教學互動工具 -->
                 <div class="category-card" onclick="window.location.href='01class/classindex.html'">
                     <h2>教學互動工具</h2>
@@ -262,14 +254,6 @@
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
                 <!-- 年級題庫 -->
                 <div class="category-card" onclick="window.location.href='02teaching/f2exercise.html'">
                     <h2>年級題庫</h2>
@@ -284,12 +268,6 @@
                         <span class="dot" onclick="event.stopPropagation(); currentSlide(3, 'grade')"></span>
                     </div>
                 </div>
-
-
-
-
-
-
 
                 <!-- 學科練習 -->
                 <div class="category-card" onclick="window.location.href='03subject/03index.html'">
@@ -345,15 +323,26 @@
 
     <script>
         // 密碼保護
-        function checkPassword() {
-            const password = document.getElementById('password-input').value;
-            const correctPassword = 'aaa';
+        async function checkPassword() {
+            const passwordInput = document.getElementById('password-input').value;
             
-            if (password === correctPassword) {
-                document.getElementById('password-prompt').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            } else {
-                alert('密碼錯誤，請重新輸入！');
+            try {
+                const response = await fetch('05tool/00images/num.json');
+                if (!response.ok) {
+                    throw new Error('無法獲取密碼文件');
+                }
+                const data = await response.json();
+                const correctPassword = data.password;
+                
+                if (passwordInput === correctPassword) {
+                    document.getElementById('password-prompt').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                } else {
+                    alert('密碼錯誤，請重新輸入！');
+                }
+            } catch (error) {
+                console.error('錯誤:', error);
+                alert('無法驗證密碼，請稍後再試！');
             }
         }
 
