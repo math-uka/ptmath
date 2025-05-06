@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Function Graph Tool 21</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+            flex-direction: row;
+        }
+        canvas {
+            border: 1px solid #000;
+            margin-right: 20px;
+        }
+        .controls {
+            text-align: left;
+        }
+        table {
+            border-collapse: collapse;
+            width: 350px;
+            overflow-x: auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input {
+            width: 60px;
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+            font-size: 14px;
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+        .show-btn {
+            padding: 4px 8px;
+            font-size: 12px;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        .drag-mode-buttons {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .drag-mode-buttons button {
+            padding: 6px 12px;
+            margin: 0 5px;
+        }
+        .drag-mode-buttons button.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .drag-mode-buttons button.active:active {
+            background-color: #45a049;
+        }
+        h1 {
+            font-size: 18px;
+            text-align: center;
+            margin: 10px 0;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            canvas {
+                width: 300px;
+                height: 300px;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            table {
+                width: 100%;
+                max-width: 300px;
+            }
+            th, td {
+                padding: 6px;
+                font-size: 12px;
+            }
+            input {
+                width: 50px;
+                font-size: 12px;
+            }
+            input:focus {
+                border-color: #4CAF50;
+            }
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .show-btn {
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+            .drag-mode-buttons button {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+            h1 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>輸入一次函數中y=mx+b中，m 和 b 的值，生成圖像。</h1>
+    <div class="container">
+        <div>
+            <div id="canvasContainer"></div>
+            <div class="drag-mode-buttons">
+                <button id="translateBtn" class="active" onclick="setDragMode('translate')">平移</button>
+                <button id="rotateBtn" onclick="setDragMode('rotate')">旋轉</button>
+            </div>
+        </div>
+        <div class="controls">
+            <table id="functionTable">
+                <tr>
+                    <th>函數</th>
+                    <th>\( m \)</th>
+                    <th>\( b \)</th>
+                    <th>顏色</th>
+                </tr>
+                <tr>
+                    <td><button class="show-btn" onclick="toggleVisibility(0)">隱藏</button> <span id="func0">\( y = 1x + 0 \)</span></td>
+                    <td><input type="number" class="slope" value="1" step="0.1"></td>
+                    <td><input type="number" class="intercept" value="0" step="0.1"></td>
+                    <td style="background-color: rgb(255, 0, 0);"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <button onclick="addFunction()">新增函數</button>
+                        <button onclick="clearFunctions()">清除</button>
+                        <button onclick="showIntercepts()">與X/Y軸交點</button>
+                        <button onclick="toggleGrid()">顯示格線</button>
+                        <button onclick="toggleTicks()">顯示刻度</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        let functions = [
+            { m: 1, b: 0, color: [255, 0, 0], visible: true }
+        ];
+        const colors = [
+            [255, 0, 0], // 紅
+            [0, 0, 255], // 藍
+            [0, 128, 0], // 綠
+            [255, 165, 0], // 橙
+            [128, 0, 128] // 紫
+        ];
+        let showBothIntercepts = false;
+        let showGrid = false;
+        let showTicks = true; // 默認顯示刻度
+        let selectedFunctionIndex = -1;
+        let startX, startY;
+        let dragMode = 'translate'; // 默認為平移模式
+
+        // 將數字四捨五入到指定有效數字
+        function toSignificantFigures(value, digits) {
+            if (value === 0) return 0;
+            let magnitude = Math.floor(Math.log10(Math.abs(value)));
+            let scale = Math.pow(10, digits - magnitude - 1);
+            return Math.round(value * scale) / scale;
+        }
+
+        function setup() {
+            let canvasWidth = window.innerWidth <= 600 ? 300 : 400;
+            let canvasHeight = window.innerWidth <= 600 ? 300 : 400;
+            let canvas = createCanvas(canvasWidth, canvasHeight);
+            canvas.parent('canvasContainer');
+
+            // 為按鈕和輸入框添加觸控支持
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('touchstart', (event) => {
+                    event.preventDefault(); // 阻止默認行為
+                    event.stopPropagation(); // 阻止事件冒泡
+                    // 直接調用 onclick 函數
+                    if (button.onclick) {
+                        button.onclick();
+                    }
+                });
+            });
+
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('touchstart', (event) => {
+                    event.target.focus();
+                });
+            });
+
+            updateInputs();
+        }
+
+        function setDragMode(mode) {
+            dragMode = mode;
+            document.getElementById('translateBtn').classList.toggle('active', mode === 'translate');
+            document.getElementById('rotateBtn').classList.toggle('active', mode === 'rotate');
+        }
+
+        function updateInputs() {
+            let inputs = document.querySelectorAll('.slope, .intercept');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    let row = input.parentElement.parentElement;
+                    let index = Array.from(row.parentElement.children).indexOf(row) - 1;
+                    let value = parseFloat(input.value) || 0;
+                    value = toSignificantFigures(value, 2);
+                    if (input.classList.contains('slope')) {
+                        functions[index].m = value;
+                        input.value = value;
+                    } else {
+                        functions[index].b = value;
+                        input.value = value;
+                    }
+                    updateFunctionDisplay(index);
+                });
+            });
+        }
+
+        function updateFunctionDisplay(index) {
+            let m = toSignificantFigures(functions[index].m, 2);
+            let b = toSignificantFigures(functions[index].b, 2);
+            let sign = b >= 0 ? '+' : '';
+            let bTerm = b === 0 ? '' : `${sign}${b}`;
+            let mTerm = m === 0 ? '' : (m === 1 ? 'x' : (m === -1 ? '-x' : `${m}x`));
+            let equation = mTerm && bTerm ? `\\( y = ${mTerm}${bTerm} \\)` :
+                          mTerm ? `\\( y = ${mTerm} \\)` :
+                          bTerm ? `\\( y = ${b} \\)` : '\\( y = 0 \\)';
+            document.getElementById(`func${index}`).innerHTML = equation;
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }
+
+        function toggleVisibility(index) {
+            functions[index].visible = !functions[index].visible;
+            let button = document.getElementsByClassName('show-btn')[index];
+            button.textContent = functions[index].visible ? '隱藏' : '顯示';
+        }
+
+        function addFunction() {
+            if (functions.length >= 5) {
+                alert('最多只能添加5條函數！');
+                return;
+            }
+            let table = document.getElementById('functionTable');
+            let index = functions.length;
+            let row = table.insertRow(table.rows.length - 1);
+            row.innerHTML = `
+                <td><button class="show-btn" onclick="toggleVisibility(${index})">隱藏</button> <span id="func${index}">\\( y = 1x + 0 \\)</span></td>
+                <td><input type="number" class="slope" value="1" step="0.1"></td>
+                <td><input type="number" class="intercept" value="0" step="0.1"></td>
+                <td style="background-color: rgb(${colors[index][0]}, ${colors[index][1]}, ${colors[index][2]});"></td>
+            `;
+            functions.push({
+                m: 1,
+                b: 0,
+                color: colors[index],
+                visible: true
+            });
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            updateInputs();
+        }
+
+        function clearFunctions() {
+            functions = [{ m: 1, b: 0, color: [255, 0, 0], visible: true }];
+            showBothIntercepts = false;
+            showGrid = false;
+            showTicks = true;
+            document.getElementById('translateBtn').classList.add('active');
+            document.getElementById('rotateBtn').classList.remove('active');
+            document.querySelector('button[onclick="toggleGrid()"]').textContent = '顯示格線';
+            document.querySelector('button[onclick="toggleTicks()"]').textContent = '顯示刻度';
+            document.querySelector('button[onclick="showIntercepts()"]').textContent = '與X/Y軸交點';
+            let table = document.getElementById('functionTable');
+            while (table.rows.length > 2) {
+                table.deleteRow(1);
+            }
+            let row = table.insertRow(1);
+            row.innerHTML = `
+                <td><button class="show-btn" onclick="toggleVisibility(0)">隱藏</button> <span id="func0">\\( y = 1x + 0 \\)</span></td>
+                <td><input type="number" class="slope" value="1" step="0.1"></td>
+                <td><input type="number" class="intercept" value="0" step="0.1"></td>
+                <td style="background-color: rgb(255, 0, 0);"></td>
+            `;
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            updateInputs();
+        }
+
+        function showIntercepts() {
+            showBothIntercepts = !showBothIntercepts;
+            let button = document.querySelector('button[onclick="showIntercepts()"]');
+            button.textContent = showBothIntercepts ? '隱藏X/Y軸交點' : '與X/Y軸交點';
+        }
+
+        function toggleGrid() {
+            showGrid = !showGrid;
+            let button = document.querySelector('button[onclick="toggleGrid()"]');
+            button.textContent = showGrid ? '隱藏格線' : '顯示格線';
+        }
+
+        function toggleTicks() {
+            showTicks = !showTicks;
+            let button = document.querySelector('button[onclick="toggleTicks()"]');
+            button.textContent = showTicks ? '隱藏刻度' : '顯示刻度';
+        }
+
+        function mousePressed() {
+            let isMobile = window.innerWidth <= 600;
+            let canvasWidth = isMobile ? 300 : 400;
+            let canvasHeight = isMobile ? 300 : 400;
+            let scale = isMobile ? 15 : 20;
+            let centerX = canvasWidth / 2;
+            let centerY = canvasHeight / 2;
+
+            // 將鼠標/觸控坐標轉換為圖形坐標
+            let x = (mouseX - centerX) / scale;
+            let y = (centerY - mouseY) / scale;
+
+            // 檢查是否在畫布內
+            if (x < -10 || x > 10 || y < -10 || y > 10) {
+                selectedFunctionIndex = -1;
+                return;
+            }
+
+            // 尋找最近的可見函數
+            let minDistance = Infinity;
+            selectedFunctionIndex = -1;
+            let threshold = isMobile ? 1 : 0.5;
+
+            functions.forEach((func, index) => {
+                if (!func.visible) return;
+                let m = func.m;
+                let b = func.b;
+                let distance = Math.abs(m * x - y + b) / Math.sqrt(m * m + 1);
+                if (distance < minDistance && distance < threshold) {
+                    minDistance = distance;
+                    selectedFunctionIndex = index;
+                }
+            });
+
+            if (selectedFunctionIndex !== -1) {
+                startX = x;
+                startY = y;
+            }
+        }
+
+        function mouseDragged() {
+            if (selectedFunctionIndex === -1) return;
+
+            let isMobile = window.innerWidth <= 600;
+            let canvasWidth = isMobile ? 300 : 400;
+            let canvasHeight = isMobile ? 300 : 400;
+            let scale = isMobile ? 15 : 20;
+            let centerX = canvasWidth / 2;
+            let centerY = canvasHeight / 2;
+
+            // 當前鼠標/觸控坐標
+            let x = (mouseX - centerX) / scale;
+            let y = (centerY - mouseY) / scale;
+
+            // 確保在畫布內
+            if (x < -10 || x > 10 || y < -10 || y > 10) return;
+
+            let m = functions[selectedFunctionIndex].m;
+            let b = functions[selectedFunctionIndex].b;
+
+            if (dragMode === 'translate') {
+                // 平移：保持 m 不變，更新 b
+                b = y - m * x;
+                b = toSignificantFigures(b, 2);
+            } else if (dragMode === 'rotate') {
+                // 旋轉：保持 b 不變，更新 m
+                if (Math.abs(x) < 0.01) return; // 避免 x 接近 0
+                m = (y - b) / x;
+                m = toSignificantFigures(m, 2);
+            }
+
+            // 更新函數數據
+            functions[selectedFunctionIndex].m = m;
+            functions[selectedFunctionIndex].b = b;
+
+            // 更新表格輸入框
+            let row = document.getElementById('functionTable').rows[selectedFunctionIndex + 1];
+            row.querySelector('.slope').value = m;
+            row.querySelector('.intercept').value = b;
+
+            // 更新函數顯示
+            updateFunctionDisplay(selectedFunctionIndex);
+        }
+
+        function mouseReleased() {
+            selectedFunctionIndex = -1;
+        }
+
+        // p5.js 觸控事件
+        function touchStarted() {
+            mousePressed();
+            return true; // 允許正常觸控行為（除非拖動）
+        }
+
+        function touchMoved() {
+            if (selectedFunctionIndex !== -1) {
+                // 僅在拖動時阻止頁面滾動
+                let event = window.event;
+                if (event) event.preventDefault();
+                mouseDragged();
+                return false;
+            }
+            return true; // 非拖動時允許滾動
+        }
+
+        function touchEnded() {
+            mouseReleased();
+            return true;
+        }
+
+        function draw() {
+            background(255);
+            stroke(0);
+            strokeWeight(1);
+
+            // 動態設置畫布大小和縮放
+            let isMobile = window.innerWidth <= 600;
+            let canvasWidth = isMobile ? 300 : 400;
+            let canvasHeight = isMobile ? 300 : 400;
+            let scale = isMobile ? 15 : 20;
+            let centerX = canvasWidth / 2;
+            let centerY = canvasHeight / 2;
+
+            // 繪製格線
+            if (showGrid) {
+                stroke(200);
+                strokeWeight(0.5);
+                for (let x = -10; x <= 10; x++) {
+                    line(centerX + x * scale, 0, centerX + x * scale, canvasHeight);
+                }
+                for (let y = -10; y <= 10; y++) {
+                    line(0, centerY - y * scale, canvasWidth, centerY - y * scale);
+                }
+            }
+
+            // 繪製坐標軸
+            stroke(0);
+            strokeWeight(1);
+            // X軸
+            line(0, centerY, canvasWidth, centerY);
+            // X軸箭頭
+            line(canvasWidth - 10, centerY - 5, canvasWidth, centerY);
+            line(canvasWidth - 10, centerY + 5, canvasWidth, centerY);
+            // Y軸
+            line(centerX, 0, centerX, canvasHeight);
+            // Y軸箭頭
+            line(centerX - 5, 10, centerX, 0);
+            line(centerX + 5, 10, centerX, 0);
+
+            // 繪製刻度（根據 showTicks 控制）
+            if (showTicks) {
+                textSize(isMobile ? 10 : 12);
+                for (let x = -10; x <= 10; x++) {
+                    line(centerX + x * scale, centerY - 5, centerX + x * scale, centerY + 5);
+                    text(x, centerX + x * scale - 5, centerY + (isMobile ? 15 : 20));
+                }
+                for (let y = -10; y <= 10; y++) {
+                    line(centerX - 5, centerY - y * scale, centerX + 5, centerY - y * scale);
+                    if (y !== 0) text(y, centerX - (isMobile ? 20 : 25), centerY - y * scale + 5);
+                }
+            }
+
+            // 繪製所有可見函數及其表達式
+            functions.forEach((func, index) => {
+                if (!func.visible) return;
+
+                // 繪製函數圖像
+                stroke(func.color[0], func.color[1], func.color[2]);
+                strokeWeight(2);
+                beginShape();
+                for (let x = -10; x <= 10; x += 0.1) {
+                    let y = func.m * x + func.b;
+                    vertex(centerX + x * scale, centerY - y * scale);
+                }
+                endShape();
+
+                // 在直線旁顯示函數表達式
+                let m = toSignificantFigures(func.m, 2);
+                let b = toSignificantFigures(func.b, 2);
+                let sign = b >= 0 ? '+' : '';
+                let bTerm = b === 0 ? '' : `${sign}${b}`;
+                let mTerm = m === 0 ? '' : (m === 1 ? 'x' : (m === -1 ? '-x' : `${m}x`));
+                let equation = mTerm && bTerm ? `y = ${mTerm}${bTerm}` :
+                              mTerm ? `y = ${mTerm}` :
+                              bTerm ? `y = ${b}` : 'y = 0';
+                fill(func.color[0], func.color[1], func.color[2]);
+                noStroke();
+                textSize(isMobile ? 10 : 12);
+                textAlign(LEFT);
+                // 根據斜率動態選擇 x 位置
+                let xPos;
+                if (Math.abs(m) > 1) {
+                    xPos = m > 0 ? 2 : -2;
+                } else {
+                    xPos = m >= 0 ? 8 : -8;
+                }
+                let yPos = func.m * xPos + func.b;
+                yPos = constrain(yPos, -9.5, 9.5);
+                let yOffset = 5 + index * (isMobile ? 8 : 10);
+                text(equation, centerX + xPos * scale + 5, centerY - yPos * scale + yOffset);
+
+                // 顯示截距
+                if (showBothIntercepts) {
+                    if (m !== 0) {
+                        let xInt = -b / m;
+                        if (xInt >= -10 && xInt <= 10) {
+                            fill(func.color[0], func.color[1], func.color[2]);
+                            text(`(${xInt.toFixed(2)}, 0)`, centerX + xInt * scale + 5, centerY + (isMobile ? 12 : 15));
+                        }
+                    }
+                    if (b >= -10 && b <= 10) {
+                        fill(func.color[0], func.color[1], func.color[2]);
+                        text(`(0, ${b.toFixed(2)})`, centerX + 5, centerY - b * scale + (isMobile ? 12 : 15));
+                    }
+                }
+            });
+
+            // 檢查並顯示兩條可見直線的交點
+            for (let i = 0; i < functions.length; i++) {
+                if (!functions[i].visible) continue;
+                for (let j = i + 1; j < functions.length; j++) {
+                    if (!functions[j].visible) continue;
+                    let func1 = functions[i];
+                    let func2 = functions[j];
+                    if (func1.m !== func2.m) {
+                        let x = (func2.b - func1.b) / (func1.m - func2.m);
+                        let y = func1.m * x + func1.b;
+                        if (x >= -10 && x <= 10 && y >= -10 && y <= 10) {
+                            fill(0);
+                            text(`(${x.toFixed(2)}, ${y.toFixed(2)})`, centerX + x * scale + 5, centerY - y * scale + (isMobile ? 12 : 15));
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
