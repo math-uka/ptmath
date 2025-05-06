@@ -88,8 +88,8 @@
         </div>
         <div>
             <div class="controls">
-                <button id="edgeButton" onclick="toggleEdges()">顯示邊長</button>
-                <button id="angleButton" onclick="toggleAngles()">顯示角度</button>
+                <button id="edgeButton">顯示邊長</button>
+                <button id="angleButton">顯示角度</button>
             </div>
             <div id="canvasContainer"></div>
         </div>
@@ -112,6 +112,24 @@
             canvas.parent('canvasContainer');
             pixelDensity(2); // Improve rendering on high-DPI screens
             updateInfo();
+
+            // Add event listeners for buttons
+            const edgeButton = document.getElementById('edgeButton');
+            const angleButton = document.getElementById('angleButton');
+
+            // Click events for desktop
+            edgeButton.addEventListener('click', toggleEdges);
+            angleButton.addEventListener('click', toggleAngles);
+
+            // Touch events for mobile
+            edgeButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                toggleEdges();
+            });
+            angleButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                toggleAngles();
+            });
         }
 
         function draw() {
@@ -173,6 +191,53 @@
             return false;
         }
 
+        function orientation(p, q, r) {
+            // Compute the orientation of triplet (p, q, r)
+            // Returns:
+            // 0 --> Collinear
+            // 1 --> Clockwise
+            // -1 --> Counterclockwise
+            let val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+            if (Math.abs(val) < 0.01) return 0; // Collinear
+            return val > 0 ? 1 : -1;
+        }
+
+        function doSegmentsIntersect(p1, q1, p2, q2) {
+            // Check if line segments p1q1 and p2q2 intersect
+            let o1 = orientation(p1, q1, p2);
+            let o2 = orientation(p1, q1, q2);
+            let o3 = orientation(p2, q2, p1);
+            let o4 = orientation(p2, q2, q1);
+
+            // General case: segments intersect if orientations differ
+            if (o1 !== o2 && o3 !== o4) {
+                return true;
+            }
+
+            // Special cases: collinear segments
+            // Check if points lie on the segment (not implemented here as collinearity is already checked)
+            return false;
+        }
+
+        function checkSelfIntersection(newPoints) {
+            // Check non-adjacent edges for intersections
+            // Edges: AB (0-1), BC (1-2), CD (2-3), DA (3-0)
+            // Non-adjacent pairs: AB-CD, BC-DA
+            let A = newPoints[0], B = newPoints[1], C = newPoints[2], D = newPoints[3];
+
+            // Check AB (0-1) with CD (2-3)
+            if (doSegmentsIntersect(A, B, C, D)) {
+                return true;
+            }
+
+            // Check BC (1-2) with DA (3-0)
+            if (doSegmentsIntersect(B, C, D, A)) {
+                return true;
+            }
+
+            return false;
+        }
+
         function selectPoint(x, y) {
             for (let p of points) {
                 if (dist(x, y, p.x, p.y) < 20) { // Larger hitbox for mobile
@@ -200,14 +265,14 @@
                 newX = constrain(newX, 0, width);
                 newY = constrain(newY, 0, height);
 
-                // Create a temporary points array to test collinearity
+                // Create a temporary points array to test collinearity and self-intersection
                 let tempPoints = points.map(p => ({ ...p }));
                 let selectedIndex = points.indexOf(selectedPoint);
                 tempPoints[selectedIndex].x = newX;
                 tempPoints[selectedIndex].y = newY;
 
-                // Only update if the new position does not cause collinearity
-                if (!checkCollinearity(tempPoints)) {
+                // Only update if the new position is non-collinear and non-self-intersecting
+                if (!checkCollinearity(tempPoints) && !checkSelfIntersection(tempPoints)) {
                     selectedPoint.x = newX;
                     selectedPoint.y = newY;
                     updateInfo();
