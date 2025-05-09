@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Function Graphing Tool v15</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .canvas-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .controls {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        table {
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #ddd;
+        }
+        input {
+            width: 60px;
+            text-align: center;
+        }
+        button {
+            margin: 10px 5px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .function-controls {
+            margin-bottom: 20px;
+        }
+        .zoom-controls {
+            margin-top: 10px;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-container">
+            <div id="canvas"></div>
+            <div class="zoom-controls">
+                <button onclick="zoomIn()">放大</button>
+                <button onclick="zoomOut()">縮小</button>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="function-controls">
+                <h2>函數 1: \( y = \)<input type="text" id="functionInput1" value="x+3" oninput="updateFunction(1)"></h2>
+                <div id="error1" class="error"></div>
+                <button onclick="toggleFunction(1)">顯示/隱藏函數 1</button>
+                <button onclick="togglePoints(1)">顯示/隱藏點 1</button>
+                <button onclick="toggleCoordinates(1)">顯示/隱藏坐標 1</button>
+                <table id="pointTable1">
+                    <tr>
+                        <th>X</th>
+                        <td><input type="number" class="x-input1" oninput="updateY(1, this, 0)"></td>
+                        <td><input type="number" class="x-input1" oninput="updateY(1, this, 1)"></td>
+                        <td><input type="number" class="x-input1" oninput="updateY(1, this, 2)"></td>
+                    </tr>
+                    <tr>
+                        <th>Y</th>
+                        <td><input type="number" class="y-output1" readonly></td>
+                        <td><input type="number" class="y-output1" readonly></td>
+                        <td><input type="number" class="y-output1" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>坐標</th>
+                        <td><input type="text" class="coord-output1" readonly></td>
+                        <td><input type="text" class="coord-output1" readonly></td>
+                        <td><input type="text" class="coord-output1" readonly></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="function-controls">
+                <h2>函數 2: \( y = \)<input type="text" id="functionInput2" value="2x" oninput="updateFunction(2)"></h2>
+                <div id="error2" class="error"></div>
+                <button onclick="toggleFunction(2)">顯示/隱藏函數 2</button>
+                <button onclick="togglePoints(2)">顯示/隱藏點 2</button>
+                <button onclick="toggleCoordinates(2)">顯示/隱藏坐標 2</button>
+                <table id="pointTable2">
+                    <tr>
+                        <th>X</th>
+                        <td><input type="number" class="x-input2" oninput="updateY(2, this, 0)"></td>
+                        <td><input type="number" class="x-input2" oninput="updateY(2, this, 1)"></td>
+                        <td><input type="number" class="x-input2" oninput="updateY(2, this, 2)"></td>
+                    </tr>
+                    <tr>
+                        <th>Y</th>
+                        <td><input type="number" class="y-output2" readonly></td>
+                        <td><input type="number" class="y-output2" readonly></td>
+                        <td><input type="number" class="y-output2" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>坐標</th>
+                        <td><input type="text" class="coord-output2" readonly></td>
+                        <td><input type="text" class="coord-output2" readonly></td>
+                        <td><input type="text" class="coord-output2" readonly></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        let points1 = [];
+        let points2 = [];
+        let showPoints1 = false;
+        let showPoints2 = false;
+        let showFunction1 = false;
+        let showFunction2 = false;
+        let showCoordinates1 = false;
+        let showCoordinates2 = false;
+        let func1 = x => x + 3; // 預設函數 1: y = x + 3
+        let func2 = x => 2 * x; // 預設函數 2: y = 2x
+        let maxCoord = 10; // 初始最大坐標值
+        const MIN_COORD = 5;
+        const MAX_COORD = 50;
+
+        // 處理隱式乘法和指數的函數
+        function parseImplicitMultiplication(input) {
+            let result = '';
+            input = input.replace(/\s/g, ''); // 移除空格
+            for (let i = 0; i < input.length; i++) {
+                result += input[i];
+                if (i < input.length - 1) {
+                    let current = input[i];
+                    let next = input[i + 1];
+                    if (current === '^') {
+                        result = result.slice(0, -1) + '**';
+                        continue;
+                    }
+                    if (
+                        (/[0-9]/.test(current) && (next === 'x' || next === '(')) ||
+                        (current === ')' && (/[0-9x]/.test(next))) ||
+                        (current === 'x' && /[0-9]/.test(next)) ||
+                        (current === 'x' && next === '(')
+                    ) {
+                        result += '*';
+                    }
+                }
+            }
+            return result;
+        }
+
+        function setup() {
+            let canvas = createCanvas(400, 400);
+            canvas.parent('canvas');
+        }
+
+        function draw() {
+            background(255);
+            drawGrid();
+            if (showFunction1) drawFunction(1, color(255, 0, 0), document.getElementById('functionInput1').value);
+            if (showFunction2) drawFunction(2, color(0, 0, 255), document.getElementById('functionInput2').value);
+            if (showPoints1) drawPoints(points1, color(255, 0, 0), showCoordinates1);
+            if (showPoints2) drawPoints(points2, color(0, 0, 255), showCoordinates2);
+        }
+
+        function drawGrid() {
+            let pixelsPerUnit = 400 / (2 * maxCoord); // 每個坐標單位的像素數
+            let tickInterval = maxCoord == 10 ? 2 : (maxCoord <= 5 ? 1 : 10); // 刻度間隔：maxCoord=10時用2，maxCoord=5時用1，否則用10
+
+            stroke(200);
+            // 繪製格線
+            for (let i = -maxCoord; i <= maxCoord; i += 1) {
+                line(0, -i * pixelsPerUnit + 200, 400, -i * pixelsPerUnit + 200); // 水平線
+                line(i * pixelsPerUnit + 200, 0, i * pixelsPerUnit + 200, 400); // 垂直線
+            }
+
+            stroke(0);
+            strokeWeight(2);
+            // 繪製數軸與箭頭
+            line(0, 200, 400, 200); // X軸
+            line(200, 0, 200, 400); // Y軸
+            // X軸箭頭
+            line(400, 200, 390, 190);
+            line(400, 200, 390, 210);
+            // Y軸箭頭
+            line(200, 0, 190, 10);
+            line(200, 0, 210, 10);
+            // X, Y 標籤
+            textAlign(CENTER, CENTER);
+            textSize(16);
+            text('X', 390, 230);
+            text('Y', 230, 10);
+            // 刻度
+            textSize(12);
+            for (let i = -maxCoord; i <= maxCoord; i += tickInterval) {
+                if (i !== 0) {
+                    // X軸刻度
+                    line(i * pixelsPerUnit + 200, 195, i * pixelsPerUnit + 200, 205);
+                    text(i, i * pixelsPerUnit + 200, 220);
+                    // Y軸刻度
+                    line(195, -i * pixelsPerUnit + 200, 205, -i * pixelsPerUnit + 200);
+                    text(-i, 180, -i * pixelsPerUnit + 200);
+                }
+            }
+            // 原點 0
+            text('0', 200, 220);
+            strokeWeight(1);
+        }
+
+        function drawFunction(funcNum, col, funcText) {
+            let func = funcNum === 1 ? func1 : func2;
+            let pixelsPerUnit = 400 / (2 * maxCoord);
+            stroke(col);
+            noFill();
+            beginShape();
+            for (let x = -maxCoord; x <= maxCoord; x += 0.1) {
+                let y = func(x);
+                vertex(x * pixelsPerUnit + 200, -y * pixelsPerUnit + 200);
+            }
+            endShape();
+            // 顯示函數名稱，直接放在線上
+            let x = funcNum === 1 ? maxCoord * 0.8 : -maxCoord * 0.8;
+            let y = func(x);
+            let canvasX = x * pixelsPerUnit + 200;
+            let canvasY = -y * pixelsPerUnit + 200;
+            // 限制 Y 坐標在畫布內
+            if (canvasY < 20) canvasY = 20;
+            if (canvasY > 380) canvasY = 380;
+            // 繪製背景矩形以提高可讀性
+            let textWidthEst = funcText.length * 8;
+            let textHeight = 14;
+            fill(255, 255, 255, 200); // 半透明白色背景
+            rectMode(CENTER);
+            rect(canvasX, canvasY, textWidthEst + 4, textHeight + 4);
+            // 繪製文字
+            fill(col);
+            textSize(12);
+            textAlign(CENTER, CENTER);
+            text(`y = ${funcText}`, canvasX, canvasY);
+        }
+
+        function drawPoints(points, col, showCoords) {
+            let pixelsPerUnit = 400 / (2 * maxCoord);
+            fill(col);
+            noStroke();
+            points.forEach(p => {
+                if (p.x !== null && p.y !== null) {
+                    ellipse(p.x * pixelsPerUnit + 200, -p.y * pixelsPerUnit + 200, 8, 8);
+                    if (showCoords) {
+                        textSize(10);
+                        textAlign(LEFT, CENTER);
+                        let displayX = Number.isInteger(p.x) ? p.x : p.x.toFixed(2);
+                        let displayY = Number.isInteger(p.y) ? p.y : p.y.toFixed(2);
+                        text(`(${displayX}, ${displayY})`, p.x * pixelsPerUnit + 205, -p.y * pixelsPerUnit + 200);
+                    }
+                }
+            });
+        }
+
+        function updateFunction(funcNum) {
+            let input = document.getElementById(`functionInput${funcNum}`).value;
+            let errorDiv = document.getElementById(`error${funcNum}`);
+            errorDiv.textContent = '';
+
+            if (!input) {
+                errorDiv.textContent = '請輸入函數式';
+                return;
+            }
+
+            try {
+                let parsedInput = parseImplicitMultiplication(input);
+                let testFunc = new Function('x', `return ${parsedInput}`);
+                let testResult = testFunc(1);
+                if (isNaN(testResult) || testResult === undefined) {
+                    throw new Error('無效的計算結果');
+                }
+
+                if (funcNum === 1) {
+                    func1 = testFunc;
+                    points1 = [];
+                } else {
+                    func2 = testFunc;
+                    points2 = [];
+                }
+                document.querySelectorAll(`.x-input${funcNum}`).forEach((input, index) => updateY(funcNum, input, index));
+            } catch (e) {
+                errorDiv.textContent = '無效的函數式';
+                console.error('解析錯誤:', e.message);
+            }
+        }
+
+        function updateY(funcNum, input, index) {
+            let x = parseFloat(input.value);
+            let yOutputs = document.querySelectorAll(`.y-output${funcNum}`);
+            let coordOutputs = document.querySelectorAll(`.coord-output${funcNum}`);
+            let yOutput = yOutputs[index];
+            let coordOutput = coordOutputs[index];
+            let points = funcNum === 1 ? points1 : points2;
+            let func = funcNum === 1 ? func1 : func2;
+
+            if (!isNaN(x)) {
+                try {
+                    let y = func(x);
+                    if (isNaN(y) || y === undefined) {
+                        throw new Error('計算結果無效');
+                    }
+                    let displayY = Number.isInteger(y) ? y : y.toFixed(2);
+                    yOutput.value = displayY;
+                    let displayX = Number.isInteger(x) ? x : x.toFixed(2);
+                    coordOutput.value = `(${displayX}, ${displayY})`;
+                    points[index] = { x, y };
+                } catch (e) {
+                    yOutput.value = '';
+                    coordOutput.value = '';
+                    points[index] = { x: null, y: null };
+                }
+            } else {
+                yOutput.value = '';
+                coordOutput.value = '';
+                points[index] = { x: null, y: null };
+            }
+        }
+
+        function togglePoints(funcNum) {
+            if (funcNum === 1) {
+                showPoints1 = !showPoints1;
+            } else {
+                showPoints2 = !showPoints2;
+            }
+        }
+
+        function toggleFunction(funcNum) {
+            if (funcNum === 1) {
+                showFunction1 = !showFunction1;
+            } else {
+                showFunction2 = !showFunction2;
+            }
+        }
+
+        function toggleCoordinates(funcNum) {
+            if (funcNum === 1) {
+                showCoordinates1 = !showCoordinates1;
+            } else {
+                showCoordinates2 = !showCoordinates2;
+            }
+        }
+
+        function zoomIn() {
+            if (maxCoord > MIN_COORD) {
+                maxCoord = Math.max(MIN_COORD, maxCoord / 2);
+            }
+        }
+
+        function zoomOut() {
+            if (maxCoord < MAX_COORD) {
+                maxCoord = Math.min(MAX_COORD, maxCoord * 2);
+            }
+        }
+    </script>
+</body>
+</html>
