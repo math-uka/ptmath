@@ -24,6 +24,7 @@
         .canvas-container {
             flex: 1;
             margin-right: 20px;
+            position: relative;
         }
         .controls {
             flex: 1;
@@ -69,7 +70,13 @@
             margin-top: 5px;
         }
         #canvas {
-            display: block; /* 確保 canvas 容器可見 */
+            display: block;
+        }
+        .mathjax-container {
+            position: absolute;
+            pointer-events: none;
+            font-size: 12px;
+            color: black;
         }
     </style>
 </head>
@@ -112,7 +119,7 @@
                 </table>
             </div>
             <div class="function-controls">
-                <h2>函數 2: \( y = \)<input type="text" id="functionInput2" value="2x" oninput="updateFunction(2)"></h2>
+                <h2>函數 2: \( y = \)<input type="text" id="functionInput2" value="2*x" oninput="updateFunction(2)"></h2>
                 <div id="error2" class="error"></div>
                 <button onclick="toggleFunction(2)">顯示/隱藏函數 2</button>
                 <button onclick="togglePoints(2)">顯示/隱藏點 2</button>
@@ -143,398 +150,451 @@
     <footer>
         <p>© 2025 ukawai</p>
     </footer>
+<script>
+    let points1 = [];
+    let points2 = [];
+    let showPoints1 = false;
+    let showPoints2 = false;
+    let showFunction1 = false;
+    let showFunction2 = false;
+    let showCoordinates1 = false;
+    let showCoordinates2 = false;
+    let showIntersection = false;
+    let func1 = x => x + 3; // 預設函數 1: y = x + 3
+    let func2 = x => 2 * x; // 預設函數 2: y = 2x
+    let maxCoord = 10; // 初始最大坐標值
+    const ALLOWED_SCALES = [
+        { maxCoord: 5, tickInterval: 1 },
+        { maxCoord: 10, tickInterval: 2 },
+        { maxCoord: 50, tickInterval: 10 }
+    ];
 
-    <script>
-        let points1 = [];
-        let points2 = [];
-        let showPoints1 = false;
-        let showPoints2 = false;
-        let showFunction1 = false;
-        let showFunction2 = false;
-        let showCoordinates1 = false;
-        let showCoordinates2 = false;
-        let showIntersection = false;
-        let func1 = x => x + 3; // 預設函數 1: y = x + 3
-        let func2 = x => 2 * x; // 預設函數 2: y = 2x
-        let maxCoord = 10; // 初始最大坐標值
-        const ALLOWED_SCALES = [
-            { maxCoord: 5, tickInterval: 1 },
-            { maxCoord: 10, tickInterval: 2 },
-            { maxCoord: 50, tickInterval: 10 }
-        ];
-
-        // 驗證初始 maxCoord
-        function validateMaxCoord() {
-            if (!ALLOWED_SCALES.some(scale => scale.maxCoord === maxCoord)) {
-                maxCoord = 10; // 回退到默認值
-            }
+    // 驗證初始 maxCoord
+    function validateMaxCoord() {
+        if (!ALLOWED_SCALES.some(scale => scale.maxCoord === maxCoord)) {
+            maxCoord = 10; // 回退到默認值
         }
+    }
 
-        // 處理隱式乘法和指數的函數
-        function parseImplicitMultiplication(input) {
-            let result = '';
-            input = input.replace(/\s/g, ''); // 移除空格
-            for (let i = 0; i < input.length; i++) {
-                result += input[i];
-                if (i < input.length - 1) {
-                    let current = input[i];
-                    let next = input[i + 1];
-                    if (current === '^') {
-                        result = result.slice(0, -1) + '**';
-                        continue;
-                    }
-                    if (
-                        (/[0-9]/.test(current) && (next === 'x' || next === '(')) ||
-                        (current === ')' && (/[0-9x]/.test(next))) ||
-                        (current === 'x' && /[0-9]/.test(next)) ||
-                        (current === 'x' && next === '(')
-                    ) {
-                        result += '*';
-                    }
-                }
-            }
-            return result;
-        }
-
-        // 數值方法：二分法尋找交點
-        function findIntersection(a, b, tolerance = 1e-6, maxIterations = 100) {
-            let fa = func1(a) - func2(a);
-            let fb = func1(b) - func2(b);
-            if (fa * fb >= 0) return null; // 無交點或不在區間內
-            let iteration = 0;
-            while ((b - a) > tolerance && iteration < maxIterations) {
-                let c = (a + b) / 2;
-                let fc = func1(c) - func2(c);
-                if (fc === 0 || (b - a) < tolerance) {
-                    return c;
-                }
-                if (fa * fc < 0) {
-                    b = c;
-                    fb = fc;
-                } else {
-                    a = c;
-                    fa = fc;
-                }
-                iteration++;
-            }
-            return (a + b) / 2;
-        }
-
-        // 尋找所有交點
-        function getIntersections() {
-            let intersections = [];
-            let step = maxCoord / 10; // 將區間分成小段
-            for (let a = -maxCoord; a < maxCoord; a += step) {
-                let b = a + step;
-                try {
-                    let x = findIntersection(a, b);
-                    if (x !== null && isFinite(x)) {
-                        let y = func1(x);
-                        if (isFinite(y) && Math.abs(y - func2(x)) < 1e-4) {
-                            intersections.push({ x, y });
-                        }
-                    }
-                } catch (e) {
+    // 處理隱式乘法和指數的函數
+    function parseImplicitMultiplication(input) {
+        let result = '';
+        input = input.replace(/\s/g, ''); // 移除空格
+        for (let i = 0; i < input.length; i++) {
+            result += input[i];
+            if (i < input.length - 1) {
+                let current = input[i];
+                let next = input[i + 1];
+                if (current === '^') {
+                    result = result.slice(0, -1) + '**';
                     continue;
                 }
+                if (
+                    (/[0-9]/.test(current) && (next === 'x' || next === '(')) ||
+                    (current === ')' && (/[0-9x]/.test(next))) ||
+                    (current === 'x' && /[0-9]/.test(next)) ||
+                    (current === 'x' && next === '(')
+                ) {
+                    result += '*';
+                }
             }
-            // 過濾重複交點
-            return intersections.filter((p, i) =>
-                i === 0 || !intersections.some((q, j) => j < i && Math.abs(p.x - q.x) < 1e-4)
-            );
         }
+        return result;
+    }
 
-        function setup() {
-            // 驗證初始 maxCoord
-            validateMaxCoord();
-            // 創建並附加畫布
-            let canvas = createCanvas(400, 400);
-            let canvasDiv = document.getElementById('canvas');
-            if (canvasDiv) {
-                canvas.parent('canvas');
+    // 數值方法：二分法尋找交點
+    function findIntersection(a, b, tolerance = 1e-6, maxIterations = 100) {
+        let fa = func1(a) - func2(a);
+        let fb = func1(b) - func2(b);
+        if (fa * fb >= 0) return null; // 無交點或不在區間內
+        let iteration = 0;
+        while ((b - a) > tolerance && iteration < maxIterations) {
+            let c = (a + b) / 2;
+            let fc = func1(c) - func2(c);
+            if (fc === 0 || (b - a) < tolerance) {
+                return c;
+            }
+            if (fa * fc < 0) {
+                b = c;
+                fb = fc;
             } else {
-                console.error('Canvas container not found!');
+                a = c;
+                fa = fc;
             }
+            iteration++;
         }
+        return (a + b) / 2;
+    }
 
-        function draw() {
-            background(255);
+    // 尋找所有交點
+    function getIntersections() {
+        let intersections = [];
+        let step = maxCoord / 10; // 將區間分成小段
+        for (let a = -maxCoord; a < maxCoord; a += step) {
+            let b = a + step;
             try {
-                drawGrid();
-                if (showFunction1) drawFunction(1, color(255, 0, 0), document.getElementById('functionInput1').value);
-                if (showFunction2) drawFunction(2, color(0, 0, 255), document.getElementById('functionInput2').value);
-                if (showPoints1) drawPoints(points1, color(255, 0, 0), showCoordinates1);
-                if (showPoints2) drawPoints(points2, color(0, 0, 255), showCoordinates2);
-                if (showIntersection && showFunction1 && showFunction2) drawIntersections();
+                let x = findIntersection(a, b);
+                if (x !== null && isFinite(x)) {
+                    let y = func1(x);
+                    if (isFinite(y) && Math.abs(y - func2(x)) < 1e-4) {
+                        intersections.push({ x, y });
+                    }
+                }
             } catch (e) {
-                console.error('Draw error:', e);
+                continue;
+            }
+        }
+        // 過濾重複交點
+        return intersections.filter((p, i) =>
+            i === 0 || !intersections.some((q, j) => j < i && Math.abs(p.x - q.x) < 1e-4)
+        );
+    }
+
+    // 將數字轉為數學格式（整數、分數或二次根式）
+    function toMathFormat(num, tolerance = 1e-6) {
+        // 檢查是否為整數
+        if (Math.abs(num - Math.round(num)) < tolerance) {
+            return num.toString();
+        }
+
+        // 檢查是否為簡單分數
+        for (let denom = 1; denom <= 20; denom++) {
+            let numer = Math.round(num * denom);
+            if (Math.abs(num - numer / denom) < tolerance) {
+                return `\\frac{${numer}}{${denom}}`;
             }
         }
 
-        function drawGrid() {
-            let pixelsPerUnit = 400 / (2 * maxCoord); // 每個坐標單位的像素數
-            // 查找對應的刻度間隔，默認為 2 如果未找到
-            let scale = ALLOWED_SCALES.find(scale => scale.maxCoord === maxCoord);
-            let tickInterval = scale ? scale.tickInterval : 2;
-
-            stroke(200);
-            // 繪製格線
-            for (let i = -maxCoord; i <= maxCoord; i += 1) {
-                line(0, i * pixelsPerUnit + 200, 400, i * pixelsPerUnit + 200); // 水平線
-                line(i * pixelsPerUnit + 200, 0, i * pixelsPerUnit + 200, 400); // 垂直線
-            }
-
-            stroke(0);
-            strokeWeight(2);
-            // 繪製數軸與箭頭
-            line(0, 200, 400, 200); // X軸
-            line(200, 0, 200, 400); // Y軸
-            // X軸箭頭
-            line(400, 200, 390, 190);
-            line(400, 200, 390, 210);
-            // Y軸箭頭（指向正方向，上方）
-            line(200, 0, 190, 10);
-            line(200, 0, 210, 10);
-            // X, Y 標籤
-            textAlign(CENTER, CENTER);
-            textSize(16);
-            text('X', 390, 230);
-            text('Y', 230, 10);
-            // 刻度
-            textSize(12);
-            for (let i = -maxCoord; i <= maxCoord; i += tickInterval) {
-                if (i !== 0) {
-                    // X軸刻度
-                    line(i * pixelsPerUnit + 200, 195, i * pixelsPerUnit + 200, 205);
-                    text(i, i * pixelsPerUnit + 200, 220);
-                    // Y軸刻度（正數在上，負數在下）
-                    line(195, -i * pixelsPerUnit + 200, 205, -i * pixelsPerUnit + 200);
-                    text(i, 180, -i * pixelsPerUnit + 200);
+        // 嘗試二次根式形式 a + b√c
+        for (let c = 1; c <= 100; c++) {
+            let sqrtC = Math.sqrt(c);
+            for (let b = -10; b <= 10; b++) {
+                if (b === 0) continue;
+                for (let a = -10; a <= 10; a++) {
+                    let value = a + b * sqrtC;
+                    if (Math.abs(value - num) < tolerance) {
+                        let parts = [];
+                        if (a !== 0) parts.push(a);
+                        if (b === 1) {
+                            parts.push(`\\sqrt{${c}}`);
+                        } else if (b === -1) {
+                            parts.push(`-\\sqrt{${c}}`);
+                        } else if (b !== 0) {
+                            parts.push(`${b}\\sqrt{${c}}`);
+                        }
+                        return parts.length > 0 ? parts.join('+').replace('+-', '-') : '0';
+                    }
                 }
             }
-            // 原點 0
-            text('0', 200, 220);
-            strokeWeight(1);
         }
 
-        function drawFunction(funcNum, col, funcText) {
-            let func = funcNum === 1 ? func1 : func2;
-            let pixelsPerUnit = 400 / (2 * maxCoord);
-            stroke(col);
-            noFill();
-            let drawing = false;
-            for (let x = -maxCoord; x <= maxCoord; x += 0.1) {
-                let y;
-                try {
-                    y = func(x);
-                    if (isNaN(y) || !isFinite(y)) {
-                        if (drawing) {
-                            endShape();
-                            drawing = false;
-                        }
-                        continue;
-                    }
-                    let canvasY = y * pixelsPerUnit + 200; // 正 Y 向上
-                    if (canvasY < -1000 || canvasY > 1000) {
-                        if (drawing) {
-                            endShape();
-                            drawing = false;
-                        }
-                        continue;
-                    }
-                    if (!drawing) {
-                        beginShape();
-                        drawing = true;
-                    }
-                    vertex(x * pixelsPerUnit + 200, canvasY);
-                } catch (e) {
-                    if (drawing) {
-                        endShape();
-                        drawing = false;
-                    }
-                }
+        // 如果無法轉換，返回小數（保留2位）
+        return num.toFixed(2);
+    }
+
+    function setup() {
+        // 驗證初始 maxCoord
+        validateMaxCoord();
+        // 創建並附加畫布
+        let canvas = createCanvas(400, 400);
+        let canvasDiv = document.getElementById('canvas');
+        if (canvasDiv) {
+            canvas.parent('canvas');
+        } else {
+            console.error('Canvas container not found!');
+        }
+    }
+
+    function draw() {
+        background(255);
+        try {
+            drawGrid();
+            if (showFunction1) drawFunction(1, color(255, 0, 0), document.getElementById('functionInput1').value);
+            if (showFunction2) drawFunction(2, color(0, 0, 255), document.getElementById('functionInput2').value);
+            if (showPoints1) drawPoints(points1, color(255, 0, 0), showCoordinates1);
+            if (showPoints2) drawPoints(points2, color(0, 0, 255), showCoordinates2);
+            if (showIntersection && showFunction1 && showFunction2) drawIntersections();
+        } catch (e) {
+            console.error('Draw error:', e);
+        }
+    }
+
+    function drawGrid() {
+        let pixelsPerUnit = 400 / (2 * maxCoord); // 每個坐標單位的像素數
+        // 查找對應的刻度間隔，默認為 2 如果未找到
+        let scale = ALLOWED_SCALES.find(scale => scale.maxCoord === maxCoord);
+        let tickInterval = scale ? scale.tickInterval : 2;
+
+        stroke(200);
+        // 繪製格線
+        for (let i = -maxCoord; i <= maxCoord; i += 1) {
+            line(0, -i * pixelsPerUnit + 200, 400, -i * pixelsPerUnit + 200); // 水平線，Y軸反向
+            line(i * pixelsPerUnit + 200, 0, i * pixelsPerUnit + 200, 400); // 垂直線
+        }
+
+        stroke(0);
+        strokeWeight(2);
+        // 繪製數軸與箭頭
+        line(0, 200, 400, 200); // X軸
+        line(200, 0, 200, 400); // Y軸
+        // X軸箭頭
+        line(400, 200, 390, 190);
+        line(400, 200, 390, 210);
+        // Y軸箭頭（指向正方向，上方）
+        line(200, 0, 190, 10);
+        line(200, 0, 210, 10);
+        // X, Y 標籤
+        textAlign(CENTER, CENTER);
+        textSize(16);
+        text('X', 390, 230);
+        text('Y', 230, 10);
+        // 刻度
+        textSize(12);
+        for (let i = -maxCoord; i <= maxCoord; i += tickInterval) {
+            if (i !== 0) {
+                // X軸刻度
+                line(i * pixelsPerUnit + 200, 195, i * pixelsPerUnit + 200, 205);
+                text(i, i * pixelsPerUnit + 200, 220);
+                // Y軸刻度（正數在上，負數在下）
+                line(195, -i * pixelsPerUnit + 200, 205, -i * pixelsPerUnit + 200);
+                text(i, 180, -i * pixelsPerUnit + 200);
             }
-            if (drawing) endShape();
-            // 顯示函數名稱，直接放在線上
-            let x = funcNum === 1 ? maxCoord * 0.8 : -maxCoord * 0.8;
+        }
+        // 原點 0
+        text('0', 210, 220);
+        strokeWeight(1);
+    }
+
+    function drawFunction(funcNum, col, funcText) {
+        let func = funcNum === 1 ? func1 : func2;
+        let pixelsPerUnit = 400 / (2 * maxCoord);
+        stroke(col);
+        noFill();
+        let drawing = false;
+        for (let x = -maxCoord; x <= maxCoord; x += 0.1) {
             let y;
             try {
                 y = func(x);
                 if (isNaN(y) || !isFinite(y)) {
-                    y = func(x > 0 ? maxCoord * 0.5 : -maxCoord * 0.5); // 嘗試另一個點
-                }
-            } catch (e) {
-                return; // 無法繪製標籤
-            }
-            let canvasX = x * pixelsPerUnit + 200;
-            let canvasY = y * pixelsPerUnit + 200; // 正 Y 向上
-            // 限制 Y 坐標在畫布內
-            if (canvasY < 20) canvasY = 20;
-            if (canvasY > 380) canvasY = 380;
-            // 繪製背景矩形以提高可讀性
-            let textWidthEst = funcText.length * 8;
-            let textHeight = 14;
-            fill(255, 255, 255, 200); // 半透明白色背景
-            rectMode(CENTER);
-            rect(canvasX, canvasY, textWidthEst + 4, textHeight + 4);
-            // 繪製文字
-            fill(col);
-            textSize(12);
-            textAlign(CENTER, CENTER);
-            text(`y = ${funcText}`, canvasX, canvasY);
-        }
-
-        function drawPoints(points, col, showCoords) {
-            let pixelsPerUnit = 400 / (2 * maxCoord);
-            fill(col);
-            noStroke();
-            points.forEach(p => {
-                if (p.x !== null && p.y !== null && isFinite(p.y)) {
-                    ellipse(p.x * pixelsPerUnit + 200, p.y * pixelsPerUnit + 200, 8, 8); // 正 Y 向上
-                    if (showCoords) {
-                        textSize(10);
-                        textAlign(LEFT, CENTER);
-                        let displayX = Number.isInteger(p.x) ? p.x : p.x.toFixed(2);
-                        let displayY = Number.isInteger(p.y) ? p.y : p.y.toFixed(2);
-                        text(`(${displayX}, ${displayY})`, p.x * pixelsPerUnit + 205, p.y * pixelsPerUnit + 200);
+                    if (drawing) {
+                        endShape();
+                        drawing = false;
                     }
+                    continue;
                 }
-            });
+                let canvasY = -y * pixelsPerUnit + 200; // 修正 Y 軸方向：正 Y 向上
+                if (canvasY < -1000 || canvasY > 1000) {
+                    if (drawing) {
+                        endShape();
+                        drawing = false;
+                    }
+                    continue;
+                }
+                if (!drawing) {
+                    beginShape();
+                    drawing = true;
+                }
+                vertex(x * pixelsPerUnit + 200, canvasY);
+            } catch (e) {
+                if (drawing) {
+                    endShape();
+                    drawing = false;
+                }
+            }
         }
+        if (drawing) endShape();
+        // 顯示函數名稱，直接放在線上
+        let x = funcNum === 1 ? maxCoord * 0.8 : -maxCoord * 0.8;
+        let y;
+        try {
+            y = func(x);
+            if (isNaN(y) || !isFinite(y)) {
+                y = func(x > 0 ? maxCoord * 0.5 : -maxCoord * 0.5); // 嘗試另一個點
+            }
+        } catch (e) {
+            return; // 無法繪製標籤
+        }
+        let canvasX = x * pixelsPerUnit + 200;
+        let canvasY = -y * pixelsPerUnit + 200; // 修正 Y 軸方向
+        // 限制 Y 坐標在畫布內
+        if (canvasY < 20) canvasY = 20;
+        if (canvasY > 380) canvasY = 380;
+        // 繪製背景矩形以提高可讀性
+        let textWidthEst = funcText.length * 8;
+        let textHeight = 14;
+        fill(255, 255, 255, 200); // 半透明白色背景
+        rectMode(CENTER);
+        rect(canvasX, canvasY, textWidthEst + 4, textHeight + 4);
+        // 繪製文字
+        fill(col);
+        textSize(12);
+        textAlign(CENTER, CENTER);
+        text(`y = ${funcText}`, canvasX, canvasY);
+    }
 
-        function drawIntersections() {
-            let pixelsPerUnit = 400 / (2 * maxCoord);
-            let intersections = getIntersections();
-            fill(0, 128, 0); // 綠色交點
-            noStroke();
-            intersections.forEach(p => {
-                let canvasX = p.x * pixelsPerUnit + 200;
-                let canvasY = p.y * pixelsPerUnit + 200; // 正 Y 向上
-                // 確保交點在畫布內
-                if (canvasX >= 0 && canvasX <= 400 && canvasY >= 0 && canvasY <= 400) {
-                    ellipse(canvasX, canvasY, 10, 10);
-                    // 顯示坐標
+    function drawPoints(points, col, showCoords) {
+        let pixelsPerUnit = 400 / (2 * maxCoord);
+        fill(col);
+        noStroke();
+        points.forEach(p => {
+            if (p.x !== null && p.y !== null && isFinite(p.y)) {
+                ellipse(p.x * pixelsPerUnit + 200, -p.y * pixelsPerUnit + 200, 8, 8); // 修正 Y 軸方向
+                if (showCoords) {
                     textSize(10);
                     textAlign(LEFT, CENTER);
                     let displayX = Number.isInteger(p.x) ? p.x : p.x.toFixed(2);
                     let displayY = Number.isInteger(p.y) ? p.y : p.y.toFixed(2);
-                    let textX = canvasX + 10;
-                    let textY = canvasY;
-                    // 調整標籤位置以避免超出畫布
-                    if (textX + 50 > 390) textX = canvasX - 50;
-                    if (textY < 20) textY = 20;
-                    if (textY > 380) textY = 380;
-                    text(`(${displayX}, ${displayY})`, textX, textY);
+                    text(`(${displayX}, ${displayY})`, p.x * pixelsPerUnit + 205, -p.y * pixelsPerUnit + 200);
                 }
-            });
+            }
+        });
+    }
+
+    function drawIntersections() {
+        let pixelsPerUnit = 400 / (2 * maxCoord);
+        let intersections = getIntersections();
+        fill(0, 128, 0); // 綠色交點
+        noStroke();
+
+        // 移除舊的 MathJax 容器
+        let existingContainers = document.querySelectorAll('.mathjax-container');
+        existingContainers.forEach(container => container.remove());
+
+        intersections.forEach((p, index) => {
+            let canvasX = p.x * pixelsPerUnit + 200;
+            let canvasY = -p.y * pixelsPerUnit + 200; // 修正 Y 軸方向
+            // 確保交點在畫布內
+            if (canvasX >= 0 && canvasX <= 400 && canvasY >= 0 && canvasY <= 400) {
+                ellipse(canvasX, canvasY, 10, 10);
+
+                // 將坐標轉為數學格式
+                let displayX = toMathFormat(p.x);
+                let displayY = toMathFormat(p.y);
+
+                // 獲取畫布的絕對位置
+                let canvasDiv = document.getElementById('canvas');
+                let rect = canvasDiv.getBoundingClientRect();
+
+                // 創建 MathJax 容器
+                let container = document.createElement('div');
+                container.className = 'mathjax-container';
+                container.style.left = `${rect.left + canvasX + 10}px`;
+                container.style.top = `${rect.top + canvasY - 5}px`; // 微調 Y 位置以對齊
+                container.innerHTML = `\\((${displayX}, ${displayY})\\)`;
+                document.body.appendChild(container);
+
+                // 渲染 MathJax
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, container]);
+            }
+        });
+    }
+
+    function updateFunction(funcNum) {
+        let input = document.getElementById(`functionInput${funcNum}`).value;
+        let errorDiv = document.getElementById(`error${funcNum}`);
+        errorDiv.textContent = '';
+
+        if (!input) {
+            errorDiv.textContent = '請輸入函數式';
+            return;
         }
 
-        function updateFunction(funcNum) {
-            let input = document.getElementById(`functionInput${funcNum}`).value;
-            let errorDiv = document.getElementById(`error${funcNum}`);
-            errorDiv.textContent = '';
-
-            if (!input) {
-                errorDiv.textContent = '請輸入函數式';
-                return;
+        try {
+            let parsedInput = parseImplicitMultiplication(input);
+            let testFunc = new Function('x', `return ${parsedInput}`);
+            let testResult = testFunc(1);
+            if (isNaN(testResult) || testResult === undefined) {
+                throw new Error('無效的計算結果');
             }
 
-            try {
-                let parsedInput = parseImplicitMultiplication(input);
-                let testFunc = new Function('x', `return ${parsedInput}`);
-                let testResult = testFunc(1);
-                if (isNaN(testResult) || testResult === undefined) {
-                    throw new Error('無效的計算結果');
-                }
-
-                if (funcNum === 1) {
-                    func1 = testFunc;
-                    points1 = [];
-                } else {
-                    func2 = testFunc;
-                    points2 = [];
-                }
-                document.querySelectorAll(`.x-input${funcNum}`).forEach((input, index) => updateY(funcNum, input, index));
-            } catch (e) {
-                errorDiv.textContent = '無效的函數式';
-                console.error('解析錯誤:', e.message);
-            }
-        }
-
-        function updateY(funcNum, input, index) {
-            let x = parseFloat(input.value);
-            let yOutputs = document.querySelectorAll(`.y-output${funcNum}`);
-            let coordOutputs = document.querySelectorAll(`.coord-output${funcNum}`);
-            let yOutput = yOutputs[index];
-            let coordOutput = coordOutputs[index];
-            let points = funcNum === 1 ? points1 : points2;
-            let func = funcNum === 1 ? func1 : func2;
-
-            if (!isNaN(x)) {
-                try {
-                    let y = func(x);
-                    if (isNaN(y) || !isFinite(y)) {
-                        throw new Error('計算結果無效（可能是除以零）');
-                    }
-                    let displayY = Number.isInteger(y) ? y : y.toFixed(2);
-                    yOutput.value = displayY;
-                    let displayX = Number.isInteger(x) ? x : x.toFixed(2);
-                    coordOutput.value = `(${displayX}, ${displayY})`;
-                    points[index] = { x, y };
-                } catch (e) {
-                    yOutput.value = '';
-                    coordOutput.value = '';
-                    points[index] = { x: null, y: null };
-                    console.error('計算錯誤:', e.message);
-                }
+            if (funcNum === 1) {
+                func1 = testFunc;
+                points1 = [];
             } else {
+                func2 = testFunc;
+                points2 = [];
+            }
+            document.querySelectorAll(`.x-input${funcNum}`).forEach((input, index) => updateY(funcNum, input, index));
+        } catch (e) {
+            errorDiv.textContent = '無效的函數式';
+            console.error('解析錯誤:', e.message);
+        }
+    }
+
+    function updateY(funcNum, input, index) {
+        let x = parseFloat(input.value);
+        let yOutputs = document.querySelectorAll(`.y-output${funcNum}`);
+        let coordOutputs = document.querySelectorAll(`.coord-output${funcNum}`);
+        let yOutput = yOutputs[index];
+        let coordOutput = coordOutputs[index];
+        let points = funcNum === 1 ? points1 : points2;
+        let func = funcNum === 1 ? func1 : func2;
+
+        if (!isNaN(x)) {
+            try {
+                let y = func(x);
+                if (isNaN(y) || !isFinite(y)) {
+                    throw new Error('計算結果無效（可能是除以零）');
+                }
+                let displayY = Number.isInteger(y) ? y : y.toFixed(2);
+                yOutput.value = displayY;
+                let displayX = Number.isInteger(x) ? x : x.toFixed(2);
+                coordOutput.value = `(${displayX}, ${displayY})`;
+                points[index] = { x, y };
+            } catch (e) {
                 yOutput.value = '';
                 coordOutput.value = '';
                 points[index] = { x: null, y: null };
+                console.error('計算錯誤:', e.message);
             }
+        } else {
+            yOutput.value = '';
+            coordOutput.value = '';
+            points[index] = { x: null, y: null };
         }
+    }
 
-        function togglePoints(funcNum) {
-            if (funcNum === 1) {
-                showPoints1 = !showPoints1;
-            } else {
-                showPoints2 = !showPoints2;
-            }
+    function togglePoints(funcNum) {
+        if (funcNum === 1) {
+            showPoints1 = !showPoints1;
+        } else {
+            showPoints2 = !showPoints2;
         }
+    }
 
-        function toggleFunction(funcNum) {
-            if (funcNum === 1) {
-                showFunction1 = !showFunction1;
-            } else {
-                showFunction2 = !showFunction2;
-            }
+    function toggleFunction(funcNum) {
+        if (funcNum === 1) {
+            showFunction1 = !showFunction1;
+        } else {
+            showFunction2 = !showFunction2;
         }
+    }
 
-        function toggleCoordinates(funcNum) {
-            if (funcNum === 1) {
-                showCoordinates1 = !showCoordinates1;
-            } else {
-                showCoordinates2 = !showCoordinates2;
-            }
+    function toggleCoordinates(funcNum) {
+        if (funcNum === 1) {
+            showCoordinates1 = !showCoordinates1;
+        } else {
+            showCoordinates2 = !showCoordinates2;
         }
+    }
 
-        function toggleIntersection() {
-            showIntersection = !showIntersection;
-        }
+    function toggleIntersection() {
+        showIntersection = !showIntersection;
+    }
 
-        function zoomIn() {
-            const currentIndex = ALLOWED_SCALES.findIndex(scale => scale.maxCoord === maxCoord);
-            if (currentIndex > 0) {
-                maxCoord = ALLOWED_SCALES[currentIndex - 1].maxCoord;
-            }
+    function zoomIn() {
+        const currentIndex = ALLOWED_SCALES.findIndex(scale => scale.maxCoord === maxCoord);
+        if (currentIndex > 0) {
+            maxCoord = ALLOWED_SCALES[currentIndex - 1].maxCoord;
         }
+    }
 
-        function zoomOut() {
-            const currentIndex = ALLOWED_SCALES.findIndex(scale => scale.maxCoord === maxCoord);
-            if (currentIndex < ALLOWED_SCALES.length - 1) {
-                maxCoord = ALLOWED_SCALES[currentIndex + 1].maxCoord;
-            }
+    function zoomOut() {
+        const currentIndex = ALLOWED_SCALES.findIndex(scale => scale.maxCoord === maxCoord);
+        if (currentIndex < ALLOWED_SCALES.length - 1) {
+            maxCoord = ALLOWED_SCALES[currentIndex + 1].maxCoord;
         }
-    </script>
+    }
+</script>
 </body>
 </html>
