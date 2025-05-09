@@ -68,6 +68,9 @@
             font-size: 12px;
             margin-top: 5px;
         }
+        #canvas {
+            display: block; /* 確保 canvas 容器可見 */
+        }
     </style>
 </head>
 <body>
@@ -154,8 +157,18 @@
         let func1 = x => x + 3; // 預設函數 1: y = x + 3
         let func2 = x => 2 * x; // 預設函數 2: y = 2x
         let maxCoord = 10; // 初始最大坐標值
-        const MIN_COORD = 5;
-        const MAX_COORD = 50;
+        const ALLOWED_SCALES = [
+            { maxCoord: 5, tickInterval: 1 },
+            { maxCoord: 10, tickInterval: 2 },
+            { maxCoord: 50, tickInterval: 10 }
+        ];
+
+        // 驗證初始 maxCoord
+        function validateMaxCoord() {
+            if (!ALLOWED_SCALES.some(scale => scale.maxCoord === maxCoord)) {
+                maxCoord = 10; // 回退到默認值
+            }
+        }
 
         // 處理隱式乘法和指數的函數
         function parseImplicitMultiplication(input) {
@@ -232,23 +245,37 @@
         }
 
         function setup() {
+            // 驗證初始 maxCoord
+            validateMaxCoord();
+            // 創建並附加畫布
             let canvas = createCanvas(400, 400);
-            canvas.parent('canvas');
+            let canvasDiv = document.getElementById('canvas');
+            if (canvasDiv) {
+                canvas.parent('canvas');
+            } else {
+                console.error('Canvas container not found!');
+            }
         }
 
         function draw() {
             background(255);
-            drawGrid();
-            if (showFunction1) drawFunction(1, color(255, 0, 0), document.getElementById('functionInput1').value);
-            if (showFunction2) drawFunction(2, color(0, 0, 255), document.getElementById('functionInput2').value);
-            if (showPoints1) drawPoints(points1, color(255, 0, 0), showCoordinates1);
-            if (showPoints2) drawPoints(points2, color(0, 0, 255), showCoordinates2);
-            if (showIntersection && showFunction1 && showFunction2) drawIntersections();
+            try {
+                drawGrid();
+                if (showFunction1) drawFunction(1, color(255, 0, 0), document.getElementById('functionInput1').value);
+                if (showFunction2) drawFunction(2, color(0, 0, 255), document.getElementById('functionInput2').value);
+                if (showPoints1) drawPoints(points1, color(255, 0, 0), showCoordinates1);
+                if (showPoints2) drawPoints(points2, color(0, 0, 255), showCoordinates2);
+                if (showIntersection && showFunction1 && showFunction2) drawIntersections();
+            } catch (e) {
+                console.error('Draw error:', e);
+            }
         }
 
         function drawGrid() {
             let pixelsPerUnit = 400 / (2 * maxCoord); // 每個坐標單位的像素數
-            let tickInterval = maxCoord == 10 ? 2 : (maxCoord <= 5 ? 1 : 10); // 刻度間隔
+            // 查找對應的刻度間隔，默認為 2 如果未找到
+            let scale = ALLOWED_SCALES.find(scale => scale.maxCoord === maxCoord);
+            let tickInterval = scale ? scale.tickInterval : 2;
 
             stroke(200);
             // 繪製格線
@@ -496,14 +523,16 @@
         }
 
         function zoomIn() {
-            if (maxCoord > MIN_COORD) {
-                maxCoord = Math.max(MIN_COORD, maxCoord / 2);
+            const currentIndex = ALLOWED_SCALES.findIndex(scale => scale.maxCoord === maxCoord);
+            if (currentIndex > 0) {
+                maxCoord = ALLOWED_SCALES[currentIndex - 1].maxCoord;
             }
         }
 
         function zoomOut() {
-            if (maxCoord < MAX_COORD) {
-                maxCoord = Math.min(MAX_COORD, maxCoord * 2);
+            const currentIndex = ALLOWED_SCALES.findIndex(scale => scale.maxCoord === maxCoord);
+            if (currentIndex < ALLOWED_SCALES.length - 1) {
+                maxCoord = ALLOWED_SCALES[currentIndex + 1].maxCoord;
             }
         }
     </script>
