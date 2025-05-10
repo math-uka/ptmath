@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>量詞冒險島</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            font-family: 'Roboto Mono', 'Arial', sans-serif;
             background-color: #e6f7ff;
             margin: 0;
             padding: 20px;
@@ -178,6 +179,11 @@
             transform: translateY(1px);
         }
         
+        .next-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
         .restart-btn {
             background-color: #FF5722;
             display: none;
@@ -283,8 +289,7 @@
     <div class="celebration" id="celebration"></div>
     
     <script>
-
-          <!--"車": "輛",
+        <!--"車": "輛",
             "書": "本",
             "狗": "隻",
             "魚": "條",
@@ -422,72 +427,186 @@
     "植物": "棵",
             "孩子": "個"-->
 
-        
         // 量詞庫
         const measureWords = {
-         
-            
-          
-
-            
-"房子": "座",
-  "白雲": "朵",
-  "旗杆": "根",
-  "旗子": "面",
-  "風": "陣",
-  "彩虹": "道",
-  "書": "本",
-  "骨頭": "根",
-  "魚": "尾",
-  "車": "輛",
-  "全家福": "幅",
-  "樹": "棵",
-  "村子": "條",
-  "河": "條",
-  "朋友": "位",
-  "龍鳳胎": "對",
-  "家庭": "個",
-  "葉子": "片",
-  "禮物": "份",
-  "羊": "群",
-  "畫": "幅",
-  "電腦": "部",
-  "題目": "道",
-  "草原": "片",
-  "筆": "支",
-  "山": "座",
-  "樹枝": "根",
-  "鏡子": "面",
-  "高樓": "座",
-  "鮮花": "朵",
-  "毛衣": "件",
-  "鮮花": "束",
-  "布": "塊",
-  "布袋": "個",
-  "牛奶": "杯",
-  "麵包": "個",
-  "麵包": "片",
-  "眼鏡": "副",
-  "雨": "場",
-  "歌曲": "首",
-  "農場": "個",
-  "牛": "頭",
-  "雞": "隻",
-  "屋": "間",
-  "蛋糕": "件",
-  "蛋糕": "個",
-  "鞋": "對",
-  "鞋": "雙",
-  "雨傘": "把",
-  "帽子": "頂",
-  "裙子": "條",
-  "眼睛": "雙",
-  "體育館": "個",
-  "烏龜": "隻",
-  "桌子": "張",
-  "燭台": "個",
-  "蠟燭": "根"
-        
+            "車": "輛",
+            "書": "本",
+           isements
+            "狗": "隻",
+            "魚": "條",
+            "桌子": "張",
+            "牛": "頭",
+            "樹": "棵",
+            "水": "杯",
+            "衣服": "件",
+            "鳥": "隻",
+            "鉛筆": "支",
+            "紙": "張",
+            "飛機": "架",
+            "花": "朵",
+            "貓": "隻",
+            "椅子": "張",
+            "馬": "匹",
+            "羊": "隻",
+            "船": "艘",
+            "電腦": "台",
+            "手機": "支",
+            "電視": "台",
+            "鞋子": "雙",
+            "襪子": "雙",
+            "手套": "雙",
+            "眼睛": "雙",
+            "耳朵": "對",
+            "筷子": "雙",
+            "刀": "把",
+            "傘": "把",
+            "扇子": "把",
+            "鑰匙": "把",
+            "牙刷": "支",
+            "筆": "支",
+            "香蕉": "根",
+            "黃瓜": "根",
+            "繩子": "條",
+            "路": "條",
+            "河": "條",
+            "蛇": "條",
+            "褲子": "條",
+            "裙子": "條",
+            "圍巾": "條",
+            "項鍊": "條",
+            "新聞": "則",
+            "消息": "則",
+            "事件": "件",
+            "禮物": "份",
+            "工作": "份",
+            "報紙": "份",
+            "飯": "碗",
+            "湯": "碗",
+            "茶": "杯",
+            "咖啡": "杯",
+            "酒": "瓶",
+            "牛奶": "瓶",
+            "果汁": "瓶",
+            "藥": "粒",
+            "糖": "顆",
+            "葡萄": "顆",
+            "星星": "顆",
+            "心": "顆",
+            "牙齒": "顆",
+            "寶石": "顆",
+            "珍珠": "顆",
+            "雞蛋": "個",
+            "蘋果": "個",
+            "橘子": "個",
+            "西瓜": "個",
+            "球": "個",
+            "問題": "個",
+            "人": "個",
+            "車輪": "個",
+            "椰子": "個",
+            "包子": "個",
+            "糖果": "顆",
+            "蝴蝶": "隻",
+            "手表": "塊",
+            "氣球": "個",
+            "果凍": "個",
+            "魚缸": "個",
+            "沙發": "張",
+            "畫": "幅",
+            "故事": "篇",
+            "冰淇淋": "球",
+            "玩具": "個",
+            "帽子": "頂",
+            "籃球": "個",
+            "足球": "個",
+            "橡皮擦": "個",
+            "筆記本": "本",
+            "水壺": "個",
+            "寶寶": "個",
+            "小熊": "隻",
+            "音樂": "首",
+            "樂器": "件",
+            "花束": "束",
+            "影像": "幅",
+            "生日蛋糕": "個",
+            "糖果罐": "個",
+            "小鳥": "隻",
+            "水族箱": "個",
+            "相片": "張",
+            "小豬": "隻",
+            "馬戲團": "個",
+            "畫筆": "支",
+            "木頭": "根",
+            "沙子": "堆",
+            "故事書": "本",
+            "玩偶": "個",
+            "背包": "個",
+            "圍棋": "盤",
+            "拼圖": "塊",
+            "木馬": "匹",
+            "手指": "隻",
+            "奶昔": "杯",
+            "糖": "包",
+            "氣泡": "個",
+            "水晶": "顆",
+            "寶盒": "個",
+            "行李": "個",
+            "小貓": "隻",
+            "小狗": "隻",
+            "小兔": "隻",
+            "小魚": "隻",
+            "海洋": "片",
+            "星球": "顆",
+            "月亮": "個",
+            "太陽": "個",
+            "花園": "個",
+            "草地": "片",
+            "小鎮": "個",
+            "植物": "棵",
+            "孩子": "個",
+            "房子": "座",
+            "白雲": "朵",
+            "旗杆": "根",
+            "旗子": "面",
+            "風": "陣",
+            "彩虹": "道",
+            "骨頭": "根",
+            "全家福": "幅",
+            "村子": "條",
+            "朋友": "位",
+            "龍鳳胎": "對",
+            "家庭": "個",
+            "葉子": "片",
+            "羊": "群",
+            "題目": "道",
+            "草原": "片",
+            "山": "座",
+            "樹枝": "根",
+            "鏡子": "面",
+            "高樓": "座",
+            "鮮花": "朵",
+            "毛衣": "件",
+            "鮮花": "束",
+            "布": "塊",
+            "布袋": "個",
+            "麵包": "個",
+            "麵包": "片",
+            "眼鏡": "副",
+            "雨": "場",
+            "歌曲": "首",
+            "農場": "個",
+            "雞": "隻",
+            "屋": "間",
+            "蛋糕": "件",
+            "蛋糕": "個",
+            "鞋": "對",
+            "鞋": "雙",
+            "雨傘": "把",
+            "裙子": "條",
+            "體育館": "個",
+            "烏龜": "隻",
+            "燭台": "個",
+            "蠟燭": "根"
         };
         
         const allMeasureWords = [...new Set(Object.values(measureWords))];
@@ -498,7 +617,8 @@
         let currentSelectedOption = null;
         let shuffledQuestions = [];
         let usedNouns = [];
-        let autoNextTimeout = null; // 用於管理自動下一題的計時器
+        let autoNextTimeout = null;
+        let currentQuestionData = null; // 修正：添加變量聲明
         
         // DOM 元素
         const questionText = document.getElementById('questionText');
@@ -516,9 +636,17 @@
             score = 0;
             currentSelectedOption = null;
             usedNouns = [];
-            if (autoNextTimeout) clearTimeout(autoNextTimeout); // 清除任何現有的計時器
+            if (autoNextTimeout) clearTimeout(autoNextTimeout);
             
             shuffledQuestions = generateUniqueQuestions(10);
+            if (shuffledQuestions.length === 0) {
+                questionText.textContent = '錯誤：題目數量不足！';
+                optionsArea.innerHTML = '';
+                feedback.textContent = '請聯繫管理員檢查題庫。';
+                nextBtn.style.display = 'none';
+                restartBtn.style.display = 'inline-block';
+                return;
+            }
             loadQuestion();
         }
         
@@ -573,6 +701,7 @@
             feedback.innerHTML = '';
             optionsArea.innerHTML = '';
             nextBtn.style.display = 'none';
+            nextBtn.disabled = true; // 修正：初始禁用下一題按鈕
             
             currentSelectedOption = null;
             
@@ -589,20 +718,16 @@
         
         // 選擇選項
         function selectOption(option, optionElement) {
-            // 移除之前選中的樣式
             document.querySelectorAll('.option').forEach(el => {
                 el.classList.remove('selected', 'correct', 'wrong');
             });
             
-            // 添加新選中的樣式
             optionElement.classList.add('selected');
             currentSelectedOption = option;
             
-            // 更新題目空白處
             const blank = document.getElementById('answerBlank');
             blank.innerHTML = `<span class="selected-answer">${option}</span>`;
             
-            // 檢查答案
             checkAnswer(option, optionElement);
         }
         
@@ -623,18 +748,17 @@
                         showFinalResults();
                     }, 2000);
                 } else {
-                    // 2秒後自動下一題
-                    if (autoNextTimeout) clearTimeout(autoNextTimeout); // 清除之前的計時器
+                    nextBtn.style.display = 'inline-block';
+                    nextBtn.disabled = false; // 修正：啟用下一題按鈕
+                    if (autoNextTimeout) clearTimeout(autoNextTimeout);
                     autoNextTimeout = setTimeout(() => {
                         nextQuestion();
                     }, 2000);
-                    nextBtn.style.display = 'inline-block'; // 同時顯示下一題按鈕，讓用戶可以手動跳過
                 }
             } else {
                 feedback.textContent = '再試試看！';
                 feedback.className = 'feedback incorrect';
                 optionElement.classList.add('wrong');
-                // 不鎖定選項，讓用戶可以重新選擇
             }
         }
         
@@ -652,7 +776,7 @@
         function nextQuestion() {
             currentQuestionIndex++;
             currentSelectedOption = null;
-            if (autoNextTimeout) clearTimeout(autoNextTimeout); // 清除計時器
+            if (autoNextTimeout) clearTimeout(autoNextTimeout);
             
             if (currentQuestionIndex < 10) {
                 loadQuestion();
@@ -666,7 +790,7 @@
             celebration.style.display = 'block';
             celebration.innerHTML = '';
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 50; i++) { // 修正：減少到50個彩紙
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = `${Math.random() * 100}%`;
@@ -682,14 +806,19 @@
         }
         
         // 事件監聽
-        nextBtn.addEventListener('click', nextQuestion);
+        nextBtn.addEventListener('click', () => {
+            if (!nextBtn.disabled) {
+                nextBtn.disabled = true; // 修正：點擊後禁用按鈕
+                nextQuestion();
+            }
+        });
         restartBtn.addEventListener('click', initGame);
         
         // 開始遊戲
         initGame();
     </script>
-      <footer>
-        <p>&copy; 2025 ukawai</p>
+    <footer>
+        <p>© 2025 ukawai</p>
     </footer>
 </body>
 </html>
