@@ -46,7 +46,6 @@
             border: 2px solid #ccc;
             border-radius: 5px;
             font-family: 'Roboto', sans-serif;
-            /* Hide number input spinner */
             -webkit-appearance: none;
             -moz-appearance: textfield;
         }
@@ -161,7 +160,6 @@
         </div>
         <div class="action-buttons">
             <button onclick="submitAnswer()">Submit</button>
-            <button onclick="generateQuestion(true)">New Question</button>
         </div>
         <div id="feedback"></div>
         <div id="end-screen">
@@ -203,18 +201,21 @@
             let question = "";
 
             if (questionType === 0) {
-                const isMore = Math.random() > 0.5;
-                const reverse = Math.random() > 0.5;
-                const actualDiff = Math.abs(num1 - num2);
-                correctAnswer = actualDiff;
-                if (isMore && !reverse) {
-                    question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person1}\\) has \\(( \\quad )\\) more \\(${item}\\) than \\(${person2}\\).`;
-                } else if (isMore && reverse) {
-                    question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person2}\\) has \\(( \\quad )\\) less \\(${item}\\) than \\(${person1}\\).`;
-                } else if (!isMore && !reverse) {
-                    question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person2}\\) has \\(( \\quad )\\) less \\(${item}\\) than \\(${person1}\\).`;
+                correctAnswer = Math.abs(num1 - num2);
+                const isPerson1More = num1 > num2;
+                const useMore = Math.random() > 0.5;
+                if (isPerson1More) {
+                    if (useMore) {
+                        question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person1}\\) has \\(( \\quad )\\) more \\(${item}\\) than \\(${person2}\\).`;
+                    } else {
+                        question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person2}\\) has \\(( \\quad )\\) less \\(${item}\\) than \\(${person1}\\).`;
+                    }
                 } else {
-                    question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person1}\\) has \\(( \\quad )\\) more \\(${item}\\) than \\(${person2}\\).`;
+                    if (useMore) {
+                        question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person2}\\) has \\(( \\quad )\\) more \\(${item}\\) than \\(${person1}\\).`;
+                    } else {
+                        question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). \\(${person1}\\) has \\(( \\quad )\\) less \\(${item}\\) than \\(${person2}\\).`;
+                    }
                 }
             } else if (questionType === 1) {
                 const isMore = Math.random() > 0.5;
