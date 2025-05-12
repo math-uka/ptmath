@@ -159,9 +159,9 @@
         let showIntersection = false;
         let func1 = x => x; // 預設函數 1: y = x
         let func2 = x => 2 * x; // 預設函數 2: y = 2x
-        const zoomLevels = [5, 10, 50]; // 三個縮放層級
-        let zoomLevelIndex = 1; // 初始為 maxCoord = 10
-        let maxCoord = zoomLevels[zoomLevelIndex];
+        let maxCoord = 10; // 初始最大坐標值
+        const MIN_COORD = 5;
+        const MAX_COORD = 50;
 
         // 處理隱式乘法和指數
         function parseImplicitMultiplication(input) {
@@ -255,7 +255,7 @@
 
         function drawGrid() {
             let pixelsPerUnit = 400 / (2 * maxCoord);
-            let tickInterval = maxCoord === 50 ? 10 : maxCoord === 10 ? 2 : 1;
+            let tickInterval = maxCoord <= 5 ? 1 : (maxCoord <= 10 ? 2 : 5);
 
             // 繪製網格線
             stroke(200);
@@ -363,7 +363,7 @@
             let intersections = getIntersections();
             let infoDiv = document.getElementById('intersectionInfo');
             if (intersections.length === 0) {
-                infoDiv.textContent = '未找到交點或交點不在可視範圍內';
+                infoDiv.textContent = '未找到交點或交Tat 在可視範圍內';
             } else {
                 infoDiv.textContent = `找到 ${intersections.length} 個交點`;
             }
@@ -485,16 +485,14 @@
         }
 
         function zoomIn() {
-            if (zoomLevelIndex > 0) {
-                zoomLevelIndex--;
-                maxCoord = zoomLevels[zoomLevelIndex];
+            if (maxCoord > MIN_COORD) {
+                maxCoord = Math.max(MIN_COORD, maxCoord / 2);
             }
         }
 
         function zoomOut() {
-            if (zoomLevelIndex < zoomLevels.length - 1) {
-                zoomLevelIndex++;
-                maxCoord = zoomLevels[zoomLevelIndex];
+            if (maxCoord < MAX_COORD) {
+                maxCoord = Math.min(MAX_COORD, maxCoord * 2);
             }
         }
     </script>
