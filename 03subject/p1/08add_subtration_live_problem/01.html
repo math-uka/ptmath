@@ -198,7 +198,7 @@
             const num1 = Math.floor(Math.random() * 50) + 10;
             const num2 = Math.floor(Math.random() * 50) + 1;
             const diff = Math.floor(Math.random() * 30) + 1;
-            const questionType = Math.floor(Math.random() * 4);
+            const questionType = Math.floor(Math.random() * 7); // Updated to include new type (0 to 6)
 
             let question = "";
 
@@ -226,10 +226,30 @@
                 question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${diff}\\) ${isMore ? "more" : "less"} \\(${item}\\) than \\(${person1}\\). \\(${person2}\\) has \\(( \\quad )\\) \\(${item}\\).`;
             } else if (questionType === 2) {
                 correctAnswer = num1 + num2;
-                question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). They have \\(( \\quad )\\) \\(${item}\\) altogether.`;
+                question = `\\(${person1}\\) and \\(${person2}\\) have \\(${num1 + num2} ${item}\\) altogether. \\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(( \\quad )\\) \\(${item}\\).`;
             } else if (questionType === 3) {
                 correctAnswer = Math.abs(num1 - num2);
                 question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). What is the difference between the number of \\(${person1}\\)’s \\(${item}\\) and \\(${person2}\\)’s \\(${item}\\)? \\(( \\quad )\\)`;
+            } else if (questionType === 4) {
+                // New question type: A has 20 books. The difference between A and B is 5. B has ( ) books
+                const aBooks = 20;
+                const difference = 5;
+                const isMore = Math.random() > 0.5; // Randomly choose if B has more or less
+                correctAnswer = isMore ? aBooks + difference : aBooks - difference;
+                correctAnswer = Math.max(0, correctAnswer); // Ensure non-negative
+                question = `\\(${person1}\\) has \\(${aBooks} ${item}\\). The difference between \\(${person1}\\) and \\(${person2}\\) is \\(${difference}\\). \\(${person2}\\) has \\(( \\quad )\\) \\(${item}\\).`;
+            } else if (questionType === 5) {
+                // Existing question type: A and B have X coins altogether, A has Y coins, B has ( ) coins
+                const total = Math.floor(Math.random() * 50) + 10; // Random total between 10 and 59
+                const aCoins = Math.floor(Math.random() * (total - 1)) + 1; // A's coins between 1 and total-1
+                correctAnswer = total - aCoins;
+                question = `\\(${person1}\\) and \\(${person2}\\) have \\(${total} ${item}\\) altogether. \\(${person1}\\) has \\(${aCoins} ${item}\\). \\(${person2}\\) has \\(( \\quad )\\) \\(${item}\\).`;
+            } else if (questionType === 6) {
+                // Existing question type: A has X coins, A has Y coins less than B, B has ( ) coins
+                const aCoins = Math.floor(Math.random() * 50) + 1; // A's coins between 1 and 50
+                const diff = Math.floor(Math.random() * 30) + 1; // Difference between 1 and 30
+                correctAnswer = aCoins + diff;
+                question = `\\(${person1}\\) has \\(${aCoins} ${item}\\). \\(${person1}\\) has \\(${diff}\\) \\(${item}\\) less than \\(${person2}\\). \\(${person2}\\) has \\(( \\quad )\\) \\(${item}\\).`;
             }
 
             document.getElementById("question").innerHTML = question;
