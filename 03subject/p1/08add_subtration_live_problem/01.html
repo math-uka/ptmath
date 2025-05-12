@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Practice2</title>
+    <title>Math Practice</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -198,7 +198,7 @@
             const num1 = Math.floor(Math.random() * 50) + 10;
             const num2 = Math.floor(Math.random() * 50) + 1;
             const diff = Math.floor(Math.random() * 30) + 1;
-            const questionType = Math.floor(Math.random() * 4); // Updated to include new question type
+            const questionType = Math.floor(Math.random() * 4);
 
             let question = "";
 
@@ -222,12 +222,12 @@
             } else if (questionType === 1) {
                 const isMore = Math.random() > 0.5;
                 correctAnswer = isMore ? num1 + diff : num1 - diff;
-                correctAnswer = Math.max(0, correctoAnswer);
+                correctAnswer = Math.max(0, correctAnswer);
                 question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${diff}\\) ${isMore ? "more" : "less"} \\(${item}\\) than \\(${person1}\\). \\(${person2}\\) has \\(( \\quad )\\) \\(${item}\\).`;
             } else if (questionType === 2) {
                 correctAnswer = num1 + num2;
-                question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). They have \\(( \\quad )\\) \\(${item}\\) together.`;
-            } else if (questionType === 3) { // New question type
+                question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). They have \\(( \\quad )\\) \\(${item}\\) altogether.`;
+            } else if (questionType === 3) {
                 correctAnswer = Math.abs(num1 - num2);
                 question = `\\(${person1}\\) has \\(${num1} ${item}\\). \\(${person2}\\) has \\(${num2} ${item}\\). What is the difference between the number of \\(${person1}\\)’s \\(${item}\\) and \\(${person2}\\)’s \\(${item}\\)? \\(( \\quad )\\)`;
             }
