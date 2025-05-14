@@ -6,7 +6,6 @@
     <title>Self-learning tool1127</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* 原有樣式保持不變 */
         body {
             font-family: 'Noto Sans TC', Arial, sans-serif;
             margin: 0;
@@ -111,6 +110,11 @@
             margin: 25px 0;
             font-size: 1.5em;
             color: #2c3e50;
+        }
+        #timerDisplay {
+            font-size: 1.2em;
+            color: #e74c3c;
+            margin: 15px 0;
         }
         .play-button {
             padding: 8px 16px;
@@ -223,6 +227,7 @@
         <div id="quizContainer">
             <h2>測驗模式</h2>
             <div id="currentWord"></div>
+            <div id="timerDisplay"></div>
             <div class="quiz-buttons">
                 <button onclick="replay()">重讀</button>
                 <button onclick="nextWord()">下一個</button>
@@ -239,6 +244,8 @@
         let voicesLoaded = false;
         let selectedWords = [];
         let originalInput = '';
+        let timerInterval = null;
+        let timeLeft = 60; // 1 minute in seconds
 
         function loadVoices() {
             return new Promise((resolve) => {
@@ -350,7 +357,6 @@
                 return;
             }
 
-            // 隨機洗牌並選取指定數量的詞語
             quizArray = [...wordsArray].sort(() => Math.random() - 0.5).slice(0, Math.min(count, wordsArray.length));
             currentIndex = 0;
             selectedWords = [];
@@ -361,10 +367,33 @@
             showCurrentWord();
         }
 
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timeLeft = 60;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    nextWord();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `剩餘時間: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
         function showCurrentWord() {
             if (currentIndex < quizArray.length) {
                 document.getElementById('currentWord').textContent = `第 ${currentIndex + 1} 個詞語`;
                 speak(quizArray[currentIndex]);
+                startTimer();
             } else {
                 endQuiz();
             }
@@ -375,12 +404,15 @@
         }
 
         function nextWord() {
+            clearInterval(timerInterval);
             currentIndex++;
             showCurrentWord();
         }
 
         function endQuiz() {
+            clearInterval(timerInterval);
             document.getElementById('currentWord').textContent = '全部結束！';
+            document.getElementById('timerDisplay').textContent = '';
             let resultHtml = '<h3>剛剛的詞語：</h3><div class="word-buttons">';
             quizArray.forEach(word => {
                 let displayText = word.endsWith('.') || word.endsWith('。') ? word.slice(0, -1) : word;
@@ -403,6 +435,7 @@
         }
 
         function retest() {
+            clearInterval(timerInterval);
             if (selectedWords.length === 0) {
                 document.getElementById('inputText').value = originalInput;
             } else {
