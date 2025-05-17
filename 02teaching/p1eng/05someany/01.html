@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Some or Any Quiz Game</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffeb3b, #4caf50);
+            min-height: 100vh;
+            margin: 0;
+            overflow: auto;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .star {
+            position: absolute;
+            font-size: 20px;
+            color: #ffd700;
+            animation: float 4s infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        .shake {
+            animation: shake 0.3s;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .leaderboard {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .leaderboard h3 {
+            margin-bottom: 10px;
+        }
+        .leaderboard ul {
+            list-style: none;
+            padding: 0;
+        }
+        .leaderboard li {
+            margin: 5px 0;
+        }
+        #response {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="container" id="gameContainer">
+        <div class="score">Stars: <span id="starCount">0</span> 🌟</div>
+        <h2 id="question"></h2>
+        <h3 id="response"></h3>
+        <button id="someBtn" onclick="checkAnswer('some')">Some</button>
+        <button id="anyBtn" onclick="checkAnswer('any')">Any</button>
+        <div id="result"></div>
+        <div class="leaderboard" id="leaderboard" style="display: none;">
+            <h3>Leaderboard</h3>
+            <ul id="leaderboardList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "Is there ___ milk?", a: "any", q_full: "Is there any milk?", r: "Yes, there is some milk.", r_a: "some" },
+            { q: "Are there ___ carrots?", a: "any", q_full: "Are there any carrots?", r: "No, there aren't any carrots.", r_a: "any" },
+            { q: "Is there ___ meat?", a: "any", q_full: "Is there any meat?", r: "Yes, there is some meat.", r_a: "some" },
+            { q: "Are there ___ apples?", a: "any", q_full: "Are there any apples?", r: "Yes, there are some apples.", r_a: "some" },
+            { q: "Is there ___ bread?", a: "any", q_full: "Is there any bread?", r: "No, there isn't any bread.", r_a: "any" },
+            { q: "Is there ___ cheese?", a: "any", q_full: "Is there any cheese?", r: "Yes, there is some cheese.", r_a: "some" },
+            { q: "Are there ___ eggs?", a: "any", q_full: "Are there any eggs?", r: "No, there aren't any eggs.", r_a: "any" },
+            { q: "Is there ___ juice?", a: "any", q_full: "Is there any juice?", r: "Yes, there is some juice.", r_a: "some" },
+            { q: "Are there ___ cookies?", a: "any", q_full: "Are there any cookies?", r: "Yes, there are some cookies.", r_a: "some" },
+            { q: "Is there ___ butter?", a: "any", q_full: "Is there any butter?", r: "No, there isn't any butter.", r_a: "any" },
+            { q: "Is there ___ sugar?", a: "any", q_full: "Is there any sugar?", r: "Yes, there is some sugar.", r_a: "some" },
+            { q: "Are there ___ bananas?", a: "any", q_full: "Are there any bananas?", r: "No, there aren't any bananas.", r_a: "any" },
+            { q: "Is there ___ rice?", a: "any", q_full: "Is there any rice?", r: "Yes, there is some rice.", r_a: "some" },
+            { q: "Are there ___ tomatoes?", a: "any", q_full: "Are there any tomatoes?", r: "Yes, there are some tomatoes.", r_a: "some" },
+            { q: "Is there ___ coffee?", a: "any", q_full: "Is there any coffee?", r: "No, there isn't any coffee.", r_a: "any" },
+            { q: "Is there ___ tea?", a: "any", q_full: "Is there any tea?", r: "Yes, there is some tea.", r_a: "some" },
+            { q: "Are there ___ oranges?", a: "any", q_full: "Are there any oranges?", r: "No, there aren't any oranges.", r_a: "any" },
+            { q: "Is there ___ pasta?", a: "any", q_full: "Is there any pasta?", r: "Yes, there is some pasta.", r_a: "some" },
+            { q: "Are there ___ potatoes?", a: "any", q_full: "Are there any potatoes?", r: "Yes, there are some potatoes.", r_a: "some" },
+            { q: "Is there ___ salt?", a: "any", q_full: "Is there any salt?", r: "No, there isn't any salt.", r_a: "any" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let stars = 0;
+        let step = 0; // 0: answer question, 1: answer response
+        let startTime = null;
+
+        function addStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 10; i++) {
+                let star = document.createElement('span');
+                star.textContent = '🌟';
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animation = `float ${2 + Math.random() * 2}s infinite`;
+                stars.appendChild(star);
+            }
+        }
+        addStars();
+
+        function startGame() {
+            startTime = new Date();
+            currentQuestionIndex = 0;
+            stars = 0;
+            step = 0;
+            document.getElementById('starCount').textContent = stars;
+            document.getElementById('leaderboard').style.display = 'none';
+            document.getElementById('someBtn').style.display = 'inline-block';
+            document.getElementById('anyBtn').style.display = 'inline-block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question').textContent = question.q;
+            document.getElementById('response').textContent = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('someBtn').disabled = false;
+            document.getElementById('anyBtn').disabled = false;
+            step = 0;
+        }
+
+        function checkAnswer(answer) {
+            const question = questions[currentQuestionIndex];
+            const container = document.getElementById('gameContainer');
+            if (step === 0) { // 第一步：回答問題
+                if (answer === question.a) {
+                    document.getElementById('question').textContent = question.q_full; // 顯示完整問題
+                    document.getElementById('response').textContent = question.r.replace(question.r_a, '___'); // 顯示回應句
+                    document.getElementById('someBtn').disabled = false;
+                    document.getElementById('anyBtn').disabled = false;
+                    step = 1;
+                    document.getElementById('result').textContent = 'Choose the correct word for the response.';
+                } else {
+                    container.classList.add('shake');
+                    setTimeout(() => container.classList.remove('shake'), 300);
+                    document.getElementById('result').textContent = 'Wrong! Try again.';
+                }
+            } else if (step === 1) { // 第二步：回答回應句
+                if (answer === question.r_a) {
+                    stars++;
+                    document.getElementById('starCount').textContent = stars;
+                    document.getElementById('response').textContent = question.r; // 顯示完整回應句
+                    document.getElementById('result').textContent = 'Correct!';
+                    document.getElementById('someBtn').disabled = true;
+                    document.getElementById('anyBtn').disabled = true;
+                    setTimeout(nextQuestion, 1000);
+                } else {
+                    container.classList.add('shake');
+                    setTimeout(() => container.classList.remove('shake'), 300);
+                    document.getElementById('result').textContent = 'Wrong! Try again.';
+                }
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            const endTime = new Date();
+            const timeTaken = Math.round((endTime - startTime) / 1000);
+            document.getElementById('question').textContent = `Game Over! You earned ${stars} stars!`;
+            document.getElementById('response').textContent = `Time taken: ${timeTaken} seconds`;
+            document.getElementById('someBtn').style.display = 'none';
+            document.getElementById('anyBtn').style.display = 'none';
+            document.getElementById('result').innerHTML = `
+                <input type="text" id="playerName" placeholder="Enter your name">
+                <button onclick="saveScore(${stars}, ${timeTaken})">Submit</button>
+            `;
+        }
+
+        function saveScore(stars, timeTaken) {
+            const name = document.getElementById('playerName').value.trim();
+            if (!name) {
+                alert('Please enter your name!');
+                return;
+            }
+            let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            leaderboard.push({ name, stars, timeTaken });
+            leaderboard.sort((a, b) => b.stars - a.stars || a.timeTaken - b.timeTaken);
+            leaderboard = leaderboard.slice(0, 5);
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+            displayLeaderboard();
+        }
+
+        function displayLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '';
+            leaderboard.forEach((entry, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${entry.name} - ${entry.stars} stars, ${entry.timeTaken} seconds`;
+                leaderboardList.appendChild(li);
+            });
+            document.getElementById('leaderboard').style.display = 'block';
+            document.getElementById('result').innerHTML = `<button onclick="startGame()">Play Again</button>`;
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
