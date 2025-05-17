@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', () => {
+    loadVoices();
+    fetchJsonFileList();
+});
+
 let wordData = [];
 let quizArray = [];
 let currentIndex = 0;
@@ -25,30 +30,66 @@ function loadVoices() {
     });
 }
 
+async function fetchJsonFileList() {
+    try {
+        console.log('Attempting to load file.json');
+        const response = await fetch('./file.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+        const jsonFiles = await response.json();
+        console.log('Loaded JSON file list:', jsonFiles);
+        generateJsonButtons(jsonFiles);
+    } catch (error) {
+        console.error('Failed to load file.json:', error);
+        document.getElementById('jsonButtons').innerHTML = 
+            `<p class="error-message">無法載入 file.json：${error.message}。使用備用檔案清單...</p>`;
+        const fallbackFiles = ['data'];
+        generateJsonButtons(fallbackFiles);
+    }
+}
+
+function generateJsonButtons(jsonFiles) {
+    console.log('Generating JSON buttons for files:', jsonFiles);
+    const buttonContainer = document.getElementById('jsonButtons');
+    if (!buttonContainer) {
+        console.error('jsonButtons element not found');
+        return;
+    }
+    let buttonHtml = '';
+    jsonFiles.forEach(file => {
+        buttonHtml += `<button onclick="loadJson('${file}')">${file}</button>`;
+    });
+    buttonContainer.innerHTML = buttonHtml;
+    if (jsonFiles.length === 0) {
+        buttonContainer.innerHTML = '<p class="error-message">未找到 JSON 檔案，請檢查 file.json。</p>';
+    }
+}
+
 async function fetchData(jsonFile) {
     try {
-        console.log(`正在載入 js/${jsonFile}.json...`);
+        console.log(`Attempting to load js/${jsonFile}.json`);
         const response = await fetch(`js/${jsonFile}.json`);
         if (!response.ok) {
-            throw new Error(`HTTP錯誤: ${response.status}`);
+            throw new Error(`HTTP error: ${response.status}`);
         }
         const data = await response.json();
-        console.log('載入的數據:', data);
+        console.log('Loaded data:', data);
         wordData = Object.entries(data).map(([key, value]) => ({
             id: key,
             word: value,
             image: `images/${jsonFile}/${key}.png`
         }));
         if (wordData.length === 0) {
-            throw new Error('JSON 檔案中沒有有效數據');
+            throw new Error('JSON file contains no valid data');
         }
         generateTable();
         document.getElementById('inputContainer').style.display = 'none';
         document.getElementById('mainContainer').style.display = 'block';
     } catch (error) {
-        console.error(`載入 js/${jsonFile}.json 失敗:`, error);
+        console.error(`Failed to load js/${jsonFile}.json:`, error);
         document.getElementById('tableContainer').innerHTML = 
-            `<p class="error-message">載入 js/${jsonFile}.json 失敗：${error.message}。請檢查檔案路徑或格式。正在使用備用數據...</p>`;
+            `<p class="error-message">無法載入 js/${jsonFile}.json：${error.message}。請檢查檔案路徑或格式。正在使用備用數據...</p>`;
         wordData = [
             { id: '01', word: 'Apple', image: `images/${jsonFile}/01.png` },
             { id: '02', word: 'Boy', image: `images/${jsonFile}/02.png` }
@@ -60,7 +101,7 @@ async function fetchData(jsonFile) {
 }
 
 function generateTable() {
-    console.log('生成表格，數據:', wordData);
+    console.log('Generating table with data:', wordData);
     let tableHtml = '<table><tr><th>編號</th><th>圖片</th><th>詞語</th><th>發音</th></tr>';
     wordData.forEach((item, index) => {
         const escapedWord = item.word.replace(/'/g, "\\'");
@@ -94,12 +135,8 @@ async function speak(text) {
     speechSynthesis.speak(utterance);
 }
 
-function loadJson() {
-    const jsonFile = document.getElementById('jsonInput').value.trim();
-    if (!jsonFile) {
-        alert('請輸入 JSON 檔案名稱！');
-        return;
-    }
+function loadJson(jsonFile) {
+    console.log('Loading JSON file:', jsonFile);
     currentJsonFile = jsonFile;
     fetchData(jsonFile);
 }
@@ -216,8 +253,3 @@ function retest() {
     document.getElementById('quizContainer').style.display = 'none';
     document.getElementById('mainContainer').style.display = 'block';
 }
-
-window.onload = () => {
-    loadVoices();
-    // 等待用戶輸入 JSON 檔案名稱，不自動載入
-};
