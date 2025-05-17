@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看圖默書工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #95a5a6;
+            color: white;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+        .button-group {
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 100px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        #mainContainer {
+            display: block;
+        }
+        #quizContainer {
+            display: none;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        #currentWord, #currentImage {
+            margin: 25px 0;
+            font-size: 1.5em;
+            color: #2c3e50;
+        }
+        #currentImage img {
+            max-width: 200px;
+            height: auto;
+        }
+        #timerDisplay {
+            font-size: 1.2em;
+            color: #e74c3c;
+            margin: 15px 0;
+        }
+        .play-button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #e74c3c;
+        }
+        .play-button:hover {
+            background: #c0392b;
+        }
+        .quiz-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        .word-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .word-button {
+            padding: 12px;
+            background-color: #ecf0f1;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: black;
+        }
+        .word-button.selected {
+            background-color: #95a5a6;
+            color: black;
+        }
+        .word-button:hover {
+            background-color: #bdc3c7;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+            .play-button {
+                padding: 15px;
+                font-size: 18px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .quiz-buttons button {
+                padding: 15px;
+                font-size: 18px;
+            }
+            .word-button {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>看圖默書工具</h1>
+        <div id="mainContainer">
+            <div id="tableContainer"></div>
+            <div class="button-group">
+                <button onclick="startQuizMode()">開始測驗</button>
+            </div>
+        </div>
+        <div id="quizContainer">
+            <h2>測驗模式</h2>
+            <div id="modeSelection">
+                <p>請選擇測驗模式：</p>
+                <button onclick="startQuiz('image')">看圖默書</button>
+                <button onclick="startQuiz('audio')">聽默</button>
+            </div>
+            <div id="currentWord"></div>
+            <div id="currentImage"></div>
+            <div id="timerDisplay"></div>
+            <div class="quiz-buttons">
+                <button onclick="replay()">重播/重看</button>
+                <button onclick="nextWord()">下一個</button>
+            </div>
+            <div id="resultContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let wordData = [];
+        let quizArray = [];
+        let currentIndex = 0;
+        let voices = [];
+        let voicesLoaded = false;
+        let selectedWords = [];
+        let timerInterval = null;
+        let timeLeft = 60;
+        let quizMode = '';
+
+        function loadVoices() {
+            return new Promise((resolve) => {
+                voices = speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    voicesLoaded = true;
+                    resolve();
+                } else {
+                    speechSynthesis.onvoiceschanged = () => {
+                        voices = speechSynthesis.getVoices();
+                        voicesLoaded = true;
+                        resolve();
+                    };
+                }
+            });
+        }
+
+        async function fetchData() {
+            try {
+                console.log('正在載入 data.json...');
+                const response = await fetch('./data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP錯誤: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('載入的數據:', data);
+                wordData = Object.entries(data).map(([key, value]) => ({
+                    id: key,
+                    word: value,
+                    image: `images/${key}.png`
+                }));
+                if (wordData.length === 0) {
+                    throw new Error('data.json 中沒有有效數據');
+                }
+                generateTable();
+            } catch (error) {
+                console.error('載入 data.json 失敗:', error);
+                document.getElementById('tableContainer').innerHTML = 
+                    `<p class="error-message">載入 data.json 失敗：${error.message}。請檢查檔案路徑或格式。正在使用備用數據...</p>`;
+                wordData = [
+                    { id: '01', word: 'Apple', image: 'images/01.png' },
+                    { id: '02', word: 'Boy', image: 'images/02.png' }
+                ];
+                generateTable();
+            }
+        }
+
+        function generateTable() {
+            console.log('生成表格，數據:', wordData);
+            let tableHtml = '<table><tr><th>編號</th><th>圖片</th><th>詞語</th><th>發音</th></tr>';
+            wordData.forEach((item, index) => {
+                const escapedWord = item.word.replace(/'/g, "\\'");
+                tableHtml += `<tr><td>${index + 1}</td><td><img src="${item.image}" alt="${item.word}" onerror="this.alt='圖片載入失敗'"></td><td>${item.word}</td><td><button class="play-button" onclick="speak('${escapedWord}')">播放</button></td></tr>`;
+            });
+            tableHtml += '</table>';
+            document.getElementById('tableContainer').innerHTML = tableHtml;
+        }
+
+        async function speak(text) {
+            if (!voicesLoaded) {
+                await loadVoices();
+            }
+            const utterance = new SpeechSynthesisUtterance(text);
+            let selectedVoice = voices.find(voice => 
+                (voice.lang === 'en-US' || voice.lang === 'en-GB') && 
+                (voice.name.includes('Samantha') || voice.name.includes('Victoria') || 
+                 voice.name.includes('Karen') || voice.name.includes('Female') || 
+                 voice.name.includes('Siri') && voice.localService)
+            ) || voices.find(voice => voice.lang.startsWith('en'));
+            utterance.lang = 'en-US';
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            }
+            utterance.rate = 0.7;
+            utterance.pitch = 1.1;
+            utterance.volume = 1.0;
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+            speechSynthesis.speak(utterance);
+        }
+
+        function startQuizMode() {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('modeSelection').style.display = 'block';
+            document.getElementById('currentWord').style.display = 'none';
+            document.getElementById('currentImage').style.display = 'none';
+            document.getElementById('timerDisplay').style.display = 'none';
+            document.querySelector('.quiz-buttons').style.display = 'none';
+            document.getElementById('resultContainer').innerHTML = '';
+        }
+
+        function startQuiz(mode) {
+            if (wordData.length === 0) {
+                alert('沒有可用的詞語！');
+                return;
+            }
+            quizMode = mode;
+            quizArray = [...wordData].sort(() => Math.random() - 0.5);
+            currentIndex = 0;
+            selectedWords = [];
+            document.getElementById('modeSelection').style.display = 'none';
+            document.getElementById('currentWord').style.display = quizMode === 'audio' ? 'block' : 'none';
+            document.getElementById('currentImage').style.display = quizMode === 'image' ? 'block' : 'none';
+            document.getElementById('timerDisplay').style.display = 'block';
+            document.querySelector('.quiz-buttons').style.display = 'flex';
+            showCurrentWord();
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timeLeft = 60;
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    nextWord();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `剩餘時間: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function showCurrentWord() {
+            if (currentIndex < quizArray.length) {
+                const item = quizArray[currentIndex];
+                document.getElementById('currentWord').textContent = `第 ${currentIndex + 1} 個詞語`;
+                document.getElementById('currentImage').innerHTML = quizMode === 'image' ? 
+                    `<img src="${item.image}" alt="${item.word}" onerror="this.alt='圖片載入失敗'">` : '';
+                if (quizMode === 'audio') {
+                    speak(item.word);
+                }
+                startTimer();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function replay() {
+            if (currentIndex < quizArray.length) {
+                const item = quizArray[currentIndex];
+                if (quizMode === 'audio') {
+                    speak(item.word);
+                } else {
+                    document.getElementById('currentImage').innerHTML = 
+                        `<img src="${item.image}" alt="${item.word}" onerror="this.alt='圖片載入失敗'">`;
+                }
+            }
+        }
+
+        function nextWord() {
+            clearInterval(timerInterval);
+            currentIndex++;
+            showCurrentWord();
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('currentWord').textContent = '全部結束！';
+            document.getElementById('currentImage').innerHTML = '';
+            document.getElementById('timerDisplay').textContent = '';
+            let resultHtml = '<h3>剛剛的詞語：</h3><div class="word-buttons">';
+            quizArray.forEach(item => {
+                const escapedWord = item.word.replace(/'/g, "\\'");
+                resultHtml += `<button class="word-button" onclick="toggleWord('${escapedWord}', this); speak('${escapedWord}')">${item.word}</button>`;
+            });
+            resultHtml += '</div><div class="button-group"><button onclick="retest()">返回主頁</button></div>';
+            document.getElementById('resultContainer').innerHTML = resultHtml;
+        }
+
+        function toggleWord(word, button) {
+            const index = selectedWords.indexOf(word);
+            if (index === -1) {
+                selectedWords.push(word);
+                button.classList.add('selected');
+            } else {
+                selectedWords.splice(index, 1);
+                button.classList.remove('selected');
+            }
+        }
+
+        function retest() {
+            clearInterval(timerInterval);
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+        }
+
+        window.onload = () => {
+            loadVoices().then(() => {
+                fetchData();
+            });
+        };
+    </script>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>
