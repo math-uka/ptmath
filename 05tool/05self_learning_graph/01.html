@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Noto Sans TC', Arial Metropolis: sans-serif;
+            font-family: 'Noto Sans TC', Arial, sans-serif;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
@@ -80,13 +80,12 @@
             display: block;
             text-align: center;
         }
-        #jsonInput {
-            padding: 10px;
-            font-size: 16px;
-            width: 200px;
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        #jsonButtons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
         }
         #currentWord, #currentImage {
             margin: 25px 0;
@@ -171,7 +170,7 @@
                 padding: 15px;
                 font-size: 16px;
             }
-            #jsonInput {
+            #jsonButtons button {
                 width: 100%;
                 box-sizing: border-box;
             }
@@ -182,9 +181,8 @@
     <div class="container">
         <h1>看圖默書工具</h1>
         <div id="inputContainer">
-            <p>請輸入要載入的 JSON 檔案名稱（例如：data）：</p>
-            <input type="text" id="jsonInput" placeholder="輸入檔案名稱">
-            <button onclick="loadJson()">確認</button>
+            <p>請選擇要載入的 JSON 檔案：</p>
+            <div id="jsonButtons"></div>
         </div>
         <div id="mainContainer">
             <div id="tableContainer"></div>
