@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Function Table</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #e0e0e0;
+            height: 40px; /* 標頭行高度保持不變 */
+        }
+        td {
+            height: 160px; /* 數據行高度設為4倍（假設原高度約40px） */
+        }
+        th.sketch, td.sketch {
+            width: 200px; /* 草圖列寬度為其他列的兩倍 */
+        }
+        .controls {
+            text-align: left;
+        }
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+            font-size: 14px;
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 16px;
+            }
+            table, th, td {
+                font-size: 12px;
+            }
+            th.sketch, td.sketch {
+                width: 150px;
+            }
+            th {
+                height: 30px; /* 響應式設計下標頭行高度 */
+            }
+            td {
+                height: 120px; /* 響應式設計下數據行高度4倍 */
+            }
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            footer {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>一次函數表格</h1>
+    <div class="container">
+        <div id="functions-table"></div>
+        <div class="controls">
+            <button id="generateButton">生成新題目</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // 隨機生成整數的函數
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 生成表格內容
+        function generateTable() {
+            // 生成三條一次函數
+            const functions = [];
+            for (let i = 0; i < 3; i++) {
+                let a = getRandomInt(-10, 10);
+                while (a === 0) a = getRandomInt(-10, 10); // 確保斜率不為 0
+                const b = getRandomInt(-20, 20);
+                functions.push({ a, b });
+            }
+
+            // 隨機選擇一條函數來生成一個在該函數上的點
+            const selectedFuncIndex = Math.floor(Math.random() * 3);
+            const selectedFunc = functions[selectedFuncIndex];
+            const x1 = getRandomInt(-10, 10);
+            const y1 = selectedFunc.a * x1 + selectedFunc.b; // 確保點在函數上
+            const point1 = { x: x1, y: y1 };
+
+            // 檢查點是否在函數上
+            function checkPoint(point, func) {
+                return point.y === func.a * point.x + func.b;
+            }
+
+            // 顯示表格
+            const tableDiv = document.getElementById('functions-table');
+            tableDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>函數</th>
+                        <th class="sketch">草圖</th>
+                        <th>Y隨X增大而</th>
+                        <th>X軸交點</th>
+                        <th>Y軸交點</th>
+                        <th>點(${point1.x}, ${point1.y})是否在函數上</th>
+                    </tr>
+                    ${functions.map((f, index) => {
+                        const sign = f.b >= 0 ? '+' : '';
+                        return `
+                            <tr>
+                                <td>\\(${index + 1}: y = ${f.a}x ${sign} ${f.b}\\)</td>
+                                <td class="sketch"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </table>
+            `;
+
+            // 重新渲染 MathJax
+            MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+        }
+
+        // 生成新題目按鈕
+        const generateButton = document.getElementById('generateButton');
+        generateButton.onclick = () => {
+            generateTable();
+        };
+
+        // 初始化表格
+        generateTable();
+    </script>
+</body>
+</html>
