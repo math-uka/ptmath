@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -46,18 +45,13 @@
         }
         td {
             height: 160px;
-            vertical-align: middle;
+            vertical-align: top;
         }
         th.sketch, td.sketch {
             width: 200px;
         }
         .quadrants {
             width: 150px;
-        }
-        canvas {
-            display: block;
-            margin: 0 auto;
-            border: 1px solid #ccc;
         }
         .controls {
             text-align: left;
@@ -94,19 +88,15 @@
             th.sketch, td.sketch {
                 width: 150px;
             }
-            .quadrants {
-                width: 100px;
-            }
             th {
                 height: 30px;
             }
             td {
                 height: 120px;
-                vertical-align: middle;
+                vertical-align: top;
             }
-            canvas {
-                width: 120px !important;
-                height: 120px !important;
+            .quadrants {
+                width: 100px;
             }
             button {
                 padding: 6px 10px;
@@ -149,11 +139,16 @@
             return a;
         }
 
-        // 將數字轉為分數形式
+        // 將數字轉為分數形式（改進版）
         function toFraction(num) {
             if (Number.isInteger(num)) return num.toString();
+            
+            // 將浮點數轉為分數，限制分母最大值
             const maxDenominator = 100;
             const precision = 1e-10;
+            let numerator = num;
+            let denominator = 1;
+
             let bestNumerator = Math.round(num);
             let bestDenominator = 1;
             let bestError = Math.abs(num - bestNumerator);
@@ -169,8 +164,8 @@
             }
 
             const divisor = gcd(bestNumerator, bestDenominator);
-            const numerator = bestNumerator / divisor;
-            const denominator = bestDenominator / divisor;
+            numerator = bestNumerator / divisor;
+            denominator = bestDenominator / divisor;
 
             if (numerator === 0) return '0';
             if (denominator === 1) return numerator.toString();
@@ -182,80 +177,22 @@
         // 判斷直線經過哪些象限
         function getQuadrants(a, b) {
             if (a > 0) {
-                if (b > 0) return '第一、第二、第三象限';
-                else if (b === 0) return '第一、第三象限';
-                else return '第一、第三、第四象限';
+                if (b > 0) {
+                    return '第一、第二、第三象限';
+                } else if (b === 0) {
+                    return '第一、第三象限';
+                } else {
+                    return '第一、第三、第四象限';
+                }
             } else {
-                if (b > 0) return '第一、第二、第四象限';
-                else if (b === 0) return '第二、第四象限';
-                else return '第二、第三、第四象限';
-            }
-        }
-
-        // 繪製草圖
-        function drawGraph(canvas, a, b) {
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            ctx.clearRect(0, 0, width, height);
-
-            // 設置坐標範圍（假設顯示 -10 到 10）
-            const scale = 10; // 每個單位 10 像素
-            const xMin = -10, xMax = 10, yMin = -10, yMax = 10;
-            const x0 = width / 2; // X 軸原點
-            const y0 = height / 2; // Y 軸原點
-
-            // 繪製格線
-            ctx.strokeStyle = '#e0e0e0';
-            ctx.lineWidth = 0.5;
-            for (let x = xMin; x <= xMax; x++) {
-                ctx.beginPath();
-                ctx.moveTo(x * scale + x0, 0);
-                ctx.lineTo(x * scale + x0, height);
-                ctx.stroke();
-            }
-            for (let y = yMin; y <= yMax; y++) {
-                ctx.beginPath();
-                ctx.moveTo(0, -y * scale + y0);
-                ctx.lineTo(width, -y * scale + y0);
-                ctx.stroke();
-            }
-
-            // 繪製坐標軸
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, y0);
-            ctx.lineTo(width, y0); // X 軸
-            ctx.moveTo(x0, 0);
-            ctx.lineTo(x0, height); // Y 軸
-            ctx.stroke();
-
-            // 繪製刻度
-            ctx.font = '10px Arial';
-            ctx.fillStyle = '#000';
-            for (let x = xMin; x <= xMax; x++) {
-                if (x !== 0) {
-                    ctx.fillText(x, x * scale + x0 - 3, y0 + 12);
+                if (b > 0) {
+                    return '第一、第二、第四象限';
+                } else if (b === 0) {
+                    return '第二、第四象限';
+                } else {
+                    return '第二、第三、第四象限';
                 }
             }
-            for (let y = yMin; y <= yMax; y++) {
-                if (y !== 0) {
-                    ctx.fillText(-y, x0 + 5, y * scale + y0 + 3);
-                }
-            }
-
-            // 繪製直線 y = ax + b
-            ctx.strokeStyle = '#ff0000';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            const xStart = xMin;
-            const xEnd = xMax;
-            const yStart = a * xStart + b;
-            const yEnd = a * xEnd + b;
-            ctx.moveTo(xStart * scale + x0, -yStart * scale + y0);
-            ctx.lineTo(xEnd * scale + x0, -yEnd * scale + y0);
-            ctx.stroke();
         }
 
         // 儲存當前題目資料
@@ -295,7 +232,7 @@
                         return `
                             <tr>
                                 <td>\\(${index + 1}: y = ${f.a}x ${sign} ${f.b}\\)</td>
-                                <td class="sketch"><canvas id="canvas-${index}" width="180" height="180"></canvas></td>
+                                <td class="sketch"></td>
                                 <td id="trend-${index}"></td>
                                 <td id="x-intercept-${index}"></td>
                                 <td id="y-intercept-${index}"></td>
@@ -343,10 +280,6 @@
                 // 經過哪些象限
                 const quadrants = getQuadrants(f.a, f.b);
                 document.getElementById(`quadrants-${index}`).textContent = quadrants;
-
-                // 繪製草圖
-                const canvas = document.getElementById(`canvas-${index}`);
-                drawGraph(canvas, f.a, f.b);
             });
 
             MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
