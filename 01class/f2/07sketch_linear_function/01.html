@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -42,13 +41,17 @@
         }
         th {
             background-color: #e0e0e0;
-            height: 40px; /* 標頭行高度保持不變 */
+            height: 40px;
         }
         td {
-            height: 160px; /* 數據行高度設為4倍（假設原高度約40px） */
+            height: 160px;
+            vertical-align: top;
         }
         th.sketch, td.sketch {
-            width: 200px; /* 草圖列寬度為其他列的兩倍 */
+            width: 200px;
+        }
+        .quadrants {
+            width: 150px;
         }
         .controls {
             text-align: left;
@@ -86,10 +89,14 @@
                 width: 150px;
             }
             th {
-                height: 30px; /* 響應式設計下標頭行高度 */
+                height: 30px;
             }
             td {
-                height: 120px; /* 響應式設計下數據行高度4倍 */
+                height: 120px;
+                vertical-align: top;
+            }
+            .quadrants {
+                width: 100px;
             }
             button {
                 padding: 6px 10px;
@@ -107,9 +114,9 @@
         <div id="functions-table"></div>
         <div class="controls">
             <button id="generateButton">生成新題目</button>
+            <button id="showAnswersButton">顯示答案</button>
         </div>
     </div>
-
     <footer>
         <p>© 2025 ukawai</p>
     </footer>
@@ -120,30 +127,94 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+        // 計算最大公約數（用於簡化分數）
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b) {
+                const temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        // 將數字轉為分數形式（改進版）
+        function toFraction(num) {
+            if (Number.isInteger(num)) return num.toString();
+            
+            // 將浮點數轉為分數，限制分母最大值
+            const maxDenominator = 100;
+            const precision = 1e-10;
+            let numerator = num;
+            let denominator = 1;
+
+            let bestNumerator = Math.round(num);
+            let bestDenominator = 1;
+            let bestError = Math.abs(num - bestNumerator);
+
+            for (let d = 1; d <= maxDenominator; d++) {
+                const n = Math.round(num * d);
+                const error = Math.abs(num - n / d);
+                if (error < bestError && error < precision) {
+                    bestNumerator = n;
+                    bestDenominator = d;
+                    bestError = error;
+                }
+            }
+
+            const divisor = gcd(bestNumerator, bestDenominator);
+            numerator = bestNumerator / divisor;
+            denominator = bestDenominator / divisor;
+
+            if (numerator === 0) return '0';
+            if (denominator === 1) return numerator.toString();
+            return numerator < 0 
+                ? `\\frac{${numerator}}{${Math.abs(denominator)}}` 
+                : `\\frac{${Math.abs(numerator)}}{${denominator}}`;
+        }
+
+        // 判斷直線經過哪些象限
+        function getQuadrants(a, b) {
+            if (a > 0) {
+                if (b > 0) {
+                    return '第一、第二、第三象限';
+                } else if (b === 0) {
+                    return '第一、第三象限';
+                } else {
+                    return '第一、第三、第四象限';
+                }
+            } else {
+                if (b > 0) {
+                    return '第一、第二、第四象限';
+                } else if (b === 0) {
+                    return '第二、第四象限';
+                } else {
+                    return '第二、第三、第四象限';
+                }
+            }
+        }
+
+        // 儲存當前題目資料
+        let currentFunctions = [];
+        let currentPoint = {};
+
         // 生成表格內容
         function generateTable() {
-            // 生成三條一次函數
-            const functions = [];
+            currentFunctions = [];
             for (let i = 0; i < 3; i++) {
                 let a = getRandomInt(-10, 10);
-                while (a === 0) a = getRandomInt(-10, 10); // 確保斜率不為 0
+                while (a === 0) a = getRandomInt(-10, 10);
                 const b = getRandomInt(-20, 20);
-                functions.push({ a, b });
+                currentFunctions.push({ a, b });
             }
 
-            // 隨機選擇一條函數來生成一個在該函數上的點
             const selectedFuncIndex = Math.floor(Math.random() * 3);
-            const selectedFunc = functions[selectedFuncIndex];
+            const selectedFunc = currentFunctions[selectedFuncIndex];
             const x1 = getRandomInt(-10, 10);
-            const y1 = selectedFunc.a * x1 + selectedFunc.b; // 確保點在函數上
-            const point1 = { x: x1, y: y1 };
+            const y1 = selectedFunc.a * x1 + selectedFunc.b;
+            currentPoint = { x: x1, y: y1 };
 
-            // 檢查點是否在函數上
-            function checkPoint(point, func) {
-                return point.y === func.a * point.x + func.b;
-            }
-
-            // 顯示表格
             const tableDiv = document.getElementById('functions-table');
             tableDiv.innerHTML = `
                 <table>
@@ -153,25 +224,64 @@
                         <th>Y隨X增大而</th>
                         <th>X軸交點</th>
                         <th>Y軸交點</th>
-                        <th>點(${point1.x}, ${point1.y})是否在函數上</th>
+                        <th>點(${currentPoint.x}, ${currentPoint.y})是否在函數上</th>
+                        <th class="quadrants">經過哪些象限</th>
                     </tr>
-                    ${functions.map((f, index) => {
+                    ${currentFunctions.map((f, index) => {
                         const sign = f.b >= 0 ? '+' : '';
                         return `
                             <tr>
                                 <td>\\(${index + 1}: y = ${f.a}x ${sign} ${f.b}\\)</td>
                                 <td class="sketch"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td id="trend-${index}"></td>
+                                <td id="x-intercept-${index}"></td>
+                                <td id="y-intercept-${index}"></td>
+                                <td id="point-on-line-${index}"></td>
+                                <td id="quadrants-${index}"></td>
                             </tr>
                         `;
                     }).join('')}
                 </table>
             `;
 
-            // 重新渲染 MathJax
+            MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+        }
+
+        // 檢查點是否在函數上
+        function checkPoint(point, func) {
+            return point.y === func.a * point.x + func.b;
+        }
+
+        // 顯示答案
+        function showAnswers() {
+            currentFunctions.forEach((f, index) => {
+                // Y隨X增大而
+                const trend = f.a > 0 ? '增大' : '減小';
+                document.getElementById(`trend-${index}`).textContent = trend;
+
+                // X軸交點
+                let xIntercept = '';
+                if (f.a !== 0) {
+                    const x = -f.b / f.a;
+                    xIntercept = `(${toFraction(x)}, 0)`;
+                } else {
+                    xIntercept = f.b === 0 ? '無限多個' : '無';
+                }
+                document.getElementById(`x-intercept-${index}`).innerHTML = `\\(${xIntercept}\\)`;
+
+                // Y軸交點
+                const yIntercept = `(0, ${toFraction(f.b)})`;
+                document.getElementById(`y-intercept-${index}`).innerHTML = `\\(${yIntercept}\\)`;
+
+                // 點是否在函數上
+                const isOnLine = checkPoint(currentPoint, f) ? '是' : '否';
+                document.getElementById(`point-on-line-${index}`).textContent = isOnLine;
+
+                // 經過哪些象限
+                const quadrants = getQuadrants(f.a, f.b);
+                document.getElementById(`quadrants-${index}`).textContent = quadrants;
+            });
+
             MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
         }
 
@@ -179,6 +289,12 @@
         const generateButton = document.getElementById('generateButton');
         generateButton.onclick = () => {
             generateTable();
+        };
+
+        // 顯示答案按鈕
+        const showAnswersButton = document.getElementById('showAnswersButton');
+        showAnswersButton.onclick = () => {
+            showAnswers();
         };
 
         // 初始化表格

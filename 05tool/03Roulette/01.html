@@ -1,212 +1,151 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>轉盤遊戲</title>
+    <title>學習主題老虎機</title>
     <style>
+        /* 設置頁面整體背景 */
         body {
+            background: linear-gradient(135deg, #ffeb3b, #4caf50); /* 從淺黃色到綠色的線性漸層 */
+            min-height: 100vh; /* 確保背景覆蓋整個視窗高度 */
+            margin: 0; /* 移除預設外邊距 */
+            overflow: auto; /* 允許頁面滾動 */
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            align-items: center; /* 內容水平置中 */
+            font-family: Arial, sans-serif; /* 設置字體 */
         }
-        #wheel {
-            position: relative;
-            width: 600px;
-            height: 600px;
-        }
-        #wheel canvas {
+
+        /* 星星容器樣式 */
+        .stars {
+            position: fixed; /* 固定定位，覆蓋整個畫面 */
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none; /* 禁用滑鼠事件，避免干擾 */
+            z-index: 1; /* 星星位於背景層 */
         }
-        #spinButton {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #ff6200;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+
+        /* 單顆星星樣式 */
+        .star {
+            position: absolute; /* 絕對定位，隨機分佈 */
+            background: white; /* 白色背景 */
+            border-radius: 50%; /* 圓形星星 */
+            opacity: 0.8; /* 微透明效果 */
+            animation: float 3s ease-in-out infinite; /* 漂浮動畫 */
         }
-        #spinButton:hover {
-            background-color: #e55a00;
+
+        /* 星星漂浮動畫 */
+        @keyframes float {
+            0% { transform: translateY(0); } /* 起始位置 */
+            50% { transform: translateY(-20px); } /* 向上移動20px */
+            100% { transform: translateY(0); } /* 回到原位 */
         }
-        #spinButton:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
+
+        /* 老虎機容器樣式 */
+        .slot-machine {
+            text-align: center;
+            z-index: 2; /* 確保老虎機內容在星星之上 */
         }
-        #result {
-            margin-top: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
+
+        /* 輪盤樣式 */
+        .reel {
+            width: 150px; /* 輪盤寬度 */
+            height: 150px; /* 輪盤高度 */
+            border: 5px solid #333; /* 黑色邊框 */
+            border-radius: 10px; /* 圓角邊框 */
+            display: flex;
+            align-items: center; /* 文字垂直置中 */
+            justify-content: center; /* 文字水平置中 */
+            font-size: 24px; /* 文字大小 */
+            font-weight: bold; /* 粗體文字 */
+            background-color: white; /* 白色背景 */
+            margin: 20px auto; /* 外邊距，上下20px，水平自動 */
+            overflow: hidden; /* 隱藏溢出內容 */
         }
-        #arrow {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 40px solid #ff0000;
-            z-index: 10;
+
+        /* 旋轉按鈕樣式 */
+        .spin-button {
+            padding: 15px 30px; /* 內邊距，增加按鈕大小 */
+            margin: 10px; /* 外邊距 */
+            font-size: 18px; /* 文字大小 */
+            background-color: #2196f3; /* 藍色背景 */
+            color: white; /* 白色文字 */
+            border: none; /* 無邊框 */
+            border-radius: 5px; /* 圓角 */
+            cursor: pointer; /* 滑鼠手型 */
+        }
+
+        /* 按鈕懸停效果 */
+        .spin-button:hover {
+            background-color: #1976d2; /* 較深的藍色 */
+        }
+
+        /* 輪盤旋轉動畫 */
+        .spinning {
+            animation: spin 0.5s linear infinite; /* 快速滾動效果 */
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(0); } /* 起始位置 */
+            100% { transform: translateY(-100%); } /* 向上移動 */
         }
     </style>
 </head>
 <body>
-    <div id="wheel">
-        <div id="arrow"></div>
-        <canvas id="wheelCanvas" width="600" height="600"></canvas>
+    <!-- 星星容器 -->
+    <div class="stars" id="stars"></div>
+    <!-- 老虎機主要內容 -->
+    <div class="slot-machine">
+        <h1>學習主題老虎機</h1>
+        <div class="reel" id="reel">中文</div> <!-- 輪盤顯示區域 -->
+        <button class="spin-button" onclick="spinReel()">開始旋轉</button> <!-- 旋轉按鈕 -->
     </div>
-    <button id="spinButton">開始轉盤</button>
-    <div id="result"></div>
 
     <script>
-        const canvas = document.getElementById('wheelCanvas');
-        const ctx = canvas.getContext('2d');
-        const spinButton = document.getElementById('spinButton');
-        const resultDiv = document.getElementById('result');
-        const segments = 20;
-        const anglePerSegment = (2 * Math.PI) / segments;
-        const prizes = Array(segments).fill('多謝參與');
-        prizes[0] = '雙倍獎勵';
-        prizes[3] = '獎勵';
-        prizes[7] = '獎勵';
-        prizes[10] = '再玩一次';
-        prizes[12] = '獎勵';
-        prizes[17] = '獎勵';
-
-        const colors = {
-            '雙倍獎勵': '#ff4500',
-            '獎勵': '#ffd700',
-            '再玩一次': '#00ff00',
-            '多謝參與': '#1e90ff'
-        };
-
-        let currentAngle = 0;
-        let isSpinning = false;
-        let canPlay = true;
-        let animationFrameId = null;
-        let spinStartTime = null;
-        let isStopping = false;
-
-        function drawWheel() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(currentAngle);
-
-            for (let i = 0; i < segments; i++) {
-                const startAngle = i * anglePerSegment;
-                const endAngle = (i + 1) * anglePerSegment;
-
-                // 繪製扇形
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.arc(0, 0, canvas.width / 2, startAngle, endAngle);
-                ctx.fillStyle = colors[prizes[i]];
-                ctx.fill();
-                ctx.stroke();
-
-                // 繪製文字
-                ctx.save();
-                ctx.rotate(startAngle + anglePerSegment / 2);
-                ctx.fillStyle = '#fff';
-                ctx.font = '28px Arial';
-                ctx.textAlign = 'right';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(prizes[i], canvas.width / 2 - 20, 0);
-                ctx.restore();
-            }
-
-            ctx.restore();
+        // 生成50顆星星，隨機分佈在畫面上
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = `${Math.random() * 3 + 1}px`; // 隨機星星大小（1-4px）
+            star.style.height = star.style.width; // 確保星星為正方形
+            star.style.left = `${Math.random() * 100}%`; // 隨機水平位置
+            star.style.top = `${Math.random() * 100}%`; // 隨機垂直位置
+            star.style.animationDelay = `${Math.random() * 3}s`; // 隨機動畫延遲
+            starsContainer.appendChild(star);
         }
 
-        function spinWheel() {
-            if (!canPlay) return;
+        // 定義輪盤內容陣列，新增「科學」和「歷史」
+        const subjects = ['中文', '英文', '數學', '常識','乘法'];
+        let isSpinning = false; // 追蹤輪盤是否正在旋轉
 
-            if (!isSpinning) {
-                // 開始旋轉
-                isSpinning = true;
-                spinButton.textContent = '停止';
-                spinButton.disabled = false;
-                resultDiv.textContent = '';
-                spinStartTime = performance.now();
+        // 輪盤旋轉函數
+        function spinReel() {
+            if (isSpinning) return; // 防止重複點擊
+            isSpinning = true; // 標記為旋轉中
 
-                function animate(currentTime) {
-                    if (!isSpinning) {
-                        // 停止旋轉，開始減速
-                        if (isStopping) {
-                            const elapsed = currentTime - spinStartTime;
-                            const stopTime = 3000; // 減速時間3秒
-                            const progress = Math.min(elapsed / stopTime, 1);
-                            const easeOut = 1 - Math.pow(1 - progress, 3);
-                            const maxSpeed = (2 * Math.PI) / 1000; // 每毫秒弧度
-                            const currentSpeed = maxSpeed * (1 - easeOut);
+            const reel = document.getElementById('reel'); // 獲取輪盤元素
+            reel.classList.add('spinning'); // 添加旋轉動畫
+            reel.innerText = ''; // 清空輪盤文字
 
-                            currentAngle += currentSpeed * (currentTime - (performance.now() - 16.67)); // 假設60fps
-                            drawWheel();
-
-                            if (progress < 1) {
-                                animationFrameId = requestAnimationFrame(animate);
-                            } else {
-                                isStopping = false;
-                                spinButton.textContent = canPlay ? '再玩一次' : '遊戲結束';
-                                spinButton.disabled = !canPlay;
-                                showResult();
-                            }
-                        }
-                        return;
-                    }
-
-                    // 持續旋轉
-                    currentAngle += (2 * Math.PI) / 1000 * (currentTime - (performance.now() - 16.67)); // 每秒1圈
-                    drawWheel();
-                    animationFrameId = requestAnimationFrame(animate);
+            let spinCount = 0; // 計數旋轉次數
+            const maxSpins = 60; // 旋轉40次，約4秒
+            const spinInterval = setInterval(() => {
+                // 隨機選擇一個主題顯示
+                reel.innerText = subjects[Math.floor(Math.random() * subjects.length)];
+                spinCount++;
+                if (spinCount >= maxSpins) {
+                    clearInterval(spinInterval); // 停止旋轉
+                    reel.classList.remove('spinning'); // 移除動畫
+                    // 隨機選擇最終主題
+                    reel.innerText = subjects[Math.floor(Math.random() * subjects.length)];
+                    isSpinning = false; // 標記為停止旋轉
                 }
-
-                animationFrameId = requestAnimationFrame(animate);
-            } else {
-                // 停止旋轉
-                const elapsedSinceStart = performance.now() - spinStartTime;
-                if (elapsedSinceStart < 1000) {
-                    // 至少旋轉1秒
-                    return;
-                }
-                isSpinning = false;
-                isStopping = true;
-                spinStartTime = performance.now();
-            }
+            }, 100); // 每100毫秒更新一次
         }
-
-        function showResult() {
-            const finalAngle = (currentAngle * 180 / Math.PI) % 360;
-            const segmentIndex = Math.floor((360 - finalAngle + 360) % 360 / (360 / segments)) % segments;
-            const prize = prizes[segmentIndex];
-            resultDiv.textContent = `恭喜你獲得：${prize}！`;
-
-            if (prize === '再玩一次') {
-                canPlay = true;
-                spinButton.textContent = '開始轉盤';
-                spinButton.disabled = false;
-            } else {
-                canPlay = false;
-                spinButton.textContent = '遊戲結束';
-                spinButton.disabled = true;
-            }
-        }
-
-        drawWheel();
-        spinButton.addEventListener('click', spinWheel);
     </script>
 </body>
 </html>
