@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>硬幣計算遊戲 | Coin Calculation Game</title>
+    <title>硬幣計算遊戲 2| Coin Calculation Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 閃爍動畫 | Blinking Animation */
@@ -152,10 +152,11 @@
         // 檢查毫硬幣是否需要進位 | Check if Avos Coins Require Carrying
         function requiresCarrying(coinCounts) {
             let totalAvos = 0;
+            // 只計算小於1圓的硬幣（0.1, 0.2, 0.5 圓）
             if (coinCounts['01.jpg']) totalAvos += coinCounts['01.jpg'] * 1; // 0.1 Patacas = 1 Avo
             if (coinCounts['02.jpg']) totalAvos += coinCounts['02.jpg'] * 2; // 0.2 Patacas = 2 Avos
             if (coinCounts['05.jpg']) totalAvos += coinCounts['05.jpg'] * 5; // 0.5 Patacas = 5 Avos
-            return totalAvos >= 10; // Carrying required if total avos >= 10
+            return totalAvos >= 10; // 需要進位如果總和 >= 10 avos
         }
 
         // 生成隨機硬幣（確保不重複，且簡單/普通模式不需進位） | Generate Random Coins
@@ -170,7 +171,31 @@
                 const coinCount = Math.floor(Math.random() * (settings.maxCoins - settings.minCoins + 1)) + settings.minCoins;
                 const selectedCoins = getRandomCoinTypes(settings.maxTypes);
 
-                for (let i = 0; i < coinCount; i++) {
+                // 在簡單和普通模式下，限制毫硬幣的使用
+                let avoCoinCount = 0;
+                if (difficulty !== 'hard') {
+                    // 計算已選擇的小於1圓的硬幣數量
+                    avoCoinCount = Math.min(coinCount, Math.floor(Math.random() * 4)); // 限制最多3個毫硬幣以減少進位可能性
+                } else {
+                    avoCoinCount = coinCount; // 困難模式不限制
+                }
+
+                // 先生成毫硬幣（如果有）
+                let remainingCoins = coinCount;
+                if (avoCoinCount > 0) {
+                    const avoCoins = selectedCoins.filter(coin => coin.value < 1); // 只選0.1, 0.2, 0.5
+                    if (avoCoins.length > 0) {
+                        for (let i = 0; i < avoCoinCount; i++) {
+                            const coin = avoCoins[Math.floor(Math.random() * avoCoins.length)];
+                            randomCoins[coin.name] = (randomCoins[coin.name] || 0) + 1;
+                            totalValue += coin.value;
+                            remainingCoins--;
+                        }
+                    }
+                }
+
+                // 生成剩餘的硬幣（包括所有硬幣類型）
+                for (let i = 0; i < remainingCoins; i++) {
                     const coin = selectedCoins[Math.floor(Math.random() * selectedCoins.length)];
                     randomCoins[coin.name] = (randomCoins[coin.name] || 0) + 1;
                     totalValue += coin.value;
