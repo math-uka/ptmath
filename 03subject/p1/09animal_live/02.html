@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Origin Game 5</title>
+    <title>Animal Origin Game 6</title>
     <style>
         body {
             background: linear-gradient(135deg, #ffeb3b, #4caf50);
@@ -206,9 +206,10 @@
             if (selected === correct) {
                 stars++;
                 document.getElementById('result').textContent = 'Correct!';
-                imageElement.style.display = 'none';
+                imageElement.src = currentAnimal.image;
+                imageElement.style.display = 'block';
                 currentQuestion++;
-                setTimeout(displayQuestion, 1000);
+                setTimeout(displayQuestion, 2000); // 延長為 2 秒
             } else {
                 stars = Math.max(0, stars - 1);
                 document.getElementById('result').textContent = `Wrong! Try again.`;
