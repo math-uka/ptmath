@@ -26,9 +26,15 @@
     { "name": "Whale", "origin": "Ocean", "image": "images/25.png" },
     { "name": "Jellyfish", "origin": "Ocean", "image": "images/26.png" },
     { "name": "Water Snail", "origin": "Lake", "image": "images/27.png" },
-    { "name": "Frog", "origin": "Lake", "image": "images/28.png" },
-    { "name": "Crayfish", "origin": "Lake", "image": "images/29.png" },
-    { "name": "Duck", "origin": "Lake", "image": "images/30.png" },
-    { "name": "Beaver", "origin": "Lake", "image": "images/31.png" },
-    { "name": "Dragonfly", "origin": "Lake", "image": "images/32.png" }
+    { "name": "Duck", "origin": "Lake", "image": "images/28.png" },
+    { "name": "Beaver", "origin": "Lake", "image": "images/29.png" },
+    { "name": "Dragonfly", "origin": "Lake", "image": "images/30.png" },
+    { "name": "Carp", "origin": "Lake", "image": "images/31.png" },
+    { "name": "Perch", "origin": "Lake", "image": "images/32.png" },
+    { "name": "Frog", "origin": "Pond", "image": "images/33.png" },
+    { "name": "Crayfish", "origin": "Pond", "image": "images/34.png" },
+    { "name": "Tadpole", "origin": "Pond", "image": "images/35.png" },
+    { "name": "Water Lily", "origin": "Pond", "image": "images/36.png" },
+    { "name": "Loach", "origin": "Pond", "image": "images/37.png" },
+    { "name": "Water Strider", "origin": "Pond", "image": "images/38.png" }
 ]
