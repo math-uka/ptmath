@@ -34,7 +34,7 @@
     { "name": "Frog", "origin": "Pond", "image": "images/33.png" },
     { "name": "Crayfish", "origin": "Pond", "image": "images/34.png" },
     { "name": "Tadpole", "origin": "Pond", "image": "images/35.png" },
-    { "name": "Water Lily", "origin": "Pond", "image": "images/36.png" },
+    { "name": "Snail ", "origin": "Pond", "image": "images/36.png" },
     { "name": "Loach", "origin": "Pond", "image": "images/37.png" },
     { "name": "Water Strider", "origin": "Pond", "image": "images/38.png" }
 ]
