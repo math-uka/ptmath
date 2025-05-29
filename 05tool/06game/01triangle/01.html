@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三角形划線遊戲</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background-color: #f3f4f6; 
+            font-family: 'Arial', sans-serif;
+            transition: background-color 0.3s ease; /* Add transition for smooth color change */
+        }
+        #gameContainer { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 16px; 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        canvas { 
+            border: 3px solid #1f2937; 
+            background: #f9fafb; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #turnIndicator { 
+            transition: all 0.3s ease; 
+            border-radius: 8px; 
+            padding: 12px; 
+            margin-bottom: 16px;
+        }
+        .player1 { 
+            background-color: rgba(239, 68, 68, 0.1); 
+            border: 2px solid #ef4444; 
+        }
+        .player2 { 
+            background-color: rgba(59, 130, 246, 0.1); 
+            border: 2px solid #3b82f6; 
+        }
+        .game-over { 
+            background-color: rgba(239, 68, 68, 0.3); 
+            border: 2px solid #b91c1c; 
+        }
+        .mode-button, .action-button {
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .mode-button:hover, .action-button:hover {
+            transform: scale(1.05);
+        }
+        .mode-selection, .game-screen {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes drawLine {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
+        .circle-remove {
+            animation: fadeOut 0.3s ease forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0); }
+        }
+        .circle-highlight {
+            animation: highlight 0.2s ease;
+        }
+        @keyframes highlight {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer" class="text-center">
+        <div id="modeSelection" class="mode-selection">
+            <h1 class="text-3xl font-bold mb-6">三角形划線遊戲</h1>
+            <p class="text-lg mb-4">選擇遊戲模式</p>
+            <button id="twoPlayerButton" class="mode-button px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mr-4">雙人對戰</button>
+            <button id="vsComputerButton" class="mode-button px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600">人機對戰</button>
+        </div>
+        <div id="gameScreen" class="game-screen hidden">
+            <h1 class="text-3xl font-bold mb-6">三角形划線遊戲</h1>
+            <div id="turnIndicator" class="border-2">
+                <span id="turnText" class="text-lg font-semibold">紅色玩家的回合</span>
+            </div>
+            <canvas id="gameCanvas" width="550" height="550"></canvas>
+            <div class="mt-6">
+                <button id="restartButton" class="action-button px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 mr-4">重新開始</button>
+                <button id="backButton" class="action-button px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">返回選單</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const turnIndicator = document.getElementById('turnIndicator');
+        const turnText = document.getElementById('turnText');
+        const restartButton = document.getElementById('restartButton');
+        const backButton = document.getElementById('backButton');
+        const modeSelection = document.getElementById('modeSelection');
+        const gameScreen = document.getElementById('gameScreen');
+        const twoPlayerButton = document.getElementById('twoPlayerButton');
+        const vsComputerButton = document.getElementById('vsComputerButton');
+
+        const rows = 8;
+        const circleRadius = 18;
+        const spacing = 48;
+        let circles = [];
+        let lines = [];
+        let currentPlayer = 1;
+        let gameOver = false;
+        let dragging = false;
+        let startCircle = null;
+        let clickStartTime = 0;
+        let clickStartPos = { x: 0, y: 0 };
+        const clickThreshold = 300;
+        const moveThreshold = 15;
+        let highlightedCircle = null;
+        let lastMouseMove = 0;
+        const mouseMoveThrottle = 16;
+        let gameMode = null;
+
+        function initCircles() {
+            circles = [];
+            const offsetX = canvas.width / 2;
+            const offsetY = 70;
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j <= i; j++) {
+                    const x = offsetX + (j - i / 2) * spacing;
+                    const y = offsetY + i * spacing * Math.sqrt(3) / 2;
+                    circles.push({ x, y, row: i, col: j, removed: false });
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            lines.forEach(line => {
+                ctx.beginPath();
+                ctx.moveTo(line.start.x, line.start.y);
+                ctx.lineTo(line.end.x, line.end.y);
+                ctx.strokeStyle = line.player === 1 ? '#ef4444' : '#3b82f6';
+                ctx.lineWidth = 6;
+                ctx.strokeDashArray = [1000, 1000];
+                ctx.strokeDashOffset = 1000;
+                ctx.stroke();
+                ctx.strokeDashArray = [];
+                ctx.strokeDashOffset = 0;
+                ctx.stroke();
+            });
+            circles.forEach(circle => {
+                if (!circle.removed) {
+                    ctx.beginPath();
+                    ctx.arc(circle.x, circle.y, circleRadius, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.strokeStyle = '#1f2937';
+                    ctx.lineWidth = 2.5;
+                    if (circle === highlightedCircle) {
+                        ctx.strokeStyle = currentPlayer === 1 ? '#ef4444' : '#3b82f6';
+                        ctx.lineWidth = 4;
+                    }
+                    ctx.stroke();
+                }
+            });
+        }
+
+        function updateTurnIndicator() {
+            if (gameOver) {
+                turnIndicator.classList.remove('player1', 'player2');
+                turnIndicator.classList.add('game-over');
+                turnText.textContent = `${currentPlayer === 1 ? '紅色玩家' : '藍色玩家'}輸了！`;
+                document.body.style.backgroundColor = '#f3f4f6'; // Reset to default when game ends
+            } else {
+                turnIndicator.classList.remove('player1', 'player2');
+                turnIndicator.classList.add(`player${currentPlayer}`);
+                turnText.textContent = `${currentPlayer === 1 ? '紅色玩家' : '藍色玩家'}的回合`;
+                // Change background color based on current player
+                document.body.style.backgroundColor = currentPlayer === 1 ? '#f3f4f6' : '#bfdbfe'; // Blue background for Player 2
+            }
+        }
+
+        function getCircleAt(x, y) {
+            return circles.find(circle => 
+                !circle.removed && 
+                Math.sqrt((x - circle.x) ** 2 + (y - circle.y) ** 2) <= circleRadius * 1.5
+            );
+        }
+
+        function isValidLine(start, end) {
+            if (start === end) return false;
+            const dx = end.col - start.col;
+            const dy = end.row - start.row;
+            if (dx === 0 && dy !== 0) {
+                const step = dy > 0 ? 1 : -1;
+                for (let r = start.row + step; r !== end.row + step; r += step) {
+                    const circle = circles.find(c => c.row === r && c.col === start.col);
+                    if (!circle || circle.removed) return false;
+                }
+                return true;
+            } else if (dy === 0 && Math.abs(dx) === 1) {
+                return true;
+            } else if (Math.abs(dx) === Math.abs(dy)) {
+                const stepX = dx > 0 ? 1 : -1;
+                const stepY = dy > 0 ? 1 : -1;
+                let r = start.row + stepY;
+                let c = start.col + stepX;
+                while (r !== end.row + stepY && c !== end.col + stepX) {
+                    const circle = circles.find(circle => circle.row === r && circle.col === c);
+                    if (!circle || circle.removed) return false;
+                    r += stepY;
+                    c += stepX;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        function removeCircles(start, end) {
+            if (start === end) {
+                start.removed = true;
+            } else {
+                const dx = end.col - start.col;
+                const dy = end.row - start.row;
+                if (dx === 0 && dy !== 0) {
+                    const step = dy > 0 ? 1 : -1;
+                    for (let r = start.row; r !== end.row + step; r += step) {
+                        const circle = circles.find(c => c.row === r && c.col === start.col);
+                        circle.removed = true;
+                    }
+                } else if (dy === 0 && Math.abs(dx) === 1) {
+                    start.removed = true;
+                    end.removed = true;
+                } else if (Math.abs(dx) === Math.abs(dy)) {
+                    const stepX = dx > 0 ? 1 : -1;
+                    const stepY = dy > 0 ? 1 : -1;
+                    let r = start.row;
+                    let c = start.col;
+                    while (r !== end.row + stepY && c !== end.col + stepX) {
+                        const circle = circles.find(circle => circle.row === r && circle.col === c);
+                        circle.removed = true;
+                        r += stepY;
+                        c += stepX;
+                    }
+                }
+            }
+            lines.push({ start: { x: start.x, y: start.y }, end: { x: end.x, y: end.y }, player: currentPlayer });
+        }
+
+        function checkGameOver() {
+            return circles.every(circle => circle.removed);
+        }
+
+        function computerMove() {
+            if (gameOver || currentPlayer !== 2 || gameMode !== 'vsComputer') return;
+            let bestMove = null;
+            let bestScore = -Infinity;
+            circles.forEach(start => {
+                if (start.removed) return;
+                let score = evaluateMove(start, start);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = { start, end: start };
+                }
+                circles.forEach(end => {
+                    if (end.removed || start === end) return;
+                    if (isValidLine(start, end)) {
+                        score = evaluateMove(start, end);
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMove = { start, end };
+                        }
+                    }
+                });
+            });
+            if (bestMove) {
+                removeCircles(bestMove.start, bestMove.end);
+                draw();
+                if (checkGameOver()) {
+                    gameOver = true;
+                    updateTurnIndicator();
+                } else {
+                    currentPlayer = 1;
+                    updateTurnIndicator();
+                }
+            }
+        }
+
+        function evaluateMove(start, end) {
+            const dx = end.col - start.col;
+            const dy = end.row - start.row;
+            let score = 0;
+            if (start === end) {
+                score = 1;
+            } else if (dx === 0 && dy !== 0) {
+                score = Math.abs(dy) + 1;
+            } else if (dy === 0 && Math.abs(dx) === 1) {
+                score = 2;
+            } else if (Math.abs(dx) === Math.abs(dy)) {
+                score = Math.abs(dx) + 1;
+            }
+            if (wouldBlockOpponent(start, end, currentPlayer === 1 ? 2 : 1)) {
+                score += 5;
+            }
+            return score;
+        }
+
+        function wouldBlockOpponent(start, end, opponent) {
+            const tempCircles = JSON.parse(JSON.stringify(circles));
+            const tempStart = tempCircles.find(c => c.row === start.row && c.col === start.col);
+            const tempEnd = tempCircles.find(c => c.row === end.row && c.col === end.col);
+            removeCirclesSimulated(tempStart, tempEnd, tempCircles);
+            let opponentMoves = 0;
+            tempCircles.forEach(s => {
+                if (s.removed) return;
+                if (tempCircles.some(e => e !== s && !e.removed && isValidLineSimulated(s, e, tempCircles))) {
+                    opponentMoves++;
+                }
+            });
+            return opponentMoves < 2;
+        }
+
+        function isValidLineSimulated(start, end, tempCircles) {
+            if (start === end) return false;
+            const dx = end.col - start.col;
+            const dy = end.row - start.row;
+            if (dx === 0 && dy !== 0) {
+                const step = dy > 0 ? 1 : -1;
+                for (let r = start.row + step; r !== end.row + step; r += step) {
+                    const circle = tempCircles.find(c => c.row === r && c.col === start.col);
+                    if (!circle || circle.removed) return false;
+                }
+                return true;
+            } else if (dy === 0 && Math.abs(dx) === 1) {
+                return true;
+            } else if (Math.abs(dx) === Math.abs(dy)) {
+                const stepX = dx > 0 ? 1 : -1;
+                const stepY = dy > 0 ? 1 : -1;
+                let r = start.row + stepY;
+                let c = start.col + stepX;
+                while (r !== end.row + stepY && c !== end.col + stepX) {
+                    const circle = tempCircles.find(circle => circle.row === r && circle.col === c);
+                    if (!circle || circle.removed) return false;
+                    r += stepY;
+                    c += stepX;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        function removeCirclesSimulated(start, end, tempCircles) {
+            if (start === end) {
+                start.removed = true;
+            } else {
+                const dx = end.col - start.col;
+                const dy = end.row - start.row;
+                if (dx === 0 && dy !== 0) {
+                    const step = dy > 0 ? 1 : -1;
+                    for (let r = start.row; r !== end.row + step; r += step) {
+                        const circle = tempCircles.find(c => c.row === r && c.col === start.col);
+                        circle.removed = true;
+                    }
+                } else if (dy === 0 && Math.abs(dx) === 1) {
+                    start.removed = true;
+                    end.removed = true;
+                } else if (Math.abs(dx) === Math.abs(dy)) {
+                    const stepX = dx > 0 ? 1 : -1;
+                    const stepY = dy > 0 ? 1 : -1;
+                    let r = start.row;
+                    let c = start.col;
+                    while (r !== end.row + stepY && c !== end.col + stepX) {
+                        const circle = tempCircles.find(circle => circle.row === r && circle.col === c);
+                        circle.removed = true;
+                        r += stepY;
+                        c += stepX;
+                    }
+                }
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (gameOver || (gameMode === 'vsComputer' && currentPlayer === 2)) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            startCircle = getCircleAt(x, y);
+            if (startCircle) {
+                dragging = true;
+                clickStartTime = Date.now();
+                clickStartPos = { x, y };
+                highlightedCircle = startCircle;
+                draw();
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!dragging || gameOver || (gameMode === 'vsComputer' && currentPlayer === 2)) return;
+            const now = Date.now();
+            if (now - lastMouseMove < mouseMoveThrottle) return;
+            lastMouseMove = now;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const distance = Math.sqrt((x - clickStartPos.x) ** 2 + (y - clickStartPos.y) ** 2);
+            draw();
+            if (startCircle && distance > moveThreshold) {
+                const endCircle = getCircleAt(x, y);
+                if (endCircle && endCircle !== startCircle && isValidLine(startCircle, endCircle)) {
+                    ctx.beginPath();
+                    ctx.moveTo(startCircle.x, startCircle.y);
+                    ctx.lineTo(endCircle.x, endCircle.y);
+                    ctx.strokeStyle = currentPlayer === 1 ? '#ef4444' : '#3b82f6';
+                    ctx.lineWidth = 6;
+                    ctx.stroke();
+                }
+            }
+        });
+
+        canvas.addEventListener('mouseup', (e) => {
+            if (!dragging || gameOver || (gameMode === 'vsComputer' && currentPlayer === 2)) return;
+            dragging = false;
+            highlightedCircle = null;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const endCircle = getCircleAt(x, y);
+            const clickDuration = Date.now() - clickStartTime;
+            const distance = Math.sqrt((x - clickStartPos.x) ** 2 + (y - clickStartPos.y) ** 2);
+
+            if (startCircle && (!endCircle || startCircle === endCircle) && clickDuration < clickThreshold && distance < moveThreshold) {
+                removeCircles(startCircle, startCircle);
+            } else if (startCircle && endCircle && isValidLine(startCircle, endCircle)) {
+                removeCircles(startCircle, endCircle);
+            } else {
+                draw();
+                startCircle = null;
+                return;
+            }
+            draw();
+            if (checkGameOver()) {
+                gameOver = true;
+                updateTurnIndicator();
+            } else {
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+                updateTurnIndicator();
+                if (gameMode === 'vsComputer' && currentPlayer === 2) {
+                    setTimeout(computerMove, 500);
+                }
+            }
+            startCircle = null;
+        });
+
+        function startGame(mode) {
+            gameMode = mode;
+            modeSelection.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            initCircles();
+            lines = [];
+            currentPlayer = 1;
+            gameOver = false;
+            document.body.style.backgroundColor = '#f3f4f6'; // Reset to default at game start
+            draw();
+            updateTurnIndicator();
+        }
+
+        twoPlayerButton.addEventListener('click', () => startGame('twoPlayer'));
+        vsComputerButton.addEventListener('click', () => startGame('vsComputer'));
+
+        restartButton.addEventListener('click', () => {
+            initCircles();
+            lines = [];
+            currentPlayer = 1;
+            gameOver = false;
+            document.body.style.backgroundColor = '#f3f4f6'; // Reset to default on restart
+            draw();
+            updateTurnIndicator();
+        });
+
+        backButton.addEventListener('click', () => {
+            gameScreen.classList.add('hidden');
+            modeSelection.classList.remove('hidden');
+            document.body.style.backgroundColor = '#f3f4f6'; // Reset to default when returning to menu
+        });
+    </script>
+</body>
+</html>
