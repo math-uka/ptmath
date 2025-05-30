@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一次函數選擇題</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #e0e0e0;
+            height: 40px;
+        }
+        td {
+            height: 60px;
+        }
+        .quadrants {
+            width: 150px;
+        }
+        .controls {
+            text-align: left;
+        }
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+            font-size: 14px;
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+        button.selected {
+            background-color: #d0e0ff;
+        }
+        button.correct {
+            background-color: #d0ffd0;
+        }
+        button.incorrect {
+            background-color: #ffd0d0;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+        .option-container {
+            display: inline-flex;
+            align-items: center;
+            margin: 5px;
+        }
+        .option-container .mathjax {
+            margin-left: 8px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 16px;
+            }
+            table, th, td {
+                font-size: 12px;
+            }
+            .quadrants {
+                width: 100px;
+            }
+            th {
+                height: 30px;
+            }
+            td {
+                height: 50px;
+            }
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .option-container .mathjax {
+                margin-left: 4px;
+            }
+            footer {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>一次函數選擇題</h1>
+    <div class="container">
+        <div id="functions-table"></div>
+        <div class="controls">
+            <button id="generateButton">生成新題目</button>
+            <button id="submitButton">提交答案</button>
+            <button id="showAnswersButton">顯示答案</button>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // 隨機生成整數的函數
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 計算最大公約數（用於簡化分數）
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b) {
+                const temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        // 將數字轉為分數形式
+        function toFraction(num) {
+            if (Number.isInteger(num)) return num.toString();
+            const maxDenominator = 100;
+            const precision = 1e-10;
+            let bestNumerator = Math.round(num);
+            let bestDenominator = 1;
+            let bestError = Math.abs(num - bestNumerator);
+
+            for (let d = 1; d <= maxDenominator; d++) {
+                const n = Math.round(num * d);
+                const error = Math.abs(num - n / d);
+                if (error < bestError && error < precision) {
+                    bestNumerator = n;
+                    bestDenominator = d;
+                    bestError = error;
+                }
+            }
+
+            const divisor = gcd(bestNumerator, bestDenominator);
+            let numerator = bestNumerator / divisor;
+            let denominator = bestDenominator / divisor;
+
+            // 確保分母為正，將負號移到分子
+            if (denominator < 0) {
+                numerator = -numerator;
+                denominator = -denominator;
+            }
+
+            if (numerator === 0) return '0';
+            if (denominator === 1) return numerator.toString();
+            if (numerator < 0) {
+                return `-\\frac{${Math.abs(numerator)}}{${denominator}}`;
+            }
+            return `\\frac{${numerator}}{${denominator}}`;
+        }
+
+        // 判斷直線經過哪些象限
+        function getQuadrants(a, b) {
+            const quadrants = [];
+            if (a > 0) {
+                if (b > 0) {
+                    quadrants.push('第一象限', '第二象限', '第三象限');
+                } else if (b === 0) {
+                    quadrants.push('第一象限', '第三象限');
+                } else {
+                    quadrants.push('第一象限', '第三象限', '第四象限');
+                }
+            } else {
+                if (b > 0) {
+                    quadrants.push('第一象限', '第二象限', '第四象限');
+                } else if (b === 0) {
+                    quadrants.push('第二象限', '第四象限');
+                } else {
+                    quadrants.push('第二象限', '第三象限', '第四象限');
+                }
+            }
+            return quadrants.sort();
+        }
+
+        // 生成錯誤選項
+        function generateWrongOptions(correct, type, a, b) {
+            const options = new Set([correct]);
+            while (options.size < 4) {
+                let wrong;
+                if (type === 'x-intercept') {
+                    const offset = getRandomInt(-5, 5);
+                    const correctX = a !== 0 ? -b / a : 0;
+                    const wrongX = correctX + offset;
+                    if (Math.abs(wrongX - correctX) < 0.001) continue; // 避免與正確答案太接近
+                    wrong = `\\left(${toFraction(wrongX)}, 0\\right)`;
+                } else if (type === 'y-intercept') {
+                    const offset = getRandomInt(-5, 5);
+                    wrong = `\\left(0, ${toFraction(b + offset)}\\right)`;
+                }
+                options.add(wrong);
+            }
+            const result = Array.from(options);
+            return result.sort(() => Math.random() - 0.5);
+        }
+
+        // 檢查點是否在函數上
+        function checkPoint(point, func) {
+            return Math.abs(point.y - (func.a * point.x + func.b)) < 1e-10;
+        }
+
+        // 檢查象限答案是否正確
+        function areQuadrantsCorrect(userQuadrants, correctQuadrants) {
+            if (userQuadrants.length !== correctQuadrants.length) return false;
+            const sortedUser = [...userQuadrants].sort();
+            return sortedUser.every((val, index) => val === correctQuadrants[index]);
+        }
+
+        // 儲存當前題目資料
+        let currentFunction = {};
+        let currentPoint = {};
+        let userAnswers = {
+            trend: null,
+            xIntercept: null,
+            yIntercept: null,
+            pointOnLine: null,
+            quadrants: []
+        };
+        let isSubmitted = false;
+
+        // 生成新題目
+        function generateTable() {
+            // 重置狀態
+            userAnswers = {
+                trend: null,
+                xIntercept: null,
+                yIntercept: null,
+                pointOnLine: null,
+                quadrants: []
+            };
+            isSubmitted = false;
+            document.getElementById('submitButton').disabled = false;
+            document.getElementById('showAnswersButton').disabled = false;
+
+            // 生成單一函數
+            let a = getRandomInt(-10, 10);
+            while (a === 0) a = getRandomInt(-10, 10);
+            const b = getRandomInt(-20, 20);
+            currentFunction = { a, b };
+
+            // 生成隨機點
+            const x1 = getRandomInt(-10, 10);
+            const y1 = currentFunction.a * x1 + currentFunction.b + getRandomInt(-5, 5);
+            currentPoint = { x: x1, y: y1 };
+
+            // 生成錯誤選項
+            const xIntercept = currentFunction.a !== 0 ? `\\left(${toFraction(-currentFunction.b / currentFunction.a)}, 0\\right)` : (currentFunction.b === 0 ? '無限多個' : '無');
+            const yIntercept = `\\left(0, ${toFraction(currentFunction.b)}\\right)`;
+            const xInterceptOptions = generateWrongOptions(xIntercept, 'x-intercept', currentFunction.a, currentFunction.b);
+            const yInterceptOptions = generateWrongOptions(yIntercept, 'y-intercept', currentFunction.a, currentFunction.b);
+
+            const sign = b >= 0 ? '+' : '';
+            const tableDiv = document.getElementById('functions-table');
+            tableDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>函數</th>
+                        <th>Y隨X增大而</th>
+                        <th>X軸交點</th>
+                        <th>Y軸交點</th>
+                        <th>點(${currentPoint.x}, ${currentPoint.y})是否在函數上</th>
+                        <th class="quadrants">經過哪些象限</th>
+                    </tr>
+                    <tr>
+                        <td>\\(\\ y = ${toFraction(currentFunction.a)}x ${sign} ${toFraction(currentFunction.b)} \\)</td>
+                        <td id="trend">
+                            <button class="trend-option" data-value="增大">增大</button>
+                            <button class="trend-option" data-value="減少">減少</button>
+                        </td>
+                        <td id="x-intercept">
+                            ${xInterceptOptions.map((opt, i) => `
+                                <div class="option-container">
+                                    <button class="x-intercept-option" data-value="${opt}">${String.fromCharCode(65 + i)}</button>
+                                    <span class="mathjax">\\(${opt}\\)</span>
+                                </div>
+                            `).join('')}
+                        </td>
+                        <td id="y-intercept">
+                            ${yInterceptOptions.map((opt, i) => `
+                                <div class="option-container">
+                                    <button class="y-intercept-option" data-value="${opt}">${String.fromCharCode(65 + i)}</button>
+                                    <span class="mathjax">\\(${opt}\\)</span>
+                                </div>
+                            `).join('')}
+                        </td>
+                        <td id="point-on-line">
+                            <button class="point-option" data-value="是">是</button>
+                            <button class="point-option" data-value="否">否</button>
+                        </td>
+                        <td id="quadrants" class="quadrants">
+                            <button class="quadrant-option" data-value="第一象限">第一象限</button>
+                            <button class="quadrant-option" data-value="第二象限">第二象限</button>
+                            <button class="quadrant-option" data-value="第三象限">第三象限</button>
+                            <button class="quadrant-option" data-value="第四象限">第四象限</button>
+                        </td>
+                    </tr>
+                    <tr id="answer-row" style="display: none;">
+                        <td>正確答案</td>
+                        <td id="trend-answer"></td>
+                        <td id="x-intercept-answer"></td>
+                        <td id="y-intercept-answer"></td>
+                        <td id="point-on-line-answer"></td>
+                        <td id="quadrants-answer"></td>
+                    </tr>
+                </table>
+            `;
+
+            // 添加按鈕事件
+            document.querySelectorAll('.trend-option').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.trend-option').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    userAnswers.trend = btn.dataset.value;
+                };
+            });
+            document.querySelectorAll('.x-intercept-option').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.x-intercept-option').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    userAnswers.xIntercept = btn.dataset.value;
+                };
+            });
+            document.querySelectorAll('.y-intercept-option').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.y-intercept-option').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    userAnswers.yIntercept = btn.dataset.value;
+                };
+            });
+            document.querySelectorAll('.point-option').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.point-option').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    userAnswers.pointOnLine = btn.dataset.value;
+                };
+            });
+            document.querySelectorAll('.quadrant-option').forEach(btn => {
+                btn.onclick = () => {
+                    const value = btn.dataset.value;
+                    if (userAnswers.quadrants.includes(value)) {
+                        userAnswers.quadrants = userAnswers.quadrants.filter(q => q !== value);
+                        btn.classList.remove('selected');
+                    } else {
+                        userAnswers.quadrants.push(value);
+                        btn.classList.add('selected');
+                    }
+                };
+            });
+
+            MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+        }
+
+        // 提交答案
+        function submitAnswers() {
+            if (!userAnswers.trend || !userAnswers.xIntercept || !userAnswers.yIntercept || !userAnswers.pointOnLine || userAnswers.quadrants.length === 0) {
+                alert('請選擇所有問題的答案！');
+                return;
+            }
+            isSubmitted = true;
+            document.getElementById('submitButton').disabled = true;
+
+            // 檢查答案並標記正確/錯誤
+            const correctTrend = currentFunction.a > 0 ? '增大' : '減少';
+            document.querySelectorAll('.trend-option').forEach(btn => {
+                if (btn.dataset.value === correctTrend) {
+                    btn.classList.add('correct');
+                } else if (btn.dataset.value === userAnswers.trend) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const correctXIntercept = currentFunction.a !== 0 ? `\\left(${toFraction(-currentFunction.b / currentFunction.a)}, 0\\right)` : (currentFunction.b === 0 ? '無限多個' : '無');
+            document.querySelectorAll('.x-intercept-option').forEach(btn => {
+                if (btn.dataset.value === correctXIntercept) {
+                    btn.classList.add('correct');
+                } else if (btn.dataset.value === userAnswers.xIntercept) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const correctYIntercept = `\\left(0, ${toFraction(currentFunction.b)}\\right)`;
+            document.querySelectorAll('.y-intercept-option').forEach(btn => {
+                if (btn.dataset.value === correctYIntercept) {
+                    btn.classList.add('correct');
+                } else if (btn.dataset.value === userAnswers.yIntercept) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const correctPointOnLine = checkPoint(currentPoint, currentFunction) ? '是' : '否';
+            document.querySelectorAll('.point-option').forEach(btn => {
+                if (btn.dataset.value === correctPointOnLine) {
+                    btn.classList.add('correct');
+                } else if (btn.dataset.value === userAnswers.pointOnLine) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const correctQuadrants = getQuadrants(currentFunction.a, currentFunction.b);
+            document.querySelectorAll('.quadrant-option').forEach(btn => {
+                if (correctQuadrants.includes(btn.dataset.value)) {
+                    btn.classList.add('correct');
+                } else if (userAnswers.quadrants.includes(btn.dataset.value)) {
+                    btn.classList.add('incorrect');
+                }
+            });
+        }
+
+        // 顯示答案
+        function showAnswers() {
+            if (!isSubmitted) {
+                alert('請先提交答案！');
+                return;
+            }
+            document.getElementById('answer-row').style.display = 'table-row';
+            document.getElementById('showAnswersButton').disabled = true;
+
+            const correctTrend = currentFunction.a > 0 ? '增大' : '減少';
+            document.getElementById('trend-answer').textContent = correctTrend;
+
+            const correctXIntercept = currentFunction.a !== 0 ? `\\left(${toFraction(-currentFunction.b / currentFunction.a)}, 0\\right)` : (currentFunction.b === 0 ? '無限多個' : '無');
+            document.getElementById('x-intercept-answer').innerHTML = `\\(${correctXIntercept}\\)`;
+
+            const correctYIntercept = `\\left(0, ${toFraction(currentFunction.b)}\\right)`;
+            document.getElementById('y-intercept-answer').innerHTML = `\\(${correctYIntercept}\\)`;
+
+            const correctPointOnLine = checkPoint(currentPoint, currentFunction) ? '是' : '否';
+            document.getElementById('point-on-line-answer').textContent = correctPointOnLine;
+
+            const correctQuadrants = getQuadrants(currentFunction.a, currentFunction.b);
+            document.getElementById('quadrants-answer').textContent = correctQuadrants.join('、');
+
+            MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+        }
+
+        // 生成新題目按鈕
+        document.getElementById('generateButton').onclick = () => {
+            generateTable();
+        };
+
+        // 提交答案按鈕
+        document.getElementById('submitButton').onclick = () => {
+            submitAnswers();
+        };
+
+        // 顯示答案按鈕
+        document.getElementById('showAnswersButton').onclick = () => {
+            showAnswers();
+        };
+
+        // 初始化表格
+        generateTable();
+    </script>
+</body>
+</html>
