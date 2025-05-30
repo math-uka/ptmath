@@ -3,89 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quadrilateral Explorer 13</title>
+    <title>四邊形探究器</title>
     <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f4f7fa;
+            --text-color: #333;
+            --error-color: #dc3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
             min-height: 100vh;
-            justify-content: space-between;
-            padding: 10px;
+            padding: 20px;
+            line-height: 1.5;
         }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 600px;
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary-color);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .button-container {
-            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
         }
+
         button {
-            padding: 6px 12px;
+            padding: 8px 16px;
             font-size: 14px;
-            margin: 0 5px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
         }
-        canvas {
-            border: 1px solid black;
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button.active {
+            background-color: #004085;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #clearBtn {
+            background-color: var(--secondary-color);
+        }
+
+        #clearBtn:hover {
+            background-color: #5a6268;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            align-items: start;
+        }
+
+        .input-table {
             width: 100%;
             max-width: 300px;
-            height: auto;
-        }
-        table {
             border-collapse: collapse;
-            margin: 10px 0;
-            width: 100%;
-            max-width: 300px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
+
         th, td {
-            border: 1px solid black;
-            padding: 6px;
+            border: 1px solid #ddd;
+            padding: 8px;
             text-align: center;
             font-size: 14px;
         }
-        .edgeInput {
-            width: 50px;
-            padding: 3px;
-            font-size: 12px;
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
         }
-        .angleInput {
-            width: 40px;
-            padding: 3px;
+
+        .edgeInput, .angleInput {
+            width: 60px;
+            padding: 5px;
             font-size: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-transform: uppercase;
         }
+
         .angle-cell {
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            gap: 5px;
         }
+
         .angle-symbol {
-            margin-right: 3px;
             font-size: 14px;
         }
+
         .error {
-            color: red;
+            color: var(--error-color);
+            font-size: 12px;
+            min-height: 18px;
         }
+
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
         footer {
             width: 100%;
             text-align: center;
-            padding: 10px 0;
-            background-color: #f8f8f8;
+            padding: 15px 0;
+            background-color: #e9ecef;
             font-size: 12px;
+            margin-top: auto;
+            border-top: 1px solid #ddd;
         }
+
         @media (min-width: 600px) {
             .container {
-                flex-direction: row;
-                justify-content: center;
-                align-items: flex-start;
+                grid-template-columns: 1fr 1fr;
             }
-            table {
-                margin-right: 20px;
-                max-width: 200px;
+            .input-table {
+                max-width: 250px;
             }
             canvas {
                 max-width: 400px;
@@ -94,31 +166,51 @@
     </style>
 </head>
 <body>
-    <h1 style="font-size: 18px;">四邊形探究</h1>
+    <h1>四邊形探究器</h1>
     <div class="button-container">
-        <button id="parallelogramBtn">平行四邊形</button>
+        <button id="parallelogramBtn" class="active">平行四邊形</button>
         <button id="rectangleBtn">矩形</button>
         <button id="rhombusBtn">菱形</button>
         <button id="squareBtn">正方形</button>
+        <button id="clearBtn">清除輸入</button>
     </div>
     <div class="container">
-        <table>
-            <tr><th>邊長</th><th>長度</th></tr>
-            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
-            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
-            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
-            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
-            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
-        </table>
-        <table>
-            <tr><th>角度</th><th>度數</th></tr>
-            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
-            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
-            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
-            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
-            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
-        </table>
-        <canvas id="canvas" width="300" height="200"></canvas>
+        <div class="input-table-container">
+            <table class="input-table">
+                <tr><th colspan="2">邊長</th><th colspan="2">角度</th></tr>
+                <tr>
+                    <td><input class="edgeInput" placeholder="如 AB"></td>
+                    <td class="lengthOutput">0</td>
+                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
+                    <td class="angleOutput">0</td>
+                </tr>
+                <tr>
+                    <td><input class="edgeInput" placeholder="如 AB"></td>
+                    <td class="lengthOutput">0</td>
+                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
+                    <td class="angleOutput">0</td>
+                </tr>
+                <tr>
+                    <td><input class="edgeInput" placeholder="如 AB"></td>
+                    <td class="lengthOutput">0</td>
+                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
+                    <td class="angleOutput">0</td>
+                </tr>
+                <tr>
+                    <td><input class="edgeInput" placeholder="如 AB"></td>
+                    <td class="lengthOutput">0</td>
+                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
+                    <td class="angleOutput">0</td>
+                </tr>
+                <tr>
+                    <td><input class="edgeInput" placeholder="如 AB"></td>
+                    <td class="lengthOutput">0</td>
+                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
+                    <td class="angleOutput">0</td>
+                </tr>
+            </table>
+        </div>
+        <canvas id="canvas" width="400" height="300"></canvas>
     </div>
     <footer>
         <p>© 2025 ukawai</p>
@@ -131,14 +223,14 @@
         let points = [
             { x: 50, y: 50 }, // A
             { x: 100, y: 50 }, // B
-            { x: 100, y: 100 }, // C
-            { x: 50, y: 100 }  // D
+            { x: 130, y: 100 }, // C
+            { x: 80, y: 100 } // D
         ];
         let selectedPoint = -1;
-        let shapeMode = 'parallelogram'; // 初始為平行四邊形
+        let shapeMode = 'parallelogram';
 
         function drawGrid() {
-            if (shapeMode === 'rhombus') return; // Skip grid in rhombus mode
+            if (shapeMode === 'rhombus') return;
             ctx.strokeStyle = '#e0e0e0';
             ctx.lineWidth = 0.5;
             for (let x = 0; x <= canvas.width; x += gridSize) {
@@ -164,10 +256,10 @@
         }
 
         function findIntersection() {
-            const x1 = points[0].x, y1 = points[0].y; // A
-            const x2 = points[2].x, y2 = points[2].y; // C
-            const x3 = points[1].x, y3 = points[1].y; // B
-            const x4 = points[3].x, y4 = points[3].y; // D
+            const x1 = points[0].x, y1 = points[0].y;
+            const x2 = points[2].x, y2 = points[2].y;
+            const x3 = points[1].x, y3 = points[1].y;
+            const x4 = points[3].x, y4 = points[3].y;
 
             const denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
             if (Math.abs(denom) < 0.0001) return null;
@@ -226,7 +318,7 @@
             edgeName = edgeName.toUpperCase().trim();
             const validEdges = ['AB', 'BA', 'BC', 'CB', 'CD', 'DC', 'DA', 'AD', 'AC', 'CA', 'BD', 'DB', 'AO', 'OA', 'BO', 'OB', 'CO', 'OC', 'DO', 'OD'];
             if (!validEdges.includes(edgeName)) {
-                return { error: true, value: '請輸入正確邊長' };
+                return { error: true, value: '請輸入正確邊長 (如 AB)' };
             }
 
             if (edgeName === 'AB' || edgeName === 'BA') {
@@ -262,14 +354,14 @@
                     return { error: false, value: calculateLength(points[3].x, points[3].y, intersection.x, intersection.y).toFixed(2) };
                 }
             }
-            return { error: true, value: '請輸入正確邊長' };
+            return { error: true, value: '請輸入正確邊長 (如 AB)' };
         }
 
         function getAngle(angleName) {
             angleName = angleName.toUpperCase().trim();
             const validPoints = ['A', 'B', 'C', 'D', 'O'];
             if (angleName.length !== 3 || !validPoints.includes(angleName[0]) || !validPoints.includes(angleName[1]) || !validPoints.includes(angleName[2])) {
-                return { error: true, value: '請輸入正確角度' };
+                return { error: true, value: '請輸入正確角度 (如 ABC)' };
             }
 
             const pointMap = {
@@ -281,7 +373,7 @@
             };
 
             if (angleName.includes('O') && !pointMap['O']) {
-                return { error: true, value: '請輸入正確角度' };
+                return { error: true, value: '請輸入正確角度 (如 ABC)' };
             }
 
             const p1 = pointMap[angleName[0]];
@@ -289,78 +381,106 @@
             const p3 = pointMap[angleName[2]];
 
             if (p1.x === p2.x && p1.y === p2.y || p2.x === p3.x && p2.y === p3.y) {
-                return { error: true, value: '請輸入正確角度' };
+                return { error: true, value: '請輸入正確角度 (如 ABC)' };
             }
 
             return { error: false, value: calculateAngle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y) };
         }
 
-        function updateLengths() {
-            const inputs = document.querySelectorAll('.edgeInput');
-            const outputs = document.querySelectorAll('.lengthOutput');
-            inputs.forEach((input, index) => {
+        function updateLengthsAndAngles() {
+            const edgeInputs = document.querySelectorAll('.edgeInput');
+            const lengthOutputs = document.querySelectorAll('.lengthOutput');
+            const angleInputs = document.querySelectorAll('.angleInput');
+            const angleOutputs = document.querySelectorAll('.angleOutput');
+
+            edgeInputs.forEach((input, index) => {
                 const edgeName = input.value.trim();
                 const result = edgeName ? getEdgeLength(edgeName) : { error: false, value: '0' };
-                outputs[index].textContent = result.value;
-                outputs[index].classList.toggle('error', result.error);
+                lengthOutputs[index].textContent = result.value;
+                lengthOutputs[index].classList.toggle('error', result.error);
+            });
+
+            angleInputs.forEach((input, index) => {
+                const angleName = input.value.trim();
+                const result = angleName ? getAngle(angleName) : { error: false, value: '0' };
+                angleOutputs[index].textContent = result.value;
+                angleOutputs[index].classList.toggle('error', result.error);
             });
         }
 
-        function updateAngles() {
-            const inputs = document.querySelectorAll('.angleInput');
-            const outputs = document.querySelectorAll('.angleOutput');
-            inputs.forEach((input, index) => {
-                const angleName = input.value.trim();
-                const result = angleName ? getAngle(angleName) : { error: false, value: '0' };
-                outputs[index].textContent = result.value;
-                outputs[index].classList.toggle('error', result.error);
+        function clearInputs() {
+            const edgeInputs = document.querySelectorAll('.edgeInput');
+            const angleInputs = document.querySelectorAll('.angleInput');
+            const lengthOutputs = document.querySelectorAll('.lengthOutput');
+            const angleOutputs = document.querySelectorAll('.angleOutput');
+
+            edgeInputs.forEach(input => input.value = '');
+            angleInputs.forEach(input => input.value = '');
+            lengthOutputs.forEach(output => {
+                output.textContent = '0';
+                output.classList.remove('error');
+            });
+            angleOutputs.forEach(output => {
+                output.textContent = '0';
+                output.classList.remove('error');
             });
         }
 
         function setParallelogram() {
             shapeMode = 'parallelogram';
             points = [
-                { x: 50, y: 50 }, // A
-                { x: 100, y: 50 }, // B
-                { x: 130, y: 100 }, // C
-                { x: 80, y: 100 } // D
+                { x: 50, y: 50 },
+                { x: 100, y: 50 },
+                { x: 130, y: 100 },
+                { x: 80, y: 100 }
             ];
+            updateButtonStates();
             drawParallelogram();
         }
 
         function setRectangle() {
             shapeMode = 'rectangle';
             points = [
-                { x: 50, y: 50 }, // A
-                { x: 120, y: 50 }, // B (AB = 70)
-                { x: 120, y: 100 }, // C (AD = 50)
-                { x: 50, y: 100 } // D
+                { x: 50, y: 50 },
+                { x: 120, y: 50 },
+                { x: 120, y: 100 },
+                { x: 50, y: 100 }
             ];
+            updateButtonStates();
             drawParallelogram();
         }
 
         function setSquare() {
             shapeMode = 'square';
             points = [
-                { x: 50, y: 50 }, // A
-                { x: 100, y: 50 }, // B
-                { x: 100, y: 100 }, // C
-                { x: 50, y: 100 } // D
+                { x: 50, y: 50 },
+                { x: 100, y: 50 },
+                { x: 100, y: 100 },
+                { x: 50, y: 100 }
             ];
+            updateButtonStates();
             drawParallelogram();
         }
 
         function setRhombus() {
             shapeMode = 'rhombus';
-            const sideLength = 50; // Set all sides to 50
-            const angleRad = 60 * Math.PI / 180; // ∠DAB = 60°
+            const sideLength = 50;
+            const angleRad = 60 * Math.PI / 180;
             points = [
-                { x: 100, y: 100 }, // A
-                { x: 100 + sideLength, y: 100 }, // B (AB = 50)
-                { x: 100 + sideLength * (1 + Math.cos(angleRad)), y: 100 + sideLength * Math.sin(angleRad) }, // C
-                { x: 100 + sideLength * Math.cos(angleRad), y: 100 + sideLength * Math.sin(angleRad) } // D
+                { x: 100, y: 100 },
+                { x: 100 + sideLength, y: 100 },
+                { x: 100 + sideLength * (1 + Math.cos(angleRad)), y: 100 + sideLength * Math.sin(angleRad) },
+                { x: 100 + sideLength * Math.cos(angleRad), y: 100 + sideLength * Math.sin(angleRad) }
             ];
+            updateButtonStates();
             drawParallelogram();
+        }
+
+        function updateButtonStates() {
+            const buttons = document.querySelectorAll('.button-container button');
+            buttons.forEach(button => {
+                button.classList.toggle('active', button.id === `${shapeMode}Btn`);
+            });
         }
 
         function updateParallelogram(index, newX, newY) {
@@ -496,7 +616,7 @@
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 1;
             ctx.stroke();
-            ctx.fillStyle = 'rgba(0, 0, 255, 0.1)';
+            ctx.fillStyle = 'rgba(0, 123, 255, 0.2)';
             ctx.fill();
 
             const labels = ['A', 'B', 'C', 'D'];
@@ -505,41 +625,40 @@
                     return;
                 }
                 ctx.beginPath();
-                ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
-                ctx.fillStyle = index === selectedPoint ? 'red' : 'blue';
+                ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+                ctx.fillStyle = index === selectedPoint ? '#dc3545' : '#007bff';
                 ctx.fill();
                 ctx.fillStyle = 'black';
-                ctx.font = '10px Arial';
-                ctx.fillText(labels[index], point.x + 5, point.y - 5);
+                ctx.font = '12px Arial';
+                ctx.fillText(labels[index], point.x + 8, point.y - 8);
             });
 
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
             ctx.lineTo(points[2].x, points[2].y);
-            ctx.strokeStyle = 'green';
+            ctx.strokeStyle = '#28a745';
             ctx.lineWidth = 0.5;
             ctx.stroke();
 
             ctx.beginPath();
             ctx.moveTo(points[1].x, points[1].y);
             ctx.lineTo(points[3].x, points[3].y);
-            ctx.strokeStyle = 'purple';
+            ctx.strokeStyle = '#6f42c1';
             ctx.lineWidth = 0.5;
             ctx.stroke();
 
             const intersection = findIntersection();
             if (intersection && intersection.x >= 0 && intersection.x <= canvas.width && intersection.y >= 0 && intersection.y <= canvas.height) {
                 ctx.beginPath();
-                ctx.arc(intersection.x, intersection.y, 3, 0, 2 * Math.PI);
-                ctx.fillStyle = 'orange';
+                ctx.arc(intersection.x, intersection.y, 4, 0, 2 * Math.PI);
+                ctx.fillStyle = '#fd7e14';
                 ctx.fill();
                 ctx.fillStyle = 'black';
-                ctx.font = '10px Arial';
-                ctx.fillText('O', intersection.x + 5, intersection.y - 5);
+                ctx.font = '12px Arial';
+                ctx.fillText('O', intersection.x + 8, intersection.y - 8);
             }
 
-            updateLengths();
-            updateAngles();
+            updateLengthsAndAngles();
         }
 
         function getMouseOrTouchPos(event) {
@@ -606,18 +725,12 @@
         document.getElementById('rectangleBtn').addEventListener('click', setRectangle);
         document.getElementById('squareBtn').addEventListener('click', setSquare);
         document.getElementById('rhombusBtn').addEventListener('click', setRhombus);
+        document.getElementById('clearBtn').addEventListener('click', clearInputs);
 
-        document.querySelectorAll('.edgeInput').forEach(input => {
+        document.querySelectorAll('.edgeInput, .angleInput').forEach(input => {
             input.addEventListener('input', () => {
                 input.value = input.value.toUpperCase();
-                updateLengths();
-            });
-        });
-
-        document.querySelectorAll('.angleInput').forEach(input => {
-            input.addEventListener('input', () => {
-                input.value = input.value.toUpperCase();
-                updateAngles();
+                updateLengthsAndAngles();
             });
         });
 
