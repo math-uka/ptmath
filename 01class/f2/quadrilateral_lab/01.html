@@ -11,29 +11,33 @@
             --background-color: #f4f7fa;
             --text-color: #333;
             --error-color: #dc3545;
+            --point-size: 6px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            touch-action: none; /* Prevent default touch behaviors */
         }
 
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            justify-content: flex-start;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
             min-height: 100vh;
-            padding: 20px;
+            padding: 2vw;
             line-height: 1.5;
+            overflow-x: hidden;
         }
 
         h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
+            margin-bottom: 2vw;
             text-align: center;
             color: var(--primary-color);
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -42,25 +46,28 @@
         .button-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 1vw;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 2vw;
+            padding: 0 1vw;
         }
 
         button {
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: clamp(0.5rem, 2vw, 0.7rem) clamp(1rem, 3vw, 1.2rem);
+            font-size: clamp(0.9rem, 3vw, 1rem);
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            touch-action: manipulation;
         }
 
-        button:hover {
+        button:hover, button:focus {
             background-color: #0056b3;
             transform: translateY(-2px);
+            outline: none;
         }
 
         button.active {
@@ -72,34 +79,34 @@
             background-color: var(--secondary-color);
         }
 
-        #clearBtn:hover {
+        #clearBtn:hover, #clearBtn:focus {
             background-color: #5a6268;
         }
 
         .container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
             width: 100%;
-            max-width: 800px;
-            align-items: start;
+            max-width: 90vw;
+            align-items: center;
         }
 
         .input-table {
             width: 100%;
-            max-width: 300px;
+            max-width: 100%;
             border-collapse: collapse;
             background-color: white;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
         }
 
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: clamp(0.4rem, 1.5vw, 0.5rem);
             text-align: center;
-            font-size: 14px;
         }
 
         th {
@@ -108,9 +115,10 @@
         }
 
         .edgeInput, .angleInput {
-            width: 60px;
-            padding: 5px;
-            font-size: 12px;
+            width: 100%;
+            max-width: 60px;
+            padding: 0.3rem;
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
             border: 1px solid #ccc;
             border-radius: 4px;
             text-transform: uppercase;
@@ -119,17 +127,18 @@
         .angle-cell {
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 0.3rem;
         }
 
         .angle-symbol {
-            font-size: 14px;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
         }
 
         .error {
             color: var(--error-color);
-            font-size: 12px;
-            min-height: 18px;
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
+            min-height: 1.2rem;
         }
 
         canvas {
@@ -137,81 +146,103 @@
             border-radius: 8px;
             background-color: white;
             width: 100%;
-            max-width: 400px;
+            max-width: min(90vw, 400px);
             height: auto;
+            aspect-ratio: 4 / 3;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            touch-action: none;
         }
 
         footer {
             width: 100%;
             text-align: center;
-            padding: 15px 0;
+            padding: 1rem 0;
             background-color: #e9ecef;
-            font-size: 12px;
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
             margin-top: auto;
             border-top: 1px solid #ddd;
         }
 
         @media (min-width: 600px) {
             .container {
-                grid-template-columns: 1fr 1fr;
+                flex-direction: row;
+                justify-content: center;
+                align-items: start;
             }
             .input-table {
-                max-width: 250px;
+                max-width: 300px;
             }
             canvas {
                 max-width: 400px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            button {
+                width: 100%;
+                max-width: 200px;
             }
         }
     </style>
 </head>
 <body>
     <h1>四邊形探究器</h1>
-    <div class="button-container">
-        <button id="quadrilateralBtn">四邊形</button>
-        <button id="parallelogramBtn" class="active">平行四邊形</button>
-        <button id="rectangleBtn">矩形</button>
-        <button id="rhombusBtn">菱形</button>
-        <button id="squareBtn">正方形</button>
-        <button id="clearBtn">清除輸入</button>
+    <div class="button-container" role="toolbar" aria-label="形狀選擇按鈕">
+        <button id="quadrilateralBtn" aria-label="選擇四邊形">四邊形</button>
+        <button id="parallelogramBtn" class="active" aria-label="選擇平行四邊形">平行四邊形</button>
+        <button id="rectangleBtn" aria-label="選擇矩形">矩形</button>
+        <button id="rhombusBtn" aria-label="選擇菱形">菱形</button>
+        <button id="squareBtn" aria-label="選擇正方形">正方形</button>
+        <button id="clearBtn" aria-label="清除輸入">清除輸入</button>
     </div>
     <div class="container">
         <div class="input-table-container">
-            <table class="input-table">
-                <tr><th colspan="2">邊長</th><th colspan="2">角度</th></tr>
-                <tr>
-                    <td><input class="edgeInput" placeholder="如 AB"></td>
-                    <td class="lengthOutput">0</td>
-                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
-                    <td class="angleOutput">0</td>
-                </tr>
-                <tr>
-                    <td><input class="edgeInput" placeholder="如 AB"></td>
-                    <td class="lengthOutput">0</td>
-                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
-                    <td class="angleOutput">0</td>
-                </tr>
-                <tr>
-                    <td><input class="edgeInput" placeholder="如 AB"></td>
-                    <td class="lengthOutput">0</td>
-                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
-                    <td class="angleOutput">0</td>
-                </tr>
-                <tr>
-                    <td><input class="edgeInput" placeholder="如 AB"></td>
-                    <td class="lengthOutput">0</td>
-                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
-                    <td class="angleOutput">0</td>
-                </tr>
-                <tr>
-                    <td><input class="edgeInput" placeholder="如 AB"></td>
-                    <td class="lengthOutput">0</td>
-                    <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC"></div></td>
-                    <td class="angleOutput">0</td>
-                </tr>
+            <table class="input-table" aria-label="邊長與角度輸入表格">
+                <thead>
+                    <tr>
+                        <th colspan="2">邊長</th>
+                        <th colspan="2">角度</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                        <td class="lengthOutput" aria-live="polite">0</td>
+                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                        <td class="angleOutput" aria-live="polite">0</td>
+                    </tr>
+                    <tr>
+                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                        <td class="lengthOutput" aria-live="polite">0</td>
+                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                        <td class="angleOutput" aria-live="polite">0</td>
+                    </tr>
+                    <tr>
+                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                        <td class="lengthOutput" aria-live="polite">0</td>
+                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                        <td class="angleOutput" aria-live="polite">0</td>
+                    </tr>
+                    <tr>
+                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                        <td class="lengthOutput" aria-live="polite">0</td>
+                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                        <td class="angleOutput" aria-live="polite">0</td>
+                    </tr>
+                    <tr>
+                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                        <td class="lengthOutput" aria-live="polite">0</td>
+                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                        <td class="angleOutput" aria-live="polite">0</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-        <canvas id="canvas" width="400" height="300"></canvas>
+        <canvas id="canvas" width="400" height="300" aria-label="四邊形畫布"></canvas>
     </div>
     <footer>
         <p>© 2025 ukawai</p>
@@ -229,6 +260,26 @@
         ];
         let selectedPoint = -1;
         let shapeMode = 'parallelogram';
+
+        // Adjust canvas size dynamically
+        function resizeCanvas() {
+            const maxWidth = Math.min(window.innerWidth * 0.9, 400);
+            const aspectRatio = 4 / 3;
+            canvas.width = maxWidth;
+            canvas.height = maxWidth / aspectRatio;
+            // Scale points to fit new canvas size
+            const scaleX = canvas.width / 400;
+            const scaleY = canvas.height / 300;
+            points = points.map(p => ({
+                x: p.x * scaleX,
+                y: p.y * scaleY
+            }));
+            drawParallelogram();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', resizeCanvas);
+        resizeCanvas();
 
         function drawGrid() {
             if (shapeMode === 'rhombus') return;
@@ -430,10 +481,10 @@
         function setQuadrilateral() {
             shapeMode = 'quadrilateral';
             points = [
-                { x: 50, y: 50 }, // A
-                { x: 120, y: 60 }, // B
-                { x: 100, y: 120 }, // C
-                { x: 40, y: 100 } // D
+                { x: canvas.width * 0.125, y: canvas.height * 0.167 },
+                { x: canvas.width * 0.3, y: canvas.height * 0.2 },
+                { x: canvas.width * 0.25, y: canvas.height * 0.4 },
+                { x: canvas.width * 0.1, y: canvas.height * 0.333 }
             ];
             updateButtonStates();
             drawParallelogram();
@@ -442,10 +493,10 @@
         function setParallelogram() {
             shapeMode = 'parallelogram';
             points = [
-                { x: 50, y: 50 },
-                { x: 100, y: 50 },
-                { x: 130, y: 100 },
-                { x: 80, y: 100 }
+                { x: canvas.width * 0.125, y: canvas.height * 0.167 },
+                { x: canvas.width * 0.25, y: canvas.height * 0.167 },
+                { x: canvas.width * 0.325, y: canvas.height * 0.333 },
+                { x: canvas.width * 0.2, y: canvas.height * 0.333 }
             ];
             updateButtonStates();
             drawParallelogram();
@@ -454,10 +505,10 @@
         function setRectangle() {
             shapeMode = 'rectangle';
             points = [
-                { x: 50, y: 50 },
-                { x: 120, y: 50 },
-                { x: 120, y: 100 },
-                { x: 50, y: 100 }
+                { x: canvas.width * 0.125, y: canvas.height * 0.167 },
+                { x: canvas.width * 0.3, y: canvas.height * 0.167 },
+                { x: canvas.width * 0.3, y: canvas.height * 0.333 },
+                { x: canvas.width * 0.125, y: canvas.height * 0.333 }
             ];
             updateButtonStates();
             drawParallelogram();
@@ -466,10 +517,10 @@
         function setSquare() {
             shapeMode = 'square';
             points = [
-                { x: 50, y: 50 },
-                { x: 100, y: 50 },
-                { x: 100, y: 100 },
-                { x: 50, y: 100 }
+                { x: canvas.width * 0.125, y: canvas.height * 0.167 },
+                { x: canvas.width * 0.25, y: canvas.height * 0.167 },
+                { x: canvas.width * 0.25, y: canvas.height * 0.333 },
+                { x: canvas.width * 0.125, y: canvas.height * 0.333 }
             ];
             updateButtonStates();
             drawParallelogram();
@@ -477,13 +528,15 @@
 
         function setRhombus() {
             shapeMode = 'rhombus';
-            const sideLength = 50;
+            const sideLength = canvas.width * 0.125;
             const angleRad = 60 * Math.PI / 180;
+            const centerX = canvas.width * 0.25;
+            const centerY = canvas.height * 0.25;
             points = [
-                { x: 100, y: 100 },
-                { x: 100 + sideLength, y: 100 },
-                { x: 100 + sideLength * (1 + Math.cos(angleRad)), y: 100 + sideLength * Math.sin(angleRad) },
-                { x: 100 + sideLength * Math.cos(angleRad), y: 100 + sideLength * Math.sin(angleRad) }
+                { x: centerX, y: centerY },
+                { x: centerX + sideLength, y: centerY },
+                { x: centerX + sideLength * (1 + Math.cos(angleRad)), y: centerY + sideLength * Math.sin(angleRad) },
+                { x: centerX + sideLength * Math.cos(angleRad), y: centerY + sideLength * Math.sin(angleRad) }
             ];
             updateButtonStates();
             drawParallelogram();
@@ -493,6 +546,7 @@
             const buttons = document.querySelectorAll('.button-container button');
             buttons.forEach(button => {
                 button.classList.toggle('active', button.id === `${shapeMode}Btn`);
+                button.setAttribute('aria-pressed', button.id === `${shapeMode}Btn`);
             });
         }
 
@@ -503,6 +557,10 @@
                 newX = snapToGrid(newX);
                 newY = snapToGrid(newY);
             }
+
+            // Clamp coordinates to canvas bounds
+            newX = Math.max(0, Math.min(newX, canvas.width));
+            newY = Math.max(0, Math.min(newY, canvas.height));
 
             if (shapeMode === 'quadrilateral') {
                 points[index] = { x: newX, y: newY };
@@ -640,11 +698,11 @@
                     return;
                 }
                 ctx.beginPath();
-                ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+                ctx.arc(point.x, point.y, 6, 0, 2 * Math.PI); // Larger touch target
                 ctx.fillStyle = index === selectedPoint ? '#dc3545' : '#007bff';
                 ctx.fill();
                 ctx.fillStyle = 'black';
-                ctx.font = '12px Arial';
+                ctx.font = `${clamp(12, canvas.width * 0.03, 14)}px Arial`;
                 ctx.fillText(labels[index], point.x + 8, point.y - 8);
             });
 
@@ -665,15 +723,19 @@
             const intersection = findIntersection();
             if (intersection && intersection.x >= 0 && intersection.x <= canvas.width && intersection.y >= 0 && intersection.y <= canvas.height) {
                 ctx.beginPath();
-                ctx.arc(intersection.x, intersection.y, 4, 0, 2 * Math.PI);
+                ctx.arc(intersection.x, intersection.y, 6, 0, 2 * Math.PI);
                 ctx.fillStyle = '#fd7e14';
                 ctx.fill();
                 ctx.fillStyle = 'black';
-                ctx.font = '12px Arial';
+                ctx.font = `${clamp(12, canvas.width * 0.03, 14)}px Arial`;
                 ctx.fillText('O', intersection.x + 8, intersection.y - 8);
             }
 
             updateLengthsAndAngles();
+        }
+
+        function clamp(min, value, max) {
+            return Math.max(min, Math.min(value, max));
         }
 
         function getMouseOrTouchPos(event) {
@@ -692,7 +754,7 @@
             points.forEach((point, index) => {
                 const dx = mousePos.x - point.x;
                 const dy = mousePos.y - point.y;
-                if (Math.sqrt(dx * dx + dy * dy) < 10) {
+                if (Math.sqrt(dx * dx + dy * dy) < 12) { // Larger hit area
                     selectedPoint = index;
                 }
             });
@@ -717,7 +779,7 @@
             points.forEach((point, index) => {
                 const dx = touchPos.x - point.x;
                 const dy = touchPos.y - point.y;
-                if (Math.sqrt(dx * dx + dy * dy) < 10) {
+                if (Math.sqrt(dx * dx + dy * dy) < 12) {
                     selectedPoint = index;
                 }
             });
@@ -747,6 +809,16 @@
             input.addEventListener('input', () => {
                 input.value = input.value.toUpperCase();
                 updateLengthsAndAngles();
+            });
+        });
+
+        // Keyboard accessibility
+        document.querySelectorAll('.button-container button').forEach(button => {
+            button.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    button.click();
+                }
             });
         });
 
