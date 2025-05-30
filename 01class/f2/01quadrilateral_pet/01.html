@@ -1,363 +1,627 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>平行四邊形判定實驗</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quadrilateral Explorer 13</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 2vw;
-            background-color: #f0f0f0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            justify-content: space-between;
+            padding: 10px;
         }
         .container {
             display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 2vw;
-            max-width: 90vw;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
         }
-        canvas {
-            border: 2px solid #333;
-            background-color: transparent;
-            max-width: 100%;
-        }
-        .controls {
-            margin-top: 2vw;
-            text-align: center;
-        }
-        .info {
-            max-width: 40vw;
-            min-width: 300px;
-            background-color: white;
-            padding: 2vw;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            font-size: 1rem;
-        }
-        #edgesSection, #anglesSection {
-            display: none; /* Initially hidden */
-        }
-        h1 {
-            color: #333;
-            font-size: 2rem;
+        .button-container {
+            margin: 10px 0;
         }
         button {
-            margin: 0.5vw;
-            padding: 1vw 2vw;
+            padding: 6px 12px;
+            font-size: 14px;
+            margin: 0 5px;
             cursor: pointer;
-            font-size: 1rem;
         }
-        .result-bold {
-            font-weight: bold;
+        canvas {
+            border: 1px solid black;
+            width: 100%;
+            max-width: 300px;
+            height: auto;
         }
-        @media (max-width: 600px) {
-            .info {
-                max-width: 80vw;
+        table {
+            border-collapse: collapse;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .edgeInput {
+            width: 50px;
+            padding: 3px;
+            font-size: 12px;
+        }
+        .angleInput {
+            width: 40px;
+            padding: 3px;
+            font-size: 12px;
+        }
+        .angle-cell {
+            display: inline-flex;
+            align-items: center;
+        }
+        .angle-symbol {
+            margin-right: 3px;
+            font-size: 14px;
+        }
+        .error {
+            color: red;
+        }
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f8f8f8;
+            font-size: 12px;
+        }
+        @media (min-width: 600px) {
+            .container {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
             }
-            h1 {
-                font-size: 1.5rem;
+            table {
+                margin-right: 20px;
+                max-width: 200px;
             }
-            button {
-                padding: 2vw 4vw;
+            canvas {
+                max-width: 400px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>平行四邊形判定實驗</h1>
-    <div class="container">
-        <div class="info">
-            <p><strong>實驗目標：</strong>探究對邊相等的四邊形是否為平行四邊形。</p>
-            <div id="edgesSection">
-                <p><strong>邊長（單位格）：</strong></p>
-                <p>AB = <span id="abLen">0</span>, CD = <span id="cdLen">0</span></p>
-                <p>BC = <span id="bcLen">0</span>, DA = <span id="daLen">0</span></p>
-            </div>
-            <div id="anglesSection">
-                <p><strong>角度（度）：</strong></p>
-                <p>∠A = <span id="angleA">0</span>, ∠B = <span id="angleB">0</span>, ∠C = <span id="angleC">0</span>, ∠D = <span id="angleD">0</span></p>
-            </div>
-            <p><strong>判定結果：</strong> <span id="result">請拖動頂點進行實驗</span></p>
-        </div>
-        <div>
-            <div class="controls">
-                <button id="edgeButton">顯示邊長</button>
-                <button id="angleButton">顯示角度</button>
-            </div>
-            <div id="canvasContainer"></div>
-        </div>
+    <h1 style="font-size: 18px;">四邊形探究</h1>
+    <div class="button-container">
+        <button id="parallelogramBtn">平行四邊形</button>
+        <button id="rectangleBtn">矩形</button>
+        <button id="rhombusBtn">菱形</button>
+        <button id="squareBtn">正方形</button>
     </div>
+    <div class="container">
+        <table>
+            <tr><th>邊長</th><th>長度</th></tr>
+            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
+            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
+            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
+            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
+            <tr><td><input class="edgeInput" placeholder="輸入邊名"></td><td class="lengthOutput">0</td></tr>
+        </table>
+        <table>
+            <tr><th>角度</th><th>度數</th></tr>
+            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
+            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
+            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
+            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
+            <tr><td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="輸入角度名"></div></td><td class="angleOutput">0</td></tr>
+        </table>
+        <canvas id="canvas" width="300" height="200"></canvas>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
 
     <script>
-        const gridSize = 50;
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const gridSize = 10;
         let points = [
-            { x: 2 * gridSize, y: 2 * gridSize, label: 'A' },
-            { x: 6 * gridSize, y: 2 * gridSize, label: 'B' },
-            { x: 6 * gridSize, y: 6 * gridSize, label: 'C' },
-            { x: 2 * gridSize, y: 6 * gridSize, label: 'D' }
+            { x: 50, y: 50 }, // A
+            { x: 100, y: 50 }, // B
+            { x: 100, y: 100 }, // C
+            { x: 50, y: 100 }  // D
         ];
-        let selectedPoint = null;
-        let showEdges = false;
-        let showAngles = false;
-
-        function setup() {
-            let canvas = createCanvas(600, 600);
-            canvas.parent('canvasContainer');
-            pixelDensity(2); // Improve rendering on high-DPI screens
-            updateInfo();
-
-            // Add event listeners for buttons
-            const edgeButton = document.getElementById('edgeButton');
-            const angleButton = document.getElementById('angleButton');
-
-            // Click events for desktop
-            edgeButton.addEventListener('click', toggleEdges);
-            angleButton.addEventListener('click', toggleAngles);
-
-            // Touch events for mobile
-            edgeButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                toggleEdges();
-            });
-            angleButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                toggleAngles();
-            });
-        }
-
-        function draw() {
-            clear();
-            background(0, 0, 0, 0);
-            drawGrid();
-
-            stroke(0);
-            strokeWeight(2);
-            fill(200, 200, 255, 100);
-            beginShape();
-            for (let p of points) {
-                vertex(p.x, p.y);
-            }
-            endShape(CLOSE);
-
-            for (let i = 0; i < points.length; i++) {
-                let p = points[i];
-                fill(255, 0, 0);
-                ellipse(p.x, p.y, 10, 10);
-                fill(0);
-                textAlign(CENTER);
-                text(p.label, p.x, p.y - 15);
-            }
-        }
+        let selectedPoint = -1;
+        let shapeMode = 'parallelogram'; // 初始為平行四邊形
 
         function drawGrid() {
-            stroke(0, 0, 0, 100);
-            strokeWeight(1);
-            for (let x = 0; x <= width; x += gridSize) {
-                line(x, 0, x, height);
+            if (shapeMode === 'rhombus') return; // Skip grid in rhombus mode
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x <= canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
             }
-            for (let y = 0; y <= height; y += gridSize) {
-                line(0, y, width, y);
+            for (let y = 0; y <= canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
             }
         }
 
-        function isCollinear(p1, p2, p3) {
-            // Calculate area of triangle using cross product
-            let area = 0.5 * Math.abs(
-                p1.x * (p2.y - p3.y) +
-                p2.x * (p3.y - p1.y) +
-                p3.x * (p1.y - p2.y)
-            );
-            return area < 0.01; // Small threshold for floating-point precision
+        function snapToGrid(value) {
+            return Math.round(value / gridSize) * gridSize;
         }
 
-        function checkCollinearity(newPoints) {
-            // Check all combinations of three points
-            for (let i = 0; i < newPoints.length; i++) {
-                for (let j = i + 1; j < newPoints.length; j++) {
-                    for (let k = j + 1; k < newPoints.length; k++) {
-                        if (isCollinear(newPoints[i], newPoints[j], newPoints[k])) {
-                            return true;
-                        }
-                    }
+        function calculateLength(x1, y1, x2, y2) {
+            return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        }
+
+        function findIntersection() {
+            const x1 = points[0].x, y1 = points[0].y; // A
+            const x2 = points[2].x, y2 = points[2].y; // C
+            const x3 = points[1].x, y3 = points[1].y; // B
+            const x4 = points[3].x, y4 = points[3].y; // D
+
+            const denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+            if (Math.abs(denom) < 0.0001) return null;
+
+            const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+            const x = x1 + t * (x2 - x1);
+            const y = y1 + t * (y2 - y1);
+            return { x, y };
+        }
+
+        function calculateAngle(x1, y1, x2, y2, x3, y3) {
+            const vec1x = x1 - x2;
+            const vec1y = y1 - y2;
+            const vec2x = x3 - x2;
+            const vec2y = y3 - y2;
+
+            const dot = vec1x * vec2x + vec1y * vec2y;
+            const len1 = Math.sqrt(vec1x ** 2 + vec1y ** 2);
+            const len2 = Math.sqrt(vec2x ** 2 + vec2y ** 2);
+            const cosTheta = Math.min(1, Math.max(-1, dot / (len1 * len2)));
+
+            let angle = Math.acos(cosTheta) * 180 / Math.PI;
+            if (angle > 180) angle = 360 - angle;
+            return angle.toFixed(2);
+        }
+
+        function arePointsCollinear(p1, p2, p3) {
+            const area = Math.abs((p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y)) / 2);
+            return area < 0.01;
+        }
+
+        function isValidRectangle() {
+            const lenAB = calculateLength(points[0].x, points[0].y, points[1].x, points[1].y);
+            const lenCD = calculateLength(points[2].x, points[2].y, points[3].x, points[3].y);
+            const lenAD = calculateLength(points[0].x, points[0].y, points[3].x, points[3].y);
+            const lenBC = calculateLength(points[1].x, points[1].y, points[2].x, points[2].y);
+
+            const sideEquality = Math.abs(lenAB - lenCD) < 0.1 && Math.abs(lenAD - lenBC) < 0.1;
+
+            const vecABx = points[1].x - points[0].x;
+            const vecABy = points[1].y - points[0].y;
+            const vecADx = points[3].x - points[0].x;
+            const vecADy = points[3].y - points[0].y;
+            const dotProduct = vecABx * vecADx + vecABy * vecADy;
+            const perpendicular = Math.abs(dotProduct) < 0.1;
+
+            const minDistance = 0.5;
+            const distinctPoints = [
+                [0, 1], [1, 2], [2, 3], [3, 0], [0, 2], [1, 3]
+            ].every(([i, j]) => calculateLength(points[i].x, points[i].y, points[j].x, points[j].y) > minDistance);
+
+            return sideEquality && perpendicular && distinctPoints;
+        }
+
+        function getEdgeLength(edgeName) {
+            edgeName = edgeName.toUpperCase().trim();
+            const validEdges = ['AB', 'BA', 'BC', 'CB', 'CD', 'DC', 'DA', 'AD', 'AC', 'CA', 'BD', 'DB', 'AO', 'OA', 'BO', 'OB', 'CO', 'OC', 'DO', 'OD'];
+            if (!validEdges.includes(edgeName)) {
+                return { error: true, value: '請輸入正確邊長' };
+            }
+
+            if (edgeName === 'AB' || edgeName === 'BA') {
+                return { error: false, value: calculateLength(points[0].x, points[0].y, points[1].x, points[1].y).toFixed(2) };
+            } else if (edgeName === 'BC' || edgeName === 'CB') {
+                return { error: false, value: calculateLength(points[1].x, points[1].y, points[2].x, points[2].y).toFixed(2) };
+            } else if (edgeName === 'CD' || edgeName === 'DC') {
+                return { error: false, value: calculateLength(points[2].x, points[2].y, points[3].x, points[3].y).toFixed(2) };
+            } else if (edgeName === 'DA' || edgeName === 'AD') {
+                return { error: false, value: calculateLength(points[3].x, points[3].y, points[0].x, points[0].y).toFixed(2) };
+            } else if (edgeName === 'AC' || edgeName === 'CA') {
+                return { error: false, value: calculateLength(points[0].x, points[0].y, points[2].x, points[2].y).toFixed(2) };
+            } else if (edgeName === 'BD' || edgeName === 'DB') {
+                return { error: false, value: calculateLength(points[1].x, points[1].y, points[3].x, points[3].y).toFixed(2) };
+            } else if (edgeName === 'AO' || edgeName === 'OA') {
+                const intersection = findIntersection();
+                if (intersection) {
+                    return { error: false, value: calculateLength(points[0].x, points[0].y, intersection.x, intersection.y).toFixed(2) };
+                }
+            } else if (edgeName === 'BO' || edgeName === 'OB') {
+                const intersection = findIntersection();
+                if (intersection) {
+                    return { error: false, value: calculateLength(points[1].x, points[1].y, intersection.x, intersection.y).toFixed(2) };
+                }
+            } else if (edgeName === 'CO' || edgeName === 'OC') {
+                const intersection = findIntersection();
+                if (intersection) {
+                    return { error: false, value: calculateLength(points[2].x, points[2].y, intersection.x, intersection.y).toFixed(2) };
+                }
+            } else if (edgeName === 'DO' || edgeName === 'OD') {
+                const intersection = findIntersection();
+                if (intersection) {
+                    return { error: false, value: calculateLength(points[3].x, points[3].y, intersection.x, intersection.y).toFixed(2) };
                 }
             }
-            return false;
+            return { error: true, value: '請輸入正確邊長' };
         }
 
-        function orientation(p, q, r) {
-            // Compute the orientation of triplet (p, q, r)
-            // Returns:
-            // 0 --> Collinear
-            // 1 --> Clockwise
-            // -1 --> Counterclockwise
-            let val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-            if (Math.abs(val) < 0.01) return 0; // Collinear
-            return val > 0 ? 1 : -1;
-        }
-
-        function doSegmentsIntersect(p1, q1, p2, q2) {
-            // Check if line segments p1q1 and p2q2 intersect
-            let o1 = orientation(p1, q1, p2);
-            let o2 = orientation(p1, q1, q2);
-            let o3 = orientation(p2, q2, p1);
-            let o4 = orientation(p2, q2, q1);
-
-            // General case: segments intersect if orientations differ
-            if (o1 !== o2 && o3 !== o4) {
-                return true;
+        function getAngle(angleName) {
+            angleName = angleName.toUpperCase().trim();
+            const validPoints = ['A', 'B', 'C', 'D', 'O'];
+            if (angleName.length !== 3 || !validPoints.includes(angleName[0]) || !validPoints.includes(angleName[1]) || !validPoints.includes(angleName[2])) {
+                return { error: true, value: '請輸入正確角度' };
             }
 
-            // Special cases: collinear segments
-            // Check if points lie on the segment (not implemented here as collinearity is already checked)
-            return false;
-        }
+            const pointMap = {
+                'A': points[0],
+                'B': points[1],
+                'C': points[2],
+                'D': points[3],
+                'O': findIntersection()
+            };
 
-        function checkSelfIntersection(newPoints) {
-            // Check non-adjacent edges for intersections
-            // Edges: AB (0-1), BC (1-2), CD (2-3), DA (3-0)
-            // Non-adjacent pairs: AB-CD, BC-DA
-            let A = newPoints[0], B = newPoints[1], C = newPoints[2], D = newPoints[3];
-
-            // Check AB (0-1) with CD (2-3)
-            if (doSegmentsIntersect(A, B, C, D)) {
-                return true;
+            if (angleName.includes('O') && !pointMap['O']) {
+                return { error: true, value: '請輸入正確角度' };
             }
 
-            // Check BC (1-2) with DA (3-0)
-            if (doSegmentsIntersect(B, C, D, A)) {
-                return true;
+            const p1 = pointMap[angleName[0]];
+            const p2 = pointMap[angleName[1]];
+            const p3 = pointMap[angleName[2]];
+
+            if (p1.x === p2.x && p1.y === p2.y || p2.x === p3.x && p2.y === p3.y) {
+                return { error: true, value: '請輸入正確角度' };
             }
 
-            return false;
+            return { error: false, value: calculateAngle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y) };
         }
 
-        function selectPoint(x, y) {
-            for (let p of points) {
-                if (dist(x, y, p.x, p.y) < 20) { // Larger hitbox for mobile
-                    selectedPoint = p;
-                    return true;
-                }
-            }
-            return false;
+        function updateLengths() {
+            const inputs = document.querySelectorAll('.edgeInput');
+            const outputs = document.querySelectorAll('.lengthOutput');
+            inputs.forEach((input, index) => {
+                const edgeName = input.value.trim();
+                const result = edgeName ? getEdgeLength(edgeName) : { error: false, value: '0' };
+                outputs[index].textContent = result.value;
+                outputs[index].classList.toggle('error', result.error);
+            });
         }
 
-        function mousePressed() {
-            selectPoint(mouseX, mouseY);
+        function updateAngles() {
+            const inputs = document.querySelectorAll('.angleInput');
+            const outputs = document.querySelectorAll('.angleOutput');
+            inputs.forEach((input, index) => {
+                const angleName = input.value.trim();
+                const result = angleName ? getAngle(angleName) : { error: false, value: '0' };
+                outputs[index].textContent = result.value;
+                outputs[index].classList.toggle('error', result.error);
+            });
         }
 
-        function touchStarted() {
-            if (selectPoint(touches[0]?.x || 0, touches[0]?.y || 0)) {
-                return false; // Prevent default touch behavior
-            }
-        }
-
-        function movePoint(x, y) {
-            if (selectedPoint) {
-                let newX = Math.round(x / gridSize) * gridSize;
-                let newY = Math.round(y / gridSize) * gridSize;
-                newX = constrain(newX, 0, width);
-                newY = constrain(newY, 0, height);
-
-                // Create a temporary points array to test collinearity and self-intersection
-                let tempPoints = points.map(p => ({ ...p }));
-                let selectedIndex = points.indexOf(selectedPoint);
-                tempPoints[selectedIndex].x = newX;
-                tempPoints[selectedIndex].y = newY;
-
-                // Only update if the new position is non-collinear and non-self-intersecting
-                if (!checkCollinearity(tempPoints) && !checkSelfIntersection(tempPoints)) {
-                    selectedPoint.x = newX;
-                    selectedPoint.y = newY;
-                    updateInfo();
-                }
-            }
-        }
-
-        function mouseDragged() {
-            movePoint(mouseX, mouseY);
-        }
-
-        function touchMoved() {
-            movePoint(touches[0]?.x || 0, touches[0]?.y || 0);
-            return false;
-        }
-
-        function mouseReleased() {
-            selectedPoint = null;
-        }
-
-        function touchEnded() {
-            selectedPoint = null;
-            return false;
-        }
-
-        function calculateAngles() {
-            let angles = [];
-            let vectors = [
-                { x: points[1].x - points[0].x, y: points[1].y - points[0].y },
-                { x: points[3].x - points[0].x, y: points[3].y - points[0].y },
-                { x: points[0].x - points[1].x, y: points[0].y - points[1].y },
-                { x: points[2].x - points[1].x, y: points[2].y - points[1].y },
-                { x: points[1].x - points[2].x, y: points[1].y - points[2].y },
-                { x: points[3].x - points[2].x, y: points[3].y - points[2].y },
-                { x: points[2].x - points[3].x, y: points[2].y - points[3].y },
-                { x: points[0].x - points[3].x, y: points[0].y - points[3].y }
+        function setParallelogram() {
+            shapeMode = 'parallelogram';
+            points = [
+                { x: 50, y: 50 }, // A
+                { x: 100, y: 50 }, // B
+                { x: 130, y: 100 }, // C
+                { x: 80, y: 100 } // D
             ];
-            for (let i = 0; i < 4; i++) {
-                let v1 = vectors[i * 2];
-                let v2 = vectors[i * 2 + 1];
-                let dot = v1.x * v2.x + v1.y * v2.y;
-                let mag1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
-                let mag2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
-                let cosTheta = dot / (mag1 * mag2);
-                cosTheta = Math.max(-1, Math.min(1, cosTheta));
-                let angle = Math.acos(cosTheta) * 180 / Math.PI;
-                angles.push(angle);
+            drawParallelogram();
+        }
+
+        function setRectangle() {
+            shapeMode = 'rectangle';
+            points = [
+                { x: 50, y: 50 }, // A
+                { x: 120, y: 50 }, // B (AB = 70)
+                { x: 120, y: 100 }, // C (AD = 50)
+                { x: 50, y: 100 } // D
+            ];
+            drawParallelogram();
+        }
+
+        function setSquare() {
+            shapeMode = 'square';
+            points = [
+                { x: 50, y: 50 }, // A
+                { x: 100, y: 50 }, // B
+                { x: 100, y: 100 }, // C
+                { x: 50, y: 100 } // D
+            ];
+            drawParallelogram();
+        }
+
+        function setRhombus() {
+            shapeMode = 'rhombus';
+            const sideLength = 50; // Set all sides to 50
+            const angleRad = 60 * Math.PI / 180; // ∠DAB = 60°
+            points = [
+                { x: 100, y: 100 }, // A
+                { x: 100 + sideLength, y: 100 }, // B (AB = 50)
+                { x: 100 + sideLength * (1 + Math.cos(angleRad)), y: 100 + sideLength * Math.sin(angleRad) }, // C
+                { x: 100 + sideLength * Math.cos(angleRad), y: 100 + sideLength * Math.sin(angleRad) } // D
+            ];
+            drawParallelogram();
+        }
+
+        function updateParallelogram(index, newX, newY) {
+            const originalPoints = points.map(p => ({ x: p.x, y: p.y }));
+
+            if (shapeMode !== 'rhombus') {
+                newX = snapToGrid(newX);
+                newY = snapToGrid(newY);
             }
-            return angles;
+
+            if (shapeMode === 'parallelogram') {
+                if (index === 0) {
+                    const dx = newX - points[0].x;
+                    const dy = newY - points[0].y;
+                    points[0] = { x: newX, y: newY };
+                    points[1] = { x: points[1].x + dx, y: points[1].y + dy };
+                    points[2] = { x: points[2].x + dx, y: points[2].y + dy };
+                    points[3] = { x: points[3].x + dx, y: points[3].y + dy };
+                } else if (index === 1) {
+                    points[1] = { x: newX, y: newY };
+                    points[3] = { x: points[2].x + (points[0].x - points[1].x), y: points[2].y + (points[0].y - points[1].y) };
+                } else if (index === 2) {
+                    points[2] = { x: newX, y: newY };
+                    points[3] = { x: points[0].x + (points[2].x - points[1].x), y: points[0].y + (points[2].y - points[1].y) };
+                } else if (index === 3) {
+                    points[3] = { x: newX, y: newY };
+                    points[0] = { x: points[1].x + (points[3].x - points[2].x), y: points[1].y + (points[3].y - points[2].y) };
+                }
+            } else if (shapeMode === 'rectangle') {
+                if (index === 0) {
+                    points[0] = { x: newX, y: newY };
+                    points[1] = { x: points[2].x, y: points[0].y };
+                    points[3] = { x: points[0].x, y: points[2].y };
+                } else if (index === 1) {
+                    points[1] = { x: newX, y: newY };
+                    points[0] = { x: points[3].x, y: points[1].y };
+                    points[2] = { x: points[1].x, y: points[3].y };
+                } else if (index === 2) {
+                    points[2] = { x: newX, y: newY };
+                    points[1] = { x: points[2].x, y: points[0].y };
+                    points[3] = { x: points[0].x, y: points[2].y };
+                } else if (index === 3) {
+                    points[3] = { x: newX, y: newY };
+                    points[0] = { x: points[3].x, y: points[1].y };
+                    points[2] = { x: points[1].x, y: points[3].y };
+                }
+            } else if (shapeMode === 'square') {
+                if (index === 0) {
+                    const dx = newX - points[0].x;
+                    const dy = newY - points[0].y;
+                    points[0] = { x: newX, y: newY };
+                    points[1] = { x: points[1].x + dx, y: points[1].y + dy };
+                    points[2] = { x: points[2].x + dx, y: points[2].y + dy };
+                    points[3] = { x: points[3].x + dx, y: points[3].y + dy };
+                } else if (index === 1) {
+                    points[1] = { x: newX, y: newY };
+                    const vecABx = points[1].x - points[0].x;
+                    const vecABy = points[1].y - points[0].y;
+                    const lenAB = Math.sqrt(vecABx ** 2 + vecABy ** 2);
+                    const vecADx = (vecABy / lenAB) * lenAB;
+                    const vecADy = (-vecABx / lenAB) * lenAB;
+                    points[3] = { x: points[0].x + vecADx, y: points[0].y + vecADy };
+                    points[2] = { x: points[3].x + vecABx, y: points[3].y + vecABy };
+                } else if (index === 2) {
+                    points[2] = { x: newX, y: newY };
+                    const vecBCx = points[2].x - points[1].x;
+                    const vecBCy = points[2].y - points[1].y;
+                    const lenBC = Math.sqrt(vecBCx ** 2 + vecBCy ** 2);
+                    const vecCDx = (vecBCy / lenBC) * lenBC;
+                    const vecCDy = (-vecBCx / lenBC) * lenBC;
+                    points[3] = { x: points[2].x + vecCDx, y: points[2].y + vecCDy };
+                    points[0] = { x: points[3].x - vecBCx, y: points[3].y - vecBCy };
+                } else if (index === 3) {
+                    points[3] = { x: newX, y: newY };
+                    const vecCDx = points[3].x - points[2].x;
+                    const vecCDy = points[3].y - points[2].y;
+                    const lenCD = Math.sqrt(vecCDx ** 2 + vecCDy ** 2);
+                    const vecDAx = (vecCDy / lenCD) * lenCD;
+                    const vecDAy = (-vecCDx / lenCD) * lenCD;
+                    points[0] = { x: points[3].x + vecDAx, y: points[3].y + vecDAy };
+                    points[1] = { x: points[0].x - vecCDx, y: points[0].y - vecCDy };
+                }
+            } else if (shapeMode === 'rhombus') {
+                points[index] = { x: newX, y: newY };
+                let oppositeIdx = (index + 2) % 4;
+                let adj1 = (index + 1) % 4;
+                let adj2 = (index + 3) % 4;
+
+                let fixedPoint = points[oppositeIdx];
+                let sideLength = calculateLength(newX, newY, fixedPoint.x, fixedPoint.y);
+                let midX = (newX + fixedPoint.x) / 2;
+                let midY = (newY + fixedPoint.y) / 2;
+                let dx = newX - fixedPoint.x;
+                let dy = newY - fixedPoint.y;
+                let perpDx = -dy;
+                let perpDy = dx;
+                let mag = Math.sqrt(perpDx ** 2 + perpDy ** 2);
+                if (mag === 0) return;
+
+                let scale = sideLength / Math.sqrt(2) / mag;
+                perpDx *= scale;
+                perpDy *= scale;
+
+                points[adj1] = { x: midX + perpDx, y: midY + perpDy };
+                points[adj2] = { x: midX - perpDx, y: midY - perpDy };
+            }
+
+            const collinearChecks = [
+                [0, 1, 2], [1, 2, 3], [2, 3, 0], [3, 0, 1]
+            ];
+            for (let [i, j, k] of collinearChecks) {
+                if (arePointsCollinear(points[i], points[j], points[k])) {
+                    points = originalPoints;
+                    return;
+                }
+            }
+
+            if (shapeMode === 'rectangle' && !isValidRectangle()) {
+                points = originalPoints;
+            }
         }
 
-        function updateInfo() {
-            let ab = dist(points[0].x, points[0].y, points[1].x, points[1].y) / gridSize;
-            let bc = dist(points[1].x, points[1].y, points[2].x, points[2].y) / gridSize;
-            let cd = dist(points[2].x, points[2].y, points[3].x, points[3].y) / gridSize;
-            let da = dist(points[3].x, points[3].y, points[0].x, points[0].y) / gridSize;
+        function drawParallelogram() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
 
-            document.getElementById('abLen').textContent = ab.toFixed(1);
-            document.getElementById('cdLen').textContent = cd.toFixed(1);
-            document.getElementById('bcLen').textContent = bc.toFixed(1);
-            document.getElementById('daLen').textContent = da.toFixed(1);
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            ctx.lineTo(points[1].x, points[1].y);
+            ctx.lineTo(points[2].x, points[2].y);
+            ctx.lineTo(points[3].x, points[3].y);
+            ctx.closePath();
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(0, 0, 255, 0.1)';
+            ctx.fill();
 
-            let angles = calculateAngles();
-            document.getElementById('angleA').textContent = angles[0].toFixed(1);
-            document.getElementById('angleB').textContent = angles[1].toFixed(1);
-            document.getElementById('angleC').textContent = angles[2].toFixed(1);
-            document.getElementById('angleD').textContent = angles[3].toFixed(1);
+            const labels = ['A', 'B', 'C', 'D'];
+            points.forEach((point, index) => {
+                if (point.x < 0 || point.x > canvas.width || point.y < 0 || point.y > canvas.height) {
+                    return;
+                }
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
+                ctx.fillStyle = index === selectedPoint ? 'red' : 'blue';
+                ctx.fill();
+                ctx.fillStyle = 'black';
+                ctx.font = '10px Arial';
+                ctx.fillText(labels[index], point.x + 5, point.y - 5);
+            });
 
-            let isParallelogram = Math.abs(ab - cd) < 0.01 && Math.abs(bc - da) < 0.01;
-            let resultSpan = document.getElementById('result');
-            resultSpan.textContent = isParallelogram ? '是平行四邊形' : '不是平行四邊形';
-            resultSpan.className = isParallelogram ? 'result-bold' : '';
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            ctx.lineTo(points[2].x, points[2].y);
+            ctx.strokeStyle = 'green';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(points[1].x, points[1].y);
+            ctx.lineTo(points[3].x, points[3].y);
+            ctx.strokeStyle = 'purple';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+
+            const intersection = findIntersection();
+            if (intersection && intersection.x >= 0 && intersection.x <= canvas.width && intersection.y >= 0 && intersection.y <= canvas.height) {
+                ctx.beginPath();
+                ctx.arc(intersection.x, intersection.y, 3, 0, 2 * Math.PI);
+                ctx.fillStyle = 'orange';
+                ctx.fill();
+                ctx.fillStyle = 'black';
+                ctx.font = '10px Arial';
+                ctx.fillText('O', intersection.x + 5, intersection.y - 5);
+            }
+
+            updateLengths();
+            updateAngles();
         }
 
-        function toggleEdges() {
-            showEdges = !showEdges;
-            document.getElementById('edgesSection').style.display = showEdges ? 'block' : 'none';
-            document.getElementById('edgeButton').textContent = showEdges ? '隱藏邊長' : '顯示邊長';
+        function getMouseOrTouchPos(event) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = event.type.startsWith('touch') ? event.touches[0].clientX : event.clientX;
+            const clientY = event.type.startsWith('touch') ? event.touches[0].clientY : event.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
         }
 
-        function toggleAngles() {
-            showAngles = !showAngles;
-            document.getElementById('anglesSection').style.display = showAngles ? 'block' : 'none';
-            document.getElementById('angleButton').textContent = showAngles ? '隱藏角度' : '顯示角度';
-        }
+        canvas.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+            const mousePos = getMouseOrTouchPos(event);
+            points.forEach((point, index) => {
+                const dx = mousePos.x - point.x;
+                const dy = mousePos.y - point.y;
+                if (Math.sqrt(dx * dx + dy * dy) < 10) {
+                    selectedPoint = index;
+                }
+            });
+        });
+
+        canvas.addEventListener('mousemove', (event) => {
+            if (selectedPoint >= 0) {
+                event.preventDefault();
+                const mousePos = getMouseOrTouchPos(event);
+                updateParallelogram(selectedPoint, mousePos.x, mousePos.y);
+                drawParallelogram();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            selectedPoint = -1;
+        });
+
+        canvas.addEventListener('touchstart', (event) => {
+            event.preventDefault();
+            const touchPos = getMouseOrTouchPos(event);
+            points.forEach((point, index) => {
+                const dx = touchPos.x - point.x;
+                const dy = touchPos.y - point.y;
+                if (Math.sqrt(dx * dx + dy * dy) < 10) {
+                    selectedPoint = index;
+                }
+            });
+        });
+
+        canvas.addEventListener('touchmove', (event) => {
+            if (selectedPoint >= 0) {
+                event.preventDefault();
+                const touchPos = getMouseOrTouchPos(event);
+                updateParallelogram(selectedPoint, touchPos.x, touchPos.y);
+                drawParallelogram();
+            }
+        });
+
+        canvas.addEventListener('touchend', () => {
+            selectedPoint = -1;
+        });
+
+        document.getElementById('parallelogramBtn').addEventListener('click', setParallelogram);
+        document.getElementById('rectangleBtn').addEventListener('click', setRectangle);
+        document.getElementById('squareBtn').addEventListener('click', setSquare);
+        document.getElementById('rhombusBtn').addEventListener('click', setRhombus);
+
+        document.querySelectorAll('.edgeInput').forEach(input => {
+            input.addEventListener('input', () => {
+                input.value = input.value.toUpperCase();
+                updateLengths();
+            });
+        });
+
+        document.querySelectorAll('.angleInput').forEach(input => {
+            input.addEventListener('input', () => {
+                input.value = input.value.toUpperCase();
+                updateAngles();
+            });
+        });
+
+        drawParallelogram();
     </script>
 </body>
 </html>

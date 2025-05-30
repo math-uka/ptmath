@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平行四邊形判定實驗</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2vw;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 2vw;
+            max-width: 90vw;
+            flex-wrap: wrap;
+        }
+        canvas {
+            border: 2px solid #333;
+            background-color: transparent;
+            max-width: 100%;
+        }
+        .controls {
+            margin-top: 2vw;
+            text-align: center;
+        }
+        .info {
+            max-width: 40vw;
+            min-width: 300px;
+            background-color: white;
+            padding: 2vw;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 1rem;
+        }
+        #edgesSection, #anglesSection {
+            display: none; /* Initially hidden */
+        }
+        h1 {
+            color: #333;
+            font-size: 2rem;
+        }
+        button {
+            margin: 0.5vw;
+            padding: 1vw 2vw;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .result-bold {
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .info {
+                max-width: 80vw;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            button {
+                padding: 2vw 4vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>平行四邊形判定實驗</h1>
+    <div class="container">
+        <div class="info">
+            <p><strong>實驗目標：</strong>探究對邊相等的四邊形是否為平行四邊形。</p>
+            <div id="edgesSection">
+                <p><strong>邊長（單位格）：</strong></p>
+                <p>AB = <span id="abLen">0</span>, CD = <span id="cdLen">0</span></p>
+                <p>BC = <span id="bcLen">0</span>, DA = <span id="daLen">0</span></p>
+            </div>
+            <div id="anglesSection">
+                <p><strong>角度（度）：</strong></p>
+                <p>∠A = <span id="angleA">0</span>, ∠B = <span id="angleB">0</span>, ∠C = <span id="angleC">0</span>, ∠D = <span id="angleD">0</span></p>
+            </div>
+            <p><strong>判定結果：</strong> <span id="result">請拖動頂點進行實驗</span></p>
+        </div>
+        <div>
+            <div class="controls">
+                <button id="edgeButton">顯示邊長</button>
+                <button id="angleButton">顯示角度</button>
+            </div>
+            <div id="canvasContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const gridSize = 50;
+        let points = [
+            { x: 2 * gridSize, y: 2 * gridSize, label: 'A' },
+            { x: 6 * gridSize, y: 2 * gridSize, label: 'B' },
+            { x: 6 * gridSize, y: 6 * gridSize, label: 'C' },
+            { x: 2 * gridSize, y: 6 * gridSize, label: 'D' }
+        ];
+        let selectedPoint = null;
+        let showEdges = false;
+        let showAngles = false;
+
+        function setup() {
+            let canvas = createCanvas(600, 600);
+            canvas.parent('canvasContainer');
+            pixelDensity(2); // Improve rendering on high-DPI screens
+            updateInfo();
+
+            // Add event listeners for buttons
+            const edgeButton = document.getElementById('edgeButton');
+            const angleButton = document.getElementById('angleButton');
+
+            // Click events for desktop
+            edgeButton.addEventListener('click', toggleEdges);
+            angleButton.addEventListener('click', toggleAngles);
+
+            // Touch events for mobile
+            edgeButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                toggleEdges();
+            });
+            angleButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                toggleAngles();
+            });
+        }
+
+        function draw() {
+            clear();
+            background(0, 0, 0, 0);
+            drawGrid();
+
+            stroke(0);
+            strokeWeight(2);
+            fill(200, 200, 255, 100);
+            beginShape();
+            for (let p of points) {
+                vertex(p.x, p.y);
+            }
+            endShape(CLOSE);
+
+            for (let i = 0; i < points.length; i++) {
+                let p = points[i];
+                fill(255, 0, 0);
+                ellipse(p.x, p.y, 10, 10);
+                fill(0);
+                textAlign(CENTER);
+                text(p.label, p.x, p.y - 15);
+            }
+        }
+
+        function drawGrid() {
+            stroke(0, 0, 0, 100);
+            strokeWeight(1);
+            for (let x = 0; x <= width; x += gridSize) {
+                line(x, 0, x, height);
+            }
+            for (let y = 0; y <= height; y += gridSize) {
+                line(0, y, width, y);
+            }
+        }
+
+        function isCollinear(p1, p2, p3) {
+            // Calculate area of triangle using cross product
+            let area = 0.5 * Math.abs(
+                p1.x * (p2.y - p3.y) +
+                p2.x * (p3.y - p1.y) +
+                p3.x * (p1.y - p2.y)
+            );
+            return area < 0.01; // Small threshold for floating-point precision
+        }
+
+        function checkCollinearity(newPoints) {
+            // Check all combinations of three points
+            for (let i = 0; i < newPoints.length; i++) {
+                for (let j = i + 1; j < newPoints.length; j++) {
+                    for (let k = j + 1; k < newPoints.length; k++) {
+                        if (isCollinear(newPoints[i], newPoints[j], newPoints[k])) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        function orientation(p, q, r) {
+            // Compute the orientation of triplet (p, q, r)
+            // Returns:
+            // 0 --> Collinear
+            // 1 --> Clockwise
+            // -1 --> Counterclockwise
+            let val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+            if (Math.abs(val) < 0.01) return 0; // Collinear
+            return val > 0 ? 1 : -1;
+        }
+
+        function doSegmentsIntersect(p1, q1, p2, q2) {
+            // Check if line segments p1q1 and p2q2 intersect
+            let o1 = orientation(p1, q1, p2);
+            let o2 = orientation(p1, q1, q2);
+            let o3 = orientation(p2, q2, p1);
+            let o4 = orientation(p2, q2, q1);
+
+            // General case: segments intersect if orientations differ
+            if (o1 !== o2 && o3 !== o4) {
+                return true;
+            }
+
+            // Special cases: collinear segments
+            // Check if points lie on the segment (not implemented here as collinearity is already checked)
+            return false;
+        }
+
+        function checkSelfIntersection(newPoints) {
+            // Check non-adjacent edges for intersections
+            // Edges: AB (0-1), BC (1-2), CD (2-3), DA (3-0)
+            // Non-adjacent pairs: AB-CD, BC-DA
+            let A = newPoints[0], B = newPoints[1], C = newPoints[2], D = newPoints[3];
+
+            // Check AB (0-1) with CD (2-3)
+            if (doSegmentsIntersect(A, B, C, D)) {
+                return true;
+            }
+
+            // Check BC (1-2) with DA (3-0)
+            if (doSegmentsIntersect(B, C, D, A)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function selectPoint(x, y) {
+            for (let p of points) {
+                if (dist(x, y, p.x, p.y) < 20) { // Larger hitbox for mobile
+                    selectedPoint = p;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function mousePressed() {
+            selectPoint(mouseX, mouseY);
+        }
+
+        function touchStarted() {
+            if (selectPoint(touches[0]?.x || 0, touches[0]?.y || 0)) {
+                return false; // Prevent default touch behavior
+            }
+        }
+
+        function movePoint(x, y) {
+            if (selectedPoint) {
+                let newX = Math.round(x / gridSize) * gridSize;
+                let newY = Math.round(y / gridSize) * gridSize;
+                newX = constrain(newX, 0, width);
+                newY = constrain(newY, 0, height);
+
+                // Create a temporary points array to test collinearity and self-intersection
+                let tempPoints = points.map(p => ({ ...p }));
+                let selectedIndex = points.indexOf(selectedPoint);
+                tempPoints[selectedIndex].x = newX;
+                tempPoints[selectedIndex].y = newY;
+
+                // Only update if the new position is non-collinear and non-self-intersecting
+                if (!checkCollinearity(tempPoints) && !checkSelfIntersection(tempPoints)) {
+                    selectedPoint.x = newX;
+                    selectedPoint.y = newY;
+                    updateInfo();
+                }
+            }
+        }
+
+        function mouseDragged() {
+            movePoint(mouseX, mouseY);
+        }
+
+        function touchMoved() {
+            movePoint(touches[0]?.x || 0, touches[0]?.y || 0);
+            return false;
+        }
+
+        function mouseReleased() {
+            selectedPoint = null;
+        }
+
+        function touchEnded() {
+            selectedPoint = null;
+            return false;
+        }
+
+        function calculateAngles() {
+            let angles = [];
+            let vectors = [
+                { x: points[1].x - points[0].x, y: points[1].y - points[0].y },
+                { x: points[3].x - points[0].x, y: points[3].y - points[0].y },
+                { x: points[0].x - points[1].x, y: points[0].y - points[1].y },
+                { x: points[2].x - points[1].x, y: points[2].y - points[1].y },
+                { x: points[1].x - points[2].x, y: points[1].y - points[2].y },
+                { x: points[3].x - points[2].x, y: points[3].y - points[2].y },
+                { x: points[2].x - points[3].x, y: points[2].y - points[3].y },
+                { x: points[0].x - points[3].x, y: points[0].y - points[3].y }
+            ];
+            for (let i = 0; i < 4; i++) {
+                let v1 = vectors[i * 2];
+                let v2 = vectors[i * 2 + 1];
+                let dot = v1.x * v2.x + v1.y * v2.y;
+                let mag1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
+                let mag2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+                let cosTheta = dot / (mag1 * mag2);
+                cosTheta = Math.max(-1, Math.min(1, cosTheta));
+                let angle = Math.acos(cosTheta) * 180 / Math.PI;
+                angles.push(angle);
+            }
+            return angles;
+        }
+
+        function updateInfo() {
+            let ab = dist(points[0].x, points[0].y, points[1].x, points[1].y) / gridSize;
+            let bc = dist(points[1].x, points[1].y, points[2].x, points[2].y) / gridSize;
+            let cd = dist(points[2].x, points[2].y, points[3].x, points[3].y) / gridSize;
+            let da = dist(points[3].x, points[3].y, points[0].x, points[0].y) / gridSize;
+
+            document.getElementById('abLen').textContent = ab.toFixed(1);
+            document.getElementById('cdLen').textContent = cd.toFixed(1);
+            document.getElementById('bcLen').textContent = bc.toFixed(1);
+            document.getElementById('daLen').textContent = da.toFixed(1);
+
+            let angles = calculateAngles();
+            document.getElementById('angleA').textContent = angles[0].toFixed(1);
+            document.getElementById('angleB').textContent = angles[1].toFixed(1);
+            document.getElementById('angleC').textContent = angles[2].toFixed(1);
+            document.getElementById('angleD').textContent = angles[3].toFixed(1);
+
+            let isParallelogram = Math.abs(ab - cd) < 0.01 && Math.abs(bc - da) < 0.01;
+            let resultSpan = document.getElementById('result');
+            resultSpan.textContent = isParallelogram ? '是平行四邊形' : '不是平行四邊形';
+            resultSpan.className = isParallelogram ? 'result-bold' : '';
+        }
+
+        function toggleEdges() {
+            showEdges = !showEdges;
+            document.getElementById('edgesSection').style.display = showEdges ? 'block' : 'none';
+            document.getElementById('edgeButton').textContent = showEdges ? '隱藏邊長' : '顯示邊長';
+        }
+
+        function toggleAngles() {
+            showAngles = !showAngles;
+            document.getElementById('anglesSection').style.display = showAngles ? 'block' : 'none';
+            document.getElementById('angleButton').textContent = showAngles ? '隱藏角度' : '顯示角度';
+        }
+    </script>
+</body>
+</html>
