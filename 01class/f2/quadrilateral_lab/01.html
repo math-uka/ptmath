@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>四邊形探究器</title>
     <style>
         :root {
@@ -18,21 +18,26 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            touch-action: none; /* Prevent default touch behaviors */
         }
 
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
             min-height: 100vh;
-            padding: 2vw;
             line-height: 1.5;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            width: 100%;
+            padding: 2vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
@@ -159,7 +164,6 @@
             padding: 1rem 0;
             background-color: #e9ecef;
             font-size: clamp(0.7rem, 2vw, 0.8rem);
-            margin-top: auto;
             border-top: 1px solid #ddd;
         }
 
@@ -190,59 +194,61 @@
     </style>
 </head>
 <body>
-    <h1>四邊形探究器</h1>
-    <div class="button-container" role="toolbar" aria-label="形狀選擇按鈕">
-        <button id="quadrilateralBtn" aria-label="選擇四邊形">四邊形</button>
-        <button id="parallelogramBtn" class="active" aria-label="選擇平行四邊形">平行四邊形</button>
-        <button id="rectangleBtn" aria-label="選擇矩形">矩形</button>
-        <button id="rhombusBtn" aria-label="選擇菱形">菱形</button>
-        <button id="squareBtn" aria-label="選擇正方形">正方形</button>
-        <button id="clearBtn" aria-label="清除輸入">清除輸入</button>
-    </div>
-    <div class="container">
-        <div class="input-table-container">
-            <table class="input-table" aria-label="邊長與角度輸入表格">
-                <thead>
-                    <tr>
-                        <th colspan="2">邊長</th>
-                        <th colspan="2">角度</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
-                        <td class="lengthOutput" aria-live="polite">0</td>
-                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
-                        <td class="angleOutput" aria-live="polite">0</td>
-                    </tr>
-                    <tr>
-                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
-                        <td class="lengthOutput" aria-live="polite">0</td>
-                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
-                        <td class="angleOutput" aria-live="polite">0</td>
-                    </tr>
-                    <tr>
-                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
-                        <td class="lengthOutput" aria-live="polite">0</td>
-                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
-                        <td class="angleOutput" aria-live="polite">0</td>
-                    </tr>
-                    <tr>
-                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
-                        <td class="lengthOutput" aria-live="polite">0</td>
-                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
-                        <td class="angleOutput" aria-live="polite">0</td>
-                    </tr>
-                    <tr>
-                        <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
-                        <td class="lengthOutput" aria-live="polite">0</td>
-                        <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
-                        <td class="angleOutput" aria-live="polite">0</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="scroll-container">
+        <h1>四邊形探究器</h1>
+        <div class="button-container" role="toolbar" aria-label="形狀選擇按鈕">
+            <button id="quadrilateralBtn" aria-label="選擇四邊形">四邊形</button>
+            <button id="parallelogramBtn" class="active" aria-label="選擇平行四邊形">平行四邊形</button>
+            <button id="rectangleBtn" aria-label="選擇矩形">矩形</button>
+            <button id="rhombusBtn" aria-label="選擇菱形">菱形</button>
+            <button id="squareBtn" aria-label="選擇正方形">正方形</button>
+            <button id="clearBtn" aria-label="清除輸入">清除輸入</button>
         </div>
-        <canvas id="canvas" width="400" height="300" aria-label="四邊形畫布"></canvas>
+        <div class="container">
+            <div class="input-table-container">
+                <table class="input-table" aria-label="邊長與角度輸入表格">
+                    <thead>
+                        <tr>
+                            <th colspan="2">邊長</th>
+                            <th colspan="2">角度</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                            <td class="lengthOutput" aria-live="polite">0</td>
+                            <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                            <td class="angleOutput" aria-live="polite">0</td>
+                        </tr>
+                        <tr>
+                            <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                            <td class="lengthOutput" aria-live="polite">0</td>
+                            <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                            <td class="angleOutput" aria-live="polite">0</td>
+                        </tr>
+                        <tr>
+                            <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                            <td class="lengthOutput" aria-live="polite">0</td>
+                            <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                            <td class="angleOutput" aria-live="polite">0</td>
+                        </tr>
+                        <tr>
+                            <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                            <td class="lengthOutput" aria-live="polite">0</td>
+                            <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                            <td class="angleOutput" aria-live="polite">0</td>
+                        </tr>
+                        <tr>
+                            <td><input class="edgeInput" placeholder="如 AB" aria-label="邊長輸入"></td>
+                            <td class="lengthOutput" aria-live="polite">0</td>
+                            <td><div class="angle-cell"><span class="angle-symbol">∠</span><input class="angleInput" placeholder="如 ABC" aria-label="角度輸入"></div></td>
+                            <td class="angleOutput" aria-live="polite">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <canvas id="canvas" width="400" height="300" aria-label="四邊形畫布"></canvas>
+        </div>
     </div>
     <footer>
         <p>© 2025 ukawai</p>
@@ -805,9 +811,50 @@
         document.getElementById('rhombusBtn').addEventListener('click', setRhombus);
         document.getElementById('clearBtn').addEventListener('click', clearInputs);
 
+        // Modified input event listener to handle "ALL", "OPP", "DIA", and "ANG"
         document.querySelectorAll('.edgeInput, .angleInput').forEach(input => {
             input.addEventListener('input', () => {
                 input.value = input.value.toUpperCase();
+                const inputValue = input.value.trim();
+                const edgeInputs = document.querySelectorAll('.edgeInput');
+                const angleInputs = document.querySelectorAll('.angleInput');
+
+                if (inputValue === 'ALL') {
+                    const edgeValues = ['AD', 'DC', 'BC', 'AC', 'DB'];
+                    const angleValues = ['AOB', 'ABC', 'BCD', 'DAB'];
+                    edgeInputs.forEach((edgeInput, index) => {
+                        if (index < edgeValues.length) {
+                            edgeInput.value = edgeValues[index];
+                        }
+                    });
+                    angleInputs.forEach((angleInput, index) => {
+                        if (index < angleValues.length) {
+                            angleInput.value = angleValues[index];
+                        }
+                    });
+                } else if (inputValue === 'OPP') {
+                    const edgeValues = ['AB', 'DC', 'BC', 'AD'];
+                    edgeInputs.forEach((edgeInput, index) => {
+                        if (index < edgeValues.length) {
+                            edgeInput.value = edgeValues[index];
+                        }
+                    });
+                } else if (inputValue === 'DIA') {
+                    const edgeValues = ['AC', 'BD', 'OB', 'OD'];
+                    edgeInputs.forEach((edgeInput, index) => {
+                        if (index < edgeValues.length) {
+                            edgeInput.value = edgeValues[index];
+                        }
+                    });
+                } else if (inputValue === 'ANG') {
+                    const angleValues = ['ADC', 'DCB', 'CBA', 'BAD', 'AOD'];
+                    angleInputs.forEach((angleInput, index) => {
+                        if (index < angleValues.length) {
+                            angleInput.value = angleValues[index];
+                        }
+                    });
+                }
+
                 updateLengthsAndAngles();
             });
         });
