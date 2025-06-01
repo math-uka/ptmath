@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Object Pronouns Quiz 1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .mode-selection, .question-container, .remaining-questions, .wrong-questions, .password-input {
+      margin-bottom: 20px;
+    }
+    .mode-selection button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      border: 1px solid #999;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+    }
+    .mode-selection button:hover {
+      background-color: #d0d0d0;
+    }
+    .custom-mode {
+      margin-top: 20px;
+    }
+    .custom-mode input[type="range"] {
+      width: 200px;
+    }
+    .custom-mode label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .question-container {
+      font-size: 1.2em;
+    }
+    .question-image {
+      margin-top: 10px;
+      max-width: 300px;
+      width: 100%;
+    }
+    .remaining-questions {
+      font-size: 1em;
+      color: #555;
+    }
+    .options-table {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    .options-table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      vertical-align: middle;
+    }
+    .option-button {
+      width: 40px;
+      height: 40px;
+      font-size: 1em;
+      font-weight: bold;
+      background-color: #f0f0f0;
+      border: 1px solid #999;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .option-button:hover:not(:disabled) {
+      background-color: #d0d0d0;
+    }
+    .option-button:disabled {
+      background-color: #e0e0e0;
+      cursor: not-allowed;
+    }
+    .option-content {
+      padding-left: 10px;
+      min-width: 150px;
+      text-align: left;
+    }
+    .feedback {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .password-input input[type="number"] {
+      padding: 5px;
+      width: 100px;
+      margin-right: 10px;
+    }
+    .password-input button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .password-input button:disabled {
+      cursor: not-allowed;
+      background-color: #e0e0e0;
+    }
+    .password-result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .wrong-questions {
+      text-align: left;
+    }
+    .wrong-question {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Object Pronouns Practice Quiz</h1>
+  <div class="mode-selection" id="mode-selection">
+    <p>Please select a game mode:</p>
+    <button onclick="startStandardMode()">Standard Mode</button>
+    <button onclick="showCustomMode()">Custom Mode</button>
+    <div class="custom-mode" id="custom-mode" style="display: none;">
+      <label>Choose number of questions: <span id="question-count">1</span></label>
+      <input type="range" id="question-slider" min="1" value="1">
+      <button onclick="startCustomMode()">Start</button>
+    </div>
+  </div>
+  <div class="question-container" id="question" style="display: none;"></div>
+  <div id="question-image-container" style="display: none;"></div>
+  <div class="remaining-questions" id="remaining-questions" style="display: none;"></div>
+  <table class="options-table" id="options" style="display: none;">
+    <tr>
+      <td><button class="option-button" id="button-A">A</button></td>
+      <td class="option-content" id="content-A"></td>
+    </tr>
+    <tr>
+      <td><button class="option-button" id="button-B">B</button></td>
+      <td class="option-content" id="content-B"></td>
+    </tr>
+    <tr>
+      <td><button class="option-button" id="button-C">C</button></td>
+      <td class="option-content" id="content-C"></td>
+    </tr>
+    <tr>
+      <td><button class="option-button" id="button-D">D</button></td>
+      <td class="option-content" id="content-D"></td>
+    </tr>
+  </table>
+  <div class="feedback" id="feedback"></div>
+  <div class="password-input" id="password-input" style="display: none;">
+    <p>Congratulations! You got all correct or missed only one. Enter a number from 1 to 50 to get a password:</p>
+    <input type="number" id="password-number" min="1" max="50" placeholder="Enter 1-50">
+    <button id="password-submit">Submit</button>
+    <div class="password-result" id="password-result"></div>
+  </div>
+  <div class="wrong-questions" id="wrong-questions"></div>
+
+  <footer>
+    <p>© 2025 ukawai</p>
+  </footer>
+
+  <script>
+    // Number of questions in standard mode
+    const STANDARD_MODE_QUESTION_COUNT = 10;
+
+    let questionBank = [];
+    let passwordBank = {};
+    let availableQuestions = [];
+    let wrongQuestions = new Set();
+    let wrongCount = 0;
+    let quizNumber = 1;
+    let totalQuestions = 0;
+    let currentQuestionCount = 0;
+    let isStandardMode = false;
+    let passwordRetrieved = false;
+
+    // Load question bank and password table
+    async function loadData() {
+      try {
+        const questionResponse = await fetch('mcq.json');
+        if (!questionResponse.ok) {
+          throw new Error(`Failed to load question bank, status: ${questionResponse.status}`);
+        }
+        questionBank = await questionResponse.json();
+        console.log('Question bank loaded successfully, number of questions:', questionBank.length);
+
+        try {
+          const passwordResponse = await fetch('pass.json');
+          if (passwordResponse.ok) {
+            passwordBank = await passwordResponse.json();
+            console.log('Password table loaded successfully');
+          } else {
+            console.warn('No password table found, enabling no-password mode');
+            document.getElementById('password-input').style.display = 'none';
+          }
+        } catch (passwordError) {
+          console.warn('No password table found, enabling no-password mode:', passwordError);
+          document.getElementById('password-input').style.display = 'none';
+        }
+
+        // Initialize slider
+        document.getElementById('question-slider').max = questionBank.length;
+        document.getElementById('question-count').textContent = 1;
+      } catch (error) {
+        console.error('Failed to load data:', error);
+        document.getElementById('question').innerHTML = `Failed to load question bank: ${error.message}. Please check if mcq.json exists and is correctly formatted.`;
+        document.getElementById('question').style.display = 'block';
+        document.getElementById('mode-selection').style.display = 'none';
+      }
+    }
+
+    // Shuffle array (Fisher-Yates shuffle)
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Start standard mode
+    function startStandardMode() {
+      isStandardMode = true;
+      wrongCount = 0;
+      passwordRetrieved = false;
+      totalQuestions = Math.min(STANDARD_MODE_QUESTION_COUNT, questionBank.length);
+      availableQuestions = [...questionBank];
+      currentQuestionCount = 0;
+      document.getElementById('mode-selection').style.display = 'none';
+      document.getElementById('question').style.display = 'block';
+      document.getElementById('remaining-questions').style.display = 'block';
+      document.getElementById('options').style.display = 'table';
+      displayQuestion();
+    }
+
+    // Show custom mode slider
+    function showCustomMode() {
+      document.getElementById('custom-mode').style.display = 'block';
+      const slider = document.getElementById('question-slider');
+      slider.value = 1;
+      document.getElementById('question-count').textContent = slider.value;
+      slider.oninput = () => {
+        document.getElementById('question-count').textContent = slider.value;
+      };
+    }
+
+    // Start custom mode
+    function startCustomMode() {
+      isStandardMode = false;
+      wrongCount = 0;
+      passwordRetrieved = false;
+      totalQuestions = parseInt(document.getElementById('question-slider').value);
+      availableQuestions = [...questionBank];
+      currentQuestionCount = 0;
+      document.getElementById('mode-selection').style.display = 'none';
+      document.getElementById('question').style.display = 'block';
+      document.getElementById('remaining-questions').style.display = 'block';
+      document.getElementById('options').style.display = 'table';
+      displayQuestion();
+    }
+
+    // Enable/disable buttons
+    function toggleButtons(disabled) {
+      const buttons = document.querySelectorAll('.option-button');
+      buttons.forEach(button => {
+        button.disabled = disabled;
+      });
+    }
+
+    // Display question and options
+    function displayQuestion() {
+      if (currentQuestionCount >= totalQuestions || availableQuestions.length === 0) {
+        endGame();
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+      const question = availableQuestions[randomIndex];
+      const questionIndex = questionBank.indexOf(question);
+      document.getElementById('question').innerHTML = question.question;
+
+      // Handle image
+      const imageContainer = document.getElementById('question-image-container');
+      if (question.image) {
+        imageContainer.innerHTML = `<img src="${question.image}" alt="Question Image" class="question-image">`;
+        imageContainer.style.display = 'block';
+      } else {
+        imageContainer.innerHTML = '';
+        imageContainer.style.display = 'none';
+      }
+
+      // Update remaining questions
+      const remaining = totalQuestions - currentQuestionCount;
+      document.getElementById('remaining-questions').innerHTML = `Questions remaining: ${remaining}`;
+
+      const shuffledOptions = shuffleArray([...question.options]);
+      const correctAnswerIndex = shuffledOptions.indexOf(question.answer);
+      const correctAnswerLabel = String.fromCharCode(65 + correctAnswerIndex);
+
+      const labels = ['A', 'B', 'C', 'D'];
+      labels.forEach((label, index) => {
+        document.getElementById(`content-${label}`).innerHTML = `${shuffledOptions[index]}`;
+        document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex);
+      });
+
+      availableQuestions.splice(randomIndex, 1);
+      currentQuestionCount++;
+
+      document.getElementById('feedback').innerHTML = '';
+      toggleButtons(false);
+    }
+
+    // Check answer
+    function checkAnswer(selected, correctAnswerLabel, questionIndex) {
+      const question = questionBank[questionIndex];
+      const feedback = document.getElementById('feedback');
+      if (selected === correctAnswerLabel) {
+        feedback.innerHTML = 'Correct! Loading next question...';
+        feedback.style.color = 'green';
+        toggleButtons(true);
+        setTimeout(() => {
+          quizNumber++;
+          document.title = `Object Pronouns Quiz ${quizNumber}`;
+          displayQuestion();
+        }, 1000);
+      } else {
+        feedback.innerHTML = `Incorrect! The correct answer is ${correctAnswerLabel}. Explanation: ${question.explanation}`;
+        feedback.style.color = 'red';
+        wrongQuestions.add(questionIndex);
+        wrongCount++;
+      }
+    }
+
+    // Handle password submission
+    function handlePasswordSubmit() {
+      if (passwordRetrieved) return;
+
+      const numberInput = document.getElementById('password-number');
+      const number = numberInput.value;
+      const resultDiv = document.getElementById('password-result');
+
+      if (!number || number < 1 || number > 50) {
+        resultDiv.innerHTML = 'Please enter a number between 1 and 50!';
+        resultDiv.style.color = 'red';
+        return;
+      }
+
+      const password = passwordBank[number];
+      if (password) {
+        resultDiv.innerHTML = `Your password is: ${password}`;
+        resultDiv.style.color = 'green';
+        passwordRetrieved = true;
+        numberInput.disabled = true;
+        document.getElementById('password-submit').disabled = true;
+      } else {
+        resultDiv.innerHTML = 'Invalid number!';
+        resultDiv.style.color = 'red';
+      }
+    }
+
+    // End game
+    function endGame() {
+      document.getElementById('question').innerHTML = 'Game Over! All questions completed.';
+      document.getElementById('question-image-container').style.display = 'none';
+      document.getElementById('remaining-questions').style.display = 'none';
+      document.getElementById('options').style.display = 'none';
+      document.getElementById('feedback').innerHTML = '';
+
+      if (isStandardMode && wrongCount <= 1 && Object.keys(passwordBank).length > 0) {
+        document.getElementById('password-input').style.display = 'block';
+        document.getElementById('password-submit').onclick = handlePasswordSubmit;
+      }
+
+      const wrongQuestionsContainer = document.getElementById('wrong-questions');
+      if (wrongQuestions.size === 0) {
+        wrongQuestionsContainer.innerHTML = '<p>Congratulations! You got all questions correct!</p>';
+      } else {
+        wrongQuestionsContainer.innerHTML = '<h2>Incorrect Questions</h2>';
+        wrongQuestions.forEach(index => {
+          const question = questionBank[index];
+          const div = document.createElement('div');
+          div.className = 'wrong-question';
+          let imageHtml = '';
+          if (question.image) {
+            imageHtml = `<img src="${question.image}" alt="Wrong Question Image" style="max-width: 200px; width: 100%; margin-top: 10px;">`;
+          }
+          div.innerHTML = `
+            <p><strong>Question:</strong> ${question.question}</p>
+            ${imageHtml}
+            <p><strong>Correct Answer:</strong> ${question.answer}</p>
+            <p><strong>Explanation:</strong> ${question.explanation}</p>
+          `;
+          wrongQuestionsContainer.appendChild(div);
+        });
+      }
+    }
+
+    // Initialize: Load question bank and password table
+    loadData();
+  </script>
+</body>
+</html>
