@@ -130,28 +130,6 @@
         let currentProblem = null;
         let hints = [];
 
-        function gcd(a, b) {
-            a = Math.abs(a);
-            b = Math.abs(b);
-            while (b) {
-                const t = b;
-                b = a % b;
-                a = t;
-            }
-            return a;
-        }
-
-        function toFraction(value) {
-            if (Number.isInteger(value)) {
-                return value;
-            }
-            const precision = 1e9;
-            const denominator = Math.round(precision);
-            const numerator = Math.round(value * precision);
-            const divisor = gcd(numerator, denominator);
-            return { num: numerator / divisor, denom: denominator / divisor };
-        }
-
         function generateRandomFunction() {
             const isFraction = Math.random() < 0.2;
             let k, b;
@@ -215,11 +193,9 @@
         }
 
         function formatFunction(k, b) {
-            let kFrac = typeof k === 'object' ? k : toFraction(k);
-            let bFrac = typeof b === 'object' ? b : toFraction(b);
-            let result = `y = ${formatNumber(kFrac)}x`;
-            if (bFrac !== 0) {
-                result += ` ${bFrac > 0 || (typeof bFrac === 'object' && bFrac.num > 0) ? '+' : ''} ${formatNumber(bFrac)}`;
+            let result = `y = ${formatNumber(k)}x`;
+            if (b !== 0) {
+                result += ` ${b > 0 ? '+' : ''} ${formatNumber(b)}`;
             }
             return result;
         }
@@ -266,9 +242,7 @@
                 const eq2 = `${y2} = ${x2}k + b`;
                 hints.push(`提示 2：將方程 \\(${eq1}\\) 減去 \\(${eq2}\\)，得 \\(${y1} - ${y2} = ${x1}k + b - (${x2}k + b)\\)。`);
             } else if (hintLevel === 3) {
-                const kFrac = typeof k === 'object' ? k : toFraction(k);
-                const bFrac = typeof b === 'object' ? b : toFraction(b);
-                hints.push(`提示 3：斜率 \\(k = ${formatNumber(kFrac)}\\)，截距 \\(b = ${formatNumber(bFrac)}\\)。`);
+                hints.push(`提示 3：斜率 \\(k = ${formatNumber(k)}\\)，截距 \\(b = ${formatNumber(b)}\\)。`);
             } else if (hintLevel >= 4) {
                 hintDiv.style.display = 'none';
                 showAnswer();

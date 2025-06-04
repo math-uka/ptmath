@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>因式分解練習網</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        .math-expression {
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 1rem;
+            margin: 10px;
+            width: 80%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px;
+            font-size: 1rem;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-width: 44px;
+            min-height: 44px;
+            transition: background-color 0.2s;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+        #feedback {
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+            font-size: 1rem;
+        }
+        .correct {
+            color: green;
+            animation: fadeIn 0.5s ease-in;
+            background-color: rgba(0, 255, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .incorrect {
+            color: red;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .input-container {
+            width: 90%;
+            max-width: 400px;
+        }
+        .symbol-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            width: 90%;
+            max-width: 400px;
+            flex-wrap: wrap;
+        }
+        .instruction {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+            width: 90%;
+            max-width: 200px;
+        }
+        .keypad button {
+            padding: 15px;
+            font-size: 1.2rem;
+        }
+        .keypad .bottom-row {
+            grid-column: 1 / 4;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        .keypad .bottom-row button {
+            flex: 1;
+            max-width: 60px;
+        }
+        .keypad .clear-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+        }
+        .keypad .clear-button:active {
+            background-color: #cc0000;
+        }
+        .keypad .ok-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+        .keypad .ok-button:active {
+            background-color: #1e7e34;
+        }
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+            .math-expression {
+                font-size: 1rem;
+            }
+            input[type="text"] {
+                font-size: 0.9rem;
+                padding: 6px;
+            }
+            button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            .symbol-buttons button {
+                padding: 10px;
+                min-width: 40px;
+            }
+            .keypad {
+                grid-template-columns: repeat(3, 50px);
+            }
+            .keypad button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            .keypad .bottom-row button {
+                max-width: 50px;
+            }
+            .instruction {
+                font-size: 0.8rem;
+            }
+            #feedback {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>因式分解練習</h1>
+    <div id="problem" class="math-expression"></div>
+    <div class="instruction">使用下面的按鈕輸入括號、+、-、x、²、數字，或按清除重置輸入，按確定提交答案。</div>
+    <div class="input-container">
+        <input type="text" id="userAnswer" inputmode="text" placeholder="輸入你的答案，例如 5(16x²+5)">
+    </div>
+    <div class="symbol-buttons">
+        <button onclick="appendLeftParen()">(</button>
+        <button onclick="appendRightParen()">)</button>
+        <button onclick="appendPlus()">+</button>
+        <button onclick="appendMinus()">-</button>
+        <button onclick="appendX()">x</button>
+        <button onclick="appendSuperscript()">²</button>
+    </div>
+    <div class="keypad">
+        <button onclick="appendDigit('1')">1</button>
+        <button onclick="appendDigit('2')">2</button>
+        <button onclick="appendDigit('3')">3</button>
+        <button onclick="appendDigit('4')">4</button>
+        <button onclick="appendDigit('5')">5</button>
+        <button onclick="appendDigit('6')">6</button>
+        <button onclick="appendDigit('7')">7</button>
+        <button onclick="appendDigit('8')">8</button>
+        <button onclick="appendDigit('9')">9</button>
+        <div class="bottom-row">
+            <button onclick="appendDigit('0')">0</button>
+            <button onclick="clearInput()" class="clear-button">C</button>
+            <button onclick="checkAnswer()" class="ok-button">確定</button>
+        </div>
+    </div>
+    <div class="action-buttons">
+        <button onclick="checkAnswer()">提交答案</button>
+        <button id="hintButton" onclick="showHint()">提示</button>
+        <button onclick="generateProblem()">下一題</button>
+    </div>
+    <div id="feedback"></div>
+
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function gcdArray(numbers) {
+            return numbers.reduce((a, b) => gcd(a, b));
+        }
+
+        function areCoprime(numbers) {
+            for (let i = 0; i < numbers.length; i++) {
+                for (let j = i + 1; j < numbers.length; j++) {
+                    if (gcd(numbers[i], numbers[j]) !== 1) return false;
+                }
+            }
+            return true;
+        }
+
+        let currentQuestion;
+        let hintCount = 0;
+        let hintText = '';
+
+        function generateQuestion() {
+            const numbers = [2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20];
+            let a, b, c;
+            do {
+                [a, b, c] = numbers.sort(() => Math.random() - 0.5).slice(0, 3);
+            } while (!areCoprime([a, b, c]));
+            
+            const d = Math.floor(Math.random() * 7) + 2;
+            const forms = [
+                () => {
+                    const signB = Math.random() > 0.5 ? '+' : '-';
+                    const signC = Math.random() > 0.5 ? '+' : '-';
+                    const coeffs = [d * a, d * b, d * c];
+                    const common = gcdArray([a, b, c]) * d;
+                    const expr = `${d * a}x^2 ${signB} ${d * b}x ${signC} ${d * c}`;
+                    const ans = `${common}(${a / gcdArray([a, b, c])}x^2 ${signB} ${Math.abs(b / gcdArray([a, b, c]))}x ${signC} ${Math.abs(c / gcdArray([a, b, c]))})`;
+                    return { 
+                        expression: expr, 
+                        answer: ans, 
+                        commonFactor: common 
+                    };
+                },
+                () => {
+                    const signB = Math.random() > 0.5 ? '+' : '-';
+                    const coeffs = [d * a, d * b];
+                    const common = gcdArray([a, b]) * d;
+                    const xFactor = 'x';
+                    const expr = `${d * a}x^2 ${signB} ${d * b}x`;
+                    const ans = `${common}${xFactor}(${a / gcdArray([a, b])}x ${signB} ${Math.abs(b / gcdArray([a, b]))})`;
+                    return { 
+                        expression: expr, 
+                        answer: ans, 
+                        commonFactor: `${common}${xFactor}`
+                    };
+                },
+                () => {
+                    const signC = Math.random() > 0.5 ? '+' : '-';
+                    const coeffs = [d * a, d * c];
+                    const common = gcdArray([a, c]) * d;
+                    const expr = `${d * a}x^2 ${signC} ${d * c}`;
+                    const ans = `${common}(${a / gcdArray([a, c])}x^2 ${signC} ${Math.abs(c / gcdArray([a, b, c]))})`;
+                    return { 
+                        expression: expr, 
+                        answer: ans, 
+                        commonFactor: common
+                    };
+                }
+            ];
+            const form = forms[Math.floor(Math.random() * forms.length)]();
+            if (!form.expression || !form.answer || !form.commonFactor) {
+                return generateQuestion();
+            }
+            return form;
+        }
+
+        function generateProblem() {
+            currentQuestion = generateQuestion();
+            const problemElement = document.getElementById('problem');
+            if (currentQuestion.expression) {
+                problemElement.textContent = `\\( ${currentQuestion.expression} \\)`;
+            } else {
+                problemElement.textContent = '';
+                console.error('Invalid expression generated:', currentQuestion);
+                generateProblem();
+                return;
+            }
+            document.getElementById('userAnswer').value = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('feedback').className = '';
+            hintCount = 0;
+            hintText = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('hintButton').disabled = false;
+            MathJax.typeset();
+        }
+
+        function appendLeftParen() {
+            let input = document.getElementById('userAnswer');
+            input.value += '(';
+            input.focus();
+        }
+
+        function appendRightParen() {
+            let input = document.getElementById('userAnswer');
+            input.value += ')';
+            input.focus();
+        }
+
+        function appendPlus() {
+            let input = document.getElementById('userAnswer');
+            input.value += '+';
+            input.focus();
+        }
+
+        function appendMinus() {
+            let input = document.getElementById('userAnswer');
+            input.value += '-';
+            input.focus();
+        }
+
+        function appendX() {
+            let input = document.getElementById('userAnswer');
+            input.value += 'x';
+            input.focus();
+        }
+
+        function appendSuperscript() {
+            let input = document.getElementById('userAnswer');
+            input.value += '\u00B2';
+            input.focus();
+        }
+
+        function appendDigit(digit) {
+            let input = document.getElementById('userAnswer');
+            input.value += digit;
+            input.focus();
+        }
+
+        function clearInput() {
+            let input = document.getElementById('userAnswer');
+            input.value = '';
+            input.focus();
+        }
+
+        function normalizeAnswer(answer) {
+            // Replace ² with ^2 and remove spaces around + or -
+            let normalized = answer
+                .replace(/²/g, '^2')
+                .replace(/\s*([+-])\s*/g, '$1');
+            
+            // Split into factors: common factor and parenthetical expression
+            let factors = [];
+            let match = normalized.match(/^(\d+x?)?\(([^)]+)\)$/);
+            if (!match) {
+                match = normalized.match(/^\(([^)]+)\)(\d+x?)?$/);
+                if (!match) return normalized; // Return as is if format doesn't match
+                factors = [match[2] || '', `(${match[1]})`];
+            } else {
+                factors = [match[1] || '', `(${match[2]})`];
+            }
+            
+            // Sort factors to handle commutative property
+            factors.sort();
+            
+            // Reconstruct normalized answer
+            return factors.join('');
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('userAnswer').value.trim();
+            const feedback = document.getElementById('feedback');
+            const normalizedUserAnswer = normalizeAnswer(userAnswer);
+            const normalizedCorrectAnswer = normalizeAnswer(currentQuestion.answer);
+            if (normalizedUserAnswer === normalizedCorrectAnswer) {
+                feedback.textContent = '正確！';
+                feedback.className = 'correct';
+            } else {
+                feedback.textContent = '答案不正確，請再試一次！';
+                feedback.className = 'incorrect';
+            }
+            feedback.style.display = 'block';
+        }
+
+        function showHint() {
+            const feedback = document.getElementById('feedback');
+            hintCount++;
+            if (hintCount === 1) {
+                hintText = `提示：提取公因數 ${currentQuestion.commonFactor}`;
+                feedback.textContent = hintText;
+            } else if (hintCount >= 2) {
+                hintText = `答案：${currentQuestion.answer.replace(/\^2/g, '²')}`;
+                feedback.textContent = hintText;
+                document.getElementById('hintButton').disabled = true;
+            }
+            feedback.className = '';
+            feedback.style.display = 'block';
+            MathJax.typeset();
+        }
+
+        window.onload = generateProblem;
+    </script>
+</body>
+</html>

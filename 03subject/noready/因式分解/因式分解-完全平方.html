@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Perfect Square Practice 4</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        .math-expression {
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 1rem;
+            margin: 10px;
+            width: 80%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px;
+            font-size: 1rem;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-width: 44px;
+            min-height: 44px;
+            transition: background-color 0.2s;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+        #feedback {
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+            font-size: 1rem;
+        }
+        .correct {
+            color: green;
+            animation: fadeIn 0.5s ease-in;
+            background-color: rgba(0, 255, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .incorrect {
+            color: red;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .input-container {
+            width: 90%;
+            max-width: 400px;
+        }
+        .symbol-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            width: 90%;
+            max-width: 400px;
+            flex-wrap: wrap;
+        }
+        .instruction {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+            width: 90%;
+            max-width: 200px;
+        }
+        .keypad button {
+            padding: 15px;
+            font-size: 1.2rem;
+        }
+        .keypad .bottom-row {
+            grid-column: 1 / 4;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        .keypad .bottom-row button {
+            flex: 1;
+            max-width: 60px;
+        }
+        .keypad .clear-button {
+            background-color: #ff4d4d; /* Red for clear */
+            color: white;
+            border: none;
+        }
+        .keypad .clear-button:active {
+            background-color: #cc0000;
+        }
+        .keypad .ok-button {
+            background-color: #28a745; /* Green for OK */
+            color: white;
+            border: none;
+        }
+        .keypad .ok-button:active {
+            background-color: #1e7e34;
+        }
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+            .math-expression {
+                font-size: 1rem;
+            }
+            input[type="text"] {
+                font-size: 0.9rem;
+                padding: 6px;
+            }
+            button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            .symbol-buttons button {
+                padding: 10px;
+                min-width: 40px;
+            }
+            .keypad {
+                grid-template-columns: repeat(3, 50px);
+            }
+            .keypad button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            .keypad .bottom-row button {
+                max-width: 50px;
+            }
+            .instruction {
+                font-size: 0.8rem;
+            }
+            #feedback {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Perfect Square Formula Practice</h1>
+    <div id="problem" class="math-expression"></div>
+    <div class="instruction">Use the buttons below to add parentheses, +, -, x, ², numbers, clear the input, or OK to submit your answer.</div>
+    <div class="input-container">
+        <input type="text" id="userAnswer" inputmode="text" placeholder="Enter your answer, e.g., (3x+4)²">
+    </div>
+    <div class="symbol-buttons">
+        <button onclick="appendLeftParen()">(</button>
+        <button onclick="appendRightParen()">)</button>
+        <button onclick="appendPlus()">+</button>
+        <button onclick="appendMinus()">-</button>
+        <button onclick="appendX()">x</button>
+        <button onclick="appendSuperscript()">²</button>
+    </div>
+    <div class="keypad">
+        <button onclick="appendDigit('1')">1</button>
+        <button onclick="appendDigit('2')">2</button>
+        <button onclick="appendDigit('3')">3</button>
+        <button onclick="appendDigit('4')">4</button>
+        <button onclick="appendDigit('5')">5</button>
+        <button onclick="appendDigit('6')">6</button>
+        <button onclick="appendDigit('7')">7</button>
+        <button onclick="appendDigit('8')">8</button>
+        <button onclick="appendDigit('9')">9</button>
+        <div class="bottom-row">
+            <button onclick="appendDigit('0')">0</button>
+            <button onclick="clearInput()" class="clear-button">C</button>
+            <button onclick="checkAnswer()" class="ok-button">OK</button>
+        </div>
+    </div>
+    <div class="action-buttons">
+        <button onclick="checkAnswer()">Submit Answer</button>
+        <button id="hintButton" onclick="showHint()">Hint</button>
+        <button onclick="generateProblem()">Next Question</button>
+    </div>
+    <div id="feedback"></div>
+
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        let a, b, sign;
+        let correctAnswer;
+        let hintCount = 0;
+        let hintText = '';
+
+        function gcd(x, y) {
+            while (y) {
+                let t = y;
+                y = x % y;
+                x = t;
+            }
+            return x;
+        }
+
+        function generateCoprimeNumbers() {
+            let num1 = Math.floor(Math.random() * 9) + 1;
+            let num2 = Math.floor(Math.random() * 9) + 1;
+            while (gcd(num1, num2) !== 1) {
+                num2 = Math.floor(Math.random() * 9) + 1;
+            }
+            return [num1, num2];
+        }
+
+        function generateProblem() {
+            [a, b] = generateCoprimeNumbers();
+            sign = Math.random() < 0.5 ? '+' : '-';
+            let coeff = 2 * a * b;
+            let constant = b * b;
+            let aSquared = a * a;
+            // Suppress coefficient 1 in the middle term
+            let middleTerm = coeff === 1 ? `+x` : coeff === -1 ? `-x` : (sign === '+' ? `+${coeff}x` : `-${coeff}x`);
+            let mathExpression = `\\(${aSquared}x^2 ${middleTerm} + ${constant}\\)`; // Use MathJax format
+            // Suppress coefficient 1 in the correct answer
+            let aTerm = a === 1 ? 'x' : a === -1 ? '-x' : `${a}x`;
+            correctAnswer = sign === '+' ? `(${aTerm}+${b})²` : `(${aTerm}-${b})²`;
+            document.getElementById('problem').innerHTML = mathExpression;
+            document.getElementById('userAnswer').value = '';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('feedback').className = '';
+            hintCount = 0;
+            hintText = '';
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('hintButton').disabled = false; // Reset hint button
+            MathJax.typeset(); // Re-render MathJax
+        }
+
+        function appendLeftParen() {
+            let input = document.getElementById('userAnswer');
+            input.value += '(';
+            input.focus();
+        }
+
+        function appendRightParen() {
+            let input = document.getElementById('userAnswer');
+            input.value += ')';
+            input.focus();
+        }
+
+        function appendPlus() {
+            let input = document.getElementById('userAnswer');
+            input.value += '+';
+            input.focus();
+        }
+
+        function appendMinus() {
+            let input = document.getElementById('userAnswer');
+            input.value += '-';
+            input.focus();
+        }
+
+        function appendX() {
+            let input = document.getElementById('userAnswer');
+            input.value += 'x';
+            input.focus();
+        }
+
+        function appendSuperscript() {
+            let input = document.getElementById('userAnswer');
+            input.value += '\u00B2'; // Unicode for superscript 2
+            input.focus();
+        }
+
+        function appendDigit(digit) {
+            let input = document.getElementById('userAnswer');
+            input.value += digit;
+            input.focus();
+        }
+
+        function clearInput() {
+            let input = document.getElementById('userAnswer');
+            input.value = '';
+            input.focus();
+        }
+
+        function parseAnswer(input) {
+            // Remove whitespace and normalize superscript
+            input = input.trim().replace(/\^2/g, '\u00B2');
+
+            // Check if the input ends with ² and is enclosed in parentheses
+            if (!input.endsWith('\u00B2') || !input.startsWith('(') || !input.includes(')')) {
+                return null;
+            }
+
+            // Extract the expression inside the parentheses
+            let expr = input.slice(1, input.indexOf(')')).trim();
+            if (!expr.includes('x')) {
+                return null;
+            }
+
+            // Split by + or - to separate terms, preserving signs
+            let terms = expr.split(/([+-])/).filter(t => t !== '');
+            let coeff = 0, constant = 0, currentSign = '+';
+
+            for (let i = 0; i < terms.length; i++) {
+                let term = terms[i].trim();
+                if (term === '+' || term === '-') {
+                    currentSign = term;
+                    continue;
+                }
+
+                if (term.includes('x')) {
+                    // Handle coefficient of x
+                    let xCoeff = term.replace('x', '');
+                    if (xCoeff === '') xCoeff = '1'; // Interpret 'x' as '1x'
+                    if (xCoeff === '-') xCoeff = '-1'; // Interpret '-x' as '-1x'
+                    coeff = parseInt(currentSign + xCoeff);
+                } else {
+                    // Handle constant term
+                    constant = parseInt(currentSign + term);
+                }
+            }
+
+            return { coeff, constant };
+        }
+
+        function checkAnswer() {
+            let userInput = document.getElementById('userAnswer').value.trim();
+            let feedback = document.getElementById('feedback');
+            let parsedUser = parseAnswer(userInput);
+
+            if (!parsedUser) {
+                feedback.textContent = 'Incorrect format. Use (ax+b)², (b+ax)², or (x+b)² if a=1';
+                feedback.className = 'incorrect';
+                feedback.style.display = 'block';
+                return;
+            }
+
+            let { coeff, constant } = parsedUser;
+            let correctParsed = parseAnswer(correctAnswer);
+
+            // Check equivalence: (ax+b)² = (-ax-b)² = (b-ax)² = (-b+ax)²
+            let isCorrect = (
+                // Case 1: (ax+b)² or (-ax-b)²
+                (coeff === correctParsed.coeff && constant === correctParsed.constant) ||
+                (coeff === -correctParsed.coeff && constant === -correctParsed.constant) ||
+                // Case 2: (b-ax)² or (-b+ax)²
+                (coeff === correctParsed.constant && constant === -correctParsed.coeff) ||
+                (coeff === -correctParsed.constant && constant === correctParsed.coeff)
+            );
+
+            if (isCorrect) {
+                feedback.textContent = 'Correct!';
+                feedback.className = 'correct';
+            } else {
+                feedback.textContent = 'Incorrect. Try again!';
+                feedback.className = 'incorrect';
+            }
+            feedback.style.display = 'block';
+        }
+
+        function showHint() {
+            let feedback = document.getElementById('feedback');
+            if (hintCount >= 2) {
+                feedback.textContent = 'No more hints available for this problem.';
+                feedback.className = 'incorrect';
+                feedback.style.display = 'block';
+                document.getElementById('hintButton').disabled = true;
+                return;
+            }
+            hintCount++;
+            if (hintCount === 1) {
+                let aTerm = a === 1 ? 'x' : a === -1 ? '-x' : `${a}x`;
+                let middleTerm = sign === '+' ? `+2(${aTerm})(${b})` : `-2(${aTerm})(${b})`;
+                hintText = `Hint: Try factoring as \\((${aTerm})^2 ${middleTerm} + (${b})^2\\).`;
+                feedback.innerHTML = hintText;
+            } else if (hintCount === 2) {
+                hintText += `<br>Hint: The factored form is \\(${correctAnswer}\\).`;
+                feedback.innerHTML = hintText;
+                document.getElementById('hintButton').disabled = true;
+            }
+            feedback.className = '';
+            feedback.style.display = 'block';
+            MathJax.typeset();
+        }
+
+        // Initialize the first problem
+        window.onload = generateProblem;
+    </script>
+</body>
+</html>
