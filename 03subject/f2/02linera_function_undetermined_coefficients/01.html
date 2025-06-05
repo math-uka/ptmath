@@ -123,146 +123,145 @@
             <p>© 2025 ukawai</p>
         </footer>
     </div>
+<script>
+    let problemCount = 0;
+    let hintLevel = 0;
+    let currentProblem = null;
+    let hints = [];
 
-    <script>
-        let problemCount = 0;
-        let hintLevel = 0;
-        let currentProblem = null;
-        let hints = [];
+    function gcd(a, b) {
+        a = Math.abs(a);
+        b = Math.abs(b);
+        while (b) {
+            const t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
 
-        function generateRandomFunction() {
-            const isFraction = Math.random() < 0.2;
-            let k, b;
+    function toFraction(value, tolerance = 1e-6, maxDenominator = 1000) {
+        if (Number.isInteger(value)) {
+            return { num: value, denom: 1 };
+        }
+        let num = 1, denom = 1;
+        let bestNum = 1, bestDenom = 1;
+        let bestError = Math.abs(value - num / denom);
 
-            if (isFraction) {
-                const numerator = Math.floor(Math.random() * 5) + 1;
-                const denominator = Math.floor(Math.random() * 5) + 2;
-                k = { num: (Math.random() < 0.5 ? -1 : 1) * numerator, denom: denominator };
-            } else {
-                k = Math.floor(Math.random() * 10) - 5;
-                if (k === 0) k = 1;
+        for (let d = 1; d <= maxDenominator; d++) {
+            const n = Math.round(value * d);
+            const error = Math.abs(value - n / d);
+            if (error < bestError && error < tolerance) {
+                bestNum = n;
+                bestDenom = d;
+                bestError = error;
             }
-
-            b = Math.floor(Math.random() * 21) - 10;
-            return { k, b };
         }
 
-        function generatePoints(k, b) {
-            const x1 = Math.floor(Math.random() * 21) - 10;
-            let x2 = Math.floor(Math.random() * 21) - 10;
-            while (x2 === x1) x2 = Math.floor(Math.random() * 21) - 10;
+        const divisor = gcd(bestNum, bestDenom);
+        return { num: bestNum / divisor, denom: bestDenom / divisor };
+    }
 
-            let y1, y2;
-            if (typeof k === 'object') {
-                y1 = (k.num * x1) / k.denom + b;
-                y2 = (k.num * x2) / k.denom + b;
-            } else {
-                y1 = k * x1 + b;
-                y2 = k * x2 + b;
-            }
+    function generatePoints() {
+        const x1 = Math.floor(Math.random() * 21) - 10;
+        let x2 = Math.floor(Math.random() * 21) - 10;
+        while (x2 === x1) x2 = Math.floor(Math.random() * 21) - 10;
 
-            if (y1 % 1 !== 0) {
-                const adjustment = Math.round(y1) - y1;
-                b += adjustment;
-                y1 = Math.round(y1);
-                if (typeof k === 'object') {
-                    y2 = (k.num * x2) / k.denom + b;
-                } else {
-                    y2 = k * x2 + b;
-                }
-            }
+        const y1 = Math.floor(Math.random() * 21) - 10;
+        const y2 = Math.floor(Math.random() * 21) - 10;
 
-            if (y2 % 1 !== 0) {
-                y2 = Math.round(y2);
-                if (typeof k === 'object') {
-                    b = y2 - (k.num * x2) / k.denom;
-                } else {
-                    b = y2 - k * x2;
-                }
-            }
+        // Calculate slope k = (y2 - y1) / (x2 - x1)
+        const deltaX = x2 - x1;
+        const deltaY = y2 - y1;
+        const k = deltaY / deltaX;
+        const kFrac = toFraction(k);
 
-            return { x1, y1, x2, y2, k, b };
+        // Calculate intercept b = y1 - k * x1
+        const b = y1 - (kFrac.num * x1) / kFrac.denom;
+        const bFrac = toFraction(b);
+
+        return { x1, y1, x2, y2, k: kFrac, b: bFrac };
+    }
+
+    function formatNumber(value) {
+        if (typeof value === 'object') {
+            if (value.denom === 1) return value.num.toString();
+            const sign = value.num < 0 ? '-' : '';
+            return `${sign}\\frac{${Math.abs(value.num)}}{${value.denom}}`;
         }
+        return value.toString();
+    }
 
-        function formatNumber(value) {
-            if (typeof value === 'object') {
-                const sign = value.num < 0 ? '-' : '';
-                return `${sign}\\frac{${Math.abs(value.num)}}{${value.denom}}`;
-            }
-            return value.toString();
+    function formatFunction(k, b) {
+        let result = `y = ${formatNumber(k)}x`;
+        if (b.num !== 0) {
+            result += ` ${b.num > 0 ? '+' : ''} ${formatNumber(b)}`;
         }
+        return result;
+    }
 
-        function formatFunction(k, b) {
-            let result = `y = ${formatNumber(k)}x`;
-            if (b !== 0) {
-                result += ` ${b > 0 ? '+' : ''} ${formatNumber(b)}`;
-            }
-            return result;
-        }
+    function nextProblem() {
+        problemCount++;
+        hintLevel = 0;
+        hints = [];
+        document.title = `Math Practice ${problemCount}`;
+        currentProblem = generatePoints();
 
-        function nextProblem() {
-            problemCount++;
-            hintLevel = 0;
-            hints = [];
-            document.title = `Math Practice ${problemCount}`;
-            const { k, b } = generateRandomFunction();
-            currentProblem = generatePoints(k, b);
+        const problemDiv = document.getElementById('problem');
+        problemDiv.innerHTML = `已知函數通過點 \\((${currentProblem.x1}, ${currentProblem.y1})\\) 和 \\((${currentProblem.x2}, ${currentProblem.y2})\\)，請求出該一次函數的解析式 \\(y = kx + b\\)。`;
 
-            const problemDiv = document.getElementById('problem');
-            problemDiv.innerHTML = `已知函數通過點 \\((${currentProblem.x1}, ${currentProblem.y1})\\) 和 \\((${currentProblem.x2}, ${currentProblem.y2})\\)，請求出該一次函數的解析式 \\(y = kx + b\\)。`;
+        const answerDiv = document.getElementById('answer');
+        answerDiv.style.display = 'none';
+        answerDiv.innerHTML = `答案：\\(${formatFunction(currentProblem.k, currentProblem.b)}\\)`;
 
-            const answerDiv = document.getElementById('answer');
-            answerDiv.style.display = 'none';
-            answerDiv.innerHTML = `答案：\\(${formatFunction(currentProblem.k, currentProblem.b)}\\)`;
+        const hintDiv = document.getElementById('hint');
+        hintDiv.style.display = 'none';
+        hintDiv.innerHTML = '';
 
-            const hintDiv = document.getElementById('hint');
+        const answerInput = document.getElementById('answerInput');
+        answerInput.value = '';
+        answerInput.disabled = false;
+
+        MathJax.typeset();
+    }
+
+    function showHint() {
+        const hintDiv = document.getElementById('hint');
+        const answerInput = document.getElementById('answerInput');
+        hintDiv.style.display = 'block';
+        answerInput.disabled = true;
+
+        const { x1, y1, x2, y2, k, b } = currentProblem;
+        hintLevel++;
+
+        if (hintLevel === 1) {
+            hints = [`提示 1：將點 \\((${x1}, ${y1})\\) 和 \\((${x2}, ${y2})\\) 代入函數，得 \\(${y1} = ${x1}k + b\\) 和 \\(${y2} = ${x2}k + b\\)。`];
+        } else if (hintLevel === 2) {
+            const eq1 = `${y1} = ${x1}k + b`;
+            const eq2 = `${y2} = ${x2}k + b`;
+            hints.push(`提示 2：將方程 \\(${eq1}\\) 減去 \\(${eq2}\\)，得 \\(${y1} - ${y2} = ${x1}k + b - (${x2}k + b)\\)。`);
+        } else if (hintLevel === 3) {
+            hints.push(`提示 3：斜率 \\(k = ${formatNumber(k)}\\)，截距 \\(b = ${formatNumber(b)}\\)。`);
+        } else if (hintLevel >= 4) {
             hintDiv.style.display = 'none';
-            hintDiv.innerHTML = '';
-
-            const answerInput = document.getElementById('answerInput');
-            answerInput.value = '';
-            answerInput.disabled = false;
-
-            MathJax.typeset();
+            showAnswer();
+            return;
         }
 
-        function showHint() {
-            const hintDiv = document.getElementById('hint');
-            const answerInput = document.getElementById('answerInput');
-            hintDiv.style.display = 'block';
-            answerInput.disabled = true;
+        hintDiv.innerHTML = hints.join('<br>');
+        MathJax.typeset();
+    }
 
-            const { x1, y1, x2, y2, k, b } = currentProblem;
-            hintLevel++;
+    function showAnswer() {
+        const answerDiv = document.getElementById('answer');
+        answerDiv.style.display = 'block';
+        const answerInput = document.getElementById('answerInput');
+        answerInput.disabled = true;
+        MathJax.typeset();
+    }
 
-            if (hintLevel === 1) {
-                hints = [`提示 1：將點 \\((${x1}, ${y1})\\) 和 \\((${x2}, ${y2})\\) 代入函數，得 \\(${y1} = ${x1}k + b\\) 和 \\(${y2} = ${x2}k + b\\)。`];
-            } else if (hintLevel === 2) {
-                const eq1 = `${y1} = ${x1}k + b`;
-                const eq2 = `${y2} = ${x2}k + b`;
-                hints.push(`提示 2：將方程 \\(${eq1}\\) 減去 \\(${eq2}\\)，得 \\(${y1} - ${y2} = ${x1}k + b - (${x2}k + b)\\)。`);
-            } else if (hintLevel === 3) {
-                hints.push(`提示 3：斜率 \\(k = ${formatNumber(k)}\\)，截距 \\(b = ${formatNumber(b)}\\)。`);
-            } else if (hintLevel >= 4) {
-                hintDiv.style.display = 'none';
-                showAnswer();
-                return;
-            }
-
-            hintDiv.innerHTML = hints.join('<br>');
-            MathJax.typeset();
-        }
-
-        function showAnswer() {
-            const answerDiv = document.getElementById('answer');
-            answerDiv.style.display = 'block';
-            const answerInput = document.getElementById('answerInput');
-            answerInput.disabled = true;
-            MathJax.typeset();
-        }
-
-        // Generate first problem on page load
-        nextProblem();
-    </script>
+    // Generate first problem on page load
+    nextProblem();
+</script>
 </body>
 </html>
