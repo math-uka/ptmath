@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加權平均數計算器 14</title>
+    <title>加權平均數計算器 16</title>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
@@ -101,6 +101,7 @@
 
     <script>
         let currentMode = 'math';
+        let randomClickCount = 0;
 
         function setMode(mode) {
             currentMode = mode;
@@ -285,8 +286,17 @@
 
         function randomizeScores() {
             const scores = document.getElementsByClassName('score');
+            randomClickCount++;
+            const isFirstClickInCycle = (randomClickCount % 2) === 1;
+            const fixedScores = [50, 60, 70, 80, 90, 100];
+
             for (let i = 0; i < scores.length; i++) {
-                const randomScore = Math.floor(Math.random() * (100 - 30 + 1)) + 30;
+                let randomScore;
+                if (isFirstClickInCycle) {
+                    randomScore = fixedScores[Math.floor(Math.random() * fixedScores.length)];
+                } else {
+                    randomScore = Math.floor(Math.random() * (100 - 50 + 1)) + 50;
+                }
                 scores[i].value = randomScore;
             }
         }
@@ -327,8 +337,8 @@
                     if (formula) formula += ' + ';
                     if (formulaDenominator) formulaDenominator += ' + ';
                     if (displayDenominator) displayDenominator += ' + ';
-                    formula += `${formatNumber(score, scores[i].value.includes('.'))} \\times ${formatNumber(isPercent ? calcWeight : weight, isPercent)}`;
-                    formulaDenominator += formatNumber(isPercent ? calcWeight : weight, isPercent);
+                    formula += `${formatNumber(score, scores[i].value.includes('.'))} \\times \\color{blue}{${formatNumber(isPercent ? calcWeight : weight, isPercent)}}`;
+                    formulaDenominator += `\\color{blue}{${formatNumber(isPercent ? calcWeight : weight, isPercent)}}`;
                     displayDenominator += formatNumber(displayWeight, isPercent);
                 }
             }
@@ -344,7 +354,7 @@
                 <div class="weighted-average">
                     加權平均分：<br>
                     \\(\\frac{${formula}}{${formulaDenominator}}\\)<br>
-                    = \\(\\frac{${formatNumber(totalWeightedScore, totalWeightedScore.toString().includes('.'))}}{${formatNumber(totalWeight, totalWeight.toString().includes('.'))}}\\)<br>
+                    = \\(\\frac{${formatNumber(totalWeightedScore, totalWeightedScore.toString().includes('.'))}}{\\color{blue}{${formatNumber(totalWeight, totalWeight.toString().includes('.'))}}}\\)<br>
                     = ${formatNumber(weightedAverage, weightedAverage.toString().includes('.'))}
                 </div>
             `;
