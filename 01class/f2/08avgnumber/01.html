@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加權平均數計算器 12</title>
+    <title>加權平均數計算器 14</title>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
@@ -90,6 +90,7 @@
         </tbody>
     </table>
     <button onclick="addRow()">新增</button>
+    <button onclick="randomizeScores()">隨機</button>
     <button onclick="calculateSimpleAverage()">計算平均數</button>
     <button onclick="calculateWeightedAverage()">計算加權平均分</button>
     <div id="result"></div>
@@ -158,22 +159,52 @@
                     <tr>
                         <td><input type="text" value="美術知識" class="item"></td>
                         <td><input type="number" class="score" step="0.01"></td>
-                        <td><input type="text" class="weight" value="3"></td>
+                        <td><input type="text" class="weight" value="15%"></td>
                     </tr>
                     <tr>
                         <td><input type="text" value="作品展示" class="item"></td>
                         <td><input type="number" class="score" step="0.01"></td>
-                        <td><input type="text" class="weight" value="3"></td>
+                        <td><input type="text" class="weight" value="20%"></td>
                     </tr>
                     <tr>
                         <td><input type="text" value="創意" class="item"></td>
                         <td><input type="number" class="score" step="0.01"></td>
-                        <td><input type="text" class="weight" value="2"></td>
+                        <td><input type="text" class="weight" value="15%"></td>
                     </tr>
                     <tr>
                         <td><input type="text" value="技巧" class="item"></td>
                         <td><input type="number" class="score" step="0.01"></td>
-                        <td><input type="text" class="weight" value="2"></td>
+                        <td><input type="text" class="weight" value="15%"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="色彩運用" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="10%"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="構圖設計" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="10%"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="材料使用" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="5%"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="原創性" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="5%"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="表現力" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="5%"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="參與度" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="5%"></td>
                     </tr>
                 `;
             } else if (mode === 'year') {
@@ -204,6 +235,31 @@
                         <td><input type="number" class="score" step="0.01"></td>
                         <td><input type="text" class="weight" value="1"></td>
                     </tr>
+                    <tr>
+                        <td><input type="text" value="化學" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="生物" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="歷史" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="地理" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" value="公民" class="item"></td>
+                        <td><input type="number" class="score" step="0.01"></td>
+                        <td><input type="text" class="weight" value="1"></td>
+                    </tr>
                 `;
             } else if (mode === 'other') {
                 headerRow.cells[0].textContent = '項目';
@@ -225,6 +281,14 @@
                 <td><input type="number" class="score" step="0.01"></td>
                 <td><input type="text" class="weight" value="1"></td>
             `;
+        }
+
+        function randomizeScores() {
+            const scores = document.getElementsByClassName('score');
+            for (let i = 0; i < scores.length; i++) {
+                const randomScore = Math.floor(Math.random() * (100 - 30 + 1)) + 30;
+                scores[i].value = randomScore;
+            }
         }
 
         function parseWeight(weightStr) {
