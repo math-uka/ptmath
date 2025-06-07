@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加權平均數計算器 16</title>
+    <title>加權平均數計算器 15</title>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
@@ -337,8 +337,8 @@
                     if (formula) formula += ' + ';
                     if (formulaDenominator) formulaDenominator += ' + ';
                     if (displayDenominator) displayDenominator += ' + ';
-                    formula += `${formatNumber(score, scores[i].value.includes('.'))} \\times \\color{blue}{${formatNumber(isPercent ? calcWeight : weight, isPercent)}}`;
-                    formulaDenominator += `\\color{blue}{${formatNumber(isPercent ? calcWeight : weight, isPercent)}}`;
+                    formula += `${formatNumber(score, scores[i].value.includes('.'))} \\times ${formatNumber(isPercent ? calcWeight : weight, isPercent)}`;
+                    formulaDenominator += formatNumber(isPercent ? calcWeight : weight, isPercent);
                     displayDenominator += formatNumber(displayWeight, isPercent);
                 }
             }
@@ -354,7 +354,7 @@
                 <div class="weighted-average">
                     加權平均分：<br>
                     \\(\\frac{${formula}}{${formulaDenominator}}\\)<br>
-                    = \\(\\frac{${formatNumber(totalWeightedScore, totalWeightedScore.toString().includes('.'))}}{\\color{blue}{${formatNumber(totalWeight, totalWeight.toString().includes('.'))}}}\\)<br>
+                    = \\(\\frac{${formatNumber(totalWeightedScore, totalWeightedScore.toString().includes('.'))}}{${formatNumber(totalWeight, totalWeight.toString().includes('.'))}}\\)<br>
                     = ${formatNumber(weightedAverage, weightedAverage.toString().includes('.'))}
                 </div>
             `;
