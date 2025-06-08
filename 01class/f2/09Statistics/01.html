@@ -94,10 +94,10 @@
     <h2>數值計算器</h2>
     <div class="container">
         <div class="left-panel">
-            <textarea id="numbersInput"></textarea>
+            <textarea id="numbersInput" placeholder="請輸入數值"></textarea>
             <div class="button-group">
                 <div class="button-row">
-                    <button onclick="addNumbers()">新增</button>
+                    <button onclick="addTemplate1()">模版1</button>
                     <button onclick="randomizeNumbers()">隨機</button>
                     <button onclick="clearInput()">清除</button>
                 </div>
@@ -128,17 +128,13 @@
         if (exclude !== 'mode') modeStep = 0;
     }
 
-    function addNumbers() {
+    function addTemplate1() {
         const input = document.getElementById('numbersInput');
         const currentNumbers = input.value.trim();
-        const newNumber = prompt('請輸入新數（單個數字）');
-        if (newNumber && !isNaN(parseFloat(newNumber))) {
-            input.value = currentNumbers ? `${currentNumbers} ${newNumber}` : newNumber;
-            resetSteps();
-            document.getElementById('result').innerHTML = '';
-        } else {
-            alert('請輸入有效的數字！');
-        }
+        const templateNumbers = '7 1 1 8 4 8';
+        input.value = currentNumbers ? `${currentNumbers} ${templateNumbers}` : templateNumbers;
+        resetSteps();
+        document.getElementById('result').innerHTML = '';
     }
 
     function randomizeNumbers() {
@@ -198,12 +194,10 @@
     }
 
     function formatNumberList(numbers, underlineIndices = []) {
-        // 將數列分為每10個一組
         const groups = [];
         for (let i = 0; i < numbers.length; i += 10) {
             groups.push(numbers.slice(i, i + 10));
         }
-        // 為每組生成獨立的 MathJax 公式
         return groups.map((group, groupIndex) => {
             const startIndex = groupIndex * 10;
             const formattedGroup = group.map((num, idx) => {
