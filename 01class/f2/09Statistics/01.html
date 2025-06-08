@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數值計算器</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .left-panel, .right-panel {
+            flex: 1;
+            padding: 20px;
+        }
+        .left-panel {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .right-panel {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 600px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .button-row {
+            display: flex;
+            width: 100%;
+            gap: 5px;
+        }
+        .result {
+            font-size: 1.5em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .step-explanation {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .number-list {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .number-group {
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>數值計算器</h2>
+    <div class="container">
+        <div class="left-panel">
+            <textarea id="numbersInput"></textarea>
+            <div class="button-group">
+                <div class="button-row">
+                    <button onclick="addNumbers()">新增</button>
+                    <button onclick="randomizeNumbers()">隨機</button>
+                    <button onclick="clearInput()">清除</button>
+                </div>
+                <div class="button-row">
+                    <button onclick="calculateMean()">怎樣計算平均數</button>
+                    <button onclick="calculateMedian()">怎樣計算中位數</button>
+                    <button onclick="calculateMode()">怎樣計算眾數</button>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div id="result"></div>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+<script>
+    let randomClickCount = 0;
+    let meanStep = 0;
+    let medianStep = 0;
+    let modeStep = 0;
+    let lastInput = '';
+
+    function resetSteps(exclude = '') {
+        if (exclude !== 'mean') meanStep = 0;
+        if (exclude !== 'median') medianStep = 0;
+        if (exclude !== 'mode') modeStep = 0;
+    }
+
+    function addNumbers() {
+        const input = document.getElementById('numbersInput');
+        const currentNumbers = input.value.trim();
+        const newNumber = prompt('請輸入新數（單個數字）');
+        if (newNumber && !isNaN(parseFloat(newNumber))) {
+            input.value = currentNumbers ? `${currentNumbers} ${newNumber}` : newNumber;
+            resetSteps();
+            document.getElementById('result').innerHTML = '';
+        } else {
+            alert('請輸入有效的數字！');
+        }
+    }
+
+    function randomizeNumbers() {
+        const input = document.getElementById('numbersInput');
+        randomClickCount++;
+        const isFirstClickInCycle = (randomClickCount % 2) === 1;
+        const count = Math.floor(Math.random() * (20 - 5 + 1)) + 5;
+        let newNumbers = [];
+
+        if (isFirstClickInCycle) {
+            const fixedNumbers = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+            for (let i = 0; i < count; i++) {
+                newNumbers.push(fixedNumbers[Math.floor(Math.random() * fixedNumbers.length)]);
+            }
+        } else {
+            for (let i = 0; i < count; i++) {
+                newNumbers.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+            }
+        }
+
+        const currentNumbers = input.value.trim();
+        input.value = currentNumbers ? `${currentNumbers} ${newNumbers.join(' ')}` : newNumbers.join(' ');
+        resetSteps();
+        document.getElementById('result').innerHTML = '';
+    }
+
+    function clearInput() {
+        document.getElementById('numbersInput').value = '';
+        document.getElementById('result').innerHTML = '';
+        resetSteps();
+        lastInput = '';
+    }
+
+    function parseNumbers(input) {
+        return input.trim()
+            .split(/[\s,,\uFF0C.\u3002]+/)
+            .map(num => parseFloat(num.trim()))
+            .filter(num => !isNaN(num) && num.toString().trim() !== '');
+    }
+
+    function formatNumber(num, isInputDecimal) {
+        return isInputDecimal ? num.toFixed(2) : Number.isInteger(num) ? num.toString() : num.toFixed(2);
+    }
+
+    function checkInputChanged() {
+        const currentInput = document.getElementById('numbersInput').value.trim();
+        if (currentInput !== lastInput) {
+            resetSteps();
+            lastInput = currentInput;
+        }
+    }
+
+    function appendResult(content) {
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML += content;
+        MathJax.typeset();
+    }
+
+    function formatNumberList(numbers, underlineIndices = []) {
+        // 將數列分為每10個一組
+        const groups = [];
+        for (let i = 0; i < numbers.length; i += 10) {
+            groups.push(numbers.slice(i, i + 10));
+        }
+        // 為每組生成獨立的 MathJax 公式
+        return groups.map((group, groupIndex) => {
+            const startIndex = groupIndex * 10;
+            const formattedGroup = group.map((num, idx) => {
+                const globalIndex = startIndex + idx;
+                const formatted = formatNumber(num, num.toString().includes('.'));
+                return underlineIndices.includes(globalIndex) ? `\\underline{${formatted}}` : formatted;
+            }).join(', ');
+            return `<div class="number-group">\\[${formattedGroup}\\]</div>`;
+        }).join('');
+    }
+
+    function calculateMean() {
+        checkInputChanged();
+        const input = document.getElementById('numbersInput').value;
+        const numbers = parseNumbers(input);
+        const resultDiv = document.getElementById('result');
+
+        if (numbers.length === 0) {
+            resultDiv.innerHTML = '錯誤：無有效數！';
+            resetSteps();
+            return;
+        }
+
+        if (meanStep === 0) resultDiv.innerHTML = '';
+        if (meanStep >= 4) return;
+        meanStep++;
+
+        if (meanStep === 1) {
+            appendResult(`
+                <div class="result">
+                    第 1 步：列出所有數<br>
+                    數：<div class="number-list">${formatNumberList(numbers)}</div>
+                </div>
+                <div class="step-explanation">
+                    解釋：首先，將輸入的所有數列出，以便進行後續計算。這一步確認我們有哪些數據。
+                </div>
+            `);
+        } else if (meanStep === 2) {
+            const totalNumber = numbers.reduce((sum, num) => sum + num, 0);
+            const formula = numbers.map(num => formatNumber(num, num.toString().includes('.'))).join(' + ');
+            appendResult(`
+                <div class="result">
+                    第 2 步：計算數總和<br>
+                    總和：\\[${formula} = ${formatNumber(totalNumber, totalNumber.toString().includes('.'))}\\]
+                </div>
+                <div class="step-explanation">
+                    解釋：將所有數相加，得到總和。這是計算平均數的分子。
+                </div>
+            `);
+        } else if (meanStep === 3) {
+            const totalNumber = numbers.reduce((sum, num) => sum + num, 0);
+            const mean = totalNumber / numbers.length;
+            const formula = numbers.map(num => formatNumber(num, num.toString().includes('.'))).join(' + ');
+            appendResult(`
+                <div class="result">
+                    第 3 步：總和除以數個數<br>
+                    平均數：\\(\\frac{${formula}}{${numbers.length}} = \\frac{${formatNumber(totalNumber, totalNumber.toString().includes('.'))}}{${numbers.length}}\\)
+                </div>
+                <div class="step-explanation">
+                    解釋：用數總和除以數的個數，計算平均數。這一步得出平均值的公式。
+                </div>
+            `);
+        } else if (meanStep === 4) {
+            const totalNumber = numbers.reduce((sum, num) => sum + num, 0);
+            const mean = totalNumber / numbers.length;
+            const formula = numbers.map(num => formatNumber(num, num.toString().includes('.'))).join(' + ');
+            appendResult(`
+                <div class="result">
+                    第 4 步：最終平均數<br>
+                    平均數 = \\(\\frac{${formatNumber(totalNumber, totalNumber.toString().includes('.'))}}{${numbers.length}} = ${formatNumber(mean, mean.toString().includes('.'))}\\)
+                </div>
+                <div class="step-explanation">
+                    解釋：計算公式結果，得到最終的平均數。這是所有數的平均值。
+                </div>
+            `);
+        }
+        resetSteps('mean');
+    }
+
+    function calculateMedian() {
+        checkInputChanged();
+        const input = document.getElementById('numbersInput').value;
+        const numbers = parseNumbers(input);
+        const resultDiv = document.getElementById('result');
+
+        if (numbers.length === 0) {
+            resultDiv.innerHTML = '錯誤：無有效數！';
+            resetSteps();
+            return;
+        }
+
+        if (medianStep === 0) resultDiv.innerHTML = '';
+        if (medianStep >= 5) return;
+        medianStep++;
+
+        if (medianStep === 1) {
+            appendResult(`
+                <div class="result">
+                    第 1 步：列出所有數<br>
+                    數：<div class="number-list">${formatNumberList(numbers)}</div>
+                </div>
+                <div class="step-explanation">
+                    解釋：首先，將輸入的所有數列出，作為計算中位數的基礎數據。
+                </div>
+            `);
+        } else if (medianStep === 2) {
+            const sortedNumbers = [...numbers].sort((a, b) => a - b);
+            appendResult(`
+                <div class="result">
+                    第 2 步：將數按升序排列<br>
+                    排序後：<div class="number-list">${formatNumberList(sortedNumbers)}</div>
+                </div>
+                <div class="step-explanation">
+                    解釋：將數從小到大排序，以便找到位於中間的數。
+                </div>
+            `);
+        } else if (medianStep === 3) {
+            const sortedNumbers = [...numbers].sort((a, b) => a - b);
+            const n = sortedNumbers.length;
+            let positionText;
+            if (n % 2 === 0) {
+                positionText = `中間位置為第 ${n/2} 和第 ${n/2 + 1} 個數的平均數`;
+            } else {
+                positionText = `中間位置為第 ${(n + 1)/2} 個數`;
+            }
+            appendResult(`
+                <div class="result">
+                    第 3 步：確定中間位置<br>
+                    數個數：${n}<br>
+                    ${positionText}
+                </div>
+                <div class="step-explanation">
+                    解釋：計算數的總個數，然後確定中位數所在的位置。如果數的個數為奇數，取中間位置的數；如果為偶數，取中間兩個位置的平均數。
+                </div>
+            `);
+        } else if (medianStep === 4) {
+            const sortedNumbers = [...numbers].sort((a, b) => a - b);
+            let median, medianText;
+            if (sortedNumbers.length % 2 === 0) {
+                const mid = sortedNumbers.length / 2;
+                median = (sortedNumbers[mid - 1] + sortedNumbers[mid]) / 2;
+                medianText = `中位數 = \\(\\frac{${formatNumber(sortedNumbers[mid - 1], sortedNumbers[mid - 1].toString().includes('.'))} + ${formatNumber(sortedNumbers[mid], sortedNumbers[mid].toString().includes('.'))}}{2}\\)`;
+            } else {
+                median = sortedNumbers[Math.floor(sortedNumbers.length / 2)];
+                medianText = `中位數 = ${formatNumber(median, median.toString().includes('.'))}`;
+            }
+            appendResult(`
+                <div class="result">
+                    第 4 步：計算中位數<br>
+                    ${medianText}
+                </div>
+                <div class="step-explanation">
+                    解釋：根據中間位置，取出對應的數。如果是奇數個數，直接取中間值；如果是偶數個數，則取中間兩個數的平均值。
+                </div>
+            `);
+        } else if (medianStep === 5) {
+            const sortedNumbers = [...numbers].sort((a, b) => a - b);
+            let median;
+            if (sortedNumbers.length % 2 === 0) {
+                const mid = sortedNumbers.length / 2;
+                median = (sortedNumbers[mid - 1] + sortedNumbers[mid]) / 2;
+            } else {
+                median = sortedNumbers[Math.floor(sortedNumbers.length / 2)];
+            }
+            appendResult(`
+                <div class="result">
+                    第 5 步：最終中位數<br>
+                    中位數 = ${formatNumber(median, median.toString().includes('.'))}
+                </div>
+                <div class="step-explanation">
+                    解釋：計算得出最終的中位數，這是數據集中間的值。
+                </div>
+            `);
+        }
+        resetSteps('median');
+    }
+
+    function calculateMode() {
+        checkInputChanged();
+        const input = document.getElementById('numbersInput').value;
+        const numbers = parseNumbers(input);
+        const resultDiv = document.getElementById('result');
+
+        if (numbers.length === 0) {
+            resultDiv.innerHTML = '錯誤：無有效數！';
+            resetSteps();
+            return;
+        }
+
+        if (modeStep === 0) resultDiv.innerHTML = '';
+        if (modeStep >= 4) return;
+        modeStep++;
+
+        if (modeStep === 1) {
+            appendResult(`
+                <div class="result">
+                    第 1 步：列出所有數<br>
+                    數：<div class="number-list">${formatNumberList(numbers)}</div>
+                </div>
+                <div class="step-explanation">
+                    解釋：首先，將輸入的所有數列出，作為計算眾數的基礎數據。
+                </div>
+            `);
+        } else if (modeStep === 2) {
+            const frequency = {};
+            let maxFreq = 0;
+            numbers.forEach(num => {
+                frequency[num] = (frequency[num] || 0) + 1;
+                if (frequency[num] > maxFreq) maxFreq = frequency[num];
+            });
+            const modes = Object.keys(frequency)
+                .filter(key => frequency[key] === maxFreq)
+                .map(Number);
+            const sortedNumbers = [...numbers].sort((a, b) => a - b);
+            const underlineIndices = sortedNumbers
+                .map((num, index) => modes.includes(num) ? index : -1)
+                .filter(index => index !== -1);
+            if (modes.length === numbers.length || maxFreq === 1) {
+                appendResult(`
+                    <div class="result">
+                        第 2 步：顯示排序後的數<br>
+                        排序後：<div class="number-list">${formatNumberList(sortedNumbers)}</div>
+                    </div>
+                    <div class="step-explanation">
+                        解釋：將數按升序排列，顯示數的順序。由於無眾數，這一步展示最終的排序結果。
+                    </div>
+                `);
+            } else {
+                appendResult(`
+                    <div class="result">
+                        第 2 步：顯示排序後的數並標記眾數<br>
+                        排序後：<div class="number-list">${formatNumberList(sortedNumbers, underlineIndices)}</div>
+                    </div>
+                    <div class="step-explanation">
+                        解釋：將數按升序排列，並以底線標記出現次數最多的數（眾數），以直觀顯示眾數的位置。
+                    </div>
+                `);
+            }
+        } else if (modeStep === 3) {
+            const frequency = {};
+            let maxFreq = 0;
+            numbers.forEach(num => {
+                frequency[num] = (frequency[num] || 0) + 1;
+                if (frequency[num] > maxFreq) maxFreq = frequency[num];
+            });
+            const modes = Object.keys(frequency)
+                .filter(key => frequency[key] === maxFreq)
+                .map(Number);
+            const modeText = modes.length === numbers.length || maxFreq === 1
+                ? '無眾數（所有數出現次數相同或各出現一次）'
+                : `數為 ${modes.map(num => formatNumber(num, num.toString().includes('.'))).join(', ')} 最高頻率為 ${maxFreq} 次`;
+            appendResult(`
+                <div class="result">
+                    第 3 步：找出最高頻率的數<br>
+                    ${modeText}
+                </div>
+                <div class="step-explanation">
+                    解釋：從頻率中找出出現次數最多的數，這些數可能是眾數。如果所有數出現次數相同或各出現一次，則無眾數。
+                </div>
+            `);
+        } else if (modeStep === 4) {
+            const frequency = {};
+            let maxFreq = 0;
+            numbers.forEach(num => {
+                frequency[num] = (frequency[num] || 0) + 1;
+                if (frequency[num] > maxFreq) maxFreq = frequency[num];
+            });
+            const modes = Object.keys(frequency)
+                .filter(key => frequency[key] === maxFreq)
+                .map(Number);
+            if (modes.length === numbers.length || maxFreq === 1) {
+                appendResult(`
+                    <div class="result">
+                        第 4 步：最終眾數<br>
+                        無眾數（所有數出現次數相同或各出現一次）
+                    </div>
+                    <div class="step-explanation">
+                        解釋：確認無眾數，因為沒有數出現次數明顯多於其他數。
+                    </div>
+                `);
+            } else {
+                appendResult(`
+                    <div class="result">
+                        第 4 步：最終眾數<br>
+                        眾數 = ${modes.map(num => formatNumber(num, num.toString().includes('.'))).join(', ')} （出現 ${maxFreq} 次）
+                    </div>
+                    <div class="step-explanation">
+                        解釋：最終確認眾數為出現次數最多的數，並顯示其頻率。
+                    </div>
+                `);
+            }
+        }
+        resetSteps('mode');
+    }
+</script>
+</body>
+</html>
