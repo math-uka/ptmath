@@ -286,7 +286,7 @@
                 hintText = `
                     <div class="step">
                         <h4>步驟 5: 最終答案</h4>
-                        <div>\\(${outside === 1 ? '' : outside}\\sqrt{${nonSquarePart}}\\)</div>
+                        <div>\\(${nonSquarePart === 1 ? outside : outside === 1 ? `\\sqrt{${nonSquarePart}}` : `${outside}\\sqrt{${nonSquarePart}}`}\\)</div>
                     </div>
                 `;
             }
@@ -348,9 +348,28 @@
                     nonSquarePart *= parseInt(f);
                 }
             }
-            const correctAnswer = outside === 1 ? `√${nonSquarePart}` : `${outside}√${nonSquarePart}`;
+            const correctAnswer = nonSquarePart === 1 ? `${outside}` : outside === 1 ? `√${nonSquarePart}` : `${outside}√${nonSquarePart}`;
+            // 解析用戶輸入，允許靈活格式
+            let normalizedInput = answerInput.replace(/\s/g, ''); // 移除空格
+            const sqrtPattern = /^(\d+)?√(\d+)$/; // 匹配如 "24√1" 或 "√5"
+            const numberPattern = /^\d+$/; // 匹配純數字如 "24"
+            let isCorrect = false;
 
-            if (answerInput === correctAnswer) {
+            if (normalizedInput === correctAnswer) {
+                isCorrect = true;
+            } else if (nonSquarePart === 1 && numberPattern.test(normalizedInput) && parseInt(normalizedInput) === outside) {
+                // 當 nonSquarePart = 1 時，允許只輸入 outside（如 "24"）
+                isCorrect = true;
+            } else if (sqrtPattern.test(normalizedInput)) {
+                const match = normalizedInput.match(sqrtPattern);
+                const inputOutside = match[1] ? parseInt(match[1]) : 1;
+                const inputNonSquare = parseInt(match[2]);
+                if (inputOutside === outside && inputNonSquare === nonSquarePart) {
+                    isCorrect = true;
+                }
+            }
+
+            if (isCorrect) {
                 feedback.textContent = '正確，可點擊新題目繼續練習';
                 feedback.classList.add('correct-animation');
                 inputGroup.classList.remove('shake-animation');
