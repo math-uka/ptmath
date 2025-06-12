@@ -57,7 +57,7 @@
             border-radius: 5px;
             transition: background-color 0.3s;
         }
-        button:hover:not(:disabled) {
+        button:hover {
             background-color: #45a049;
         }
         button:disabled {
@@ -113,6 +113,7 @@
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
+        /* 放大數學公式 */
         .MJX-TEX {
             font-size: 1.2em !important;
         }
@@ -149,7 +150,7 @@
     </div>
     
     <footer>
-        <p>© 2025 ukawai</p>
+        <p>&copy; 2025 ukawai</p>
     </footer>
 
     <script>
@@ -181,11 +182,11 @@
             document.getElementById('feedback').textContent = '';
             document.getElementById('feedback').className = '';
             
-            // 重置狀態
+            // 產生解題步驟
             generateSolutionSteps();
+            
+            // 重設步驟計數器
             currentStep = 0;
-            document.getElementById('showStepsBtn').textContent = '顯示解題步驟';
-            document.getElementById('showStepsBtn').disabled = false; // 解除按鈕鎖定
             
             // 遞增標題計數
             titleCount++;
@@ -199,7 +200,7 @@
         function generateSolutionSteps() {
             steps = [
                 {
-                    title: "步驟1：根據同底數冪的乘法法則：同底數冪相乘，底數不變，指數相加",
+                    title: "步驟1：跟據同底数幂的乘法法则:同底数幂相乘，底数不变，指数相加 ",
                     content: `\\(Q^a \\times Q^b = Q^{a+b}\\)`
                 },
                 {
@@ -208,7 +209,7 @@
                 },
                 {
                     title: "步驟3：計算指數相加",
-                    content: `冪的指數：\\(${m} + ${n} = ${m+n}\\)`
+                    content: `幂的指數：\\(${m} + ${n} = ${m+n}\\)`
                 },
                 {
                     title: "步驟4：得出最終答案",
@@ -217,27 +218,28 @@
             ];
         }
         
-        // 顯示下一步
+        // 顯示下一步解題步驟
         function showNextStep() {
-            const stepsDiv = document.getElementById('steps');
-            const showStepsBtn = document.getElementById('showStepsBtn');
-            
             if (currentStep < steps.length) {
-                // 顯示下一步
                 const step = steps[currentStep];
                 const stepDiv = document.createElement('div');
                 stepDiv.className = 'step';
                 stepDiv.innerHTML = `<h4>${step.title}</h4><div>${step.content}</div>`;
-                stepsDiv.appendChild(stepDiv);
+                document.getElementById('steps').appendChild(stepDiv);
                 currentStep++;
                 
-                // 如果顯示到最後一步，鎖定按鈕
-                if (currentStep === steps.length) {
-                    showStepsBtn.textContent = '顯示解題步驟';
-                    showStepsBtn.disabled = true; // 鎖定按鈕
-                }
-                
+                // 重新渲染MathJax
                 MathJax.typeset();
+                
+                // 如果是最後一步，改變按鈕文字
+                if (currentStep === steps.length) {
+                    document.getElementById('showStepsBtn').textContent = '隱藏解題步驟';
+                }
+            } else {
+                // 如果已經顯示完所有步驟，清空步驟區域
+                document.getElementById('steps').innerHTML = '';
+                currentStep = 0;
+                document.getElementById('showStepsBtn').textContent = '顯示解題步驟';
             }
         }
         
