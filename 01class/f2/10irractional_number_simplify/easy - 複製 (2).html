@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二次根式化簡練習 - 1</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            min-height: 80vh;
+        }
+        .left-panel, .right-panel {
+            flex: 1;
+            padding: 20px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            overflow-y: auto;
+        }
+        .problem-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .problem {
+            font-size: 2em;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .step {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .step h4 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .calculation {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+        }
+        #answerInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        .sqrt-button {
+            padding: 8px 15px;
+            font-size: 14px;
+            margin-left: 10px;
+            background-color: #5bc0de;
+        }
+        .sqrt-button:hover {
+            background-color: #46b8da;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .MJX-TEX {
+            font-size: 1.2em !important;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>二次根式化簡練習</h1>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="problem-container">
+                <div id="problem" class="problem">問題載入中...</div>
+                <div>
+                    <label for="answerInput">請輸入答案：</label>
+                    <input type="text" id="answerInput" placeholder="格式如：2√3 或 √5">
+                    <button class="sqrt-button" onclick="insertSquareRoot()">√</button>
+                </div>
+                <button id="checkAnswerBtn">檢查答案</button>
+                <div id="feedback"></div>
+            </div>
+            
+            <div class="button-group">
+                <button id="newProblemBtn">新題目</button>
+                <button id="showStepsBtn">顯示解題步驟</button>
+            </div>
+        </div>
+        
+        <div class="right-panel" id="steps"></div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // 初始標題計數
+        let titleCount = 1;
+        document.title = `二次根式化簡練習 - ${titleCount}`;
+        
+        // 問題變數
+        let currentC, currentA, currentB;
+        let currentStep = 0;
+        let steps = [];
+        let stepsCompleted = false;
+        
+        // 插入根號符號
+        function insertSquareRoot() {
+            const input = document.getElementById('answerInput');
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            const value = input.value;
+            const newText = value.substring(0, start) + '√' + value.substring(end);
+            input.value = newText;
+            input.focus();
+            input.setSelectionRange(start + 1, start + 1);
+        }
+        
+        // 產生隨機題目
+        function generateProblem() {
+            const aOptions = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 20];
+            const bOptions = [2, 3, 5, 10];
+            currentA = aOptions[Math.floor(Math.random() * aOptions.length)];
+            currentB = bOptions[Math.floor(Math.random() * bOptions.length)];
+            currentC = currentA * currentA * currentB;
+            
+            // 顯示問題
+            document.getElementById('problem').innerHTML = `化簡：\\(\\sqrt{${currentC}}\\)`;
+            
+            // 清空解答區域
+            document.getElementById('steps').innerHTML = '';
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = '';
+            
+            // 產生解題步驟
+            generateSolutionSteps();
+            
+            // 重設步驟計數器
+            currentStep = 0;
+            stepsCompleted = false;
+            
+            // 恢復按鈕文字
+            document.getElementById('showStepsBtn').textContent = '顯示解題步驟';
+            document.getElementById('showStepsBtn').disabled = false;
+            
+            // 遞增標題計數
+            titleCount++;
+            document.title = `二次根式化簡練習 - ${titleCount}`;
+            
+            // 重新渲染MathJax
+            MathJax.typeset();
+        }
+        
+        // 獲取質因數分解
+        function getPrimeFactors(n) {
+            const factors = [];
+            for (let i = 2; i <= n; i++) {
+                while (n % i === 0) {
+                    factors.push(i);
+                    n /= i;
+                }
+            }
+            return factors;
+        }
+        
+        // 產生解題步驟
+        function generateSolutionSteps() {
+            const factors = getPrimeFactors(currentC);
+            const factorCounts = {};
+            factors.forEach(f => {
+                factorCounts[f] = (factorCounts[f] || 0) + 1;
+            });
+            
+            let outside = 1;
+            let nonSquarePart = 1;
+            for (let f in factorCounts) {
+                const count = factorCounts[f];
+                const squareCount = Math.floor(count / 2);
+                outside *= Math.pow(parseInt(f), squareCount);
+                if (count % 2 === 1) {
+                    nonSquarePart *= parseInt(f);
+                }
+            }
+            
+            steps = [
+                {
+                    title: "步驟1：因數分解",
+                    content: `將被開方數 ${currentC} 進行因數分解：\\(\\sqrt{${factors.join(' \\times ')}}\\)`
+                },
+                {
+                    title: "步驟2：找出完全平方數",
+                    content: `找出可以組成完全平方數的因數：\\(${factors.filter(f => factorCounts[f] >= 2).join(' \\times ')}\\)`
+                },
+                {
+                    title: "步驟3：分離平方項",
+                    content: `將平方項分離出來：\\(\\sqrt{${currentA}^2 \\times ${currentB}}\\)`
+                },
+                {
+                    title: "步驟4：應用平方根性質",
+                    content: `利用 \\(\\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b}\\) 的性質：\\(\\sqrt{${currentA}^2} \\times \\sqrt{${currentB}}\\)`
+                },
+                {
+                    title: "步驟5：化簡得到最終答案",
+                    content: `最終化簡結果：\\(${currentA}\\sqrt{${currentB}}\\)`
+                }
+            ];
+        }
+        
+        // 顯示下一步解題步驟
+        function showNextStep() {
+            if (stepsCompleted) {
+                return; // 如果步驟已完成，不再做任何操作
+            }
+            
+            if (currentStep < steps.length) {
+                const step = steps[currentStep];
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'step';
+                stepDiv.innerHTML = `<h4>${step.title}</h4><div>${step.content}</div>`;
+                document.getElementById('steps').appendChild(stepDiv);
+                currentStep++;
+                
+                // 重新渲染MathJax
+                MathJax.typeset();
+                
+                // 如果是最後一步
+                if (currentStep === steps.length) {
+                    stepsCompleted = true;
+                    document.getElementById('showStepsBtn').textContent = '解題步驟已完成';
+                    document.getElementById('showStepsBtn').disabled = true;
+                } else {
+                    document.getElementById('showStepsBtn').textContent = '下一步';
+                }
+            }
+        }
+        
+        // 檢查答案
+        function checkAnswer() {
+            const answerInput = document.getElementById('answerInput').value.trim();
+            const feedback = document.getElementById('feedback');
+            
+            // 解析用戶輸入，允許靈活格式
+            let normalizedInput = answerInput.replace(/\s/g, ''); // 移除空格
+            const sqrtPattern = /^(\d+)?√(\d+)$/; // 匹配如 "2√3" 或 "√5"
+            const numberPattern = /^\d+$/; // 匹配純數字如 "4"
+            
+            let isCorrect = false;
+            const correctAnswer = currentB === 1 ? `${currentA}` : `${currentA}√${currentB}`;
+            
+            if (normalizedInput === correctAnswer) {
+                isCorrect = true;
+            } else if (currentB === 1 && numberPattern.test(normalizedInput) && parseInt(normalizedInput) === currentA) {
+                // 當 currentB = 1 時，允許只輸入 currentA（如 "4"）
+                isCorrect = true;
+            } else if (sqrtPattern.test(normalizedInput)) {
+                const match = normalizedInput.match(sqrtPattern);
+                const inputOutside = match[1] ? parseInt(match[1]) : 1;
+                const inputNonSquare = parseInt(match[2]);
+                if (inputOutside === currentA && inputNonSquare === currentB) {
+                    isCorrect = true;
+                }
+            }
+            
+            if (isCorrect) {
+                feedback.textContent = '✓ 答案正確！';
+                feedback.className = 'correct';
+            } else {
+                feedback.textContent = '✗ 答案錯誤，請再試一次！';
+                feedback.className = 'incorrect';
+                document.getElementById('answerInput').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('answerInput').classList.remove('shake');
+                }, 500);
+            }
+        }
+        
+        // 事件監聽
+        document.getElementById('showStepsBtn').addEventListener('click', showNextStep);
+        document.getElementById('newProblemBtn').addEventListener('click', generateProblem);
+        document.getElementById('checkAnswerBtn').addEventListener('click', checkAnswer);
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        // 初始產生題目
+        generateProblem();
+    </script>
+</body>
+</html>
