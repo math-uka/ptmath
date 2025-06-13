@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冪與乘方練習F2 - 1</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            min-height: 80vh;
+        }
+        .left-panel, .right-panel {
+            flex: 1;
+            padding: 20px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            overflow-y: auto;
+        }
+        .problem-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .problem {
+            font-size: 2em;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .step {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .step h4 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .calculation {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+        }
+        #answerInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .MJX-TEX {
+            font-size: 1.2em !important;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>冪與乘方練習</h1>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="problem-container">
+                <div id="problem" class="problem">問題載入中...</div>
+                <div>
+                    <label for="answerInput">請輸入答案：</label>
+                    <input type="text" id="answerInput">
+                    <button id="checkAnswerBtn">檢查答案</button>
+                </div>
+                <div id="feedback"></div>
+            </div>
+            
+            <div class="button-group">
+                <button id="newProblemBtn">產生新題目</button>
+                <button id="showStepsBtn">顯示解題步驟</button>
+            </div>
+        </div>
+        
+        <div class="right-panel" id="steps"></div>
+    </div>
+    
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // 初始標題計數
+        let titleCount = 1;
+        document.title = `冪與乘方練習 - ${titleCount}`;
+        
+        // 問題變數
+        let m, n, k, l, h, Q;
+        let variableCount;
+        let variables = [];
+        let currentStep = 0;
+        let steps = [];
+        let currentProblemType;
+        let correctAnswer;
+        
+        // 問題類型
+        const problemTypes = ['multiplication', 'power', 'productPower'];
+        
+        // 隨機選擇字母
+        const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'x', 'y', 'z'];
+        
+        // 產生隨機題目
+        function generateProblem() {
+            // 隨機選擇問題類型
+            currentProblemType = problemTypes[Math.floor(Math.random() * problemTypes.length)];
+            
+            // 清空解答區域
+            document.getElementById('steps').innerHTML = '';
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = '';
+            
+            // 重置狀態
+            currentStep = 0;
+            document.getElementById('showStepsBtn').textContent = '顯示解題步驟';
+            document.getElementById('showStepsBtn').disabled = false;
+            
+            // 遞增標題計數
+            titleCount++;
+            document.title = `冪與乘方練習F2 - ${titleCount}`;
+            
+            if (currentProblemType === 'multiplication') {
+                // 冪的乘法
+                m = Math.floor(Math.random() * 10) + 1;
+                n = Math.floor(Math.random() * 10) + 1;
+                Q = letters[Math.floor(Math.random() * letters.length)];
+                document.getElementById('problem').innerHTML = `計算：\\(${Q}^{${m}} \\times ${Q}^{${n}}\\)`;
+                correctAnswer = `${Q}^${m+n}`;
+                generateMultiplicationSteps();
+            } else if (currentProblemType === 'power') {
+                // 冪的乘方
+                do {
+                    m = Math.floor(Math.random() * 5) + 1;
+                } while (m === 1);
+                do {
+                    n = Math.floor(Math.random() * 5) + 1;
+                } while (n === 1);
+                Q = letters[Math.floor(Math.random() * letters.length)];
+                document.getElementById('problem').innerHTML = `計算：\\((${Q}^{${m}})^{${n}}\\)`;
+                correctAnswer = `${Q}^${m*n}`;
+                generatePowerSteps();
+            } else {
+                // 積的乘方
+                m = Math.floor(Math.random() * 10) + 1;
+                n = Math.floor(Math.random() * 10) + 1;
+                k = Math.floor(Math.random() * 10) + 1;
+                l = Math.floor(Math.random() * 4) + 2;
+                do {
+                    h = Math.floor(Math.random() * 7) - 3;
+                } while (h === 0);
+                variableCount = Math.floor(Math.random() * 3) + 1;
+                variables = ['x', 'y', 'z'].slice(0, variableCount);
+                let coefficient = h === 1 ? '' : h === -1 ? '-' : h;
+                let terms = [];
+                if (variableCount >= 1) terms.push(`${variables[0]}^{${m}}`);
+                if (variableCount >= 2) terms.push(`${variables[1]}^{${n}}`);
+                if (variableCount >= 3) terms.push(`${variables[2]}^{${k}}`);
+                let baseExpression = `(${coefficient}${terms.join(' ')})`;
+                document.getElementById('problem').innerHTML = `計算：\\(${baseExpression}^{${l}}\\)`;
+                let finalCoefficient = Math.pow(h, l);
+                let displayCoefficient = finalCoefficient === 1 ? '' : finalCoefficient === -1 ? '-' : finalCoefficient;
+                let resultTerms = [];
+                if (variableCount >= 1) resultTerms.push(`${variables[0]}^${m*l}`);
+                if (variableCount >= 2) resultTerms.push(`${variables[1]}^${n*l}`);
+                if (variableCount >= 3) resultTerms.push(`${variables[2]}^${k*l}`);
+                correctAnswer = `${displayCoefficient}${resultTerms.join(' ')}`;
+                generateProductPowerSteps();
+            }
+            
+            // 重新渲染MathJax
+            MathJax.typeset();
+        }
+        
+        // 產生冪的乘法解題步驟
+        function generateMultiplicationSteps() {
+            steps = [
+                {
+                    title: "步驟1：根據同底數冪的乘法法則",
+                    content: `同底數冪相乘，底數不變，指數相加<br>\\(${Q}^a \\times ${Q}^b = ${Q}^{a+b}\\)`
+                },
+                {
+                    title: "步驟2：應用規則到當前題目",
+                    content: `\\(${Q}^{${m}} \\times ${Q}^{${n}} = ${Q}^{${m}+${n}}\\)`
+                },
+                {
+                    title: "步驟3：計算指數相加",
+                    content: `冪的指數：\\(${m} + ${n} = ${m+n}\\)`
+                },
+                {
+                    title: "步驟4：得出最終答案",
+                    content: `因此，最終答案為：\\(${Q}^{${m+n}}\\)`
+                }
+            ];
+        }
+        
+        // 產生冪的乘方解題步驟
+        function generatePowerSteps() {
+            steps = [
+                {
+                    title: "步驟1：根據冪的乘方法則",
+                    content: `冪的乘方，底數不變，指數相乘<br>\\((Q^a)^b = Q^{a \\times b}\\)`
+                },
+                {
+                    title: "步驟2：應用規則到當前題目",
+                    content: `\\((${Q}^{${m}})^{${n}} = ${Q}^{${m} \\times ${n}}\\)`
+                },
+                {
+                    title: "步驟3：計算指數相乘",
+                    content: `指數計算：\\(${m} \\times ${n} = ${m*n}\\)`
+                },
+                {
+                    title: "步驟4：得出最終答案",
+                    content: `因此，最終答案為：\\(${Q}^{${m*n}}\\)`
+                }
+            ];
+        }
+        
+        // 產生積的乘方解題步驟
+        function generateProductPowerSteps() {
+            steps = [
+                {
+                    title: "步驟1：理解積的乘方法則",
+                    content: "積的乘方等於把積的每一個因式分別乘方，再把所得的冪相乘。<br>即：\\((ab)^n = a^n b^n\\)"
+                }
+            ];
+            let finalCoefficient = Math.pow(h, l);
+            let displayCoefficient = finalCoefficient === 1 ? '' : finalCoefficient === -1 ? '-' : finalCoefficient;
+            let stepContent = "應用積的乘方法則到當前題目：<br>";
+            let originalExpression = '';
+            let terms = [];
+            if (variableCount >= 1) terms.push(`${variables[0]}^{${m}}`);
+            if (variableCount >= 2) terms.push(`${variables[1]}^{${n}}`);
+            if (variableCount >= 3) terms.push(`${variables[2]}^{${k}}`);
+            originalExpression = h === 1 ? `(${terms.join(' ')})` : h === -1 ? `(-${terms.join(' ')})` : `(${h}${terms.join(' ')})`;
+            stepContent += `\\(${originalExpression}^{${l}} = `;
+            let resultTerms = [];
+            if (variableCount >= 1) resultTerms.push(`${variables[0]}^{${m*l}}`);
+            if (variableCount >= 2) resultTerms.push(`${variables[1]}^{${n*l}}`);
+            if (variableCount >= 3) resultTerms.push(`${variables[2]}^{${k*l}}`);
+            stepContent += `${displayCoefficient}${resultTerms.join(' ')}\\)`;
+            steps.push({
+                title: "步驟2：應用規則到當前題目",
+                content: stepContent
+            });
+            steps.push({
+                title: "步驟3：得出最終答案",
+                content: `因此，最終答案為：\\(${displayCoefficient}${resultTerms.join(' ')}\\)`
+            });
+        }
+        
+        // 顯示下一步
+        function showNextStep() {
+            const stepsDiv = document.getElementById('steps');
+            const showStepsBtn = document.getElementById('showStepsBtn');
+            
+            if (currentStep < steps.length) {
+                const step = steps[currentStep];
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'step';
+                stepDiv.innerHTML = `<h4>${step.title}</h4><div>${step.content}</div>`;
+                stepsDiv.appendChild(stepDiv);
+                currentStep++;
+                if (currentStep === steps.length) {
+                    showStepsBtn.textContent = '顯示解題步驟';
+                    showStepsBtn.disabled = true;
+                }
+                MathJax.typeset();
+            }
+        }
+        
+        // 檢查答案
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answerInput').value.trim();
+            const feedback = document.getElementById('feedback');
+            
+            const normalize = (str) => {
+                return str.replace(/\s+/g, ' ')
+                         .replace(/\^{?(\d+)}?/g, '^{$1}')
+                         .replace(/([+-]?)1([a-z])/g, '$1$2')
+                         .replace(/([a-z])\^0/g, '')
+                         .replace(/([a-z])\^1/g, '$1')
+                         .replace(/^-([a-z])/g, '-1$1')
+                         .split(' ').sort().join(' ')
+                         .trim();
+            };
+            
+            let normalizedUserAnswer = normalize(userAnswer);
+            let normalizedCorrectAnswer = normalize(correctAnswer);
+            
+            if (normalizedUserAnswer === normalizedCorrectAnswer) {
+                feedback.textContent = '✓ 答案正確！';
+                feedback.className = 'correct';
+            } else {
+                let displayCorrectAnswer = correctAnswer
+                    .replace(/\^{?(\d+)}?/g, '^$1')
+                    .replace(/([+-]?)1([a-z])/g, '$1$2');
+                feedback.textContent = `✗ 答案錯誤，正確答案應為 ${displayCorrectAnswer}`;
+                feedback.className = 'incorrect';
+                document.getElementById('answerInput').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('answerInput').classList.remove('shake');
+                }, 500);
+            }
+        }
+        
+        // 事件監聽
+        document.getElementById('showStepsBtn').addEventListener('click', showNextStep);
+        document.getElementById('newProblemBtn').addEventListener('click', generateProblem);
+        document.getElementById('checkAnswerBtn').addEventListener('click', checkAnswer);
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        // 初始產生題目
+        generateProblem();
+    </script>
+</body>
+</html>
