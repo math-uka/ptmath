@@ -191,7 +191,6 @@
     <div id="fib-question"></div>
     <div id="fib-image-container" style="display: none;"></div>
     <button id="fib-show-answer" onclick="showFibAnswer()">答案</button>
-    <button id="fib-show-explanation" onclick="showFibExplanation()">解析</button>
     <button id="fib-next" onclick="nextFibQuestion()">下一題</button>
     <div class="fib-feedback" id="fib-feedback"></div>
   </div>
@@ -230,7 +229,6 @@
     let passwordRetrieved = false;
     let currentFibQuestion = null; // 當前填空題
     let isAnswerShown = false; // 追蹤是否顯示答案
-    let isExplanationShown = false; // 追蹤是否顯示解析
 
     // 加載題庫和密碼表
     async function loadData() {
@@ -461,7 +459,6 @@
 
       usedFibQuestions.clear();
       isAnswerShown = false;
-      isExplanationShown = false;
       document.getElementById('mode-selection').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'none';
@@ -504,55 +501,30 @@
 
       document.getElementById('fib-feedback').innerHTML = '';
       isAnswerShown = false;
-      isExplanationShown = false;
       document.getElementById('fib-show-answer').disabled = false;
-      document.getElementById('fib-show-explanation').disabled = false;
       document.getElementById('fib-next').disabled = false;
 
       MathJax.typeset();
     }
 
-    // 顯示答案
+    // 顯示答案和解析
     function showFibAnswer() {
       if (!currentFibQuestion) return;
       isAnswerShown = true;
       const feedbackDiv = document.getElementById('fib-feedback');
       // 檢查答案是否已經包含 MathJax 分隔符
-      const isMathExpression = currentFibQuestion.answer && (currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)'));
-      const displayAnswer = isMathExpression ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
-      feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p>`;
-      if (isExplanationShown) {
-        // 同樣檢查解析是否包含 MathJax 分隔符
-        const isExplanationMath = currentFibQuestion.explanation && (currentFibQuestion.explanation.includes('\\(') && currentFibQuestion.explanation.includes('\\)'));
-        const displayExplanation = isExplanationMath ? currentFibQuestion.explanation : `\\(${currentFibQuestion.explanation}\\)`;
-        feedbackDiv.innerHTML += `<p>解析：${displayExplanation}</p>`;
-      }
-      MathJax.typeset();
-    }
-
-    // 顯示解析
-    function showFibExplanation() {
-      if (!currentFibQuestion) return;
-      isExplanationShown = true;
-      const feedbackDiv = document.getElementById('fib-feedback');
+      const isAnswerMath = currentFibQuestion.answer && (currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)'));
+      const displayAnswer = isAnswerMath ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
       // 檢查解析是否已經包含 MathJax 分隔符
       const isExplanationMath = currentFibQuestion.explanation && (currentFibQuestion.explanation.includes('\\(') && currentFibQuestion.explanation.includes('\\)'));
       const displayExplanation = isExplanationMath ? currentFibQuestion.explanation : `\\(${currentFibQuestion.explanation}\\)`;
-      if (isAnswerShown) {
-        // 檢查答案是否包含 MathJax 分隔符
-        const isAnswerMath = currentFibQuestion.answer && (currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)'));
-        const displayAnswer = isAnswerMath ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
-        feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p><p>解析：${displayExplanation}</p>`;
-      } else {
-        feedbackDiv.innerHTML = `<p>解析：${displayExplanation}</p>`;
-      }
+      feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p><p>解析：${displayExplanation}</p>`;
       MathJax.typeset();
     }
 
     // 下一填空題
     function nextFibQuestion() {
       isAnswerShown = false;
-      isExplanationShown = false;
       displayFibQuestion();
     }
 
