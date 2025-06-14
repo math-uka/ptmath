@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quadratic Equations - Formula Method Quiz 1</title>
+  <title>Quadratic Equations - Formula Method Quiz</title>
   <!-- MathJax 引入 -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -151,22 +151,7 @@
   </style>
 </head>
 <body>
-
-
-
-
-
-
-
-  <h1>###</h1>
-
-
-
-
-
-
-
-
+  <h1 id="quiz-title">###</h1>
 
   <div class="loading-message" id="loading-message">正在載入題庫...</div>
   <div class="error-message" id="error-message" style="display: none;"></div>
@@ -174,12 +159,11 @@
     <p>請選擇遊戲模式：</p>
     <button id="standard-mode-btn" onclick="startStandardMode()" disabled>標準模式</button>
     <button id="custom-mode-btn" onclick="showCustomMode()" disabled>自訂模式</button>
-    <!-- 填空或解答題按鈕將動態添加 -->
-    <div class="custom-mode" id="custom-mode" style="display: none;">
-      <label>選擇題目數量：<span id="question-count">1</span></label>
-      <input type="range" id="question-slider" min="1" value="1">
-      <button onclick="startCustomMode()">開始</button>
-    </div>
+  </div>
+  <div class="custom-mode" id="custom-mode" style="display: none;">
+    <label>選擇題目數量：<span id="question-count">1</span></label>
+    <input type="range" id="question-slider" min="1" value="1">
+    <button onclick="startCustomMode()">開始</button>
   </div>
   <div class="question-container" id="question" style="display: none;"></div>
   <div id="question-image-container" style="display: none;"></div>
@@ -227,11 +211,14 @@
     // 標準模式的題目數量
     const STANDARD_MODE_QUESTION_COUNT = 10;
 
-    let questionBank = []; // 選擇題題庫
+    let quizData = {}; // 整個測驗數據
+    let questionBank = []; // 選擇題題庫（從 quizData.questions 獲取）
+    let quizTitle = "自我測驗"; // 預設標題
     let fibQuestionBank = []; // 填空題題庫
     let passwordBank = {};
     let hasPasswordBank = false;
     let hasFibBank = false; // 標誌是否有填空題庫
+    let hasQuizBank = false; // 標誌是否有選擇題題庫
     let availableQuestions = [];
     let usedFibQuestions = new Set(); // 已使用的填空題索引
     let wrongQuestions = new Set();
@@ -253,21 +240,11 @@
       const customModeBtn = document.getElementById('custom-mode-btn');
 
       try {
-        // 加載選擇題題庫
-        console.log('開始載入 num.json');
-        const questionResponse = await fetch('num.json');
-        if (!questionResponse.ok) {
-          throw new Error(`無法載入 num.json：HTTP 狀態 ${questionResponse.status}，請檢查檔案是否存在或路徑是否正確`);
-        }
-        questionBank = await questionResponse.json();
+        // 預設標題
+        document.getElementById('quiz-title').textContent = quizTitle;
+        document.title = quizTitle;
 
-        if (!Array.isArray(questionBank) || questionBank.length === 0) {
-          throw new Error('num.json 為空或格式錯誤，請檢查 JSON 結構');
-        }
-
-        console.log('選擇題題庫加載成功，題目數：', questionBank.length);
-
-        // 檢查並加載填空題題庫
+        // 先嘗試加載填空題題庫
         try {
           console.log('開始載入 fib.json');
           const fibResponse = await fetch('fib.json');
@@ -275,12 +252,19 @@
             console.warn(`無法載入 fib.json：HTTP 狀態 ${fibResponse.status}，填空模式將不可用`);
             hasFibBank = false;
           } else {
-            fibQuestionBank = await fibResponse.json();
-            if (!Array.isArray(fibQuestionBank) || fibQuestionBank.length === 0) {
+            const fibData = await fibResponse.json();
+            if (!Array.isArray(fibData) || fibData.length === 0 || !fibData[0].question) {
               console.warn('fib.json 為空或格式錯誤，填空模式將不可用');
               hasFibBank = false;
             } else {
               hasFibBank = true;
+              fibQuestionBank = fibData;
+              // 從 fib.json 讀取標題
+              if (fibData.title) {
+                quizTitle = fibData.title;
+                document.getElementById('quiz-title').textContent = quizTitle;
+                document.title = quizTitle;
+              }
               console.log('填空題題庫加載成功，題目數：', fibQuestionBank.length);
               // 動態添加填空模式按鈕
               const modeSelection = document.getElementById('mode-selection');
@@ -288,12 +272,41 @@
               fibButton.id = 'fib-mode-btn';
               fibButton.textContent = '填空或解答題';
               fibButton.onclick = startFibMode;
-              modeSelection.insertBefore(fibButton, customModeBtn.nextSibling);
+              modeSelection.appendChild(fibButton);
             }
           }
         } catch (error) {
           console.warn('填空題題庫載入失敗，填空模式將不可用：', error.message);
           hasFibBank = false;
+        }
+
+        // 嘗試加載選擇題題庫
+        try {
+          console.log('開始載入 num.json');
+          const questionResponse = await fetch('num.json');
+          if (!questionResponse.ok) {
+            console.warn(`無法載入 num.json：HTTP 狀態 ${questionResponse.status}，選擇題模式將不可用`);
+            hasQuizBank = false;
+          } else {
+            quizData = await questionResponse.json();
+            if (!quizData || !Array.isArray(quizData.questions) || quizData.questions.length === 0) {
+              console.warn('num.json 為空或格式錯誤，選擇題模式將不可用');
+              hasQuizBank = false;
+            } else {
+              hasQuizBank = true;
+              questionBank = quizData.questions;
+              // 若 num.json 存在，優先使用其標題
+              if (quizData.title) {
+                quizTitle = quizData.title;
+                document.getElementById('quiz-title').textContent = quizTitle;
+                document.title = quizTitle;
+              }
+              console.log('選擇題題庫加載成功，題目數：', questionBank.length);
+            }
+          }
+        } catch (error) {
+          console.warn('選擇題題庫載入失敗，選擇題模式將不可用：', error.message);
+          hasQuizBank = false;
         }
 
         // 加載密碼表
@@ -318,26 +331,35 @@
           hasPasswordBank = false;
         }
 
-        // 初始化滑條
-        document.getElementById('question-slider').max = questionBank.length;
-        document.getElementById('question-count').textContent = 1;
+        // 初始化滑條（僅在有選擇題時）
+        if (hasQuizBank) {
+          document.getElementById('question-slider').max = questionBank.length;
+          document.getElementById('question-count').textContent = 1;
+          standardModeBtn.disabled = false;
+          customModeBtn.disabled = false;
+        } else {
+          standardModeBtn.style.display = 'none';
+          customModeBtn.style.display = 'none';
+        }
 
-        // 啟用模式選擇按鈕
-        standardModeBtn.disabled = false;
-        customModeBtn.disabled = false;
+        // 啟用填空模式按鈕
         if (hasFibBank) {
           document.getElementById('fib-mode-btn').disabled = false;
         }
 
         // 隱藏載入訊息
         loadingMessageDiv.style.display = 'none';
+
+        // 若無題庫，顯示錯誤訊息
+        if (!hasQuizBank && !hasFibBank) {
+          errorMessageDiv.innerHTML = '無法載入任何題庫，請檢查 fib.json 或 num.json 是否存在並格式正確。';
+          errorMessageDiv.style.display = 'block';
+        }
       } catch (error) {
         console.error('載入數據失敗:', error);
         loadingMessageDiv.style.display = 'none';
-        errorMessageDiv.innerHTML = `無法載入題庫，請檢查檔案是否存在並格式正確（錯誤：${error.message}）。<br>建議：<ul><li>確認 num.json、fib.json、pass.json 是否在 quadratic_equations_formula_method/ 資料夾</li><li>檢查 JSON 語法是否正確</li><li>使用 HTTP 伺服器（例如 python -m http.server）測試</li></ul>`;
+        errorMessageDiv.innerHTML = `無法載入題庫，請檢查檔案是否存在並格式正確（錯誤：${error.message}）。`;
         errorMessageDiv.style.display = 'block';
-        standardModeBtn.disabled = true;
-        customModeBtn.disabled = true;
       }
     }
 
@@ -352,7 +374,7 @@
 
     // 啟動標準模式
     function startStandardMode() {
-      if (questionBank.length === 0) {
+      if (!hasQuizBank || questionBank.length === 0) {
         document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法開始遊戲！';
         document.getElementById('error-message').style.display = 'block';
         return;
@@ -383,7 +405,7 @@
 
     // 顯示自訂模式滑條
     function showCustomMode() {
-      if (questionBank.length === 0) {
+      if (!hasQuizBank || questionBank.length === 0) {
         document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法進入自訂模式！';
         document.getElementById('error-message').style.display = 'block';
         return;
@@ -400,7 +422,7 @@
 
     // 啟動自訂模式
     function startCustomMode() {
-      if (questionBank.length === 0) {
+      if (!hasQuizBank || questionBank.length === 0) {
         document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法開始遊戲！';
         document.getElementById('error-message').style.display = 'block';
         return;
@@ -566,13 +588,33 @@
       document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題`;
 
       const shuffledOptions = shuffleArray([...question.options]);
+      console.log('題目:', question.question);
+      console.log('原始選項:', question.options);
+      console.log('打亂後選項:', shuffledOptions);
+      console.log('正確答案:', question.answer);
       const correctAnswerIndex = shuffledOptions.indexOf(question.answer);
-      const correctAnswerLabel = String.fromCharCode(65 + correctAnswerIndex);
+      console.log('正確答案索引:', correctAnswerIndex);
+      let correctAnswerLabel = correctAnswerIndex >= 0 ? String.fromCharCode(65 + correctAnswerIndex) : '無效';
+      console.log('正確答案標籤:', correctAnswerLabel);
+
+      if (correctAnswerIndex === -1) {
+        console.error('錯誤：正確答案未在選項中找到！', {
+          question: question.question,
+          answer: question.answer,
+          options: shuffledOptions
+        });
+        correctAnswerLabel = '無效';
+      }
 
       const labels = ['A', 'B', 'C', 'D'];
       labels.forEach((label, index) => {
-        document.getElementById(`content-${label}`).innerHTML = `\\( ${shuffledOptions[index]} \\)`;
-        document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex);
+        const optionContent = shuffledOptions[index];
+        // 檢查選項是否已經包含數學表達式標記
+        const isMathExpression = optionContent && (optionContent.includes('\\(') && optionContent.includes('\\)'));
+        // 如果沒有數學表達式標記，則添加
+        const displayContent = isMathExpression ? optionContent : `\\(${optionContent}\\)`;
+        document.getElementById(`content-${label}`).innerHTML = displayContent;
+        document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex, question.answer);
       });
 
       availableQuestions.splice(randomIndex, 1);
@@ -584,20 +626,28 @@
     }
 
     // 檢查選擇題答案
-    function checkAnswer(selected, correctAnswerLabel, questionIndex) {
+    function checkAnswer(selected, correctAnswerLabel, questionIndex, correctAnswerContent) {
       const question = questionBank[questionIndex];
       const feedback = document.getElementById('feedback');
+      console.log('檢查答案:', {
+        selected,
+        correctAnswerLabel,
+        questionIndex,
+        correctAnswerContent
+      });
+
       if (selected === correctAnswerLabel) {
         feedback.innerHTML = '正確！正在加載下一題...';
         feedback.style.color = 'green';
         toggleButtons(true);
         setTimeout(() => {
           quizNumber++;
-          document.title = `Quadratic Equations - Formula Method Quiz ${quizNumber}`;
+          document.title = `${quizTitle} - 測驗 ${quizNumber}`;
           displayQuestion();
         }, 1000);
       } else {
-        feedback.innerHTML = `錯誤！正確答案是 ${correctAnswerLabel}。解析：${question.explanation}`;
+        const displayAnswer = correctAnswerContent.includes('\\(') ? correctAnswerContent : `\\(${correctAnswerContent}\\)`;
+        feedback.innerHTML = `錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}。解析：${question.explanation}`;
         feedback.style.color = 'red';
         wrongQuestions.add(questionIndex);
         wrongCount++;
