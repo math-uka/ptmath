@@ -393,6 +393,7 @@
       });
 
       document.getElementById('mode-selection').style.display = 'none';
+      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'block';
       document.getElementById('remaining-questions').style.display = 'block';
@@ -441,6 +442,7 @@
       });
 
       document.getElementById('mode-selection').style.display = 'none';
+      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'block';
       document.getElementById('remaining-questions').style.display = 'block';
@@ -460,6 +462,7 @@
       usedFibQuestions.clear();
       isAnswerShown = false;
       document.getElementById('mode-selection').style.display = 'none';
+      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'none';
       document.getElementById('question-image-container').style.display = 'none';
@@ -512,13 +515,10 @@
       if (!currentFibQuestion) return;
       isAnswerShown = true;
       const feedbackDiv = document.getElementById('fib-feedback');
-      // 檢查答案是否已經包含 MathJax 分隔符
-      const isAnswerMath = currentFibQuestion.answer && (currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)'));
-      const displayAnswer = isAnswerMath ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
-      // 檢查解析是否已經包含 MathJax 分隔符
-      const isExplanationMath = currentFibQuestion.explanation && (currentFibQuestion.explanation.includes('\\(') && currentFibQuestion.explanation.includes('\\)'));
-      const displayExplanation = isExplanationMath ? currentFibQuestion.explanation : `\\(${currentFibQuestion.explanation}\\)`;
-      feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p><p>解析：${displayExplanation}</p>`;
+      // 檢查答案是否已包含 MathJax 標記
+      const isMathExpression = currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)');
+      const displayAnswer = isMathExpression ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
+      feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p><p>解析：${currentFibQuestion.explanation}</p>`;
       MathJax.typeset();
     }
 
@@ -676,6 +676,7 @@
       document.getElementById('options').style.display = 'none';
       document.getElementById('feedback').style.display = 'none';
       document.getElementById('fib-mode').style.display = 'none';
+      document.getElementById('custom-mode').style.display = 'none';
 
       // 僅在標準模式、錯題 ≤ 1 且存在密碼表時顯示密碼輸入框
       if (isStandardMode && wrongCount <= 1 && hasPasswordBank) {
@@ -697,10 +698,13 @@
           if (question.image) {
             imageHtml = `<img src="${question.image}" alt="Wrong Question Image" style="max-width: 200px; width: 100%; margin-top: 10px;">`;
           }
+          // 檢查答案是否已包含 MathJax 標記
+          const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\)');
+          const displayAnswer = isMathExpression ? question.answer : `\\(${question.answer}\\)`;
           div.innerHTML = `
             <p><strong>題目：</strong>${question.question}</p>
             ${imageHtml}
-            <p><strong>正確答案：</strong>\\(${question.answer}\\)</p>
+            <p><strong>正確答案：</strong>${displayAnswer}</p>
             <p><strong>解析：</strong>${question.explanation}</p>
           `;
           wrongQuestionsContainer.appendChild(div);
