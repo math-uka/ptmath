@@ -100,7 +100,6 @@
         const progressContainer = document.getElementById('progressContainer');
         const progressBar = document.getElementById('progressBar');
         const totalPieces = 16;
-        let maxImageIndex = 10;
         let pieces = [];
         let placedPieces = new Array(totalPieces).fill(null);
         let pieceWidth = 100;
@@ -112,15 +111,21 @@
 
         async function checkAvailableImages() {
             let availableImages = [];
-            for (let i = 1; i <= maxImageIndex; i++) {
+            let i = 1;
+            const maxAttempts = 1000; // 防止無限循環，設置合理上限
+            while (i <= maxAttempts) {
                 const imgName = `${i.toString().padStart(3, '0')}.png`;
                 try {
                     const response = await fetch(`images/${imgName}`, { method: 'HEAD' });
                     if (response.ok) {
                         availableImages.push(imgName);
+                        i++;
+                    } else {
+                        break; // 遇到不存在的圖片，停止檢查
                     }
                 } catch (error) {
-                    console.log(`圖片 ${imgName} 不存在`);
+                    console.log(`圖片 ${imgName} 檢查失敗:`, error);
+                    break; // 網絡錯誤或其他問題，停止檢查
                 }
             }
             return availableImages;
