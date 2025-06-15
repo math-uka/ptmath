@@ -11,28 +11,23 @@
             touch-action: none; /* 防止觸控縮放或滾動 */
             margin: 0; /* 移除body邊距 */
             background: transparent; /* 最小化底色 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
         }
         .puzzle-piece {
             background-size: cover;
-            cursor: pointer;
+            cursor: move;
             user-select: none;
-            transition: transform 0.2s, box-shadow 0.2s;
+            position: absolute;
+            transition: z-index 0.1s;
         }
         .puzzle-cell {
             box-sizing: border-box;
         }
-        .puzzle-piece.selected {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 浮動效果 */
+        .puzzle-piece.dragging {
+            opacity: 0.5;
             z-index: 10;
         }
-        .puzzle-piece.disabled {
-            pointer-events: none; /* 禁用交互 */
+        .puzzle-cell.over, .piece-area.over {
+            background-color: #e5e7eb;
         }
         .completed-animation {
             animation: complete 1s ease-in-out;
@@ -49,315 +44,225 @@
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
-        .zoom-button {
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .progress-container {
-            width: 80%;
-            max-width: 300px;
-            height: 20px;
-            background-color: #e5e7eb;
-            border: 2px solid #3b82f6;
-            border-radius: 10px;
-            overflow: hidden;
-            z-index: 30;
-        }
-        .progress-bar {
-            height: 100%;
-            background-color: #3b82f6;
-            transition: width 0.3s ease;
-        }
-        .final-image {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
+        .fullscreen-image {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 40;
+            width: 100vw;
+            height: 100vh;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 9999;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .move-count {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            user-select: none;
         }
     </style>
 </head>
-<body>
-    <div class="container flex justify-center p-2 relative" id="gameContainer">
-        <div class="puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md hidden" id="puzzleBoard"></div>
-        <div class="absolute top-2 right-2 flex flex-col gap-2 z-20">
-            <div id="levelDisplay" class="text-base text-gray-700 bg-white bg-opacity-80 px-2 py-1 rounded">第 1 關 / 5</div>
-            <button id="zoomInButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">+</button>
-            <button id="zoomOutButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">−</button>
-        </div>
-        <div class="absolute inset-0 flex flex-col items-center justify-center z-30" id="progressContainer">
-            <div class="text-base text-gray-700 mb-2">正在加載圖片…</div>
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-            </div>
-        </div>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="container flex gap-2 justify-center p-2" id="gameContainer">
+        <div class="puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl" id="puzzleBoard"></div>
+        <div class="piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden" id="pieceArea"></div>
     </div>
-    <div id="message" class="text-lg text-green-600 text-center mt-2 hidden"></div>
-    <div id="swapCountDisplay" class="text-base text-gray-700 text-center mt-1 hidden"></div>
-    <button id="nextLevelButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm hidden">下一關</button>
-    <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm hidden">重新開始</button>
-    <div id="finalScreen" class="flex flex-col items-center justify-center hidden">
-        <img id="finalImage" src="images/finish.png" class="final-image" alt="完成圖片">
-        <div id="finalMessage" class="text-lg text-green-600 text-center mt-2"></div>
-        <div id="totalSwapCountDisplay" class="text-base text-gray-700 text-center mt-1"></div>
-        <button id="playAgainButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm">再次遊玩</button>
-    </div>
+    <div id="message" class="text-xl text-green-600 text-center mt-2 hidden"></div>
+    <div id="timeDisplay" class="text-lg text-gray-700 text-center mt-1 hidden"></div>
+    <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-base hidden">重新遊戲</button>
 
     <script>
         const board = document.getElementById('puzzleBoard');
+        const pieceArea = document.getElementById('pieceArea');
         const gameContainer = document.getElementById('gameContainer');
         const message = document.getElementById('message');
-        const swapCountDisplay = document.getElementById('swapCountDisplay');
-        const nextLevelButton = document.getElementById('nextLevelButton');
+        const timeDisplay = document.getElementById('timeDisplay');
         const restartButton = document.getElementById('restartButton');
-        const zoomInButton = document.getElementById('zoomInButton');
-        const zoomOutButton = document.getElementById('zoomOutButton');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const levelDisplay = document.getElementById('levelDisplay');
-        const finalScreen = document.getElementById('finalScreen');
-        const finalMessage = document.getElementById('finalMessage');
-        const totalSwapCountDisplay = document.getElementById('totalSwapCountDisplay');
-        const playAgainButton = document.getElementById('playAgainButton');
-        const finalImage = document.getElementById('finalImage');
-        const levels = [
-            { size: 2, pieces: 4 },  // Level 1: 2x2
-            { size: 3, pieces: 9 },  // Level 2: 3x3
-            { size: 4, pieces: 16 }, // Level 3: 4x4
-            { size: 5, pieces: 25 }, // Level 4: 5x5
-            { size: 6, pieces: 36 }  // Level 5: 6x6
-        ];
-        let currentLevel = 0;
-        let totalSwapCount = 0;
-        let swapCount = 0;
+        const totalPieces = 16;
+        let maxImageIndex = 10;
         let pieces = [];
-        let placedPieces = [];
+        let placedPieces = new Array(totalPieces).fill(null);
         let pieceWidth = 100;
         let pieceHeight = 100;
         let imagePath = '';
+        let startTime = null;
         let scaleFactor = 1;
-        let selectedPiece = null;
-        let availableImages = [];
-        let usedImages = [];
-        let autoAdvanceTimer = null;
         let cheatCodeCount = 0;
+        let cheatCodeTimeout = null;
+        let moveCount = 0;
 
         async function checkAvailableImages() {
-            let images = [];
-            let i = 1;
-            const maxAttempts = 1000;
-            while (i <= maxAttempts) {
+            let availableImages = [];
+            for (let i = 1; i <= maxImageIndex; i++) {
                 const imgName = `${i.toString().padStart(3, '0')}.png`;
                 try {
                     const response = await fetch(`images/${imgName}`, { method: 'HEAD' });
                     if (response.ok) {
-                        images.push(imgName);
-                        i++;
-                    } else {
-                        break;
+                        availableImages.push(imgName);
                     }
                 } catch (error) {
-                    console.log(`圖片 ${imgName} 檢查失敗:`, error);
-                    break;
+                    console.log(`圖片 ${imgName} 不存在`);
                 }
             }
-            // 檢查 finish.png
-            try {
-                const response = await fetch(`images/finish.png`, { method: 'HEAD' });
-                if (!response.ok) {
-                    console.warn('finish.png 不存在，將在最終畫面顯示文字訊息');
-                }
-            } catch (error) {
-                console.warn('檢查 finish.png 失敗:', error);
-            }
-            return images;
+            return availableImages;
         }
 
         async function loadImageAndCreatePuzzle() {
+            const availableImages = await checkAvailableImages();
             if (availableImages.length === 0) {
-                availableImages = await checkAvailableImages();
-                if (availableImages.length === 0) {
-                    message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
-                    message.classList.remove('hidden');
-                    progressContainer.classList.add('hidden');
-                    return;
-                }
+                message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
+                message.classList.remove('hidden');
+                return;
             }
-
-            // 選擇未使用的圖片
-            let unusedImages = availableImages.filter(img => !usedImages.includes(img));
-            if (unusedImages.length === 0) {
-                usedImages = []; // 重置已使用圖片
-                unusedImages = availableImages;
-            }
-            const randomImage = unusedImages[Math.floor(Math.random() * unusedImages.length)];
-            usedImages.push(randomImage);
+            const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
             imagePath = `images/${randomImage}`;
 
-            // 重置進度條
-            progressBar.style.width = '0%';
-            progressContainer.classList.remove('hidden');
-            board.classList.add('hidden');
-            finalScreen.classList.add('hidden');
+            const img = new Image();
+            img.src = imagePath;
+            img.onload = () => {
+                let imgWidth = img.width;
+                let imgHeight = img.height;
 
-            // 更新關卡顯示
-            levelDisplay.textContent = `第 ${currentLevel + 1} 關 / ${levels.length}`;
+                // 適應iPad和手機屏幕
+                const maxContainerWidth = window.innerWidth - 8; // 考慮最小邊距
+                const gap = 8; // gap-2 = 8px
+                const totalWidth = imgWidth * 2 + gap;
+                scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
+                imgWidth *= scaleFactor;
+                imgHeight *= scaleFactor;
+                pieceWidth = imgWidth / 4;
+                pieceHeight = imgHeight / 4;
 
-            // 使用fetch加載圖片並跟踪進度
-            try {
-                const response = await new Promise((resolve, reject) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('GET', imagePath, true);
-                    xhr.responseType = 'blob';
+                board.style.width = `${imgWidth}px`;
+                board.style.height = `${imgHeight}px`;
+                pieceArea.style.width = `${imgWidth}px`;
+                pieceArea.style.height = `${imgHeight}px`;
+                gameContainer.style.transform = `scale(${scaleFactor})`;
+                gameContainer.style.transformOrigin = 'center top';
+                gameContainer.style.minHeight = `${imgHeight}px`;
 
-                    xhr.onprogress = (event) => {
-                        if (event.lengthComputable) {
-                            const percent = (event.loaded / event.total) * 100;
-                            progressBar.style.width = `${percent}%`;
-                        }
-                    };
+                // 確保垂直居中
+                const totalHeight = imgHeight * scaleFactor + 60; // 考慮訊息和按鈕
+                document.body.style.minHeight = `${totalHeight}px`;
 
-                    xhr.onload = () => {
-                        if (xhr.status === 200) {
-                            resolve(xhr.response);
-                        } else {
-                            reject(new Error('圖片加載失敗'));
-                        }
-                    };
-
-                    xhr.onerror = () => reject(new Error('圖片加載失敗'));
-                    xhr.send();
-                });
-
-                // 創建圖片對象
-                const img = new Image();
-                img.src = URL.createObjectURL(response);
-                img.onload = () => {
-                    progressContainer.classList.add('hidden');
-                    board.classList.remove('hidden');
-                    adjustPuzzleLayout(img);
-                    createPuzzle();
-                    URL.revokeObjectURL(img.src);
-                };
-                img.onerror = () => {
-                    message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
-                    message.classList.remove('hidden');
-                    progressContainer.classList.add('hidden');
-                };
-            } catch (error) {
+                createPuzzle();
+                startTime = new Date();
+            };
+            img.onerror = () => {
                 message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
                 message.classList.remove('hidden');
-                progressContainer.classList.add('hidden');
-            }
-        }
-
-        function adjustPuzzleLayout(img) {
-            let imgWidth = img.width;
-            let imgHeight = img.height;
-
-            // 適應手機和iPad屏幕
-            const maxContainerWidth = window.innerWidth - 16;
-            const totalWidth = imgWidth + 8;
-            scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
-            imgWidth *= scaleFactor;
-            imgHeight *= scaleFactor;
-            const gridSize = levels[currentLevel].size;
-            pieceWidth = imgWidth / gridSize;
-            pieceHeight = imgHeight / gridSize;
-
-            board.style.width = `${imgWidth}px`;
-            board.style.height = `${imgHeight}px`;
-            gameContainer.style.transform = `scale(${scaleFactor})`;
-            gameContainer.style.transformOrigin = 'center top';
-            gameContainer.style.minHeight = `${imgHeight}px`;
-
-            // 確保垂直居中
-            const totalHeight = imgHeight * scaleFactor + 60;
-            document.body.style.minHeight = `${totalHeight}px`;
-
-            // 更新拼圖塊尺寸
-            pieces.forEach(piece => {
-                piece.style.width = `${pieceWidth}px`;
-                piece.style.height = `${pieceHeight}px`;
-                const index = parseInt(piece.dataset.index);
-                const row = Math.floor(index / gridSize);
-                const col = index % gridSize;
-                piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
-                piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
-            });
-
-            // 更新格子尺寸
-            Array.from(board.children).forEach(cell => {
-                cell.style.width = `${pieceWidth}px`;
-                cell.style.height = `${pieceHeight}px`;
-            });
+            };
         }
 
         function createPuzzle() {
             pieces = [];
             board.innerHTML = '';
-            board.className = 'puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md';
+            board.className = 'puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl';
+            pieceArea.innerHTML = '';
+            pieceArea.className = 'piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden';
             message.textContent = '';
             message.classList.add('hidden');
-            swapCountDisplay.textContent = '';
-            swapCountDisplay.classList.add('hidden');
-            nextLevelButton.classList.add('hidden');
+            timeDisplay.textContent = '';
+            timeDisplay.classList.add('hidden');
             restartButton.classList.add('hidden');
-            placedPieces = new Array(levels[currentLevel].pieces).fill(null);
-            swapCount = 0;
-            selectedPiece = null;
+            placedPieces.fill(null);
+            cheatCodeCount = 0;
+            moveCount = 0; // 重置步驟數
 
-            const gridSize = levels[currentLevel].size;
             board.style.display = 'grid';
-            board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-            board.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+            board.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            board.style.gridTemplateRows = 'repeat(4, 1fr)';
 
-            // 創建格子
-            for (let i = 0; i < levels[currentLevel].pieces; i++) {
+            for (let i = 0; i < totalPieces; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'puzzle-cell border border-gray-300';
                 cell.dataset.index = i;
                 cell.style.width = `${pieceWidth}px`;
                 cell.style.height = `${pieceHeight}px`;
+                cell.addEventListener('dragover', dragOver);
+                cell.addEventListener('drop', drop);
+                cell.addEventListener('touchstart', touchStart, { passive: false });
+                cell.addEventListener('touchmove', touchMove, { passive: false });
+                cell.addEventListener('touchend', touchEnd, { passive: false });
                 board.appendChild(cell);
             }
 
-            // 隨機排列索引
-            const indices = [...Array(levels[currentLevel].pieces).keys()];
+            const indices = [...Array(totalPieces).keys()];
             shuffleArray(indices);
 
-            // 創建並放置拼圖塊
-            for (let i = 0; i < levels[currentLevel].pieces; i++) {
+            const positions = generateRandomPositions(pieceArea.offsetWidth - pieceWidth, pieceArea.offsetHeight - pieceHeight, totalPieces);
+
+            for (let i = 0; i < totalPieces; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
+                piece.draggable = true;
                 piece.dataset.index = i;
-                const row = Math.floor(i / gridSize);
-                const col = i % gridSize;
+                const row = Math.floor(i / 4);
+                const col = i % 4;
                 piece.style.width = `${pieceWidth}px`;
                 piece.style.height = `${pieceHeight}px`;
                 piece.style.backgroundImage = `url(${imagePath})`;
                 piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
                 piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
+                piece.style.left = `${positions[i].x}px`;
+                piece.style.top = `${positions[i].y}px`;
 
-                // 將拼圖塊放入隨機格子
-                const cellIndex = indices[i];
-                board.children[cellIndex].appendChild(piece);
-                placedPieces[cellIndex] = i;
-
-                // 添加點擊事件
-                piece.addEventListener('click', handlePieceClick);
-                piece.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    handlePieceClick(e);
-                });
+                piece.addEventListener('dragstart', dragStart);
+                piece.addEventListener('touchstart', touchStart, { passive: false });
+                piece.addEventListener('touchmove', touchMove, { passive: false });
+                piece.addEventListener('touchend', touchEnd, { passive: false });
+                pieceArea.appendChild(piece);
                 pieces.push(piece);
             }
+
+            pieceArea.addEventListener('dragover', dragOver);
+            pieceArea.addEventListener('drop', dropToPieceArea);
+            pieceArea.addEventListener('touchstart', touchStart, { passive: false });
+            pieceArea.addEventListener('touchmove', touchMove, { passive: false });
+            pieceArea.addEventListener('touchend', touchEnd, { passive: false });
+        }
+
+        function generateRandomPositions(maxX, maxY, count) {
+            const positions = [];
+            const gridSize = Math.ceil(Math.sqrt(count));
+            const cellWidth = maxX / gridSize;
+            const cellHeight = maxY / gridSize;
+            const gridCells = [];
+
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    gridCells.push({ row, col });
+                }
+            }
+
+            shuffleArray(gridCells);
+
+            for (let i = 0; i < Math.min(count, gridCells.length); i++) {
+                const { row, col } = gridCells[i];
+                const x = col * cellWidth + Math.random() * (cellWidth - pieceWidth / 2);
+                const y = row * cellHeight + Math.random() * (cellHeight - pieceHeight / 2);
+                positions.push({
+                    x: Math.max(0, Math.min(x, maxX)),
+                    y: Math.max(0, Math.min(y, maxY))
+                });
+            }
+
+            while (positions.length < count) {
+                positions.push({
+                    x: Math.random() * maxX,
+                    y: Math.random() * maxY
+                });
+            }
+
+            return positions;
         }
 
         function shuffleArray(array) {
@@ -367,230 +272,279 @@
             }
         }
 
-        function handlePieceClick(e) {
-            const piece = e.target;
-            if (!piece.classList.contains('puzzle-piece') || piece.classList.contains('disabled')) return;
+        let draggedPiece = null;
+        let touchStartPos = { x: 0, y: 0 };
+        let pieceStartPos = { x: 0, y: 0 };
 
-            if (!selectedPiece) {
-                // 選擇第一張圖
-                selectedPiece = piece;
-                piece.classList.add('selected');
-            } else if (selectedPiece === piece) {
-                // 點擊同一張圖，取消選擇
-                piece.classList.remove('selected');
-                selectedPiece = null;
-            } else {
-                // 選擇第二張圖，交換位置
-                const firstPiece = selectedPiece;
-                const secondPiece = piece;
-                const firstCell = firstPiece.parentElement;
-                const secondCell = secondPiece.parentElement;
-                const firstIndex = parseInt(firstCell.dataset.index);
-                const secondIndex = parseInt(secondCell.dataset.index);
-
-                // 交換DOM元素
-                firstCell.appendChild(secondPiece);
-                secondCell.appendChild(firstPiece);
-
-                // 更新placedPieces數組
-                placedPieces[firstIndex] = parseInt(secondPiece.dataset.index);
-                placedPieces[secondIndex] = parseInt(firstPiece.dataset.index);
-
-                // 增加交換次數
-                swapCount++;
-                totalSwapCount++;
-
-                // 移除選擇狀態
-                firstPiece.classList.remove('selected');
-                selectedPiece = null;
-
-                // 檢查是否完成
-                checkCompletion();
+        function dragStart(e) {
+            draggedPiece = e.target;
+            draggedPiece.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', draggedPiece.dataset.index);
+            const parent = draggedPiece.parentElement;
+            if (parent.classList.contains('puzzle-cell')) {
+                const cellIndex = parent.dataset.index;
+                placedPieces[cellIndex] = null;
             }
+        }
+
+        function touchStart(e) {
+            e.preventDefault();
+            if (e.target.classList.contains('puzzle-piece')) {
+                draggedPiece = e.target;
+                draggedPiece.classList.add('dragging');
+                const touch = e.touches[0];
+                touchStartPos = {
+                    x: touch.clientX / scaleFactor,
+                    y: touch.clientY / scaleFactor
+                };
+                pieceStartPos = {
+                    x: parseFloat(draggedPiece.style.left || 0),
+                    y: parseFloat(draggedPiece.style.top || 0)
+                };
+                if (draggedPiece.parentElement.classList.contains('puzzle-cell')) {
+                    const cellIndex = draggedPiece.parentElement.dataset.index;
+                    placedPieces[cellIndex] = null;
+                }
+            }
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.target.classList.add('over');
+        }
+
+        function touchMove(e) {
+            e.preventDefault();
+            if (draggedPiece) {
+                const touch = e.touches[0];
+                const currentX = touch.clientX / scaleFactor;
+                const currentY = touch.clientY / scaleFactor;
+                const dx = currentX - touchStartPos.x;
+                const dy = currentY - touchStartPos.y;
+                draggedPiece.style.left = `${pieceStartPos.x + dx}px`;
+                draggedPiece.style.top = `${pieceStartPos.y + dy}px`;
+            }
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            e.target.classList.remove('over');
+            const pieceIndex = e.dataTransfer.getData('text');
+            const piece = pieces[pieceIndex];
+            const cellIndex = e.target.dataset.index;
+
+            if (cellIndex !== undefined) {
+                const targetCell = e.target.classList.contains('puzzle-cell') ? e.target : e.target.closest('.puzzle-cell');
+                if (targetCell) {
+                    if (placedPieces[cellIndex] === null) {
+                        targetCell.appendChild(piece);
+                        piece.style.position = 'static';
+                        placedPieces[cellIndex] = pieceIndex;
+                    } else {
+                        const existingPieceIndex = placedPieces[cellIndex];
+                        const existingPiece = pieces[existingPieceIndex];
+                        const sourceParent = piece.parentElement;
+
+                        if (sourceParent.classList.contains('puzzle-cell')) {
+                            const sourceCellIndex = sourceParent.dataset.index;
+                            sourceParent.appendChild(existingPiece);
+                            placedPieces[sourceCellIndex] = existingPieceIndex;
+                            targetCell.appendChild(piece);
+                            placedPieces[cellIndex] = pieceIndex;
+                            piece.style.position = 'static';
+                            existingPiece.style.position = 'static';
+                        } else {
+                            pieceArea.appendChild(existingPiece);
+                            existingPiece.style.position = 'absolute';
+                            const maxX = pieceArea.offsetWidth - pieceWidth;
+                            const maxY = pieceArea.offsetHeight - pieceHeight;
+                            existingPiece.style.left = `${Math.random() * maxX}px`;
+                            existingPiece.style.top = `${Math.random() * maxY}px`;
+                            targetCell.appendChild(piece);
+                            placedPieces[cellIndex] = pieceIndex;
+                            piece.style.position = 'static';
+                        }
+                    }
+                    moveCount++; // 記錄操作步驟
+                    checkCompletion();
+                }
+            }
+            draggedPiece.classList.remove('dragging');
+            draggedPiece = null;
+        }
+
+        function touchEnd(e) {
+            e.preventDefault();
+            if (draggedPiece) {
+                const touch = e.changedTouches[0];
+                const clientX = touch.clientX / scaleFactor;
+                const clientY = touch.clientY / scaleFactor;
+                const pieceIndex = draggedPiece.dataset.index;
+                const piece = pieces[pieceIndex];
+
+                const boardRect = board.getBoundingClientRect();
+                const scaledBoardRect = {
+                    left: boardRect.left / scaleFactor,
+                    top: boardRect.top / scaleFactor,
+                    right: boardRect.right / scaleFactor,
+                    bottom: boardRect.bottom / scaleFactor
+                };
+                if (clientX >= scaledBoardRect.left && clientX <= scaledBoardRect.right &&
+                    clientY >= scaledBoardRect.top && clientY <= scaledBoardRect.bottom) {
+                    const cellSizeX = pieceWidth;
+                    const cellSizeY = pieceHeight;
+                    const col = Math.floor((clientX - scaledBoardRect.left) / cellSizeX);
+                    const row = Math.floor((clientY - scaledBoardRect.top) / cellSizeY);
+                    const cellIndex = row * 4 + col;
+
+                    if (cellIndex >= 0 && cellIndex < totalPieces) {
+                        const targetCell = board.children[cellIndex];
+                        if (placedPieces[cellIndex] === null) {
+                            targetCell.appendChild(piece);
+                            piece.style.position = 'static';
+                            placedPieces[cellIndex] = pieceIndex;
+                        } else {
+                            const existingPieceIndex = placedPieces[cellIndex];
+                            const existingPiece = pieces[existingPieceIndex];
+                            const sourceParent = piece.parentElement;
+
+                            if (sourceParent.classList.contains('puzzle-cell')) {
+                                const sourceCellIndex = sourceParent.dataset.index;
+                                sourceParent.appendChild(existingPiece);
+                                placedPieces[sourceCellIndex] = existingPieceIndex;
+                                targetCell.appendChild(piece);
+                                placedPieces[cellIndex] = pieceIndex;
+                                piece.style.position = 'static';
+                                existingPiece.style.position = 'static';
+                            } else {
+                                pieceArea.appendChild(existingPiece);
+                                existingPiece.style.position = 'absolute';
+                                const maxX = pieceArea.offsetWidth - pieceWidth;
+                                const maxY = pieceArea.offsetHeight - pieceHeight;
+                                existingPiece.style.left = `${Math.random() * maxX}px`;
+                                existingPiece.style.top = `${Math.random() * maxY}px`;
+                                targetCell.appendChild(piece);
+                                placedPieces[cellIndex] = pieceIndex;
+                                piece.style.position = 'static';
+                            }
+                        }
+                        moveCount++; // 記錄操作步驟
+                        checkCompletion();
+                    }
+                } else {
+                    pieceArea.appendChild(piece);
+                    piece.style.position = 'absolute';
+                    const maxX = pieceArea.offsetWidth - pieceWidth;
+                    const maxY = pieceArea.offsetHeight - pieceHeight;
+                    piece.style.left = `${Math.random() * maxX}px`;
+                    piece.style.top = `${Math.random() * maxY}px`;
+                    moveCount++; // 記錄操作步驟
+                }
+
+                draggedPiece.classList.remove('dragging');
+                document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
+                draggedPiece = null;
+            }
+        }
+
+        function dropToPieceArea(e) {
+            e.preventDefault();
+            e.target.classList.remove('over');
+            const pieceIndex = e.dataTransfer.getData('text');
+            const piece = pieces[pieceIndex];
+            pieceArea.appendChild(piece);
+            piece.style.position = 'absolute';
+            const maxX = pieceArea.offsetWidth - pieceWidth;
+            const maxY = pieceArea.offsetHeight - pieceHeight;
+            piece.style.left = `${Math.random() * maxX}px`;
+            piece.style.top = `${Math.random() * maxY}px`;
+            moveCount++; // 記錄操作步驟
         }
 
         function checkCompletion() {
-            const isComplete = placedPieces.every((piece, index) => piece === index);
-            if (isComplete) {
-                // 禁用拼圖交互
-                pieces.forEach(piece => piece.classList.add('disabled'));
-                message.textContent = `恭喜！第 ${currentLevel + 1} 關完成！`;
-                message.classList.remove('hidden');
-                message.classList.add('fade-in');
-                swapCountDisplay.textContent = `本關交換次數：${swapCount} 次`;
-                swapCountDisplay.classList.remove('hidden');
-                swapCountDisplay.classList.add('fade-in');
-                if (currentLevel < levels.length - 1) {
-                    nextLevelButton.classList.remove('hidden');
-                    nextLevelButton.classList.add('fade-in');
-                    // 設置5秒後自動進入下一關
-                    autoAdvanceTimer = setTimeout(() => {
-                        nextLevelButton.click();
-                    }, 5000);
-                } else {
-                    showFinalScreen();
-                }
-                board.classList.add('completed-animation');
+            const isComplete = placedPieces.every((piece, index) => piece == index);
+            if (isComplete && placedPieces.every(piece => piece !== null)) {
+                completeGame();
             }
         }
 
-        async function showFinalScreen() {
-            board.classList.add('hidden');
-            nextLevelButton.classList.add('hidden');
-            gameContainer.classList.add('hidden');
-            finalScreen.classList.remove('hidden');
-            finalMessage.textContent = '恭喜完成所有關卡！';
-            finalMessage.classList.add('fade-in');
-            totalSwapCountDisplay.textContent = `總交換次數：${totalSwapCount} 次`;
-            totalSwapCountDisplay.classList.add('fade-in');
-            playAgainButton.classList.remove('hidden');
-            playAgainButton.classList.add('fade-in');
+        function completeGame() {
+            board.classList.add('completed-animation');
+            message.classList.add('hidden');
+            timeDisplay.classList.add('hidden');
+            restartButton.classList.add('hidden');
 
-            // 嘗試加載 finish.png
-            try {
-                const response = await fetch(`images/finish.png`);
-                if (response.ok) {
-                    finalImage.src = 'images/finish.png';
-                    finalImage.classList.remove('hidden');
-                } else {
-                    finalImage.classList.add('hidden');
-                    finalMessage.textContent = '無法加載 finish.png，恭喜完成遊戲！';
+            // 顯示全屏finish.png
+            const fullscreenDiv = document.createElement('div');
+            fullscreenDiv.className = 'fullscreen-image';
+            fullscreenDiv.style.backgroundImage = 'url(images/finish.png)';
+            document.body.appendChild(fullscreenDiv);
+
+            // 顯示操作步驟數
+            const moveCountDiv = document.createElement('div');
+            moveCountDiv.className = 'move-count';
+            moveCountDiv.textContent = `操作步驟：${moveCount}`;
+            fullscreenDiv.appendChild(moveCountDiv);
+
+            // 顯示重新開始按鈕
+            const restartBtn = document.createElement('button');
+            restartBtn.className = 'px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-lg';
+            restartBtn.textContent = '重新遊戲';
+            fullscreenDiv.appendChild(restartBtn);
+
+            // 點擊全屏圖片、按鈕或觸控重新開始
+            const restartGame = () => {
+                document.body.removeChild(fullscreenDiv);
+                loadImageAndCreatePuzzle();
+            };
+            fullscreenDiv.addEventListener('click', restartGame);
+            restartBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // 防止觸發全屏點擊
+                restartGame();
+            });
+            fullscreenDiv.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                restartGame();
+            });
+            restartBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); // 防止觸發全屏觸控
+                restartGame();
+            });
+        }
+
+        // 作弊碼：連續按4次「a」
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'a') {
+                cheatCodeCount++;
+                clearTimeout(cheatCodeTimeout);
+                cheatCodeTimeout = setTimeout(() => {
+                    cheatCodeCount = 0;
+                }, 3000); // 3秒內未完成4次按鍵則重置
+
+                if (cheatCodeCount >= 4) {
+                    cheatCodeCount = 0;
+                    clearTimeout(cheatCodeTimeout);
+                    completeGame();
                 }
-            } catch (error) {
-                console.warn('無法加載 finish.png:', error);
-                finalImage.classList.add('hidden');
-                finalMessage.textContent = '無法加載 finish.png，恭喜完成遊戲！';
+            } else {
+                cheatCodeCount = 0; // 按其他鍵重置計數
             }
-        }
-
-        function zoomIn() {
-            scaleFactor = Math.min(scaleFactor + 0.1, 2.0);
-            gameContainer.style.transform = `scale(${scaleFactor})`;
-            const totalHeight = (board.offsetHeight * scaleFactor) + 60;
-            document.body.style.minHeight = `${totalHeight}px`;
-        }
-
-        function zoomOut() {
-            scaleFactor = Math.max(scaleFactor - 0.1, 0.5);
-            gameContainer.style.transform = `scale(${scaleFactor})`;
-            const totalHeight = (board.offsetHeight * scaleFactor) + 60;
-            document.body.style.minHeight = `${totalHeight}px`;
-        }
-
-        function triggerCheatCompletion() {
-            currentLevel = levels.length - 1;
-            pieces.forEach(piece => piece.classList.add('disabled'));
-            message.textContent = '作弊碼啟用！遊戲完成！';
-            message.classList.remove('hidden');
-            message.classList.add('fade-in');
-            showFinalScreen();
-        }
-
-        zoomInButton.addEventListener('click', zoomIn);
-        zoomInButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            zoomIn();
         });
 
-        zoomOutButton.addEventListener('click', zoomOut);
-        zoomOutButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            zoomOut();
-        });
-
-        nextLevelButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            currentLevel++;
-            scaleFactor = 1;
-            selectedPiece = null;
-            loadImageAndCreatePuzzle();
-        });
-
-        nextLevelButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            currentLevel++;
-            scaleFactor = 1;
-            selectedPiece = null;
-            loadImageAndCreatePuzzle();
+        document.addEventListener('dragend', (e) => {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
+            draggedPiece = null;
         });
 
         restartButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            currentLevel = 0;
-            totalSwapCount = 0;
-            scaleFactor = 1;
-            selectedPiece = null;
-            usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
             loadImageAndCreatePuzzle();
         });
 
         restartButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            currentLevel = 0;
-            totalSwapCount = 0;
-            scaleFactor = 1;
-            selectedPiece = null;
-            usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
             loadImageAndCreatePuzzle();
-        });
-
-        playAgainButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            currentLevel = 0;
-            totalSwapCount = 0;
-            scaleFactor = 1;
-            selectedPiece = null;
-            usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
-            finalScreen.classList.add('hidden');
-            gameContainer.classList.remove('hidden');
-            loadImageAndCreatePuzzle();
-        });
-
-        playAgainButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            currentLevel = 0;
-            totalSwapCount = 0;
-            scaleFactor = 1;
-            selectedPiece = null;
-            usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
-            finalScreen.classList.add('hidden');
-            gameContainer.classList.remove('hidden');
-            loadImageAndCreatePuzzle();
-        });
-
-        window.addEventListener('resize', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            if (imagePath && pieces.length > 0) {
-                // 僅調整佈局，保留當前拼圖狀態
-                const img = new Image();
-                img.src = imagePath;
-                img.onload = () => {
-                    adjustPuzzleLayout(img);
-                };
-            } else {
-                // 如果沒有拼圖，重新加載
-                scaleFactor = 1;
-                selectedPiece = null;
-                loadImageAndCreatePuzzle();
-            }
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'a' || e.key === 'A') {
-                cheatCodeCount++;
-                if (cheatCodeCount >= 4) {
-                    triggerCheatCompletion();
-                }
-            } else {
-                cheatCodeCount = 0; // 重置計數如果按了其他鍵
-            }
         });
 
         loadImageAndCreatePuzzle();
