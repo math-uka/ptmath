@@ -154,7 +154,7 @@
             const indices = [...Array(totalPieces).keys()];
             shuffleArray(indices);
 
-            // 改進隨機放置邏輯
+            // 生成隨機位置
             const positions = generateRandomPositions(pieceArea.offsetWidth - pieceWidth, pieceArea.offsetHeight - pieceHeight, totalPieces);
 
             for (let i = 0; i < totalPieces; i++) {
@@ -170,7 +170,7 @@
                 piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
                 piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
 
-                // 使用改進的隨機位置
+                // 使用隨機位置
                 piece.style.left = `${positions[i].x}px`;
                 piece.style.top = `${positions[i].y}px`;
 
@@ -183,41 +183,41 @@
             pieceArea.addEventListener('drop', dropToPieceArea);
         }
 
-        // 改進隨機位置生成函數
+        // 改進隨機位置生成，確保均勻分佈
         function generateRandomPositions(maxX, maxY, count) {
             const positions = [];
-            const minDistance = Math.min(pieceWidth, pieceHeight) / 2; // 確保位置分佈有一定間距
+            const gridSize = Math.ceil(Math.sqrt(count)); // 創建虛擬網格
+            const cellWidth = maxX / gridSize;
+            const cellHeight = maxY / gridSize;
+            const gridCells = [];
 
-            for (let i = 0; i < count; i++) {
-                let x, y, valid = false;
-                let attempts = 0;
-                const maxAttempts = 100; // 防止無限循環
-
-                while (!valid && attempts < maxAttempts) {
-                    x = Math.random() * maxX;
-                    y = Math.random() * maxY;
-                    valid = true;
-
-                    // 檢查與已有位置的距離，避免過於集中
-                    for (const pos of positions) {
-                        const dx = pos.x - x;
-                        const dy = pos.y - y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < minDistance) {
-                            valid = false;
-                            break;
-                        }
-                    }
-                    attempts++;
+            // 生成網格單元
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    gridCells.push({ row, col });
                 }
+            }
 
-                // 若無法找到合適位置，使用隨機位置
-                if (!valid) {
-                    x = Math.random() * maxX;
-                    y = Math.random() * maxY;
-                }
+            // 隨機打亂網格單元
+            shuffleArray(gridCells);
 
-                positions.push({ x, y });
+            // 為每個拼圖塊分配網格單元內的隨機位置
+            for (let i = 0; i < Math.min(count, gridCells.length); i++) {
+                const { row, col } = gridCells[i];
+                const x = col * cellWidth + Math.random() * (cellWidth - pieceWidth / 2);
+                const y = row * cellHeight + Math.random() * (cellHeight - pieceHeight / 2);
+                positions.push({
+                    x: Math.max(0, Math.min(x, maxX)),
+                    y: Math.max(0, Math.min(y, maxY))
+                });
+            }
+
+            // 若拼圖塊數少於網格單元，填充剩餘位置
+            while (positions.length < count) {
+                positions.push({
+                    x: Math.random() * maxX,
+                    y: Math.random() * maxY
+                });
             }
 
             return positions;
@@ -254,10 +254,40 @@
 
             if (cellIndex !== undefined) {
                 const targetCell = e.target.classList.contains('puzzle-cell') ? e.target : e.target.closest('.puzzle-cell');
-                if (targetCell && placedPieces[cellIndex] === null) {
-                    targetCell.appendChild(piece);
-                    piece.style.position = 'static';
-                    placedPieces[cellIndex] = pieceIndex;
+                if (targetCell) {
+                    if (placedPieces[cellIndex] === null) {
+                        // 目標格子為空，直接放置
+                        targetCell.appendChild(piece);
+                        piece.style.position = 'static';
+                        placedPieces[cellIndex] = pieceIndex;
+                    } else {
+                        // 目標格子有拼圖塊，交換位置
+                        const existingPieceIndex = placedPieces[cellIndex];
+                        const existingPiece = pieces[existingPieceIndex];
+                        const sourceParent = piece.parentElement;
+
+                        if (sourceParent.classList.contains('puzzle-cell')) {
+                            // 從拼圖板拖動到另一格子，交換
+                            const sourceCellIndex = sourceParent.dataset.index;
+                            sourceParent.appendChild(existingPiece);
+                            placedPieces[sourceCellIndex] = existingPieceIndex;
+                            targetCell.appendChild(piece);
+                            placedPieces[cellIndex] = pieceIndex;
+                            piece.style.position = 'static';
+                            existingPiece.style.position = 'static';
+                        } else {
+                            // 從pieceArea拖動到有拼圖塊的格子，交換
+                            pieceArea.appendChild(existingPiece);
+                            existingPiece.style.position = 'absolute';
+                            const maxX = pieceArea.offsetWidth - pieceWidth;
+                            const maxY = pieceArea.offsetHeight - pieceHeight;
+                            existingPiece.style.left = `${Math.random() * maxX}px`;
+                            existingPiece.style.top = `${Math.random() * maxY}px`;
+                            targetCell.appendChild(piece);
+                            placedPieces[cellIndex] = pieceIndex;
+                            piece.style.position = 'static';
+                        }
+                    }
                     checkCompletion();
                 }
             }
