@@ -51,7 +51,9 @@
       margin-top: 10px;
       max-width: 300px;
       width: 100%;
-      display: block; /* 確保圖片獨立一行 */
+      display: block;
+      margin-left: auto;
+      margin-right: auto; /* 置中圖片 */
     }
     .remaining-questions {
       font-size: 1em;
@@ -118,6 +120,14 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+    }
+    .wrong-question img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; /* 確保錯題區的圖片也置中 */
+      max-width: 200px;
+      width: 100%;
+      margin-top: 10px;
     }
     .fib-mode-container button {
       padding: 5px 15px;
@@ -523,7 +533,11 @@
       if (currentFibQuestion.answerimage) {
         answerImageHtml = `<img src="${currentFibQuestion.answerimage}" alt="Answer Image" class="answer-image">`;
       }
-      feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p><p>解析：${currentFibQuestion.explanation}</p>${answerImageHtml}`;
+      feedbackDiv.innerHTML = `
+        <p>正確答案：${displayAnswer}</p>
+        <p>解析：${currentFibQuestion.explanation}</p>
+        ${answerImageHtml}
+      `;
       MathJax.typeset();
     }
 
@@ -709,11 +723,11 @@
           div.className = 'wrong-question';
           let imageHtml = '';
           if (question.image) {
-            imageHtml = `<img src="${question.image}" alt="Wrong Question Image" style="max-width: 200px; width: 100%; margin-top: 10px;">`;
+            imageHtml = `<img src="${question.image}" alt="Wrong Question Image" class="question-image">`;
           }
           let answerImageHtml = '';
           if (question.answerimage) {
-            answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" style="max-width: 200px; width: 100%; margin-top: 10px;">`;
+            answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
           }
           // 檢查答案是否已包含 MathJax 標記
           const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\)');
