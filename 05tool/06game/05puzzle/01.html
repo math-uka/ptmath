@@ -11,6 +11,11 @@
             touch-action: none; /* 防止觸控縮放或滾動 */
             margin: 0; /* 移除body邊距 */
             background: transparent; /* 最小化底色 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
         .puzzle-piece {
             background-size: cover;
@@ -46,14 +51,14 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body>
     <div class="container flex gap-2 justify-center p-2" id="gameContainer">
-        <div class="puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl" id="puzzleBoard"></div>
-        <div class="piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden" id="pieceArea"></div>
+        <div class="puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md" id="puzzleBoard"></div>
+        <div class="piece-area bg-white border-2 border-blue-500 rounded-lg shadow-md relative overflow-hidden" id="pieceArea"></div>
     </div>
-    <div id="message" class="text-xl text-green-600 text-center mt-2 hidden"></div>
-    <div id="timeDisplay" class="text-lg text-gray-700 text-center mt-1 hidden"></div>
-    <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-base hidden">重新遊戲</button>
+    <div id="message" class="text-lg text-green-600 text-center mt-2 hidden"></div>
+    <div id="timeDisplay" class="text-base text-gray-700 text-center mt-1 hidden"></div>
+    <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm hidden">重新遊戲</button>
 
     <script>
         const board = document.getElementById('puzzleBoard');
@@ -104,10 +109,10 @@
                 let imgWidth = img.width;
                 let imgHeight = img.height;
 
-                // 適應iPad和手機屏幕
-                const maxContainerWidth = window.innerWidth - 8; // 考慮最小邊距
+                // 適應手機和iPad屏幕，最大化顯示兩個框框
+                const maxContainerWidth = window.innerWidth - 16; // 考慮4px邊距*2 + 8px間距
                 const gap = 8; // gap-2 = 8px
-                const totalWidth = imgWidth * 2 + gap;
+                const totalWidth = imgWidth * 2 + gap + 8; // 考慮兩框的邊框
                 scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
                 imgWidth *= scaleFactor;
                 imgHeight *= scaleFactor;
@@ -138,9 +143,9 @@
         function createPuzzle() {
             pieces = [];
             board.innerHTML = '';
-            board.className = 'puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl';
+            board.className = 'puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md';
             pieceArea.innerHTML = '';
-            pieceArea.className = 'piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden';
+            pieceArea.className = 'piece-area bg-white border-2 border-blue-500 rounded-lg shadow-md relative overflow-hidden';
             message.textContent = '';
             message.classList.add('hidden');
             timeDisplay.textContent = '';
@@ -392,7 +397,7 @@
                                 const maxX = pieceArea.offsetWidth - pieceWidth;
                                 const maxY = pieceArea.offsetHeight - pieceHeight;
                                 existingPiece.style.left = `${Math.random() * maxX}px`;
-                                existingPiece.style.top = `${Math.random() * maxY}px`;
+                                piece.style.top = `${Math.random() * maxY}px`;
                                 targetCell.appendChild(piece);
                                 placedPieces[cellIndex] = pieceIndex;
                                 piece.style.position = 'static';
@@ -461,6 +466,9 @@
             e.preventDefault();
             loadImageAndCreatePuzzle();
         });
+
+        // 窗口大小改變時重新調整
+        window.addEventListener('resize', loadImageAndCreatePuzzle);
 
         loadImageAndCreatePuzzle();
     </script>
