@@ -31,6 +31,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 浮動效果 */
             z-index: 10;
         }
+        .puzzle-piece.disabled {
+            pointer-events: none; /* 禁用交互 */
+        }
         .completed-animation {
             animation: complete 1s ease-in-out;
         }
@@ -69,12 +72,18 @@
             background-color: #3b82f6;
             transition: width 0.3s ease;
         }
+        .final-image {
+            max-width: 80%;
+            max-height: 60vh;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
     <div class="container flex justify-center p-2 relative" id="gameContainer">
         <div class="puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md hidden" id="puzzleBoard"></div>
         <div class="absolute top-2 right-2 flex flex-col gap-2 z-20">
+            <div id="levelDisplay" class="text-base text-gray-700 bg-white bg-opacity-80 px-2 py-1 rounded">第 1 關 / 5</div>
             <button id="zoomInButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">+</button>
             <button id="zoomOutButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">−</button>
         </div>
@@ -87,65 +96,112 @@
     </div>
     <div id="message" class="text-lg text-green-600 text-center mt-2 hidden"></div>
     <div id="swapCountDisplay" class="text-base text-gray-700 text-center mt-1 hidden"></div>
-    <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm hidden">重新遊戲</button>
+    <button id="nextLevelButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm hidden">下一關</button>
+    <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm hidden">重新開始</button>
+    <div id="finalScreen" class="flex flex-col items-center justify-center hidden">
+        <img id="finalImage" src="images/finish.png" class="final-image" alt="完成圖片">
+        <div id="finalMessage" class="text-lg text-green-600 text-center mt-2"></div>
+        <div id="totalSwapCountDisplay" class="text-base text-gray-700 text-center mt-1"></div>
+        <button id="playAgainButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm">再次遊玩</button>
+    </div>
 
     <script>
         const board = document.getElementById('puzzleBoard');
         const gameContainer = document.getElementById('gameContainer');
         const message = document.getElementById('message');
         const swapCountDisplay = document.getElementById('swapCountDisplay');
+        const nextLevelButton = document.getElementById('nextLevelButton');
         const restartButton = document.getElementById('restartButton');
         const zoomInButton = document.getElementById('zoomInButton');
         const zoomOutButton = document.getElementById('zoomOutButton');
         const progressContainer = document.getElementById('progressContainer');
         const progressBar = document.getElementById('progressBar');
-        const totalPieces = 16;
+        const levelDisplay = document.getElementById('levelDisplay');
+        const finalScreen = document.getElementById('finalScreen');
+        const finalMessage = document.getElementById('finalMessage');
+        const totalSwapCountDisplay = document.getElementById('totalSwapCountDisplay');
+        const playAgainButton = document.getElementById('playAgainButton');
+        const finalImage = document.getElementById('finalImage');
+        const levels = [
+            { size: 2, pieces: 4 },  // Level 1: 2x2
+            { size: 3, pieces: 9 },  // Level 2: 3x3
+            { size: 4, pieces: 16 }, // Level 3: 4x4
+            { size: 5, pieces: 25 }, // Level 4: 5x5
+            { size: 6, pieces: 36 }  // Level 5: 6x6
+        ];
+        let currentLevel = 0;
+        let totalSwapCount = 0;
+        let swapCount = 0;
         let pieces = [];
-        let placedPieces = new Array(totalPieces).fill(null);
+        let placedPieces = [];
         let pieceWidth = 100;
         let pieceHeight = 100;
         let imagePath = '';
-        let swapCount = 0;
         let scaleFactor = 1;
         let selectedPiece = null;
+        let availableImages = [];
+        let usedImages = [];
 
         async function checkAvailableImages() {
-            let availableImages = [];
+            let images = [];
             let i = 1;
-            const maxAttempts = 1000; // 防止無限循環，設置合理上限
+            const maxAttempts = 1000;
             while (i <= maxAttempts) {
                 const imgName = `${i.toString().padStart(3, '0')}.png`;
                 try {
                     const response = await fetch(`images/${imgName}`, { method: 'HEAD' });
                     if (response.ok) {
-                        availableImages.push(imgName);
+                        images.push(imgName);
                         i++;
                     } else {
-                        break; // 遇到不存在的圖片，停止檢查
+                        break;
                     }
                 } catch (error) {
                     console.log(`圖片 ${imgName} 檢查失敗:`, error);
-                    break; // 網絡錯誤或其他問題，停止檢查
+                    break;
                 }
             }
-            return availableImages;
+            // 檢查 finish.png
+            try {
+                const response = await fetch(`images/finish.png`, { method: 'HEAD' });
+                if (!response.ok) {
+                    console.warn('finish.png 不存在，將在最終畫面顯示文字訊息');
+                }
+            } catch (error) {
+                console.warn('檢查 finish.png 失敗:', error);
+            }
+            return images;
         }
 
         async function loadImageAndCreatePuzzle() {
-            const availableImages = await checkAvailableImages();
             if (availableImages.length === 0) {
-                message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
-                message.classList.remove('hidden');
-                progressContainer.classList.add('hidden');
-                return;
+                availableImages = await checkAvailableImages();
+                if (availableImages.length === 0) {
+                    message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
+                    message.classList.remove('hidden');
+                    progressContainer.classList.add('hidden');
+                    return;
+                }
             }
-            const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+
+            // 選擇未使用的圖片
+            let unusedImages = availableImages.filter(img => !usedImages.includes(img));
+            if (unusedImages.length === 0) {
+                usedImages = []; // 重置已使用圖片
+                unusedImages = availableImages;
+            }
+            const randomImage = unusedImages[Math.floor(Math.random() * unusedImages.length)];
+            usedImages.push(randomImage);
             imagePath = `images/${randomImage}`;
 
             // 重置進度條
             progressBar.style.width = '0%';
             progressContainer.classList.remove('hidden');
             board.classList.add('hidden');
+            finalScreen.classList.add('hidden');
+
+            // 更新關卡顯示
+            levelDisplay.textContent = `第 ${currentLevel + 1} 關 / ${levels.length}`;
 
             // 使用fetch加載圖片並跟踪進度
             try {
@@ -182,14 +238,15 @@
                     let imgWidth = img.width;
                     let imgHeight = img.height;
 
-                    // 適應手機和iPad屏幕，最大化顯示單個框框
-                    const maxContainerWidth = window.innerWidth - 16; // 考慮4px邊距*2 + 8px內邊距
-                    const totalWidth = imgWidth + 8; // 考慮邊框
+                    // 適應手機和iPad屏幕
+                    const maxContainerWidth = window.innerWidth - 16;
+                    const totalWidth = imgWidth + 8;
                     scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
                     imgWidth *= scaleFactor;
                     imgHeight *= scaleFactor;
-                    pieceWidth = imgWidth / 4;
-                    pieceHeight = imgHeight / 4;
+                    const gridSize = levels[currentLevel].size;
+                    pieceWidth = imgWidth / gridSize;
+                    pieceHeight = imgHeight / gridSize;
 
                     board.style.width = `${imgWidth}px`;
                     board.style.height = `${imgHeight}px`;
@@ -198,11 +255,11 @@
                     gameContainer.style.minHeight = `${imgHeight}px`;
 
                     // 確保垂直居中
-                    const totalHeight = imgHeight * scaleFactor + 60; // 考慮訊息和按鈕
+                    const totalHeight = imgHeight * scaleFactor + 60;
                     document.body.style.minHeight = `${totalHeight}px`;
 
                     createPuzzle();
-                    URL.revokeObjectURL(img.src); // 釋放內存
+                    URL.revokeObjectURL(img.src);
                 };
                 img.onerror = () => {
                     message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
@@ -224,17 +281,19 @@
             message.classList.add('hidden');
             swapCountDisplay.textContent = '';
             swapCountDisplay.classList.add('hidden');
+            nextLevelButton.classList.add('hidden');
             restartButton.classList.add('hidden');
-            placedPieces.fill(null);
+            placedPieces = new Array(levels[currentLevel].pieces).fill(null);
             swapCount = 0;
             selectedPiece = null;
 
+            const gridSize = levels[currentLevel].size;
             board.style.display = 'grid';
-            board.style.gridTemplateColumns = 'repeat(4, 1fr)';
-            board.style.gridTemplateRows = 'repeat(4, 1fr)';
+            board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            board.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 
             // 創建格子
-            for (let i = 0; i < totalPieces; i++) {
+            for (let i = 0; i < levels[currentLevel].pieces; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'puzzle-cell border border-gray-300';
                 cell.dataset.index = i;
@@ -244,16 +303,16 @@
             }
 
             // 隨機排列索引
-            const indices = [...Array(totalPieces).keys()];
+            const indices = [...Array(levels[currentLevel].pieces).keys()];
             shuffleArray(indices);
 
             // 創建並放置拼圖塊
-            for (let i = 0; i < totalPieces; i++) {
+            for (let i = 0; i < levels[currentLevel].pieces; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
                 piece.dataset.index = i;
-                const row = Math.floor(i / 4);
-                const col = i % 4;
+                const row = Math.floor(i / gridSize);
+                const col = i % gridSize;
                 piece.style.width = `${pieceWidth}px`;
                 piece.style.height = `${pieceHeight}px`;
                 piece.style.backgroundImage = `url(${imagePath})`;
@@ -284,7 +343,7 @@
 
         function handlePieceClick(e) {
             const piece = e.target;
-            if (!piece.classList.contains('puzzle-piece')) return;
+            if (!piece.classList.contains('puzzle-piece') || piece.classList.contains('disabled')) return;
 
             if (!selectedPiece) {
                 // 選擇第一張圖
@@ -313,6 +372,7 @@
 
                 // 增加交換次數
                 swapCount++;
+                totalSwapCount++;
 
                 // 移除選擇狀態
                 firstPiece.classList.remove('selected');
@@ -326,29 +386,61 @@
         function checkCompletion() {
             const isComplete = placedPieces.every((piece, index) => piece === index);
             if (isComplete) {
-                message.textContent = '恭喜！拼圖完成！';
+                // 禁用拼圖交互
+                pieces.forEach(piece => piece.classList.add('disabled'));
+                message.textContent = `恭喜！第 ${currentLevel + 1} 關完成！`;
                 message.classList.remove('hidden');
                 message.classList.add('fade-in');
-                swapCountDisplay.textContent = `交換次數：${swapCount} 次`;
+                swapCountDisplay.textContent = `本關交換次數：${swapCount} 次`;
                 swapCountDisplay.classList.remove('hidden');
                 swapCountDisplay.classList.add('fade-in');
-                restartButton.classList.remove('hidden');
-                restartButton.classList.add('fade-in');
+                if (currentLevel < levels.length - 1) {
+                    nextLevelButton.classList.remove('hidden');
+                    nextLevelButton.classList.add('fade-in');
+                } else {
+                    showFinalScreen();
+                }
                 board.classList.add('completed-animation');
             }
         }
 
+        async function showFinalScreen() {
+            board.classList.add('hidden');
+            nextLevelButton.classList.add('hidden');
+            gameContainer.classList.add('hidden');
+            finalScreen.classList.remove('hidden');
+            finalMessage.textContent = '恭喜完成所有關卡！';
+            finalMessage.classList.add('fade-in');
+            totalSwapCountDisplay.textContent = `總交換次數：${totalSwapCount} 次`;
+            totalSwapCountDisplay.classList.add('fade-in');
+            playAgainButton.classList.remove('hidden');
+            playAgainButton.classList.add('fade-in');
+
+            // 嘗試加載 finish.png
+            try {
+                const response = await fetch(`images/finish.png`);
+                if (response.ok) {
+                    finalImage.src = 'images/finish.png';
+                } else {
+                    finalImage.classList.add('hidden');
+                }
+            } catch (error) {
+                console.warn('無法加載 finish.png:', error);
+                finalImage.classList.add('hidden');
+            }
+        }
+
         function zoomIn() {
-            scaleFactor = Math.min(scaleFactor + 0.1, 2.0); // 最大縮放2倍
+            scaleFactor = Math.min(scaleFactor + 0.1, 2.0);
             gameContainer.style.transform = `scale(${scaleFactor})`;
-            const totalHeight = (board.offsetHeight * scaleFactor) + 60; // 更新高度
+            const totalHeight = (board.offsetHeight * scaleFactor) + 60;
             document.body.style.minHeight = `${totalHeight}px`;
         }
 
         function zoomOut() {
-            scaleFactor = Math.max(scaleFactor - 0.1, 0.5); // 最小縮放0.5倍
+            scaleFactor = Math.max(scaleFactor - 0.1, 0.5);
             gameContainer.style.transform = `scale(${scaleFactor})`;
-            const totalHeight = (board.offsetHeight * scaleFactor) + 60; // 更新高度
+            const totalHeight = (board.offsetHeight * scaleFactor) + 60;
             document.body.style.minHeight = `${totalHeight}px`;
         }
 
@@ -364,21 +456,65 @@
             zoomOut();
         });
 
-        restartButton.addEventListener('click', () => {
-            scaleFactor = 1; // 重置縮放
+        nextLevelButton.addEventListener('click', () => {
+            currentLevel++;
+            scaleFactor = 1;
             selectedPiece = null;
+            loadImageAndCreatePuzzle();
+        });
+
+        nextLevelButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            currentLevel++;
+            scaleFactor = 1;
+            selectedPiece = null;
+            loadImageAndCreatePuzzle();
+        });
+
+        restartButton.addEventListener('click', () => {
+            currentLevel = 0;
+            totalSwapCount = 0;
+            scaleFactor = 1;
+            selectedPiece = null;
+            usedImages = [];
             loadImageAndCreatePuzzle();
         });
 
         restartButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            scaleFactor = 1; // 重置縮放
+            currentLevel = 0;
+            totalSwapCount = 0;
+            scaleFactor = 1;
             selectedPiece = null;
+            usedImages = [];
+            loadImageAndCreatePuzzle();
+        });
+
+        playAgainButton.addEventListener('click', () => {
+            currentLevel = 0;
+            totalSwapCount = 0;
+            scaleFactor = 1;
+            selectedPiece = null;
+            usedImages = [];
+            finalScreen.classList.add('hidden');
+            gameContainer.classList.remove('hidden');
+            loadImageAndCreatePuzzle();
+        });
+
+        playAgainButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            currentLevel = 0;
+            totalSwapCount = 0;
+            scaleFactor = 1;
+            selectedPiece = null;
+            usedImages = [];
+            finalScreen.classList.add('hidden');
+            gameContainer.classList.remove('hidden');
             loadImageAndCreatePuzzle();
         });
 
         window.addEventListener('resize', () => {
-            scaleFactor = 1; // 重置縮放
+            scaleFactor = 1;
             selectedPiece = null;
             loadImageAndCreatePuzzle();
         });
