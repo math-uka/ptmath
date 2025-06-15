@@ -9,25 +9,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+            flex-direction: column;
         }
         .container {
             display: flex;
             gap: 20px;
         }
         .puzzle-board, .piece-area {
-            width: 400px;
-            height: 400px;
             border: 2px solid #333;
             background-color: #fff;
         }
         .puzzle-board {
             display: grid;
-            grid-template-columns: repeat(4, 100px);
-            grid-template-rows: repeat(4, 100px);
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
         }
         .piece-area {
             display: flex;
@@ -37,15 +36,11 @@
             box-sizing: border-box;
         }
         .puzzle-piece {
-            width: 100px;
-            height: 100px;
-            background-size: 400px 400px;
+            background-size: cover;
             cursor: move;
             user-select: none;
         }
         .puzzle-cell {
-            width: 100px;
-            height: 100px;
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
@@ -81,6 +76,30 @@
 
         let pieces = [];
         let placedPieces = new Array(totalPieces).fill(null);
+        let pieceWidth = 100;
+        let pieceHeight = 100;
+
+        function loadImageAndCreatePuzzle() {
+            const img = new Image();
+            img.src = imagePath;
+            img.onload = () => {
+                // 動態設置拼圖板和拼圖塊尺寸
+                const imgWidth = img.width;
+                const imgHeight = img.height;
+                pieceWidth = imgWidth / 4;
+                pieceHeight = imgHeight / 4;
+
+                board.style.width = `${imgWidth}px`;
+                board.style.height = `${imgHeight}px`;
+                pieceArea.style.width = `${imgWidth}px`;
+                pieceArea.style.height = `${imgHeight}px`;
+
+                createPuzzle();
+            };
+            img.onerror = () => {
+                message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
+            };
+        }
 
         function createPuzzle() {
             pieces = [];
@@ -93,6 +112,8 @@
                 const cell = document.createElement('div');
                 cell.className = 'puzzle-cell';
                 cell.dataset.index = i;
+                cell.style.width = `${pieceWidth}px`;
+                cell.style.height = `${pieceHeight}px`;
                 cell.addEventListener('dragover', dragOver);
                 cell.addEventListener('drop', drop);
                 board.appendChild(cell);
@@ -108,8 +129,11 @@
                 piece.dataset.index = i;
                 const row = Math.floor(i / 4);
                 const col = i % 4;
+                piece.style.width = `${pieceWidth}px`;
+                piece.style.height = `${pieceHeight}px`;
                 piece.style.backgroundImage = `url(${imagePath})`;
-                piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+                piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
                 piece.addEventListener('dragstart', dragStart);
                 pieceArea.appendChild(piece);
                 pieces.push(piece);
@@ -160,7 +184,7 @@
             document.querySelectorAll('.puzzle-cell').forEach(cell => cell.classList.remove('over'));
         });
 
-        createPuzzle();
+        loadImageAndCreatePuzzle();
     </script>
 </body>
 </html>
