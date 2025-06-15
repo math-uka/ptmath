@@ -19,20 +19,17 @@
         }
         .puzzle-piece {
             background-size: cover;
-            cursor: move;
+            cursor: pointer;
             user-select: none;
-            position: absolute;
-            transition: z-index 0.1s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .puzzle-cell {
             box-sizing: border-box;
         }
-        .puzzle-piece.dragging {
-            opacity: 0.5;
+        .puzzle-piece.selected {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 浮動效果 */
             z-index: 10;
-        }
-        .puzzle-cell.over, .piece-area.over {
-            background-color: #e5e7eb;
         }
         .completed-animation {
             animation: complete 1s ease-in-out;
@@ -60,9 +57,8 @@
     </style>
 </head>
 <body>
-    <div class="container flex gap-2 justify-center p-2 relative" id="gameContainer">
+    <div class="container flex justify-center p-2 relative" id="gameContainer">
         <div class="puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md" id="puzzleBoard"></div>
-        <div class="piece-area bg-white border-2 border-blue-500 rounded-lg shadow-md relative overflow-hidden" id="pieceArea"></div>
         <div class="absolute top-2 right-2 flex flex-col gap-2 z-20">
             <button id="zoomInButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">+</button>
             <button id="zoomOutButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">−</button>
@@ -74,7 +70,6 @@
 
     <script>
         const board = document.getElementById('puzzleBoard');
-        const pieceArea = document.getElementById('pieceArea');
         const gameContainer = document.getElementById('gameContainer');
         const message = document.getElementById('message');
         const timeDisplay = document.getElementById('timeDisplay');
@@ -90,6 +85,7 @@
         let imagePath = '';
         let startTime = null;
         let scaleFactor = 1;
+        let selectedPiece = null;
 
         async function checkAvailableImages() {
             let availableImages = [];
@@ -123,10 +119,9 @@
                 let imgWidth = img.width;
                 let imgHeight = img.height;
 
-                // 適應手機和iPad屏幕，最大化顯示兩個框框
-                const maxContainerWidth = window.innerWidth - 16; // 考慮4px邊距*2 + 8px間距
-                const gap = 8; // gap-2 = 8px
-                const totalWidth = imgWidth * 2 + gap + 8; // 考慮兩框的邊框
+                // 適應手機和iPad屏幕，最大化顯示單個框框
+                const maxContainerWidth = window.innerWidth - 16; // 考慮4px邊距*2 + 8px內邊距
+                const totalWidth = imgWidth + 8; // 考慮邊框
                 scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
                 imgWidth *= scaleFactor;
                 imgHeight *= scaleFactor;
@@ -135,8 +130,6 @@
 
                 board.style.width = `${imgWidth}px`;
                 board.style.height = `${imgHeight}px`;
-                pieceArea.style.width = `${imgWidth}px`;
-                pieceArea.style.height = `${imgHeight}px`;
                 gameContainer.style.transform = `scale(${scaleFactor})`;
                 gameContainer.style.transformOrigin = 'center top';
                 gameContainer.style.minHeight = `${imgHeight}px`;
@@ -158,8 +151,6 @@
             pieces = [];
             board.innerHTML = '';
             board.className = 'puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md';
-            pieceArea.innerHTML = '';
-            pieceArea.className = 'piece-area bg-white border-2 border-blue-500 rounded-lg shadow-md relative overflow-hidden';
             message.textContent = '';
             message.classList.add('hidden');
             timeDisplay.textContent = '';
@@ -171,29 +162,24 @@
             board.style.gridTemplateColumns = 'repeat(4, 1fr)';
             board.style.gridTemplateRows = 'repeat(4, 1fr)';
 
+            // 創建格子
             for (let i = 0; i < totalPieces; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'puzzle-cell border border-gray-300';
                 cell.dataset.index = i;
                 cell.style.width = `${pieceWidth}px`;
                 cell.style.height = `${pieceHeight}px`;
-                cell.addEventListener('dragover', dragOver);
-                cell.addEventListener('drop', drop);
-                cell.addEventListener('touchstart', touchStart, { passive: false });
-                cell.addEventListener('touchmove', touchMove, { passive: false });
-                cell.addEventListener('touchend', touchEnd, { passive: false });
                 board.appendChild(cell);
             }
 
+            // 隨機排列索引
             const indices = [...Array(totalPieces).keys()];
             shuffleArray(indices);
 
-            const positions = generateRandomPositions(pieceArea.offsetWidth - pieceWidth, pieceArea.offsetHeight - pieceHeight, totalPieces);
-
+            // 創建並放置拼圖塊
             for (let i = 0; i < totalPieces; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
-                piece.draggable = true;
                 piece.dataset.index = i;
                 const row = Math.floor(i / 4);
                 const col = i % 4;
@@ -202,57 +188,20 @@
                 piece.style.backgroundImage = `url(${imagePath})`;
                 piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
                 piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
-                piece.style.left = `${positions[i].x}px`;
-                piece.style.top = `${positions[i].y}px`;
 
-                piece.addEventListener('dragstart', dragStart);
-                piece.addEventListener('touchstart', touchStart, { passive: false });
-                piece.addEventListener('touchmove', touchMove, { passive: false });
-                piece.addEventListener('touchend', touchEnd, { passive: false });
-                pieceArea.appendChild(piece);
+                // 將拼圖塊放入隨機格子
+                const cellIndex = indices[i];
+                board.children[cellIndex].appendChild(piece);
+                placedPieces[cellIndex] = i;
+
+                // 添加點擊事件
+                piece.addEventListener('click', handlePieceClick);
+                piece.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    handlePieceClick(e);
+                });
                 pieces.push(piece);
             }
-
-            pieceArea.addEventListener('dragover', dragOver);
-            pieceArea.addEventListener('drop', dropToPieceArea);
-            pieceArea.addEventListener('touchstart', touchStart, { passive: false });
-            pieceArea.addEventListener('touchmove', touchMove, { passive: false });
-            pieceArea.addEventListener('touchend', touchEnd, { passive: false });
-        }
-
-        function generateRandomPositions(maxX, maxY, count) {
-            const positions = [];
-            const gridSize = Math.ceil(Math.sqrt(count));
-            const cellWidth = maxX / gridSize;
-            const cellHeight = maxY / gridSize;
-            const gridCells = [];
-
-            for (let row = 0; row < gridSize; row++) {
-                for (let col = 0; col < gridSize; col++) {
-                    gridCells.push({ row, col });
-                }
-            }
-
-            shuffleArray(gridCells);
-
-            for (let i = 0; i < Math.min(count, gridCells.length); i++) {
-                const { row, col } = gridCells[i];
-                const x = col * cellWidth + Math.random() * (cellWidth - pieceWidth / 2);
-                const y = row * cellHeight + Math.random() * (cellHeight - pieceHeight / 2);
-                positions.push({
-                    x: Math.max(0, Math.min(x, maxX)),
-                    y: Math.max(0, Math.min(y, maxY))
-                });
-            }
-
-            while (positions.length < count) {
-                positions.push({
-                    x: Math.random() * maxX,
-                    y: Math.random() * maxY
-                });
-            }
-
-            return positions;
         }
 
         function shuffleArray(array) {
@@ -262,194 +211,47 @@
             }
         }
 
-        let draggedPiece = null;
-        let touchStartPos = { x: 0, y: 0 };
-        let pieceStartPos = { x: 0, y: 0 };
+        function handlePieceClick(e) {
+            const piece = e.target;
+            if (!piece.classList.contains('puzzle-piece')) return;
 
-        function dragStart(e) {
-            draggedPiece = e.target;
-            draggedPiece.classList.add('dragging');
-            e.dataTransfer.setData('text/plain', draggedPiece.dataset.index);
-            const parent = draggedPiece.parentElement;
-            if (parent.classList.contains('puzzle-cell')) {
-                const cellIndex = parent.dataset.index;
-                placedPieces[cellIndex] = null;
+            if (!selectedPiece) {
+                // 選擇第一張圖
+                selectedPiece = piece;
+                piece.classList.add('selected');
+            } else if (selectedPiece === piece) {
+                // 點擊同一張圖，取消選擇
+                piece.classList.remove('selected');
+                selectedPiece = null;
+            } else {
+                // 選擇第二張圖，交換位置
+                const firstPiece = selectedPiece;
+                const secondPiece = piece;
+                const firstCell = firstPiece.parentElement;
+                const secondCell = secondPiece.parentElement;
+                const firstIndex = parseInt(firstCell.dataset.index);
+                const secondIndex = parseInt(secondCell.dataset.index);
+
+                // 交換DOM元素
+                firstCell.appendChild(secondPiece);
+                secondCell.appendChild(firstPiece);
+
+                // 更新placedPieces數組
+                placedPieces[firstIndex] = parseInt(secondPiece.dataset.index);
+                placedPieces[secondIndex] = parseInt(firstPiece.dataset.index);
+
+                // 移除選擇狀態
+                firstPiece.classList.remove('selected');
+                selectedPiece = null;
+
+                // 檢查是否完成
+                checkCompletion();
             }
-        }
-
-        function touchStart(e) {
-            e.preventDefault();
-            if (e.target.classList.contains('puzzle-piece')) {
-                draggedPiece = e.target;
-                draggedPiece.classList.add('dragging');
-                const touch = e.touches[0];
-                touchStartPos = {
-                    x: touch.clientX / scaleFactor,
-                    y: touch.clientY / scaleFactor
-                };
-                pieceStartPos = {
-                    x: parseFloat(draggedPiece.style.left || 0),
-                    y: parseFloat(draggedPiece.style.top || 0)
-                };
-                if (draggedPiece.parentElement.classList.contains('puzzle-cell')) {
-                    const cellIndex = draggedPiece.parentElement.dataset.index;
-                    placedPieces[cellIndex] = null;
-                }
-            }
-        }
-
-        function dragOver(e) {
-            e.preventDefault();
-            e.target.classList.add('over');
-        }
-
-        function touchMove(e) {
-            e.preventDefault();
-            if (draggedPiece) {
-                const touch = e.touches[0];
-                const currentX = touch.clientX / scaleFactor;
-                const currentY = touch.clientY / scaleFactor;
-                const dx = currentX - touchStartPos.x;
-                const dy = currentY - touchStartPos.y;
-                draggedPiece.style.left = `${pieceStartPos.x + dx}px`;
-                draggedPiece.style.top = `${pieceStartPos.x + dy}px`;
-            }
-        }
-
-        function drop(e) {
-            e.preventDefault();
-            e.target.classList.remove('over');
-            const pieceIndex = e.dataTransfer.getData('text');
-            const piece = pieces[pieceIndex];
-            const cellIndex = e.target.dataset.index;
-
-            if (cellIndex !== undefined) {
-                const targetCell = e.target.classList.contains('puzzle-cell') ? e.target : e.target.closest('.puzzle-cell');
-                if (targetCell) {
-                    if (placedPieces[cellIndex] === null) {
-                        targetCell.appendChild(piece);
-                        piece.style.position = 'static';
-                        placedPieces[cellIndex] = pieceIndex;
-                    } else {
-                        const existingPieceIndex = placedPieces[cellIndex];
-                        const existingPiece = pieces[existingPieceIndex];
-                        const sourceParent = piece.parentElement;
-
-                        if (sourceParent.classList.contains('puzzle-cell')) {
-                            const sourceCellIndex = sourceParent.dataset.index;
-                            sourceParent.appendChild(existingPiece);
-                            placedPieces[sourceCellIndex] = existingPieceIndex;
-                            targetCell.appendChild(piece);
-                            placedPieces[cellIndex] = pieceIndex;
-                            piece.style.position = 'static';
-                            existingPiece.style.position = 'static';
-                        } else {
-                            pieceArea.appendChild(existingPiece);
-                            existingPiece.style.position = 'absolute';
-                            const maxX = pieceArea.offsetWidth - pieceWidth;
-                            const maxY = pieceArea.offsetHeight - pieceHeight;
-                            existingPiece.style.left = `${Math.random() * maxX}px`;
-                            existingPiece.style.top = `${Math.random() * maxY}px`;
-                            targetCell.appendChild(piece);
-                            placedPieces[cellIndex] = pieceIndex;
-                            piece.style.position = 'static';
-                        }
-                    }
-                    checkCompletion();
-                }
-            }
-            draggedPiece.classList.remove('dragging');
-            draggedPiece = null;
-        }
-
-        function touchEnd(e) {
-            e.preventDefault();
-            if (draggedPiece) {
-                const touch = e.changedTouches[0];
-                const clientX = touch.clientX / scaleFactor;
-                const clientY = touch.clientY / scaleFactor;
-                const pieceIndex = draggedPiece.dataset.index;
-                const piece = pieces[pieceIndex];
-
-                const boardRect = board.getBoundingClientRect();
-                const scaledBoardRect = {
-                    left: boardRect.left / scaleFactor,
-                    top: boardRect.top / scaleFactor,
-                    right: boardRect.right / scaleFactor,
-                    bottom: boardRect.bottom / scaleFactor
-                };
-                if (clientX >= scaledBoardRect.left && clientX <= scaledBoardRect.right &&
-                    clientY >= scaledBoardRect.top && clientY <= scaledBoardRect.bottom) {
-                    const cellSizeX = pieceWidth;
-                    const cellSizeY = pieceHeight;
-                    const col = Math.floor((clientX - scaledBoardRect.left) / cellSizeX);
-                    const row = Math.floor((clientY - scaledBoardRect.top) / cellSizeY);
-                    const cellIndex = row * 4 + col;
-
-                    if (cellIndex >= 0 && cellIndex < totalPieces) {
-                        const targetCell = board.children[cellIndex];
-                        if (placedPieces[cellIndex] === null) {
-                            targetCell.appendChild(piece);
-                            piece.style.position = 'static';
-                            placedPieces[cellIndex] = pieceIndex;
-                        } else {
-                            const existingPieceIndex = placedPieces[cellIndex];
-                            const existingPiece = pieces[existingPieceIndex];
-                            const sourceParent = piece.parentElement;
-
-                            if (sourceParent.classList.contains('puzzle-cell')) {
-                                const sourceCellIndex = sourceParent.dataset.index;
-                                sourceParent.appendChild(existingPiece);
-                                placedPieces[sourceCellIndex] = existingPieceIndex;
-                                targetCell.appendChild(piece);
-                                placedPieces[cellIndex] = pieceIndex;
-                                piece.style.position = 'static';
-                                existingPiece.style.position = 'static';
-                            } else {
-                                pieceArea.appendChild(existingPiece);
-                                existingPiece.style.position = 'absolute';
-                                const maxX = pieceArea.offsetWidth - pieceWidth;
-                                const maxY = pieceArea.offsetHeight - pieceHeight;
-                                existingPiece.style.left = `${Math.random() * maxX}px`;
-                                existingPiece.style.top = `${Math.random() * maxY}px`;
-                                targetCell.appendChild(piece);
-                                placedPieces[cellIndex] = pieceIndex;
-                                piece.style.position = 'static';
-                            }
-                        }
-                        checkCompletion();
-                    }
-                } else {
-                    pieceArea.appendChild(piece);
-                    piece.style.position = 'absolute';
-                    const maxX = pieceArea.offsetWidth - pieceWidth;
-                    const maxY = pieceArea.offsetHeight - pieceHeight;
-                    piece.style.left = `${Math.random() * maxX}px`;
-                    piece.style.top = `${Math.random() * maxY}px`;
-                }
-
-                draggedPiece.classList.remove('dragging');
-                document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
-                draggedPiece = null;
-            }
-        }
-
-        function dropToPieceArea(e) {
-            e.preventDefault();
-            e.target.classList.remove('over');
-            const pieceIndex = e.dataTransfer.getData('text');
-            const piece = pieces[pieceIndex];
-            pieceArea.appendChild(piece);
-            piece.style.position = 'absolute';
-            const maxX = pieceArea.offsetWidth - pieceWidth;
-            const maxY = pieceArea.offsetHeight - pieceHeight;
-            piece.style.left = `${Math.random() * maxX}px`;
-            piece.style.top = `${Math.random() * maxY}px`;
         }
 
         function checkCompletion() {
             const isComplete = placedPieces.every((piece, index) => piece == index);
-            if (isComplete && placedPieces.every(piece => piece !== null)) {
+            if (isComplete) {
                 const endTime = new Date();
                 const timeTaken = Math.floor((endTime - startTime) / 1000);
                 const minutes = Math.floor(timeTaken / 60);
@@ -492,25 +294,22 @@
             zoomOut();
         });
 
-        document.addEventListener('dragend', (e) => {
-            e.target.classList.remove('dragging');
-            document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
-            draggedPiece = null;
-        });
-
         restartButton.addEventListener('click', () => {
             scaleFactor = 1; // 重置縮放
+            selectedPiece = null;
             loadImageAndCreatePuzzle();
         });
 
         restartButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
             scaleFactor = 1; // 重置縮放
+            selectedPiece = null;
             loadImageAndCreatePuzzle();
         });
 
         window.addEventListener('resize', () => {
             scaleFactor = 1; // 重置縮放
+            selectedPiece = null;
             loadImageAndCreatePuzzle();
         });
 
