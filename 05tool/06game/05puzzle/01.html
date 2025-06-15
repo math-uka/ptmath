@@ -9,6 +9,8 @@
         body {
             overflow: hidden; /* 禁用頁面滾動 */
             touch-action: none; /* 防止觸控縮放或滾動 */
+            margin: 0; /* 移除body邊距 */
+            background: transparent; /* 最小化底色 */
         }
         .puzzle-piece {
             background-size: cover;
@@ -44,14 +46,14 @@
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 to-gray-100 font-sans">
-    <div class="container flex gap-6 justify-center p-4" id="gameContainer">
+<body class="flex items-center justify-center min-h-screen">
+    <div class="container flex gap-2 justify-center p-2" id="gameContainer">
         <div class="puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl" id="puzzleBoard"></div>
         <div class="piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden" id="pieceArea"></div>
     </div>
-    <div id="message" class="text-2xl text-green-600 text-center mt-4 hidden"></div>
-    <div id="timeDisplay" class="text-xl text-gray-700 text-center mt-2 hidden"></div>
-    <button id="restartButton" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 hidden">重新遊戲</button>
+    <div id="message" class="text-xl text-green-600 text-center mt-2 hidden"></div>
+    <div id="timeDisplay" class="text-lg text-gray-700 text-center mt-1 hidden"></div>
+    <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-base hidden">重新遊戲</button>
 
     <script>
         const board = document.getElementById('puzzleBoard');
@@ -102,9 +104,10 @@
                 let imgWidth = img.width;
                 let imgHeight = img.height;
 
-                // 適應iPad屏幕（假設最大寬度1024px）
-                const maxContainerWidth = Math.min(window.innerWidth - 32, 1024);
-                const totalWidth = imgWidth * 2 + 24; // 兩個區域 + 間距
+                // 適應iPad和手機屏幕
+                const maxContainerWidth = window.innerWidth - 8; // 考慮最小邊距
+                const gap = 8; // gap-2 = 8px
+                const totalWidth = imgWidth * 2 + gap;
                 scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
                 imgWidth *= scaleFactor;
                 imgHeight *= scaleFactor;
@@ -117,7 +120,11 @@
                 pieceArea.style.height = `${imgHeight}px`;
                 gameContainer.style.transform = `scale(${scaleFactor})`;
                 gameContainer.style.transformOrigin = 'center top';
-                gameContainer.style.marginBottom = `${imgHeight * scaleFactor + 80}px`; // 確保底部內容可見
+                gameContainer.style.minHeight = `${imgHeight}px`;
+
+                // 確保垂直居中
+                const totalHeight = imgHeight * scaleFactor + 60; // 考慮訊息和按鈕
+                document.body.style.minHeight = `${totalHeight}px`;
 
                 createPuzzle();
                 startTime = new Date();
