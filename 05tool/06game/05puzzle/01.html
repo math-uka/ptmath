@@ -44,9 +44,8 @@
         }
     </style>
 </head>
-<body class="flex flex-col items-center min-h-screen bg-gradient-to-b from-blue-100 to-gray-100 font-sans">
-    <h1 class="text-4xl font-bold text-gray-800 mt-6 mb-4">拼圖遊戲</h1>
-    <div class="container flex gap-6 justify-center p-6" id="gameContainer">
+<body class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 to-gray-100 font-sans">
+    <div class="container flex gap-6 justify-center p-4" id="gameContainer">
         <div class="puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl" id="puzzleBoard"></div>
         <div class="piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden" id="pieceArea"></div>
     </div>
@@ -103,8 +102,8 @@
                 let imgWidth = img.width;
                 let imgHeight = img.height;
 
-                // 適應iPad屏幕（假設最大寬度1000px）
-                const maxContainerWidth = Math.min(window.innerWidth - 48, 1000);
+                // 適應iPad屏幕（假設最大寬度1024px）
+                const maxContainerWidth = Math.min(window.innerWidth - 32, 1024);
                 const totalWidth = imgWidth * 2 + 24; // 兩個區域 + 間距
                 scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
                 imgWidth *= scaleFactor;
@@ -117,7 +116,8 @@
                 pieceArea.style.width = `${imgWidth}px`;
                 pieceArea.style.height = `${imgHeight}px`;
                 gameContainer.style.transform = `scale(${scaleFactor})`;
-                gameContainer.style.transformOrigin = 'top center';
+                gameContainer.style.transformOrigin = 'center top';
+                gameContainer.style.marginBottom = `${imgHeight * scaleFactor + 80}px`; // 確保底部內容可見
 
                 createPuzzle();
                 startTime = new Date();
@@ -345,7 +345,6 @@
                 const pieceIndex = draggedPiece.dataset.index;
                 const piece = pieces[pieceIndex];
 
-                // 檢查是否放置到拼圖板
                 const boardRect = board.getBoundingClientRect();
                 const scaledBoardRect = {
                     left: boardRect.left / scaleFactor,
