@@ -7,10 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            overflow: hidden; /* 禁用頁面滾動 */
-            touch-action: none; /* 防止觸控縮放或滾動 */
-            margin: 0; /* 移除body邊距 */
-            background: transparent; /* 最小化底色 */
+            overflow: hidden;
+            touch-action: none;
+            margin: 0;
+            background: transparent;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -28,11 +28,11 @@
         }
         .puzzle-piece.selected {
             transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 浮動效果 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             z-index: 10;
         }
         .puzzle-piece.disabled {
-            pointer-events: none; /* 禁用交互 */
+            pointer-events: none;
         }
         .completed-animation {
             animation: complete 1s ease-in-out;
@@ -83,23 +83,26 @@
         }
         .final-overlay {
             position: fixed;
-            bottom: 15%; /* 靠近 Play Again 按鈕 */
-            left: 10%;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 50;
             color: white;
-            font-size: 2rem;
+            font-size: 2rem; /* 調整字體大小，適應不同屏幕 */
             font-weight: bold;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            text-align: left;
+            text-align: center;
         }
         .final-buttons {
             position: fixed;
             bottom: 10%;
-            left: 10%;
+            left: 35%; /* 向左移動 */
+            transform: translateX(-50%);
             z-index: 50;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.5rem; /* 減少間距 */
+            align-items: center; /* 確保內容居中 */
         }
     </style>
 </head>
@@ -126,6 +129,7 @@
         <img id="finalImage" src="images/finish.png" class="final-image" alt="完成圖片">
         <div id="finalOverlay" class="final-overlay"></div>
         <div id="finalButtons" class="final-buttons">
+            <div id="totalSwapDisplay" class="text-lg text-white font-bold text-shadow-lg mb-1">總操作步驟數：0 次</div>
             <button id="playAgainButton" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-lg">再次遊玩</button>
         </div>
     </div>
@@ -147,12 +151,13 @@
         const finalButtons = document.getElementById('finalButtons');
         const playAgainButton = document.getElementById('playAgainButton');
         const finalImage = document.getElementById('finalImage');
+        const totalSwapDisplay = document.getElementById('totalSwapDisplay');
         const levels = [
-            { size: 2, pieces: 4 },  // Level 1: 2x2
-            { size: 3, pieces: 9 },  // Level 2: 3x3
-            { size: 4, pieces: 16 }, // Level 3: 4x4
-            { size: 5, pieces: 25 }, // Level 4: 5x5
-            { size: 6, pieces: 36 }  // Level 5: 6x6
+            { size: 2, pieces: 4 },
+            { size: 3, pieces: 9 },
+            { size: 4, pieces: 16 },
+            { size: 5, pieces: 25 },
+            { size: 6, pieces: 36 }
         ];
         let currentLevel = 0;
         let totalSwapCount = 0;
@@ -188,7 +193,6 @@
                     break;
                 }
             }
-            // 檢查 finish.png
             try {
                 const response = await fetch(`images/finish.png`, { method: 'HEAD' });
                 if (!response.ok) {
@@ -211,26 +215,22 @@
                 }
             }
 
-            // 選擇未使用的圖片
             let unusedImages = availableImages.filter(img => !usedImages.includes(img));
             if (unusedImages.length === 0) {
-                usedImages = []; // 重置已使用圖片
+                usedImages = [];
                 unusedImages = availableImages;
             }
             const randomImage = unusedImages[Math.floor(Math.random() * unusedImages.length)];
             usedImages.push(randomImage);
             imagePath = `images/${randomImage}`;
 
-            // 重置進度條
             progressBar.style.width = '0%';
-            GrimesContainer.classList.remove('hidden');
+            progressContainer.classList.remove('hidden');
             board.classList.add('hidden');
             finalScreen.classList.add('hidden');
 
-            // 更新關卡顯示
             levelDisplay.textContent = `第 ${currentLevel + 1} 關 / ${levels.length}`;
 
-            // 使用fetch加載圖片並跟踪進度
             try {
                 const response = await new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();
@@ -256,7 +256,6 @@
                     xhr.send();
                 });
 
-                // 創建圖片對象
                 const img = new Image();
                 img.src = URL.createObjectURL(response);
                 img.onload = () => {
@@ -282,7 +281,6 @@
             let imgWidth = img.width;
             let imgHeight = img.height;
 
-            // 適應手機和iPad屏幕
             const maxContainerWidth = window.innerWidth - 16;
             const totalWidth = imgWidth + 8;
             scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
@@ -298,11 +296,9 @@
             gameContainer.style.transformOrigin = 'center top';
             gameContainer.style.minHeight = `${imgHeight}px`;
 
-            // 確保垂直居中
             const totalHeight = imgHeight * scaleFactor + 60;
             document.body.style.minHeight = `${totalHeight}px`;
 
-            // 更新拼圖塊尺寸
             pieces.forEach(piece => {
                 piece.style.width = `${pieceWidth}px`;
                 piece.style.height = `${pieceHeight}px`;
@@ -313,7 +309,6 @@
                 piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
             });
 
-            // 更新格子尺寸
             Array.from(board.children).forEach(cell => {
                 cell.style.width = `${pieceWidth}px`;
                 cell.style.height = `${pieceHeight}px`;
@@ -339,7 +334,6 @@
             board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
             board.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 
-            // 創建格子
             for (let i = 0; i < levels[currentLevel].pieces; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'puzzle-cell border border-gray-300';
@@ -349,11 +343,9 @@
                 board.appendChild(cell);
             }
 
-            // 隨機排列索引
             const indices = [...Array(levels[currentLevel].pieces).keys()];
             shuffleArray(indices);
 
-            // 創建並放置拼圖塊
             for (let i = 0; i < levels[currentLevel].pieces; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
@@ -366,12 +358,10 @@
                 piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
                 piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
 
-                // 將拼圖塊放入隨機格子
                 const cellIndex = indices[i];
                 board.children[cellIndex].appendChild(piece);
                 placedPieces[cellIndex] = i;
 
-                // 添加點擊事件
                 piece.addEventListener('click', handlePieceClick);
                 piece.addEventListener('touchstart', (e) => {
                     e.preventDefault();
@@ -393,15 +383,12 @@
             if (!piece.classList.contains('puzzle-piece') || piece.classList.contains('disabled')) return;
 
             if (!selectedPiece) {
-                // 選擇第一張圖
                 selectedPiece = piece;
                 piece.classList.add('selected');
             } else if (selectedPiece === piece) {
-                // 點擊同一張圖，取消選擇
                 piece.classList.remove('selected');
                 selectedPiece = null;
             } else {
-                // 選擇第二張圖，交換位置
                 const firstPiece = selectedPiece;
                 const secondPiece = piece;
                 const firstCell = firstPiece.parentElement;
@@ -409,23 +396,18 @@
                 const firstIndex = parseInt(firstCell.dataset.index);
                 const secondIndex = parseInt(secondCell.dataset.index);
 
-                // 交換DOM元素
                 firstCell.appendChild(secondPiece);
                 secondCell.appendChild(firstPiece);
 
-                // 更新placedPieces數組
                 placedPieces[firstIndex] = parseInt(secondPiece.dataset.index);
                 placedPieces[secondIndex] = parseInt(firstPiece.dataset.index);
 
-                // 增加交換次數
                 swapCount++;
                 totalSwapCount++;
 
-                // 移除選擇狀態
                 firstPiece.classList.remove('selected');
                 selectedPiece = null;
 
-                // 檢查是否完成
                 checkCompletion();
             }
         }
@@ -433,7 +415,6 @@
         function checkCompletion() {
             const isComplete = placedPieces.every((piece, index) => piece === index);
             if (isComplete) {
-                // 禁用拼圖交互
                 pieces.forEach(piece => piece.classList.add('disabled'));
                 message.textContent = `恭喜！第 ${currentLevel + 1} 關完成！`;
                 message.classList.remove('hidden');
@@ -444,7 +425,6 @@
                 if (currentLevel < levels.length - 1) {
                     nextLevelButton.classList.remove('hidden');
                     nextLevelButton.classList.add('fade-in');
-                    // 設置5秒後自動進入下一關
                     autoAdvanceTimer = setTimeout(() => {
                         nextLevelButton.click();
                     }, 5000);
@@ -461,26 +441,28 @@
             gameContainer.classList.add('hidden');
             finalScreen.classList.remove('hidden');
 
-            // 嘗試加載 finish.png
             try {
                 const response = await fetch(`images/finish.png`);
                 if (response.ok) {
                     finalImage.src = 'images/finish.png';
                     finalImage.classList.remove('hidden');
-                    finalOverlay.textContent = `總操作步驟數：${totalSwapCount} 次`;
-                    finalOverlay.classList.remove('hidden');
+                    totalSwapDisplay.textContent = `總操作步驟數：${totalSwapCount} 次`;
+                    finalOverlay.textContent = ''; // 清空原finalOverlay內容
+                    totalSwapDisplay.classList.remove('hidden');
                     finalButtons.classList.remove('hidden');
                 } else {
                     finalImage.classList.add('hidden');
-                    finalOverlay.textContent = `無法加載 finish.png，總操作步驟數：${totalSwapCount} 次`;
-                    finalOverlay.classList.remove('hidden');
+                    totalSwapDisplay.textContent = `無法加載 finish.png，總操作步驟數：${totalSwapCount} 次`;
+                    finalOverlay.textContent = '';
+                    totalSwapDisplay.classList.remove('hidden');
                     finalButtons.classList.remove('hidden');
                 }
             } catch (error) {
                 console.warn('無法加載 finish.png:', error);
                 finalImage.classList.add('hidden');
-                finalOverlay.textContent = `無法加載 finish.png，總操作步驟數：${totalSwapCount} 次`;
-                finalOverlay.classList.remove('hidden');
+                totalSwapDisplay.textContent = `無法加載 finish.png，總操作步驟數：${totalSwapCount} 次`;
+                finalOverlay.textContent = '';
+                totalSwapDisplay.classList.remove('hidden');
                 finalButtons.classList.remove('hidden');
             }
         }
@@ -521,7 +503,7 @@
         });
 
         nextLevelButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            clearTimeout(autoAdvanceTimer);
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
@@ -530,7 +512,7 @@
 
         nextLevelButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            clearTimeout(autoAdvanceTimer);
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
@@ -538,36 +520,36 @@
         });
 
         restartButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            clearTimeout(autoAdvanceTimer);
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
+            cheatCodeCount = 0;
             loadImageAndCreatePuzzle();
         });
 
         restartButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            clearTimeout(autoAdvanceTimer);
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
+            cheatCodeCount = 0;
             loadImageAndCreatePuzzle();
         });
 
         playAgainButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            clearTimeout(autoAdvanceTimer);
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
+            cheatCodeCount = 0;
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
             loadImageAndCreatePuzzle();
@@ -575,29 +557,27 @@
 
         playAgainButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            clearTimeout(autoAdvanceTimer);
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            cheatCodeCount = 0; // 重置作弊碼計數
+            cheatCodeCount = 0;
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
             loadImageAndCreatePuzzle();
         });
 
         window.addEventListener('resize', () => {
-            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            clearTimeout(autoAdvanceTimer);
             if (imagePath && pieces.length > 0) {
-                // 僅調整佈局，保留當前拼圖狀態
                 const img = new Image();
                 img.src = imagePath;
                 img.onload = () => {
                     adjustPuzzleLayout(img);
                 };
             } else {
-                // 如果沒有拼圖，重新加載
                 scaleFactor = 1;
                 selectedPiece = null;
                 loadImageAndCreatePuzzle();
@@ -611,7 +591,7 @@
                     triggerCheatCompletion();
                 }
             } else {
-                cheatCodeCount = 0; // 重置計數如果按了其他鍵
+                cheatCodeCount = 0;
             }
         });
 
