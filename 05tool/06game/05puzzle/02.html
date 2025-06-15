@@ -148,6 +148,8 @@
             border: 2px solid #4CAF50;
             border-radius: 5px;
             margin-bottom: 1rem;
+            color: black;
+            background-color: white;
         }
         #numberPad {
             display: grid;
@@ -271,7 +273,8 @@
         let currentLevel = 0;
         let totalSwapCount = 0;
         let swapCount = 0;
-        let hearts = 5;
+        let totalHearts = 5;
+        let hearts = totalHearts;
         let pieces = [];
         let placedPieces = [];
         let pieceWidth = 100;
@@ -288,7 +291,7 @@
 
         function updateHeartsDisplay() {
             heartsContainer.innerHTML = '';
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < totalHearts; i++) {
                 const heart = document.createElement('span');
                 heart.className = 'heart';
                 heart.textContent = i < hearts ? '❤️' : '🖤';
@@ -332,11 +335,12 @@
         function checkMathAnswer() {
             const userAnswer = parseInt(mathAnswerInput.value) || 0;
             if (userAnswer === mathAnswer) {
-                hearts = Math.min(hearts + 1, 5);
+                totalHearts++;
+                hearts = totalHearts;
                 updateHeartsDisplay();
                 mathModal.style.display = 'none';
                 pieces.forEach(piece => piece.classList.remove('disabled'));
-                mathMessage.textContent = '正確！獲得一顆心心！';
+                mathMessage.textContent = '正確！心心已補滿並增加！';
                 setTimeout(() => {
                     mathModal.style.display = 'none';
                 }, 1000);
@@ -725,7 +729,8 @@
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
-            hearts = 5;
+            totalHearts = 5;
+            hearts = totalHearts;
             updateHeartsDisplay();
             topRightClickCount = 0;
             loadImageAndCreatePuzzle();
@@ -737,7 +742,8 @@
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
-            hearts = 5;
+            totalHearts = 5;
+            hearts = totalHearts;
             updateHeartsDisplay();
             topRightClickCount = 0;
             loadImageAndCreatePuzzle();
@@ -753,7 +759,8 @@
                 usedImages = [];
                 cheatCodeCount = 0;
                 topRightClickCount = 0;
-                hearts = 5;
+                totalHearts = 5;
+                hearts = totalHearts;
                 updateHeartsDisplay();
                 mathModal.style.display = 'none';
                 loadImageAndCreatePuzzle();
@@ -771,7 +778,8 @@
                 usedImages = [];
                 cheatCodeCount = 0;
                 topRightClickCount = 0;
-                hearts = 5;
+                totalHearts = 5;
+                hearts = totalHearts;
                 updateHeartsDisplay();
                 mathModal.style.display = 'none';
                 loadImageAndCreatePuzzle();
@@ -787,7 +795,8 @@
             usedImages = [];
             cheatCodeCount = 0;
             topRightClickCount = 0;
-            hearts = 5;
+            totalHearts = 5;
+            hearts = totalHearts;
             updateHeartsDisplay();
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
@@ -805,7 +814,8 @@
             usedImages = [];
             cheatCodeCount = 0;
             topRightClickCount = 0;
-            hearts = 5;
+            totalHearts = 5;
+            hearts = totalHearts;
             updateHeartsDisplay();
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
