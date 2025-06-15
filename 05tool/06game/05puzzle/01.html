@@ -236,29 +236,7 @@
                 img.onload = () => {
                     progressContainer.classList.add('hidden');
                     board.classList.remove('hidden');
-                    let imgWidth = img.width;
-                    let imgHeight = img.height;
-
-                    // 適應手機和iPad屏幕
-                    const maxContainerWidth = window.innerWidth - 16;
-                    const totalWidth = imgWidth + 8;
-                    scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
-                    imgWidth *= scaleFactor;
-                    imgHeight *= scaleFactor;
-                    const gridSize = levels[currentLevel].size;
-                    pieceWidth = imgWidth / gridSize;
-                    pieceHeight = imgHeight / gridSize;
-
-                    board.style.width = `${imgWidth}px`;
-                    board.style.height = `${imgHeight}px`;
-                    gameContainer.style.transform = `scale(${scaleFactor})`;
-                    gameContainer.style.transformOrigin = 'center top';
-                    gameContainer.style.minHeight = `${imgHeight}px`;
-
-                    // 確保垂直居中
-                    const totalHeight = imgHeight * scaleFactor + 60;
-                    document.body.style.minHeight = `${totalHeight}px`;
-
+                    adjustPuzzleLayout(img);
                     createPuzzle();
                     URL.revokeObjectURL(img.src);
                 };
@@ -272,6 +250,48 @@
                 message.classList.remove('hidden');
                 progressContainer.classList.add('hidden');
             }
+        }
+
+        function adjustPuzzleLayout(img) {
+            let imgWidth = img.width;
+            let imgHeight = img.height;
+
+            // 適應手機和iPad屏幕
+            const maxContainerWidth = window.innerWidth - 16;
+            const totalWidth = imgWidth + 8;
+            scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
+            imgWidth *= scaleFactor;
+            imgHeight *= scaleFactor;
+            const gridSize = levels[currentLevel].size;
+            pieceWidth = imgWidth / gridSize;
+            pieceHeight = imgHeight / gridSize;
+
+            board.style.width = `${imgWidth}px`;
+            board.style.height = `${imgHeight}px`;
+            gameContainer.style.transform = `scale(${scaleFactor})`;
+            gameContainer.style.transformOrigin = 'center top';
+            gameContainer.style.minHeight = `${imgHeight}px`;
+
+            // 確保垂直居中
+            const totalHeight = imgHeight * scaleFactor + 60;
+            document.body.style.minHeight = `${totalHeight}px`;
+
+            // 更新拼圖塊尺寸
+            pieces.forEach(piece => {
+                piece.style.width = `${pieceWidth}px`;
+                piece.style.height = `${pieceHeight}px`;
+                const index = parseInt(piece.dataset.index);
+                const row = Math.floor(index / gridSize);
+                const col = index % gridSize;
+                piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+                piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
+            });
+
+            // 更新格子尺寸
+            Array.from(board.children).forEach(cell => {
+                cell.style.width = `${pieceWidth}px`;
+                cell.style.height = `${pieceHeight}px`;
+            });
         }
 
         function createPuzzle() {
@@ -526,9 +546,19 @@
 
         window.addEventListener('resize', () => {
             clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
-            scaleFactor = 1;
-            selectedPiece = null;
-            loadImageAndCreatePuzzle();
+            if (imagePath && pieces.length > 0) {
+                // 僅調整佈局，保留當前拼圖狀態
+                const img = new Image();
+                img.src = imagePath;
+                img.onload = () => {
+                    adjustPuzzleLayout(img);
+                };
+            } else {
+                // 如果沒有拼圖，重新加載
+                scaleFactor = 1;
+                selectedPiece = null;
+                loadImageAndCreatePuzzle();
+            }
         });
 
         loadImageAndCreatePuzzle();
