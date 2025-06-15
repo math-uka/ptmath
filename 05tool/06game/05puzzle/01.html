@@ -186,16 +186,14 @@
             }
 
             // 選擇未使用的圖片
-            if (!imagePath) { // Only select a new image if none is set
-                let unusedImages = availableImages.filter(img => !usedImages.includes(img));
-                if (unusedImages.length === 0) {
-                    usedImages = [];
-                    unusedImages = availableImages;
-                }
-                const randomImage = unusedImages[Math.floor(Math.random() * unusedImages.length)];
-                usedImages.push(randomImage);
-                imagePath = `images/${randomImage}`;
+            let unusedImages = availableImages.filter(img => !usedImages.includes(img));
+            if (unusedImages.length === 0) {
+                usedImages = []; // 重置已使用圖片
+                unusedImages = availableImages;
             }
+            const randomImage = unusedImages[Math.floor(Math.random() * unusedImages.length)];
+            usedImages.push(randomImage);
+            imagePath = `images/${randomImage}`;
 
             // 重置進度條
             progressBar.style.width = '0%';
@@ -286,10 +284,8 @@
             swapCountDisplay.classList.add('hidden');
             nextLevelButton.classList.add('hidden');
             restartButton.classList.add('hidden');
-            if (!placedPieces.length) {
-                placedPieces = new Array(levels[currentLevel].pieces).fill(null);
-                swapCount = 0;
-            }
+            placedPieces = new Array(levels[currentLevel].pieces).fill(null);
+            swapCount = 0;
             selectedPiece = null;
 
             const gridSize = levels[currentLevel].size;
@@ -307,6 +303,10 @@
                 board.appendChild(cell);
             }
 
+            // 隨機排列索引
+            const indices = [...Array(levels[currentLevel].pieces).keys()];
+            shuffleArray(indices);
+
             // 創建並放置拼圖塊
             for (let i = 0; i < levels[currentLevel].pieces; i++) {
                 const piece = document.createElement('div');
@@ -320,16 +320,10 @@
                 piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
                 piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
 
-                // 恢復拼圖狀態或隨機放置
-                let cellIndex = i;
-                if (placedPieces[i] !== null) {
-                    cellIndex = placedPieces.indexOf(i);
-                } else {
-                    const indices = [...Array(levels[currentLevel].pieces).keys()].filter(idx => !placedPieces.includes(idx));
-                    cellIndex = indices[Math.floor(Math.random() * indices.length)];
-                    placedPieces[cellIndex] = i;
-                }
+                // 將拼圖塊放入隨機格子
+                const cellIndex = indices[i];
                 board.children[cellIndex].appendChild(piece);
+                placedPieces[cellIndex] = i;
 
                 // 添加點擊事件
                 piece.addEventListener('click', handlePieceClick);
@@ -339,92 +333,6 @@
                 });
                 pieces.push(piece);
             }
-        }
-
-        function resizePuzzle() {
-            if (!imagePath) return; // 無圖片時不處理
-
-            const img = new Image();
-            img.src = imagePath;
-            img.onload = () => {
-                let imgWidth = img.width;
-                let imgHeight = img.height;
-
-                // 適應新視口
-                const maxContainerWidth = window.innerWidth - 16;
-                const totalWidth = imgWidth + 8;
-                scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
-                imgWidth *= scaleFactor;
-                imgHeight *= scaleFactor;
-                const gridSize = levels[currentLevel].size;
-                pieceWidth = imgWidth / gridSize;
-                pieceHeight = imgHeight / gridSize;
-
-                board.style.width = `${imgWidth}px`;
-                board.style.height = `${imgHeight}px`;
-                gameContainer.style.transform = `scale(${scaleFactor})`;
-                gameContainer.style.transformOrigin = 'center top';
-                gameContainer.style.minHeight = `${imgHeight}px`;
-
-                // 更新垂直居中
-                const totalHeight = imgHeight * scaleFactor + 60;
-                document.body.style.minHeight = `${totalHeight}px`;
-
-                // 更新格子和拼圖塊
-                board.innerHTML = '';
-                board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-                board.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
-
-                for (let i = 0; i < levels[currentLevel].pieces; i++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'puzzle-cell border border-gray-300';
-                    cell.dataset.index = i;
-                    cell.style.width = `${pieceWidth}px`;
-                    cell.style.height = `${pieceHeight}px`;
-                    board.appendChild(cell);
-                }
-
-                pieces = [];
-                for (let i = 0; i < levels[currentLevel].pieces; i++) {
-                    const piece = document.createElement('div');
-                    piece.className = 'puzzle-piece';
-                    piece.dataset.index = i;
-                    const row = Math.floor(i / gridSize);
-                    const col = i % gridSize;
-                    piece.style.width = `${pieceWidth}px`;
-                    piece.style.height = `${pieceHeight}px`;
-                    piece.style.backgroundImage = `url(${imagePath})`;
-                    piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
-                    piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
-
-                    const cellIndex = placedPieces.indexOf(i);
-                    if (cellIndex !== -1) {
-                        board.children[cellIndex].appendChild(piece);
-                    }
-
-                    piece.addEventListener('click', handlePieceClick);
-                    piece.addEventListener('touchstart', (e) => {
-                        e.preventDefault();
-                        handlePieceClick(e);
-                    });
-                    pieces.push(piece);
-
-                    if (selectedPiece && parseInt(selectedPiece.dataset.index) === i) {
-                        piece.classList.add('selected');
-                        selectedPiece = piece;
-                    }
-                }
-
-                // 恢復完成狀態（如果已完成）
-                if (nextLevelButton.classList.contains('hidden') === false) {
-                    pieces.forEach(piece => piece.classList.add('disabled'));
-                    message.textContent = `恭喜！第 ${currentLevel + 1} 關完成！`;
-                    message.classList.remove('hidden');
-                    swapCountDisplay.textContent = `本關交換次數：${swapCount} 次`;
-                    swapCountDisplay.classList.remove('hidden');
-                    nextLevelButton.classList.remove('hidden');
-                }
-            };
         }
 
         function shuffleArray(array) {
@@ -554,60 +462,50 @@
         });
 
         nextLevelButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer);
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
-            imagePath = ''; // 允許選擇新圖片
-            placedPieces = [];
             loadImageAndCreatePuzzle();
         });
 
         nextLevelButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer);
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
-            imagePath = ''; // 允許選擇新圖片
-            placedPieces = [];
             loadImageAndCreatePuzzle();
         });
 
         restartButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer);
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            imagePath = '';
-            placedPieces = [];
             loadImageAndCreatePuzzle();
         });
 
         restartButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer);
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            imagePath = '';
-            placedPieces = [];
             loadImageAndCreatePuzzle();
         });
 
         playAgainButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer);
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            imagePath = '';
-            placedPieces = [];
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
             loadImageAndCreatePuzzle();
@@ -615,22 +513,22 @@
 
         playAgainButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer);
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
             selectedPiece = null;
             usedImages = [];
-            imagePath = '';
-            placedPieces = [];
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
             loadImageAndCreatePuzzle();
         });
 
         window.addEventListener('resize', () => {
-            clearTimeout(autoAdvanceTimer);
-            resizePuzzle();
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
+            scaleFactor = 1;
+            selectedPiece = null;
+            loadImageAndCreatePuzzle();
         });
 
         loadImageAndCreatePuzzle();
