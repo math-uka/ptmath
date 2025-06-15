@@ -14,10 +14,14 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             flex-direction: column;
+            overflow: auto;
         }
         .container {
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
         }
         .puzzle-board, .piece-area {
             border: 2px solid #333;
@@ -47,7 +51,7 @@
         .puzzle-piece.dragging {
             opacity: 0.5;
         }
-        .puzzle-cell.over {
+        .puzzle-cell.over, .piece-area.over {
             background-color: #e0e0e0;
         }
         .completed {
@@ -70,20 +74,41 @@
         const pieceArea = document.getElementById('pieceArea');
         const message = document.getElementById('message');
         const totalPieces = 16;
-        const imageCount = 10; // 假設有001.png到010.png
-        const imageIndex = Math.floor(Math.random() * imageCount) + 1;
-        const imagePath = `images/${imageIndex.toString().padStart(3, '0')}.png`;
-
+        let maxImageIndex = 10; // 最大圖片編號，稍後檢查實際存在
         let pieces = [];
         let placedPieces = new Array(totalPieces).fill(null);
         let pieceWidth = 100;
         let pieceHeight = 100;
+        let imagePath = '';
 
-        function loadImageAndCreatePuzzle() {
+        async function checkAvailableImages() {
+            let availableImages = [];
+            for (let i = 1; i <= maxImageIndex; i++) {
+                const imgName = `${i.toString().padStart(3, '0')}.png`;
+                try {
+                    const response = await fetch(`images/${imgName}`, { method: 'HEAD' });
+                    if (response.ok) {
+                        availableImages.push(imgName);
+                    }
+                } catch (error) {
+                    console.log(`圖片 ${imgName} 不存在`);
+                }
+            }
+            return availableImages;
+        }
+
+        async function loadImageAndCreatePuzzle() {
+            const availableImages = await checkAvailableImages();
+            if (availableImages.length === 0) {
+                message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
+                return;
+            }
+            const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+            imagePath = `images/${randomImage}`;
+
             const img = new Image();
             img.src = imagePath;
             img.onload = () => {
-                // 動態設置拼圖板和拼圖塊尺寸
                 const imgWidth = img.width;
                 const imgHeight = img.height;
                 pieceWidth = imgWidth / 4;
@@ -95,10 +120,20 @@
                 pieceArea.style.height = `${imgHeight}px`;
 
                 createPuzzle();
+                adjustContainerSize(imgWidth, imgHeight);
             };
             img.onerror = () => {
                 message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
             };
+        }
+
+        function adjustContainerSize(imgWidth, imgHeight) {
+            const container = document.querySelector('.container');
+            const totalWidth = imgWidth * 2 + 40; // 兩區域寬度 + 間距
+            const totalHeight = imgHeight + 40; // 高度 + 邊距
+            container.style.minWidth = `${totalWidth}px`;
+            container.style.minHeight = `${totalHeight}px`;
+            window.scrollTo(0, 0); // 確保內容從頂部顯示
         }
 
         function createPuzzle() {
@@ -106,6 +141,7 @@
             board.innerHTML = '';
             pieceArea.innerHTML = '';
             message.textContent = '';
+            placedPieces.fill(null);
 
             // 創建拼圖格子
             for (let i = 0; i < totalPieces; i++) {
@@ -138,6 +174,10 @@
                 pieceArea.appendChild(piece);
                 pieces.push(piece);
             }
+
+            // 為pieceArea添加拖放事件
+            pieceArea.addEventListener('dragover', dragOver);
+            pieceArea.addEventListener('drop', dropToPieceArea);
         }
 
         function shuffleArray(array) {
@@ -150,6 +190,11 @@
         function dragStart(e) {
             e.target.classList.add('dragging');
             e.dataTransfer.setData('text/plain', e.target.dataset.index);
+            const parent = e.target.parentElement;
+            if (parent.classList.contains('puzzle-cell')) {
+                const cellIndex = parent.dataset.index;
+                placedPieces[cellIndex] = null;
+            }
         }
 
         function dragOver(e) {
@@ -164,24 +209,34 @@
             const piece = pieces[pieceIndex];
             const cellIndex = e.target.dataset.index;
 
-            if (cellIndex !== undefined && placedPieces[cellIndex] === null) {
-                e.target.appendChild(piece);
-                piece.draggable = false;
-                placedPieces[cellIndex] = pieceIndex;
-                checkCompletion();
+            if (cellIndex !== undefined) {
+                const targetCell = e.target.classList.contains('puzzle-cell') ? e.target : e.target.closest('.puzzle-cell');
+                if (targetCell && placedPieces[cellIndex] === null) {
+                    targetCell.appendChild(piece);
+                    placedPieces[cellIndex] = pieceIndex;
+                    checkCompletion();
+                }
             }
+        }
+
+        function dropToPieceArea(e) {
+            e.preventDefault();
+            e.target.classList.remove('over');
+            const pieceIndex = e.dataTransfer.getData('text');
+            const piece = pieces[pieceIndex];
+            pieceArea.appendChild(piece);
         }
 
         function checkCompletion() {
             const isComplete = placedPieces.every((piece, index) => piece == index);
-            if (isComplete) {
+            if (isComplete && placedPieces.every(piece => piece !== null)) {
                 message.textContent = '恭喜！拼圖完成！';
             }
         }
 
         document.addEventListener('dragend', (e) => {
             e.target.classList.remove('dragging');
-            document.querySelectorAll('.puzzle-cell').forEach(cell => cell.classList.remove('over'));
+            document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
         });
 
         loadImageAndCreatePuzzle();
