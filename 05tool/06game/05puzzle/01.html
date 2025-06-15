@@ -88,7 +88,7 @@
             transform: translateX(-50%);
             z-index: 50;
             color: white;
-            font-size: 2rem; /* 調整字體大小，適應不同屏幕 */
+            font-size: 2rem;
             font-weight: bold;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             text-align: center;
@@ -96,13 +96,13 @@
         .final-buttons {
             position: fixed;
             bottom: 10%;
-            left: 35%; /* 向左移動 */
+            left: 35%;
             transform: translateX(-50%);
             z-index: 50;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem; /* 減少間距 */
-            align-items: center; /* 確保內容居中 */
+            gap: 0.5rem;
+            align-items: center;
         }
     </style>
 </head>
@@ -129,7 +129,7 @@
         <img id="finalImage" src="images/finish.png" class="final-image" alt="完成圖片">
         <div id="finalOverlay" class="final-overlay"></div>
         <div id="finalButtons" class="final-buttons">
-            <div id="totalSwapDisplay" class="text-lg text-white font-bold text-shadow-lg mb-1">總操作步驟數：0 次</div>
+            <div id="totalSwapDisplay" class="text-3xl text-black font-bold text-shadow-lg mb-1">總操作步驟數：0 次</div>
             <button id="playAgainButton" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-lg">再次遊玩</button>
         </div>
     </div>
@@ -447,7 +447,7 @@
                     finalImage.src = 'images/finish.png';
                     finalImage.classList.remove('hidden');
                     totalSwapDisplay.textContent = `總操作步驟數：${totalSwapCount} 次`;
-                    finalOverlay.textContent = ''; // 清空原finalOverlay內容
+                    finalOverlay.textContent = '';
                     totalSwapDisplay.classList.remove('hidden');
                     finalButtons.classList.remove('hidden');
                 } else {
