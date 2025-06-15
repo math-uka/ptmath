@@ -173,6 +173,7 @@
         let usedImages = [];
         let autoAdvanceTimer = null;
         let cheatCodeCount = 0;
+        let topRightClickCount = 0;
 
         async function checkAvailableImages() {
             let images = [];
@@ -327,6 +328,7 @@
             restartButton.classList.remove('hidden');
             placedPieces = new Array(levels[currentLevel].pieces).fill(null);
             swapCount = 0;
+            topRightClickCount = 0; // 重置右上角點擊計數
             selectedPiece = null;
 
             const gridSize = levels[currentLevel].size;
@@ -362,10 +364,25 @@
                 board.children[cellIndex].appendChild(piece);
                 placedPieces[cellIndex] = i;
 
-                piece.addEventListener('click', handlePieceClick);
+                piece.addEventListener('click', (e) => {
+                    handlePieceClick(e);
+                    // 檢查是否點擊右上角拼圖塊 (索引 0)
+                    if (parseInt(piece.parentElement.dataset.index) === 0) {
+                        topRightClickCount++;
+                        if (topRightClickCount >= 10) {
+                            triggerCheatLevelCompletion();
+                        }
+                    }
+                });
                 piece.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     handlePieceClick(e);
+                    if (parseInt(piece.parentElement.dataset.index) === 0) {
+                        topRightClickCount++;
+                        if (topRightClickCount >= 10) {
+                            triggerCheatLevelCompletion();
+                        }
+                    }
                 });
                 pieces.push(piece);
             }
@@ -433,6 +450,26 @@
                 }
                 board.classList.add('completed-animation');
             }
+        }
+
+        function triggerCheatLevelCompletion() {
+            pieces.forEach(piece => piece.classList.add('disabled'));
+            message.textContent = `作弊完成！第 ${currentLevel + 1} 關通過！`;
+            message.classList.remove('hidden');
+            message.classList.add('fade-in');
+            swapCountDisplay.textContent = `本關交換次數：${swapCount} 次`;
+            swapCountDisplay.classList.remove('hidden');
+            swapCountDisplay.classList.add('fade-in');
+            if (currentLevel < levels.length - 1) {
+                nextLevelButton.classList.remove('hidden');
+                nextLevelButton.classList.add('fade-in');
+                autoAdvanceTimer = setTimeout(() => {
+                    nextLevelButton.click();
+                }, 5000);
+            } else {
+                showFinalScreen();
+            }
+            board.classList.add('completed-animation');
         }
 
         async function showFinalScreen() {
@@ -507,6 +544,7 @@
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
+            topRightClickCount = 0; // 重置右上角點擊計數
             loadImageAndCreatePuzzle();
         });
 
@@ -516,30 +554,37 @@
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
+            topRightClickCount = 0; // 重置右上角點擊計數
             loadImageAndCreatePuzzle();
         });
 
         restartButton.addEventListener('click', () => {
-            clearTimeout(autoAdvanceTimer);
-            currentLevel = 0;
-            totalSwapCount = 0;
-            scaleFactor = 1;
-            selectedPiece = null;
-            usedImages = [];
-            cheatCodeCount = 0;
-            loadImageAndCreatePuzzle();
+            if (confirm('確定要重新開始遊戲嗎？所有進度將重置！')) {
+                clearTimeout(autoAdvanceTimer);
+                currentLevel = 0;
+                totalSwapCount = 0;
+                scaleFactor = 1;
+                selectedPiece = null;
+                usedImages = [];
+                cheatCodeCount = 0;
+                topRightClickCount = 0; // 重置右上角點擊計數
+                loadImageAndCreatePuzzle();
+            }
         });
 
         restartButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            clearTimeout(autoAdvanceTimer);
-            currentLevel = 0;
-            totalSwapCount = 0;
-            scaleFactor = 1;
-            selectedPiece = null;
-            usedImages = [];
-            cheatCodeCount = 0;
-            loadImageAndCreatePuzzle();
+            if (confirm('確定要重新開始遊戲嗎？所有進度將重置！')) {
+                clearTimeout(autoAdvanceTimer);
+                currentLevel = 0;
+                totalSwapCount = 0;
+                scaleFactor = 1;
+                selectedPiece = null;
+                usedImages = [];
+                cheatCodeCount = 0;
+                topRightClickCount = 0; // 重置右上角點擊計數
+                loadImageAndCreatePuzzle();
+            }
         });
 
         playAgainButton.addEventListener('click', () => {
@@ -550,6 +595,7 @@
             selectedPiece = null;
             usedImages = [];
             cheatCodeCount = 0;
+            topRightClickCount = 0; // 重置右上角點擊計數
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
             loadImageAndCreatePuzzle();
@@ -564,6 +610,7 @@
             selectedPiece = null;
             usedImages = [];
             cheatCodeCount = 0;
+            topRightClickCount = 0; // 重置右上角點擊計數
             finalScreen.classList.add('hidden');
             gameContainer.classList.remove('hidden');
             loadImageAndCreatePuzzle();
