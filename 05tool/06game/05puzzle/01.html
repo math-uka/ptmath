@@ -2,10 +2,14 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>拼圖遊戲</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        body {
+            overflow: hidden; /* 禁用頁面滾動 */
+            touch-action: none; /* 防止觸控縮放或滾動 */
+        }
         .puzzle-piece {
             background-size: cover;
             cursor: move;
@@ -40,9 +44,9 @@
         }
     </style>
 </head>
-<body class="flex flex-col items-center min-h-screen bg-gradient-to-b from-blue-100 to-gray-100 font-sans overflow-auto">
+<body class="flex flex-col items-center min-h-screen bg-gradient-to-b from-blue-100 to-gray-100 font-sans">
     <h1 class="text-4xl font-bold text-gray-800 mt-6 mb-4">拼圖遊戲</h1>
-    <div class="container flex gap-6 justify-center p-6">
+    <div class="container flex gap-6 justify-center p-6" id="gameContainer">
         <div class="puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl" id="puzzleBoard"></div>
         <div class="piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden" id="pieceArea"></div>
     </div>
@@ -53,6 +57,7 @@
     <script>
         const board = document.getElementById('puzzleBoard');
         const pieceArea = document.getElementById('pieceArea');
+        const gameContainer = document.getElementById('gameContainer');
         const message = document.getElementById('message');
         const timeDisplay = document.getElementById('timeDisplay');
         const restartButton = document.getElementById('restartButton');
@@ -64,6 +69,7 @@
         let pieceHeight = 100;
         let imagePath = '';
         let startTime = null;
+        let scaleFactor = 1;
 
         async function checkAvailableImages() {
             let availableImages = [];
@@ -94,8 +100,15 @@
             const img = new Image();
             img.src = imagePath;
             img.onload = () => {
-                const imgWidth = img.width;
-                const imgHeight = img.height;
+                let imgWidth = img.width;
+                let imgHeight = img.height;
+
+                // 適應iPad屏幕（假設最大寬度1000px）
+                const maxContainerWidth = Math.min(window.innerWidth - 48, 1000);
+                const totalWidth = imgWidth * 2 + 24; // 兩個區域 + 間距
+                scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
+                imgWidth *= scaleFactor;
+                imgHeight *= scaleFactor;
                 pieceWidth = imgWidth / 4;
                 pieceHeight = imgHeight / 4;
 
@@ -103,24 +116,16 @@
                 board.style.height = `${imgHeight}px`;
                 pieceArea.style.width = `${imgWidth}px`;
                 pieceArea.style.height = `${imgHeight}px`;
+                gameContainer.style.transform = `scale(${scaleFactor})`;
+                gameContainer.style.transformOrigin = 'top center';
 
                 createPuzzle();
-                adjustContainerSize(imgWidth, imgHeight);
                 startTime = new Date();
             };
             img.onerror = () => {
                 message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
                 message.classList.remove('hidden');
             };
-        }
-
-        function adjustContainerSize(imgWidth, imgHeight) {
-            const container = document.querySelector('.container');
-            const totalWidth = imgWidth * 2 + 48;
-            const totalHeight = imgHeight + 48;
-            container.style.minWidth = `${totalWidth}px`;
-            container.style.minHeight = `${totalHeight}px`;
-            window.scrollTo(0, 0);
         }
 
         function createPuzzle() {
@@ -148,13 +153,15 @@
                 cell.style.height = `${pieceHeight}px`;
                 cell.addEventListener('dragover', dragOver);
                 cell.addEventListener('drop', drop);
+                cell.addEventListener('touchstart', touchStart, { passive: false });
+                cell.addEventListener('touchmove', touchMove, { passive: false });
+                cell.addEventListener('touchend', touchEnd, { passive: false });
                 board.appendChild(cell);
             }
 
             const indices = [...Array(totalPieces).keys()];
             shuffleArray(indices);
 
-            // 生成隨機位置
             const positions = generateRandomPositions(pieceArea.offsetWidth - pieceWidth, pieceArea.offsetHeight - pieceHeight, totalPieces);
 
             for (let i = 0; i < totalPieces; i++) {
@@ -169,39 +176,39 @@
                 piece.style.backgroundImage = `url(${imagePath})`;
                 piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
                 piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
-
-                // 使用隨機位置
                 piece.style.left = `${positions[i].x}px`;
                 piece.style.top = `${positions[i].y}px`;
 
                 piece.addEventListener('dragstart', dragStart);
+                piece.addEventListener('touchstart', touchStart, { passive: false });
+                piece.addEventListener('touchmove', touchMove, { passive: false });
+                piece.addEventListener('touchend', touchEnd, { passive: false });
                 pieceArea.appendChild(piece);
                 pieces.push(piece);
             }
 
             pieceArea.addEventListener('dragover', dragOver);
             pieceArea.addEventListener('drop', dropToPieceArea);
+            pieceArea.addEventListener('touchstart', touchStart, { passive: false });
+            pieceArea.addEventListener('touchmove', touchMove, { passive: false });
+            pieceArea.addEventListener('touchend', touchEnd, { passive: false });
         }
 
-        // 改進隨機位置生成，確保均勻分佈
         function generateRandomPositions(maxX, maxY, count) {
             const positions = [];
-            const gridSize = Math.ceil(Math.sqrt(count)); // 創建虛擬網格
+            const gridSize = Math.ceil(Math.sqrt(count));
             const cellWidth = maxX / gridSize;
             const cellHeight = maxY / gridSize;
             const gridCells = [];
 
-            // 生成網格單元
             for (let row = 0; row < gridSize; row++) {
                 for (let col = 0; col < gridSize; col++) {
                     gridCells.push({ row, col });
                 }
             }
 
-            // 隨機打亂網格單元
             shuffleArray(gridCells);
 
-            // 為每個拼圖塊分配網格單元內的隨機位置
             for (let i = 0; i < Math.min(count, gridCells.length); i++) {
                 const { row, col } = gridCells[i];
                 const x = col * cellWidth + Math.random() * (cellWidth - pieceWidth / 2);
@@ -212,7 +219,6 @@
                 });
             }
 
-            // 若拼圖塊數少於網格單元，填充剩餘位置
             while (positions.length < count) {
                 positions.push({
                     x: Math.random() * maxX,
@@ -230,19 +236,58 @@
             }
         }
 
+        let draggedPiece = null;
+        let touchStartPos = { x: 0, y: 0 };
+        let pieceStartPos = { x: 0, y: 0 };
+
         function dragStart(e) {
-            e.target.classList.add('dragging');
-            e.dataTransfer.setData('text/plain', e.target.dataset.index);
-            const parent = e.target.parentElement;
+            draggedPiece = e.target;
+            draggedPiece.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', draggedPiece.dataset.index);
+            const parent = draggedPiece.parentElement;
             if (parent.classList.contains('puzzle-cell')) {
                 const cellIndex = parent.dataset.index;
                 placedPieces[cellIndex] = null;
             }
         }
 
+        function touchStart(e) {
+            e.preventDefault();
+            if (e.target.classList.contains('puzzle-piece')) {
+                draggedPiece = e.target;
+                draggedPiece.classList.add('dragging');
+                const touch = e.touches[0];
+                touchStartPos = {
+                    x: touch.clientX / scaleFactor,
+                    y: touch.clientY / scaleFactor
+                };
+                pieceStartPos = {
+                    x: parseFloat(draggedPiece.style.left || 0),
+                    y: parseFloat(draggedPiece.style.top || 0)
+                };
+                if (draggedPiece.parentElement.classList.contains('puzzle-cell')) {
+                    const cellIndex = draggedPiece.parentElement.dataset.index;
+                    placedPieces[cellIndex] = null;
+                }
+            }
+        }
+
         function dragOver(e) {
             e.preventDefault();
             e.target.classList.add('over');
+        }
+
+        function touchMove(e) {
+            e.preventDefault();
+            if (draggedPiece) {
+                const touch = e.touches[0];
+                const currentX = touch.clientX / scaleFactor;
+                const currentY = touch.clientY / scaleFactor;
+                const dx = currentX - touchStartPos.x;
+                const dy = currentY - touchStartPos.y;
+                draggedPiece.style.left = `${pieceStartPos.x + dx}px`;
+                draggedPiece.style.top = `${pieceStartPos.y + dy}px`;
+            }
         }
 
         function drop(e) {
@@ -256,18 +301,15 @@
                 const targetCell = e.target.classList.contains('puzzle-cell') ? e.target : e.target.closest('.puzzle-cell');
                 if (targetCell) {
                     if (placedPieces[cellIndex] === null) {
-                        // 目標格子為空，直接放置
                         targetCell.appendChild(piece);
                         piece.style.position = 'static';
                         placedPieces[cellIndex] = pieceIndex;
                     } else {
-                        // 目標格子有拼圖塊，交換位置
                         const existingPieceIndex = placedPieces[cellIndex];
                         const existingPiece = pieces[existingPieceIndex];
                         const sourceParent = piece.parentElement;
 
                         if (sourceParent.classList.contains('puzzle-cell')) {
-                            // 從拼圖板拖動到另一格子，交換
                             const sourceCellIndex = sourceParent.dataset.index;
                             sourceParent.appendChild(existingPiece);
                             placedPieces[sourceCellIndex] = existingPieceIndex;
@@ -276,7 +318,6 @@
                             piece.style.position = 'static';
                             existingPiece.style.position = 'static';
                         } else {
-                            // 從pieceArea拖動到有拼圖塊的格子，交換
                             pieceArea.appendChild(existingPiece);
                             existingPiece.style.position = 'absolute';
                             const maxX = pieceArea.offsetWidth - pieceWidth;
@@ -290,6 +331,81 @@
                     }
                     checkCompletion();
                 }
+            }
+            draggedPiece.classList.remove('dragging');
+            draggedPiece = null;
+        }
+
+        function touchEnd(e) {
+            e.preventDefault();
+            if (draggedPiece) {
+                const touch = e.changedTouches[0];
+                const clientX = touch.clientX / scaleFactor;
+                const clientY = touch.clientY / scaleFactor;
+                const pieceIndex = draggedPiece.dataset.index;
+                const piece = pieces[pieceIndex];
+
+                // 檢查是否放置到拼圖板
+                const boardRect = board.getBoundingClientRect();
+                const scaledBoardRect = {
+                    left: boardRect.left / scaleFactor,
+                    top: boardRect.top / scaleFactor,
+                    right: boardRect.right / scaleFactor,
+                    bottom: boardRect.bottom / scaleFactor
+                };
+                if (clientX >= scaledBoardRect.left && clientX <= scaledBoardRect.right &&
+                    clientY >= scaledBoardRect.top && clientY <= scaledBoardRect.bottom) {
+                    const cellSizeX = pieceWidth;
+                    const cellSizeY = pieceHeight;
+                    const col = Math.floor((clientX - scaledBoardRect.left) / cellSizeX);
+                    const row = Math.floor((clientY - scaledBoardRect.top) / cellSizeY);
+                    const cellIndex = row * 4 + col;
+
+                    if (cellIndex >= 0 && cellIndex < totalPieces) {
+                        const targetCell = board.children[cellIndex];
+                        if (placedPieces[cellIndex] === null) {
+                            targetCell.appendChild(piece);
+                            piece.style.position = 'static';
+                            placedPieces[cellIndex] = pieceIndex;
+                        } else {
+                            const existingPieceIndex = placedPieces[cellIndex];
+                            const existingPiece = pieces[existingPieceIndex];
+                            const sourceParent = piece.parentElement;
+
+                            if (sourceParent.classList.contains('puzzle-cell')) {
+                                const sourceCellIndex = sourceParent.dataset.index;
+                                sourceParent.appendChild(existingPiece);
+                                placedPieces[sourceCellIndex] = existingPieceIndex;
+                                targetCell.appendChild(piece);
+                                placedPieces[cellIndex] = pieceIndex;
+                                piece.style.position = 'static';
+                                existingPiece.style.position = 'static';
+                            } else {
+                                pieceArea.appendChild(existingPiece);
+                                existingPiece.style.position = 'absolute';
+                                const maxX = pieceArea.offsetWidth - pieceWidth;
+                                const maxY = pieceArea.offsetHeight - pieceHeight;
+                                existingPiece.style.left = `${Math.random() * maxX}px`;
+                                existingPiece.style.top = `${Math.random() * maxY}px`;
+                                targetCell.appendChild(piece);
+                                placedPieces[cellIndex] = pieceIndex;
+                                piece.style.position = 'static';
+                            }
+                        }
+                        checkCompletion();
+                    }
+                } else {
+                    pieceArea.appendChild(piece);
+                    piece.style.position = 'absolute';
+                    const maxX = pieceArea.offsetWidth - pieceWidth;
+                    const maxY = pieceArea.offsetHeight - pieceHeight;
+                    piece.style.left = `${Math.random() * maxX}px`;
+                    piece.style.top = `${Math.random() * maxY}px`;
+                }
+
+                draggedPiece.classList.remove('dragging');
+                document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
+                draggedPiece = null;
             }
         }
 
@@ -328,9 +444,15 @@
         document.addEventListener('dragend', (e) => {
             e.target.classList.remove('dragging');
             document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
+            draggedPiece = null;
         });
 
         restartButton.addEventListener('click', () => {
+            loadImageAndCreatePuzzle();
+        });
+
+        restartButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             loadImageAndCreatePuzzle();
         });
 
