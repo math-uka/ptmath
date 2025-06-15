@@ -54,14 +54,35 @@
             align-items: center;
             justify-content: center;
         }
+        .progress-container {
+            width: 80%;
+            max-width: 300px;
+            height: 20px;
+            background-color: #e5e7eb;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 30;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
     <div class="container flex justify-center p-2 relative" id="gameContainer">
-        <div class="puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md" id="puzzleBoard"></div>
+        <div class="puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md hidden" id="puzzleBoard"></div>
         <div class="absolute top-2 right-2 flex flex-col gap-2 z-20">
             <button id="zoomInButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">+</button>
             <button id="zoomOutButton" class="zoom-button bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 bg-opacity-80">−</button>
+        </div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center z-30" id="progressContainer">
+            <div class="text-base text-gray-700 mb-2">正在加載圖片…</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
         </div>
     </div>
     <div id="message" class="text-lg text-green-600 text-center mt-2 hidden"></div>
@@ -76,6 +97,8 @@
         const restartButton = document.getElementById('restartButton');
         const zoomInButton = document.getElementById('zoomInButton');
         const zoomOutButton = document.getElementById('zoomOutButton');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
         const totalPieces = 16;
         let maxImageIndex = 10;
         let pieces = [];
@@ -108,42 +131,84 @@
             if (availableImages.length === 0) {
                 message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
                 message.classList.remove('hidden');
+                progressContainer.classList.add('hidden');
                 return;
             }
             const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
             imagePath = `images/${randomImage}`;
 
-            const img = new Image();
-            img.src = imagePath;
-            img.onload = () => {
-                let imgWidth = img.width;
-                let imgHeight = img.height;
+            // 重置進度條
+            progressBar.style.width = '0%';
+            progressContainer.classList.remove('hidden');
+            board.classList.add('hidden');
 
-                // 適應手機和iPad屏幕，最大化顯示單個框框
-                const maxContainerWidth = window.innerWidth - 16; // 考慮4px邊距*2 + 8px內邊距
-                const totalWidth = imgWidth + 8; // 考慮邊框
-                scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
-                imgWidth *= scaleFactor;
-                imgHeight *= scaleFactor;
-                pieceWidth = imgWidth / 4;
-                pieceHeight = imgHeight / 4;
+            // 使用fetch加載圖片並跟踪進度
+            try {
+                const response = await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', imagePath, true);
+                    xhr.responseType = 'blob';
 
-                board.style.width = `${imgWidth}px`;
-                board.style.height = `${imgHeight}px`;
-                gameContainer.style.transform = `scale(${scaleFactor})`;
-                gameContainer.style.transformOrigin = 'center top';
-                gameContainer.style.minHeight = `${imgHeight}px`;
+                    xhr.onprogress = (event) => {
+                        if (event.lengthComputable) {
+                            const percent = (event.loaded / event.total) * 100;
+                            progressBar.style.width = `${percent}%`;
+                        }
+                    };
 
-                // 確保垂直居中
-                const totalHeight = imgHeight * scaleFactor + 60; // 考慮訊息和按鈕
-                document.body.style.minHeight = `${totalHeight}px`;
+                    xhr.onload = () => {
+                        if (xhr.status === 200) {
+                            resolve(xhr.response);
+                        } else {
+                            reject(new Error('圖片加載失敗'));
+                        }
+                    };
 
-                createPuzzle();
-            };
-            img.onerror = () => {
+                    xhr.onerror = () => reject(new Error('圖片加載失敗'));
+                    xhr.send();
+                });
+
+                // 創建圖片對象
+                const img = new Image();
+                img.src = URL.createObjectURL(response);
+                img.onload = () => {
+                    progressContainer.classList.add('hidden');
+                    board.classList.remove('hidden');
+                    let imgWidth = img.width;
+                    let imgHeight = img.height;
+
+                    // 適應手機和iPad屏幕，最大化顯示單個框框
+                    const maxContainerWidth = window.innerWidth - 16; // 考慮4px邊距*2 + 8px內邊距
+                    const totalWidth = imgWidth + 8; // 考慮邊框
+                    scaleFactor = totalWidth > maxContainerWidth ? maxContainerWidth / totalWidth : 1;
+                    imgWidth *= scaleFactor;
+                    imgHeight *= scaleFactor;
+                    pieceWidth = imgWidth / 4;
+                    pieceHeight = imgHeight / 4;
+
+                    board.style.width = `${imgWidth}px`;
+                    board.style.height = `${imgHeight}px`;
+                    gameContainer.style.transform = `scale(${scaleFactor})`;
+                    gameContainer.style.transformOrigin = 'center top';
+                    gameContainer.style.minHeight = `${imgHeight}px`;
+
+                    // 確保垂直居中
+                    const totalHeight = imgHeight * scaleFactor + 60; // 考慮訊息和按鈕
+                    document.body.style.minHeight = `${totalHeight}px`;
+
+                    createPuzzle();
+                    URL.revokeObjectURL(img.src); // 釋放內存
+                };
+                img.onerror = () => {
+                    message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
+                    message.classList.remove('hidden');
+                    progressContainer.classList.add('hidden');
+                };
+            } catch (error) {
                 message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
                 message.classList.remove('hidden');
-            };
+                progressContainer.classList.add('hidden');
+            }
         }
 
         function createPuzzle() {
@@ -203,9 +268,6 @@
                 });
                 pieces.push(piece);
             }
-
-            // 調試：檢查初始放置
-            console.log('Initial placedPieces:', placedPieces);
         }
 
         function shuffleArray(array) {
@@ -251,9 +313,6 @@
                 firstPiece.classList.remove('selected');
                 selectedPiece = null;
 
-                // 調試：檢查交換後的狀態
-                console.log('After swap:', placedPieces, 'Swap count:', swapCount);
-
                 // 檢查是否完成
                 checkCompletion();
             }
@@ -261,7 +320,6 @@
 
         function checkCompletion() {
             const isComplete = placedPieces.every((piece, index) => piece === index);
-            console.log('Checking completion, isComplete:', isComplete, 'placedPieces:', placedPieces);
             if (isComplete) {
                 message.textContent = '恭喜！拼圖完成！';
                 message.classList.remove('hidden');
