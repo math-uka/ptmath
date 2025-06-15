@@ -4,82 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>拼圖遊戲</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-            flex-direction: column;
-            overflow: auto;
-        }
-        .container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
-        }
-        .puzzle-board, .piece-area {
-            border: 2px solid #333;
-            background-color: #fff;
-        }
-        .puzzle-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-        }
-        .piece-area {
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            padding: 10px;
-            box-sizing: border-box;
-        }
         .puzzle-piece {
             background-size: cover;
             cursor: move;
             user-select: none;
         }
         .puzzle-cell {
-            border: 1px solid #ccc;
             box-sizing: border-box;
         }
         .puzzle-piece.dragging {
             opacity: 0.5;
         }
         .puzzle-cell.over, .piece-area.over {
-            background-color: #e0e0e0;
+            background-color: #e5e7eb;
         }
-        .completed {
-            font-size: 24px;
-            color: green;
-            text-align: center;
-            margin-top: 20px;
+        .completed-animation {
+            animation: complete 1s ease-in-out;
+        }
+        @keyframes complete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="puzzle-board" id="puzzleBoard"></div>
-        <div class="piece-area" id="pieceArea"></div>
+<body class="flex flex-col items-center min-h-screen bg-gray-100 font-sans overflow-auto">
+    <h1 class="text-4xl font-bold text-gray-800 mt-6 mb-4">拼圖遊戲</h1>
+    <div class="container flex flex-wrap gap-6 justify-center p-6">
+        <div class="puzzle-board bg-white border-2 border-gray-600 rounded-lg shadow-lg" id="puzzleBoard"></div>
+        <div class="piece-area bg-white border-2 border-gray-600 rounded-lg shadow-lg p-2" id="pieceArea"></div>
     </div>
-    <div id="message" class="completed"></div>
+    <div id="message" class="text-2xl text-green-600 text-center mt-4 hidden"></div>
+    <div id="timeDisplay" class="text-xl text-gray-700 text-center mt-2 hidden"></div>
+    <button id="restartButton" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 hidden">重新遊戲</button>
 
     <script>
         const board = document.getElementById('puzzleBoard');
         const pieceArea = document.getElementById('pieceArea');
         const message = document.getElementById('message');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const restartButton = document.getElementById('restartButton');
         const totalPieces = 16;
-        let maxImageIndex = 10; // 最大圖片編號，稍後檢查實際存在
+        let maxImageIndex = 10;
         let pieces = [];
         let placedPieces = new Array(totalPieces).fill(null);
         let pieceWidth = 100;
         let pieceHeight = 100;
         let imagePath = '';
+        let startTime = null;
 
         async function checkAvailableImages() {
             let availableImages = [];
@@ -101,6 +82,7 @@
             const availableImages = await checkAvailableImages();
             if (availableImages.length === 0) {
                 message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
+                message.classList.remove('hidden');
                 return;
             }
             const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
@@ -121,32 +103,42 @@
 
                 createPuzzle();
                 adjustContainerSize(imgWidth, imgHeight);
+                startTime = new Date();
             };
             img.onerror = () => {
                 message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
+                message.classList.remove('hidden');
             };
         }
 
         function adjustContainerSize(imgWidth, imgHeight) {
             const container = document.querySelector('.container');
-            const totalWidth = imgWidth * 2 + 40; // 兩區域寬度 + 間距
-            const totalHeight = imgHeight + 40; // 高度 + 邊距
+            const totalWidth = imgWidth * 2 + 48;
+            const totalHeight = imgHeight + 48;
             container.style.minWidth = `${totalWidth}px`;
             container.style.minHeight = `${totalHeight}px`;
-            window.scrollTo(0, 0); // 確保內容從頂部顯示
+            window.scrollTo(0, 0);
         }
 
         function createPuzzle() {
             pieces = [];
             board.innerHTML = '';
+            board.className = 'puzzle-board bg-white border-2 border-gray-600 rounded-lg shadow-lg';
             pieceArea.innerHTML = '';
             message.textContent = '';
+            message.classList.add('hidden');
+            timeDisplay.textContent = '';
+            timeDisplay.classList.add('hidden');
+            restartButton.classList.add('hidden');
             placedPieces.fill(null);
 
-            // 創建拼圖格子
+            board.style.display = 'grid';
+            board.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            board.style.gridTemplateRows = 'repeat(4, 1fr)';
+
             for (let i = 0; i < totalPieces; i++) {
                 const cell = document.createElement('div');
-                cell.className = 'puzzle-cell';
+                cell.className = 'puzzle-cell border border-gray-300';
                 cell.dataset.index = i;
                 cell.style.width = `${pieceWidth}px`;
                 cell.style.height = `${pieceHeight}px`;
@@ -155,7 +147,6 @@
                 board.appendChild(cell);
             }
 
-            // 創建拼圖塊
             const indices = [...Array(totalPieces).keys()];
             shuffleArray(indices);
             for (let i = 0; i < totalPieces; i++) {
@@ -175,7 +166,6 @@
                 pieces.push(piece);
             }
 
-            // 為pieceArea添加拖放事件
             pieceArea.addEventListener('dragover', dragOver);
             pieceArea.addEventListener('drop', dropToPieceArea);
         }
@@ -230,13 +220,29 @@
         function checkCompletion() {
             const isComplete = placedPieces.every((piece, index) => piece == index);
             if (isComplete && placedPieces.every(piece => piece !== null)) {
+                const endTime = new Date();
+                const timeTaken = Math.floor((endTime - startTime) / 1000);
+                const minutes = Math.floor(timeTaken / 60);
+                const seconds = timeTaken % 60;
                 message.textContent = '恭喜！拼圖完成！';
+                message.classList.remove('hidden');
+                message.classList.add('fade-in');
+                timeDisplay.textContent = `完成時間：${minutes}分${seconds}秒`;
+                timeDisplay.classList.remove('hidden');
+                timeDisplay.classList.add('fade-in');
+                restartButton.classList.remove('hidden');
+                restartButton.classList.add('fade-in');
+                board.classList.add('completed-animation');
             }
         }
 
         document.addEventListener('dragend', (e) => {
             e.target.classList.remove('dragging');
             document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
+        });
+
+        restartButton.addEventListener('click', () => {
+            loadImageAndCreatePuzzle();
         });
 
         loadImageAndCreatePuzzle();
