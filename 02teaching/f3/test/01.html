@@ -522,7 +522,7 @@
       if (currentFibQuestion.answerimage) {
         answerImageHtml = `<img src="${currentFibQuestion.answerimage}" alt="Answer Image" class="answer-image">`;
       }
-      feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p>${answerImageHtml}<p>解析：${currentFibQuestion.explanation}</p>`;
+      feedbackDiv.innerHTML = `<p>正確答案：${displayAnswer}</p><p>解析：${currentFibQuestion.explanation}</p>${answerImageHtml}`;
       MathJax.typeset();
     }
 
@@ -641,7 +641,7 @@
         if (question.answerimage) {
           answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
         }
-        feedback.innerHTML = `錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}${answerImageHtml}。解析：${question.explanation}`;
+        feedback.innerHTML = `錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}。解析：${question.explanation}${answerImageHtml}`;
         feedback.style.color = 'red';
         wrongQuestions.add(questionIndex);
         wrongCount++;
@@ -717,8 +717,8 @@
             <p><strong>題目：</strong>${question.question}</p>
             ${imageHtml}
             <p><strong>正確答案：</strong>${displayAnswer}</p>
-            ${answerImageHtml}
             <p><strong>解析：</strong>${question.explanation}</p>
+            ${answerImageHtml}
           `;
           wrongQuestionsContainer.appendChild(div);
         });
