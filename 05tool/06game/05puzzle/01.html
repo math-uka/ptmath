@@ -65,14 +65,14 @@
         </div>
     </div>
     <div id="message" class="text-lg text-green-600 text-center mt-2 hidden"></div>
-    <div id="timeDisplay" class="text-base text-gray-700 text-center mt-1 hidden"></div>
+    <div id="swapCountDisplay" class="text-base text-gray-700 text-center mt-1 hidden"></div>
     <button id="restartButton" class="mt-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm hidden">重新遊戲</button>
 
     <script>
         const board = document.getElementById('puzzleBoard');
         const gameContainer = document.getElementById('gameContainer');
         const message = document.getElementById('message');
-        const timeDisplay = document.getElementById('timeDisplay');
+        const swapCountDisplay = document.getElementById('swapCountDisplay');
         const restartButton = document.getElementById('restartButton');
         const zoomInButton = document.getElementById('zoomInButton');
         const zoomOutButton = document.getElementById('zoomOutButton');
@@ -83,7 +83,7 @@
         let pieceWidth = 100;
         let pieceHeight = 100;
         let imagePath = '';
-        let startTime = null;
+        let swapCount = 0;
         let scaleFactor = 1;
         let selectedPiece = null;
 
@@ -139,7 +139,6 @@
                 document.body.style.minHeight = `${totalHeight}px`;
 
                 createPuzzle();
-                startTime = new Date();
             };
             img.onerror = () => {
                 message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
@@ -153,10 +152,12 @@
             board.className = 'puzzle-board bg-white border-2 border-blue-500 rounded-lg shadow-md';
             message.textContent = '';
             message.classList.add('hidden');
-            timeDisplay.textContent = '';
-            timeDisplay.classList.add('hidden');
+            swapCountDisplay.textContent = '';
+            swapCountDisplay.classList.add('hidden');
             restartButton.classList.add('hidden');
             placedPieces.fill(null);
+            swapCount = 0;
+            selectedPiece = null;
 
             board.style.display = 'grid';
             board.style.gridTemplateColumns = 'repeat(4, 1fr)';
@@ -202,6 +203,9 @@
                 });
                 pieces.push(piece);
             }
+
+            // 調試：檢查初始放置
+            console.log('Initial placedPieces:', placedPieces);
         }
 
         function shuffleArray(array) {
@@ -240,9 +244,15 @@
                 placedPieces[firstIndex] = parseInt(secondPiece.dataset.index);
                 placedPieces[secondIndex] = parseInt(firstPiece.dataset.index);
 
+                // 增加交換次數
+                swapCount++;
+
                 // 移除選擇狀態
                 firstPiece.classList.remove('selected');
                 selectedPiece = null;
+
+                // 調試：檢查交換後的狀態
+                console.log('After swap:', placedPieces, 'Swap count:', swapCount);
 
                 // 檢查是否完成
                 checkCompletion();
@@ -250,18 +260,15 @@
         }
 
         function checkCompletion() {
-            const isComplete = placedPieces.every((piece, index) => piece == index);
+            const isComplete = placedPieces.every((piece, index) => piece === index);
+            console.log('Checking completion, isComplete:', isComplete, 'placedPieces:', placedPieces);
             if (isComplete) {
-                const endTime = new Date();
-                const timeTaken = Math.floor((endTime - startTime) / 1000);
-                const minutes = Math.floor(timeTaken / 60);
-                const seconds = timeTaken % 60;
                 message.textContent = '恭喜！拼圖完成！';
                 message.classList.remove('hidden');
                 message.classList.add('fade-in');
-                timeDisplay.textContent = `完成時間：${minutes}分${seconds}秒`;
-                timeDisplay.classList.remove('hidden');
-                timeDisplay.classList.add('fade-in');
+                swapCountDisplay.textContent = `交換次數：${swapCount} 次`;
+                swapCountDisplay.classList.remove('hidden');
+                swapCountDisplay.classList.add('fade-in');
                 restartButton.classList.remove('hidden');
                 restartButton.classList.add('fade-in');
                 board.classList.add('completed-animation');
