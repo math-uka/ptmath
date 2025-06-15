@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼圖遊戲</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .puzzle-board, .piece-area {
+            width: 400px;
+            height: 400px;
+            border: 2px solid #333;
+            background-color: #fff;
+        }
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-template-rows: repeat(4, 100px);
+        }
+        .piece-area {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-size: 400px 400px;
+            cursor: move;
+            user-select: none;
+        }
+        .puzzle-cell {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .puzzle-piece.dragging {
+            opacity: 0.5;
+        }
+        .puzzle-cell.over {
+            background-color: #e0e0e0;
+        }
+        .completed {
+            font-size: 24px;
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="puzzle-board" id="puzzleBoard"></div>
+        <div class="piece-area" id="pieceArea"></div>
+    </div>
+    <div id="message" class="completed"></div>
+
+    <script>
+        const board = document.getElementById('puzzleBoard');
+        const pieceArea = document.getElementById('pieceArea');
+        const message = document.getElementById('message');
+        const totalPieces = 16;
+        const imageCount = 10; // 假設有001.png到010.png
+        const imageIndex = Math.floor(Math.random() * imageCount) + 1;
+        const imagePath = `images/${imageIndex.toString().padStart(3, '0')}.png`;
+
+        let pieces = [];
+        let placedPieces = new Array(totalPieces).fill(null);
+
+        function createPuzzle() {
+            pieces = [];
+            board.innerHTML = '';
+            pieceArea.innerHTML = '';
+            message.textContent = '';
+
+            // 創建拼圖格子
+            for (let i = 0; i < totalPieces; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'puzzle-cell';
+                cell.dataset.index = i;
+                cell.addEventListener('dragover', dragOver);
+                cell.addEventListener('drop', drop);
+                board.appendChild(cell);
+            }
+
+            // 創建拼圖塊
+            const indices = [...Array(totalPieces).keys()];
+            shuffleArray(indices);
+            for (let i = 0; i < totalPieces; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.draggable = true;
+                piece.dataset.index = i;
+                const row = Math.floor(i / 4);
+                const col = i % 4;
+                piece.style.backgroundImage = `url(${imagePath})`;
+                piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                piece.addEventListener('dragstart', dragStart);
+                pieceArea.appendChild(piece);
+                pieces.push(piece);
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function dragStart(e) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', e.target.dataset.index);
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.target.classList.add('over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            e.target.classList.remove('over');
+            const pieceIndex = e.dataTransfer.getData('text');
+            const piece = pieces[pieceIndex];
+            const cellIndex = e.target.dataset.index;
+
+            if (cellIndex !== undefined && placedPieces[cellIndex] === null) {
+                e.target.appendChild(piece);
+                piece.draggable = false;
+                placedPieces[cellIndex] = pieceIndex;
+                checkCompletion();
+            }
+        }
+
+        function checkCompletion() {
+            const isComplete = placedPieces.every((piece, index) => piece == index);
+            if (isComplete) {
+                message.textContent = '恭喜！拼圖完成！';
+            }
+        }
+
+        document.addEventListener('dragend', (e) => {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.puzzle-cell').forEach(cell => cell.classList.remove('over'));
+        });
+
+        createPuzzle();
+    </script>
+</body>
+</html>
