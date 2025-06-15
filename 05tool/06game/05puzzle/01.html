@@ -141,6 +141,7 @@
         let selectedPiece = null;
         let availableImages = [];
         let usedImages = [];
+        let autoAdvanceTimer = null;
 
         async function checkAvailableImages() {
             let images = [];
@@ -397,6 +398,10 @@
                 if (currentLevel < levels.length - 1) {
                     nextLevelButton.classList.remove('hidden');
                     nextLevelButton.classList.add('fade-in');
+                    // 設置5秒後自動進入下一關
+                    autoAdvanceTimer = setTimeout(() => {
+                        nextLevelButton.click();
+                    }, 5000);
                 } else {
                     showFinalScreen();
                 }
@@ -457,6 +462,7 @@
         });
 
         nextLevelButton.addEventListener('click', () => {
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
@@ -465,6 +471,7 @@
 
         nextLevelButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel++;
             scaleFactor = 1;
             selectedPiece = null;
@@ -472,6 +479,7 @@
         });
 
         restartButton.addEventListener('click', () => {
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
@@ -482,6 +490,7 @@
 
         restartButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
@@ -491,6 +500,7 @@
         });
 
         playAgainButton.addEventListener('click', () => {
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
@@ -503,6 +513,7 @@
 
         playAgainButton.addEventListener('touchstart', (e) => {
             e.preventDefault();
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             currentLevel = 0;
             totalSwapCount = 0;
             scaleFactor = 1;
@@ -514,6 +525,7 @@
         });
 
         window.addEventListener('resize', () => {
+            clearTimeout(autoAdvanceTimer); // 取消自動進度計時器
             scaleFactor = 1;
             selectedPiece = null;
             loadImageAndCreatePuzzle();
