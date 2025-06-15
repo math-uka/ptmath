@@ -51,6 +51,7 @@
       margin-top: 10px;
       max-width: 300px;
       width: 100%;
+      display: block; /* 確保圖片獨立一行 */
     }
     .remaining-questions {
       font-size: 1em;
@@ -641,7 +642,11 @@
         if (question.answerimage) {
           answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
         }
-        feedback.innerHTML = `錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}。解析：${question.explanation}${answerImageHtml}`;
+        feedback.innerHTML = `
+          <p>錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}</p>
+          <p>解析：${question.explanation}</p>
+          ${answerImageHtml}
+        `;
         feedback.style.color = 'red';
         wrongQuestions.add(questionIndex);
         wrongCount++;
