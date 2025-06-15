@@ -9,7 +9,274 @@
         .puzzle-piece {
             background-size: cover;
             cursor: move;
+            user-select: none;<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼圖遊戲</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .puzzle-piece {
+            background-size: cover;
+            cursor: move;
             user-select: none;
+            position: absolute;
+            transition: z-index 0.1s;
+        }
+        .puzzle-cell {
+            box-sizing: border-box;
+        }
+        .puzzle-piece.dragging {
+            opacity: 0.5;
+            z-index: 10;
+        }
+        .puzzle-cell.over, .piece-area.over {
+            background-color: #e5e7eb;
+        }
+        .completed-animation {
+            animation: complete 1s ease-in-out;
+        }
+        @keyframes complete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen bg-gradient-to-b from-blue-100 to-gray-100 font-sans overflow-auto">
+    <h1 class="text-4xl font-bold text-gray-800 mt-6 mb-4">拼圖遊戲</h1>
+    <div class="container flex gap-6 justify-center p-6">
+        <div class="puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl" id="puzzleBoard"></div>
+        <div class="piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden" id="pieceArea"></div>
+    </div>
+    <div id="message" class="text-2xl text-green-600 text-center mt-4 hidden"></div>
+    <div id="timeDisplay" class="text-xl text-gray-700 text-center mt-2 hidden"></div>
+    <button id="restartButton" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 hidden">重新遊戲</button>
+
+    <script>
+        const board = document.getElementById('puzzleBoard');
+        const pieceArea = document.getElementById('pieceArea');
+        const message = document.getElementById('message');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const restartButton = document.getElementById('restartButton');
+        const totalPieces = 16;
+        let maxImageIndex = 10;
+        let pieces = [];
+        let placedPieces = new Array(totalPieces).fill(null);
+        let pieceWidth = 100;
+        let pieceHeight = 100;
+        let imagePath = '';
+        let startTime = null;
+
+        async function checkAvailableImages() {
+            let availableImages = [];
+            for (let i = 1; i <= maxImageIndex; i++) {
+                const imgName = `${i.toString().padStart(3, '0')}.png`;
+                try {
+                    const response = await fetch(`images/${imgName}`, { method: 'HEAD' });
+                    if (response.ok) {
+                        availableImages.push(imgName);
+                    }
+                } catch (error) {
+                    console.log(`圖片 ${imgName} 不存在`);
+                }
+            }
+            return availableImages;
+        }
+
+        async function loadImageAndCreatePuzzle() {
+            const availableImages = await checkAvailableImages();
+            if (availableImages.length === 0) {
+                message.textContent = 'images資料夾中無可用圖片，請添加001.png等格式的圖片。';
+                message.classList.remove('hidden');
+                return;
+            }
+            const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+            imagePath = `images/${randomImage}`;
+
+            const img = new Image();
+            img.src = imagePath;
+            img.onload = () => {
+                const imgWidth = img.width;
+                const imgHeight = img.height;
+                pieceWidth = imgWidth / 4;
+                pieceHeight = imgHeight / 4;
+
+                board.style.width = `${imgWidth}px`;
+                board.style.height = `${imgHeight}px`;
+                pieceArea.style.width = `${imgWidth}px`;
+                pieceArea.style.height = `${imgHeight}px`;
+
+                createPuzzle();
+                adjustContainerSize(imgWidth, imgHeight);
+                startTime = new Date();
+            };
+            img.onerror = () => {
+                message.textContent = '圖片加載失敗，請檢查images資料夾中的圖片檔案。';
+                message.classList.remove('hidden');
+            };
+        }
+
+        function adjustContainerSize(imgWidth, imgHeight) {
+            const container = document.querySelector('.container');
+            const totalWidth = imgWidth * 2 + 48;
+            const totalHeight = imgHeight + 48;
+            container.style.minWidth = `${totalWidth}px`;
+            container.style.minHeight = `${totalHeight}px`;
+            window.scrollTo(0, 0);
+        }
+
+        function createPuzzle() {
+            pieces = [];
+            board.innerHTML = '';
+            board.className = 'puzzle-board bg-white border-4 border-blue-500 rounded-xl shadow-xl';
+            pieceArea.innerHTML = '';
+            pieceArea.className = 'piece-area bg-white border-4 border-blue-500 rounded-xl shadow-xl relative overflow-hidden';
+            message.textContent = '';
+            message.classList.add('hidden');
+            timeDisplay.textContent = '';
+            timeDisplay.classList.add('hidden');
+            restartButton.classList.add('hidden');
+            placedPieces.fill(null);
+
+            board.style.display = 'grid';
+            board.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            board.style.gridTemplateRows = 'repeat(4, 1fr)';
+
+            for (let i = 0; i < totalPieces; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'puzzle-cell border border-gray-300';
+                cell.dataset.index = i;
+                cell.style.width = `${pieceWidth}px`;
+                cell.style.height = `${pieceHeight}px`;
+                cell.addEventListener('dragover', dragOver);
+                cell.addEventListener('drop', drop);
+                board.appendChild(cell);
+            }
+
+            const indices = [...Array(totalPieces).keys()];
+            shuffleArray(indices);
+            for (let i = 0; i < totalPieces; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.draggable = true;
+                piece.dataset.index = i;
+                const row = Math.floor(i / 4);
+                const col = i % 4;
+                piece.style.width = `${pieceWidth}px`;
+                piece.style.height = `${pieceHeight}px`;
+                piece.style.backgroundImage = `url(${imagePath})`;
+                piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+                piece.style.backgroundSize = `${board.style.width} ${board.style.height}`;
+
+                // 隨機定位，確保不超出pieceArea
+                const maxX = pieceArea.offsetWidth - pieceWidth;
+                const maxY = pieceArea.offsetHeight - pieceHeight;
+                piece.style.left = `${Math.random() * maxX}px`;
+                piece.style.top = `${Math.random() * maxY}px`;
+
+                piece.addEventListener('dragstart', dragStart);
+                pieceArea.appendChild(piece);
+                pieces.push(piece);
+            }
+
+            pieceArea.addEventListener('dragover', dragOver);
+            pieceArea.addEventListener('drop', dropToPieceArea);
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function dragStart(e) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', e.target.dataset.index);
+            const parent = e.target.parentElement;
+            if (parent.classList.contains('puzzle-cell')) {
+                const cellIndex = parent.dataset.index;
+                placedPieces[cellIndex] = null;
+            }
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.target.classList.add('over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            e.target.classList.remove('over');
+            const pieceIndex = e.dataTransfer.getData('text');
+            const piece = pieces[pieceIndex];
+            const cellIndex = e.target.dataset.index;
+
+            if (cellIndex !== undefined) {
+                const targetCell = e.target.classList.contains('puzzle-cell') ? e.target : e.target.closest('.puzzle-cell');
+                if (targetCell && placedPieces[cellIndex] === null) {
+                    targetCell.appendChild(piece);
+                    piece.style.position = 'static';
+                    placedPieces[cellIndex] = pieceIndex;
+                    checkCompletion();
+                }
+            }
+        }
+
+        function dropToPieceArea(e) {
+            e.preventDefault();
+            e.target.classList.remove('over');
+            const pieceIndex = e.dataTransfer.getData('text');
+            const piece = pieces[pieceIndex];
+            pieceArea.appendChild(piece);
+            piece.style.position = 'absolute';
+            const maxX = pieceArea.offsetWidth - pieceWidth;
+            const maxY = pieceArea.offsetHeight - pieceHeight;
+            piece.style.left = `${Math.random() * maxX}px`;
+            piece.style.top = `${Math.random() * maxY}px`;
+        }
+
+        function checkCompletion() {
+            const isComplete = placedPieces.every((piece, index) => piece == index);
+            if (isComplete && placedPieces.every(piece => piece !== null)) {
+                const endTime = new Date();
+                const timeTaken = Math.floor((endTime - startTime) / 1000);
+                const minutes = Math.floor(timeTaken / 60);
+                const seconds = timeTaken % 60;
+                message.textContent = '恭喜！拼圖完成！';
+                message.classList.remove('hidden');
+                message.classList.add('fade-in');
+                timeDisplay.textContent = `完成時間：${minutes}分${seconds}秒`;
+                timeDisplay.classList.remove('hidden');
+                timeDisplay.classList.add('fade-in');
+                restartButton.classList.remove('hidden');
+                restartButton.classList.add('fade-in');
+                board.classList.add('completed-animation');
+            }
+        }
+
+        document.addEventListener('dragend', (e) => {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.puzzle-cell, .piece-area').forEach(el => el.classList.remove('over'));
+        });
+
+        restartButton.addEventListener('click', () => {
+            loadImageAndCreatePuzzle();
+        });
+
+        loadImageAndCreatePuzzle();
+    </script>
+</body>
+</html>
         }
         .puzzle-cell {
             box-sizing: border-box;
