@@ -584,12 +584,7 @@
             } else {
                 hearts--;
                 updateHeartsDisplay();
-                if (hearts <= 0) {
-                    pieces.forEach(p => p.classList.add('disabled'));
-                    mathModal.style.display = 'flex';
-                    generateMathQuestion();
-                    return;
-                }
+                const isLastHeart = hearts === 0 && totalHearts >= 1;
 
                 const firstPiece = selectedPiece;
                 const secondPiece = piece;
@@ -610,7 +605,21 @@
                 firstPiece.classList.remove('selected');
                 selectedPiece = null;
 
-                checkCompletion();
+                if (isLastHeart) {
+                    setTimeout(() => {
+                        if (!checkCompletion()) {
+                            pieces.forEach(p => p.classList.add('disabled'));
+                            mathModal.style.display = 'flex';
+                            generateMathQuestion();
+                        }
+                    }, 400);
+                } else if (hearts <= 0) {
+                    pieces.forEach(p => p.classList.add('disabled'));
+                    mathModal.style.display = 'flex';
+                    generateMathQuestion();
+                } else {
+                    checkCompletion();
+                }
             }
         }
 
@@ -634,7 +643,9 @@
                     showFinalScreen();
                 }
                 board.classList.add('completed-animation');
+                return true;
             }
+            return false;
         }
 
         function triggerCheatLevelCompletion() {
