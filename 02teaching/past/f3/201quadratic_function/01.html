@@ -47,13 +47,10 @@
     .question-container, .fib-mode-container {
       font-size: 1.2em;
     }
-    .question-image, .answer-image {
+    .question-image {
       margin-top: 10px;
       max-width: 300px;
       width: 100%;
-      display: block;
-      margin-left: auto;
-      margin-right: auto; /* 置中圖片 */
     }
     .remaining-questions {
       font-size: 1em;
@@ -120,14 +117,6 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
-    }
-    .wrong-question img {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; /* 確保錯題區的圖片也置中 */
-      max-width: 200px;
-      width: 100%;
-      margin-top: 10px;
     }
     .fib-mode-container button {
       padding: 5px 15px;
@@ -202,6 +191,7 @@
     <div id="fib-question"></div>
     <div id="fib-image-container" style="display: none;"></div>
     <button id="fib-show-answer" onclick="showFibAnswer()">答案</button>
+    <button id="fib-show-explanation" onclick="showFibExplanation()">解析</button>
     <button id="fib-next" onclick="nextFibQuestion()">下一題</button>
     <div class="fib-feedback" id="fib-feedback"></div>
   </div>
@@ -240,6 +230,7 @@
     let passwordRetrieved = false;
     let currentFibQuestion = null; // 當前填空題
     let isAnswerShown = false; // 追蹤是否顯示答案
+    let isExplanationShown = false; // 追蹤是否顯示解析
 
     // 加載題庫和密碼表
     async function loadData() {
@@ -404,7 +395,6 @@
       });
 
       document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'block';
       document.getElementById('remaining-questions').style.display = 'block';
@@ -453,7 +443,6 @@
       });
 
       document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'block';
       document.getElementById('remaining-questions').style.display = 'block';
@@ -472,8 +461,8 @@
 
       usedFibQuestions.clear();
       isAnswerShown = false;
+      isExplanationShown = false;
       document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'none';
       document.getElementById('question-image-container').style.display = 'none';
@@ -515,35 +504,41 @@
 
       document.getElementById('fib-feedback').innerHTML = '';
       isAnswerShown = false;
+      isExplanationShown = false;
       document.getElementById('fib-show-answer').disabled = false;
+      document.getElementById('fib-show-explanation').disabled = false;
       document.getElementById('fib-next').disabled = false;
 
       MathJax.typeset();
     }
 
-    // 顯示答案和解析
+    // 顯示答案
     function showFibAnswer() {
       if (!currentFibQuestion) return;
       isAnswerShown = true;
       const feedbackDiv = document.getElementById('fib-feedback');
-      // 檢查答案是否已包含 MathJax 標記
-      const isMathExpression = currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)');
-      const displayAnswer = isMathExpression ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
-      let answerImageHtml = '';
-      if (currentFibQuestion.answerimage) {
-        answerImageHtml = `<img src="${currentFibQuestion.answerimage}" alt="Answer Image" class="answer-image">`;
+      feedbackDiv.innerHTML = `<p>正確答案：\\(${currentFibQuestion.answer}\\)</p>`;
+      if (isExplanationShown) {
+        feedbackDiv.innerHTML += `<p>解析：${currentFibQuestion.explanation}</p>`;
       }
-      feedbackDiv.innerHTML = `
-        <p>正確答案：${displayAnswer}</p>
-        <p>解析：${currentFibQuestion.explanation}</p>
-        ${answerImageHtml}
-      `;
+      MathJax.typeset();
+    }
+
+    // 顯示解析
+    function showFibExplanation() {
+      if (!currentFibQuestion) return;
+      isExplanationShown = true;
+      const feedbackDiv = document.getElementById('fib-feedback');
+      feedbackDiv.innerHTML = isAnswerShown
+        ? `<p>正確答案：\\(${currentFibQuestion.answer}\\)</p><p>解析：${currentFibQuestion.explanation}</p>`
+        : `<p>解析：${currentFibQuestion.explanation}</p>`;
       MathJax.typeset();
     }
 
     // 下一填空題
     function nextFibQuestion() {
       isAnswerShown = false;
+      isExplanationShown = false;
       displayFibQuestion();
     }
 
@@ -652,15 +647,7 @@
         }, 1000);
       } else {
         const displayAnswer = correctAnswerContent.includes('\\(') ? correctAnswerContent : `\\(${correctAnswerContent}\\)`;
-        let answerImageHtml = '';
-        if (question.answerimage) {
-          answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
-        }
-        feedback.innerHTML = `
-          <p>錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}</p>
-          <p>解析：${question.explanation}</p>
-          ${answerImageHtml}
-        `;
+        feedback.innerHTML = `錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}。解析：${question.explanation}`;
         feedback.style.color = 'red';
         wrongQuestions.add(questionIndex);
         wrongCount++;
@@ -703,7 +690,6 @@
       document.getElementById('options').style.display = 'none';
       document.getElementById('feedback').style.display = 'none';
       document.getElementById('fib-mode').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
 
       // 僅在標準模式、錯題 ≤ 1 且存在密碼表時顯示密碼輸入框
       if (isStandardMode && wrongCount <= 1 && hasPasswordBank) {
@@ -723,21 +709,13 @@
           div.className = 'wrong-question';
           let imageHtml = '';
           if (question.image) {
-            imageHtml = `<img src="${question.image}" alt="Wrong Question Image" class="question-image">`;
+            imageHtml = `<img src="${question.image}" alt="Wrong Question Image" style="max-width: 200px; width: 100%; margin-top: 10px;">`;
           }
-          let answerImageHtml = '';
-          if (question.answerimage) {
-            answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
-          }
-          // 檢查答案是否已包含 MathJax 標記
-          const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\)');
-          const displayAnswer = isMathExpression ? question.answer : `\\(${question.answer}\\)`;
           div.innerHTML = `
             <p><strong>題目：</strong>${question.question}</p>
             ${imageHtml}
-            <p><strong>正確答案：</strong>${displayAnswer}</p>
+            <p><strong>正確答案：</strong>\\(${question.answer}\\)</p>
             <p><strong>解析：</strong>${question.explanation}</p>
-            ${answerImageHtml}
           `;
           wrongQuestionsContainer.appendChild(div);
         });
