@@ -221,12 +221,13 @@
     // 標準模式的題目數量
     const STANDARD_MODE_QUESTION_COUNT = 10;
 
-    let quizData = {}; // 整個測驗數據
+    let quizData = {}; // num.json 測驗數據
+    let challengeData = {}; // num2.json 挑戰題數據
     let questionBank = []; // 選擇題題庫（從 quizData.questions 獲取）
     let challengeBank = []; // 挑戰題題庫（從 num2.json）
     let hasChallengeBank = false; // 是否有挑戰題庫
-    let quizTitle = "自我測驗"; // 預設標題
-    let challengeTitle = quizTitle; // 挑戰題標題
+    let quizTitle = "自我測驗"; // 預設標題（從 num.json 獲取）
+    let challengeTitle = "挑戰題"; // 挑戰題標題（從 num2.json 獲取）
     let fibQuestionBank = []; // 填空題題庫
     let passwordBank = {};
     let hasPasswordBank = false;
@@ -255,10 +256,6 @@
       const customModeBtn = document.getElementById('custom-mode-btn');
 
       try {
-        // 預設標題
-        document.getElementById('quiz-title').textContent = quizTitle;
-        document.title = quizTitle;
-
         // 先嘗試加載填空題題庫
         try {
           console.log('開始載入 fib.json');
@@ -274,11 +271,8 @@
             } else {
               hasFibBank = true;
               fibQuestionBank = fibData;
-              // 從 fib.json 讀取標題
               if (fibData.title) {
                 quizTitle = fibData.title;
-                document.getElementById('quiz-title').textContent = quizTitle;
-                document.title = quizTitle;
               }
               console.log('填空題題庫加載成功，題目數：', fibQuestionBank.length);
               // 動態添加填空模式按鈕
@@ -295,7 +289,7 @@
           hasFibBank = false;
         }
 
-        // 嘗試加載選擇題題庫
+        // 嘗試加載選擇題題庫 (num.json)
         try {
           console.log('開始載入 num.json');
           const questionResponse = await fetch('num.json');
@@ -310,7 +304,6 @@
             } else {
               hasQuizBank = true;
               questionBank = quizData.questions;
-              // 若 num.json 存在，優先使用其標題
               if (quizData.title) {
                 quizTitle = quizData.title;
                 document.getElementById('quiz-title').textContent = quizTitle;
@@ -324,7 +317,7 @@
           hasQuizBank = false;
         }
 
-        // 嘗試加載挑戰題題庫
+        // 嘗試加載挑戰題題庫 (num2.json)
         try {
           console.log('開始載入 num2.json');
           const challengeResponse = await fetch('num2.json');
@@ -332,14 +325,13 @@
             console.warn(`無法載入 num2.json：HTTP 狀態 ${challengeResponse.status}，挑戰題功能將不可用`);
             hasChallengeBank = false;
           } else {
-            const challengeData = await challengeResponse.json();
+            challengeData = await challengeResponse.json();
             if (!challengeData || !Array.isArray(challengeData.questions) || challengeData.questions.length === 0) {
               console.warn('num2.json 為空或格式錯誤，挑戰題功能將不可用');
               hasChallengeBank = false;
             } else {
               hasChallengeBank = true;
               challengeBank = challengeData.questions;
-              // 儲存挑戰題標題
               if (challengeData.title) {
                 challengeTitle = challengeData.title;
               }
@@ -373,7 +365,7 @@
           hasPasswordBank = false;
         }
 
-        // 初始化滑條（僅在有選擇題時）
+        // 初始化滑條
         if (hasQuizBank) {
           const maxQuestions = hasChallengeBank ? questionBank.length + challengeBank.length : questionBank.length;
           document.getElementById('question-slider').max = maxQuestions;
@@ -389,6 +381,10 @@
         if (hasFibBank) {
           document.getElementById('fib-mode-btn').disabled = false;
         }
+
+        // 設置初始標題
+        document.getElementById('quiz-title').textContent = quizTitle;
+        document.title = quizTitle;
 
         // 隱藏載入訊息
         loadingMessageDiv.style.display = 'none';
@@ -427,13 +423,12 @@
       wrongCount = 0;
       passwordRetrieved = false;
       totalQuestions = STANDARD_MODE_QUESTION_COUNT;
-      availableQuestions = [...questionBank];
-      availableChallengeQuestions = hasChallengeBank ? [...challengeBank] : [];
+      availableQuestions = shuffleArray([...questionBank]);
+      availableChallengeQuestions = hasChallengeBank ? shuffleArray([...challengeBank]) : [];
       currentQuestionCount = 0;
       wrongQuestions.clear();
       consecutiveCorrect = 0;
       isChallengeMode = false;
-      // 設置標題為 num.json 的標題
       document.getElementById('quiz-title').textContent = quizTitle;
       document.title = quizTitle;
 
@@ -483,11 +478,12 @@
       wrongCount = 0;
       passwordRetrieved = false;
       totalQuestions = parseInt(document.getElementById('question-slider').value);
-      availableQuestions = [...questionBank];
-      availableChallengeQuestions = hasChallengeBank ? [...challengeBank] : [];
+      availableQuestions = shuffleArray([...questionBank]);
+      availableChallengeQuestions = hasChallengeBank ? shuffleArray([...challengeBank]) : [];
       currentQuestionCount = 0;
       wrongQuestions.clear();
-      // 設置標題為 num.json 的標題
+      consecutiveCorrect = 0;
+      isChallengeMode = false;
       document.getElementById('quiz-title').textContent = quizTitle;
       document.title = quizTitle;
 
@@ -572,7 +568,6 @@
       if (!currentFibQuestion) return;
       isAnswerShown = true;
       const feedbackDiv = document.getElementById('fib-feedback');
-      // 檢查答案是否已包含 MathJax 標記
       const isMathExpression = currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)');
       const displayAnswer = isMathExpression ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
       let answerImageHtml = '';
@@ -611,7 +606,7 @@
         isChallengeMode
       });
 
-      if (currentQuestionCount >= totalQuestions || (availableQuestions.length === 0 && availableChallengeQuestions.length === 0)) {
+      if (currentQuestionCount >= totalQuestions || (availableQuestions.length === 0 && (!isChallengeMode || availableChallengeQuestions.length === 0))) {
         console.log('條件滿足，結束選擇題遊戲：', {
           currentQuestionCount,
           totalQuestions,
@@ -623,43 +618,35 @@
       }
 
       let question, questionIndex, bank;
-      if (!isStandardMode && hasChallengeBank && availableQuestions.length === 0 && currentQuestionCount < totalQuestions) {
-        // 自訂模式下，num.json 題目答完後切換到 num2.json
+      let currentTitle = quizTitle;
+
+      if (isStandardMode && isChallengeMode && availableChallengeQuestions.length > 0) {
         const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
         question = availableChallengeQuestions[randomIndex];
         questionIndex = challengeBank.indexOf(question);
         bank = challengeBank;
         availableChallengeQuestions.splice(randomIndex, 1);
-        // 使用 num2.json 的標題
-        document.getElementById('quiz-title').textContent = challengeTitle;
-        document.title = challengeTitle;
-      } else if (availableQuestions.length > 0) {
+        currentTitle = challengeTitle;
+      } else if (!isStandardMode && availableQuestions.length === 0 && availableChallengeQuestions.length > 0) {
+        const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
+        question = availableChallengeQuestions[randomIndex];
+        questionIndex = challengeBank.indexOf(question);
+        bank = challengeBank;
+        availableChallengeQuestions.splice(randomIndex, 1);
+        currentTitle = challengeTitle;
+      } else {
         const randomIndex = Math.floor(Math.random() * availableQuestions.length);
         question = availableQuestions[randomIndex];
         questionIndex = questionBank.indexOf(question);
         bank = questionBank;
         availableQuestions.splice(randomIndex, 1);
-        // 使用 num.json 的標題
-        document.getElementById('quiz-title').textContent = quizTitle;
-        document.title = quizTitle;
-      } else if (isStandardMode && isChallengeMode && availableChallengeQuestions.length > 0) {
-        const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
-        question = availableChallengeQuestions[randomIndex];
-        questionIndex = challengeBank.indexOf(question);
-        bank = challengeBank;
-        availableChallengeQuestions.splice(randomIndex, 1);
-        // 使用 num2.json 的標題
-        document.getElementById('quiz-title').textContent = challengeTitle;
-        document.title = challengeTitle;
-      } else {
-        console.log('無可用題目，結束遊戲');
-        endGame();
-        return;
+        currentTitle = quizTitle;
       }
 
+      document.getElementById('quiz-title').textContent = currentTitle;
+      document.title = currentTitle;
       document.getElementById('question').innerHTML = question.question;
 
-      // 顯示挑戰提示（僅標準模式）
       if (isStandardMode && consecutiveCorrect >= 3 && hasChallengeBank) {
         document.getElementById('feedback').innerHTML = `你已連續答對 ${consecutiveCorrect} 題，嘗試做一下挑戰題吧！`;
         MathJax.typeset();
@@ -668,7 +655,6 @@
         }, 2000);
       }
 
-      // 處理圖片
       const imageContainer = document.getElementById('question-image-container');
       if (question.image) {
         imageContainer.innerHTML = `<img src="${question.image}" alt="Question Image" class="question-image">`;
@@ -678,7 +664,6 @@
         imageContainer.style.display = 'none';
       }
 
-      // 更新剩餘題目數
       const remaining = totalQuestions - currentQuestionCount;
       document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題`;
 
@@ -704,9 +689,7 @@
       const labels = ['A', 'B', 'C', 'D'];
       labels.forEach((label, index) => {
         const optionContent = shuffledOptions[index];
-        // 檢查選項是否已經包含數學表達式標記
         const isMathExpression = optionContent && (optionContent.includes('\\(') && optionContent.includes('\\)'));
-        // 如果沒有數學表達式標記，則添加
         const displayContent = isMathExpression ? optionContent : `\\(${optionContent}\\)`;
         document.getElementById(`content-${label}`).innerHTML = displayContent;
         document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex, question.answer, bank);
@@ -743,7 +726,7 @@
         toggleButtons(true);
         setTimeout(() => {
           quizNumber++;
-          document.title = (isStandardMode && isChallengeMode && hasChallengeBank) || (!isStandardMode && availableQuestions.length === 0 && hasChallengeBank) ? challengeTitle : quizTitle;
+          document.title = isChallengeMode && hasChallengeBank ? challengeTitle : quizTitle;
           displayQuestion();
         }, 1000);
       } else {
@@ -761,7 +744,6 @@
         if (isStandardMode) {
           consecutiveCorrect = 0;
           isChallengeMode = false;
-          // 答錯後切回 num.json 標題
           document.getElementById('quiz-title').textContent = quizTitle;
           document.title = quizTitle;
         }
@@ -800,6 +782,8 @@
 
     // 選擇題遊戲結束
     function endGame() {
+      document.getElementById('quiz-title').textContent = quizTitle;
+      document.title = quizTitle;
       document.getElementById('question').innerHTML = '遊戲結束！所有題目已完成。';
       document.getElementById('question-image-container').style.display = 'none';
       document.getElementById('remaining-questions').style.display = 'none';
@@ -808,11 +792,6 @@
       document.getElementById('fib-mode').style.display = 'none';
       document.getElementById('custom-mode').style.display = 'none';
 
-      // 恢復 num.json 的標題
-      document.getElementById('quiz-title').textContent = quizTitle;
-      document.title = quizTitle;
-
-      // 僅在標準模式、錯題 ≤ 1 且存在密碼表時顯示密碼輸入框
       if (isStandardMode && wrongCount <= 1 && hasPasswordBank) {
         document.getElementById('password-input').style.display = 'block';
         document.getElementById('password-submit').onclick = handlePasswordSubmit;
@@ -838,7 +817,6 @@
           if (question.answerimage) {
             answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
           }
-          // 檢查答案是否已包含 MathJax 標記
           const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\)');
           const displayAnswer = isMathExpression ? question.answer : `\\(${question.answer}\\)`;
           div.innerHTML = `
