@@ -1,0 +1,383 @@
+{
+  "title": "同底數幂的乘法",
+  "questions": [
+    {
+      "question": "已知 \\(2^x = 5\\)，則 \\(2^{x+3}\\) 的值是",
+      "options": ["8", "15", "40", "125"],
+      "answer": "40",
+      "explanation": "解：因為 \\(2^x = 5\\)，所以 \\(2^{x+3} = 2^x \\cdot 2^3 = 5 \\cdot 8 = 40\\)。故選：\\(40\\)。本題考查同底數幂的乘法法則，關鍵是熟記同底數幂相乘時底數不變，指數相加。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "規定 \\(a*b = 2^a \\times 2^b\\)，例如：\\(1*2 = 2^1 \\times 2^2 = 2^3 = 8\\)，若 \\(2*(x+1) = 32\\)，則 \\(x\\) 的值為",
+      "options": ["29", "4", "3", "2"],
+      "answer": "2",
+      "explanation": "解：根據題意得：\\(2^2 \\times 2^{x+1} = 32\\)，即 \\(2^{2+(x+1)} = 2^5\\)。因為同底數幂相等時指數相等，得 \\(2 + x + 1 = 5\\)，解得 \\(x = 2\\)。故選：\\(2\\)。本題考查同底數幂的乘法和一元一次方程的解法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果正方體的稜長是 \\((1-2b)^3\\)，那麼這個正方體的體積是",
+      "options": ["\\((1-2b)^6\\)", "\\((1-2b)^9\\)", "\\((1-2b)^{12}\\)", "\\(6(1-2b)^6\\)"],
+      "answer": "\\((1-2b)^9\\)",
+      "explanation": "解：正方體的體積為稜長的立方，即 \\((1-2b)^3 \\cdot (1-2b)^3 \\cdot (1-2b)^3 = (1-2b)^{3+3+3} = (1-2b)^9\\)。故選：\\((1-2b)^9\\)。本題考查同底數幂的乘法法則，關鍵是將 \\(1-2b\\) 視為一個整體。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(a^m = 3\\)，\\(a^n = 4\\)，則 \\(a^{m+n}\\) 的值為",
+      "options": ["7", "12", "4^3", "3^4"],
+      "answer": "12",
+      "explanation": "解：因為 \\(a^m = 3\\)，\\(a^n = 4\\)，所以 \\(a^{m+n} = a^m \\cdot a^n = 3 \\cdot 4 = 12\\)。故選：\\(12\\)。本題考查同底數幂的乘法法則，關鍵是利用指數相加的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(2^x \\times 2^y = 2^5\\)，則正整數 \\(x+y\\) 的值是",
+      "options": ["2", "3", "4", "5"],
+      "answer": "5",
+      "explanation": "本題解析由AI生成。解：因為 \\(2^x \\times 2^y = 2^{x+y} = 2^5\\)，根據同底數幂相等時指數相等，得 \\(x+y = 5\\)。因為 \\(x\\) 和 \\(y\\) 為正整數，\\(x+y = 5\\) 滿足條件，故正確選項為 \\(5\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(b^2 \\cdot b^3\\) 正確的結果是",
+      "options": ["2b^6", "2b^5", "b^6", "b^5"],
+      "answer": "b^5",
+      "explanation": "本題解析由AI生成。解：根據同底數幂的乘法法則，\\(b^2 \\cdot b^3 = b^{2+3} = b^5\\)，故正確選項為 \\(b^5\\)。本題考查同底數幂的乘法，底數不變，指數相加。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列各項中，兩個幂是同底數幂的是",
+      "options": ["\\(x^2\\) 與 \\(a^2\\)", "\\((-a)^5\\) 與 \\(a^3\\)", "\\((x-y)^2\\) 與 \\((y-x)^2\\)", "\\(-x^2\\) 與 \\(x^3\\)"],
+      "answer": "\\((x-y)^2\\) 與 \\((y-x)^2\\)",
+      "explanation": "本題解析由AI生成。解：同底數幂指底數相同。因為 \\(y-x = -(x-y)\\)，所以 \\((x-y)^2\\) 與 \\((y-x)^2\\) 的底數可視為相同，故正確選項為 \\((x-y)^2 \\) 與 \\((y-x)^2\\)。本題考查同底數幂的識別。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((-a)^2 \\cdot a^3\\) 的結果是",
+      "options": ["a^5", "a^8", "-a^5", "-a^8"],
+      "answer": "a^5",
+      "explanation": "本題解析由AI生成。解：\\((-a)^2 = a^2\\)，所以 \\((-a)^2 \\cdot a^3 = a^2 \\cdot a^3 = a^{2+3} = a^5\\)，故正確選項為 \\(a^5\\)。本題考查同底數幂的乘法和負數的偶次幂。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(2^n + 2^n + 2^n + 2^n = 2^6\\)，則 \\(n=\\)",
+      "options": ["2", "3", "4", "5"],
+      "answer": "4",
+      "explanation": "解：\\(2^n + 2^n + 2^n + 2^n = 4 \\times 2^n = 2^2 \\times 2^n = 2^{2+n} = 2^6\\)。根據同底數幂相等時指數相等，得 \\(2+n = 6\\)，解得 \\(n = 4\\)。故選：\\(4\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(a^m = 4\\)，\\(a^n = 2\\)，則 \\(a^{m+n}\\) 等於",
+      "options": ["2", "6", "8", "16"],
+      "answer": "8",
+      "explanation": "解：因為 \\(a^m = 4\\)，\\(a^n = 2\\)，所以 \\(a^{m+n} = a^m \\cdot a^n = 4 \\cdot 2 = 8\\)。故選：\\(8\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(3^x = y\\)，則 \\(3^{x+1} = \\)",
+      "options": ["y", "1+y", "3+y", "3y"],
+      "answer": "3y",
+      "explanation": "解：因為 \\(3^x = y\\)，所以 \\(3^{x+1} = 3^x \\cdot 3 = y \\cdot 3 = 3y\\)。故選：\\(3y\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((-x)^2 \\cdot x^3\\) 的結果是",
+      "options": ["x^5", "-x^5", "x^6", "-x^6"],
+      "answer": "x^5",
+      "explanation": "本題解析由AI生成。解：\\((-x)^2 = x^2\\)，所以 \\((-x)^2 \\cdot x^3 = x^2 \\cdot x^3 = x^{2+3} = x^5\\)，故正確選項為 \\(x^5\\)。本題考查同底數幂的乘法和負數的偶次幂。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((a-b)^3 \\cdot (b-a)^4\\) 的結果有：① \\((a-b)^7\\)；② \\((b-a)^7\\)；③ \\(-(b-a)^7\\)；④ \\(-(a-b)^7\\)，其中正確的是",
+      "options": ["①③", "①④", "②③", "②④"],
+      "answer": "①③",
+      "explanation": "解：因為 \\(b-a = -(a-b)\\)，所以 \\((b-a)^4 = (-(a-b))^4 = (a-b)^4\\)。因此 \\((a-b)^3 \\cdot (b-a)^4 = (a-b)^3 \\cdot (a-b)^4 = (a-b)^{3+4} = (a-b)^7 = -(b-a)^7\\)。故正確的是 ①③。選：\\(①③\\)。本題考查同底數幂的乘法和代數式的等價變換。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下面的計算錯誤的是",
+      "options": ["5a^3 - a^3 = 4a^3", "2^m \\cdot 3^n = 6^{m+n}", "2^m \\cdot 2^n = 2^{m+n}", "-a^2 \\cdot (-a^3) = a^5"],
+      "answer": "2^m \\cdot 3^n = 6^{m+n}",
+      "explanation": "本題解析由AI生成。解：因為底數不同，\\(2^m \\cdot 3^n\\) 不能直接相乘為 \\(6^{m+n}\\)，故正確選項為 \\(2^m \\cdot 3^n = 6^{m+n}\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第16題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(2 \\times 2^2 \\times 2^n = 2^{10}\\)，則 \\(n\\) 等於",
+      "options": ["7", "4", "2", "6"],
+      "answer": "7",
+      "explanation": "本題解析由AI生成。解：\\(2 \\times 2^2 \\times 2^n = 2^{1+2+n} = 2^{3+n} = 2^{10}\\)，所以 \\(3+n = 10\\)，解得 \\(n = 7\\)，故正確選項為 \\(7\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(m \\cdot m^\\square = m^3\\)，則 \\(\\square\\) 是",
+      "options": ["1", "2", "3", "4"],
+      "answer": "2",
+      "explanation": "本題解析由AI生成。解：\\(m \\cdot m^\\square = m^{1+\\square} = m^3\\)，所以 \\(1+\\square = 3\\)，解得 \\(\\square = 2\\)，故正確選項為 \\(2\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\((9 \\times 10^8) \\div (3 \\times 10^2) = \\)",
+      "options": ["3 \\times 10^4", "3 \\times 10^6", "6 \\times 10^4", "6 \\times 10^6"],
+      "answer": "3 \\times 10^6",
+      "explanation": "本題解析由AI生成。解：\\((9 \\times 10^8) \\div (3 \\times 10^2) = \\frac{9}{3} \\times 10^{8-2} = 3 \\times 10^6\\)，故正確選項為 \\(3 \\times 10^6\\)。本題考查同底數幂的除法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是",
+      "options": ["a^3 \\cdot a^3 = a^9", "a^3 + a^3 = a^6", "a^3 \\cdot a^3 = a^6", "a^2 \\cdot a^3 = a^6"],
+      "answer": "a^3 \\cdot a^3 = a^6",
+      "explanation": "本題解析由AI生成。解：\\(a^3 \\cdot a^3 = a^{3+3} = a^6\\)，故正確選項為 \\(a^3 \\cdot a^3 = a^6\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(x^3 \\cdot x^4\\) 的結果為",
+      "options": ["x^{12}", "x^5", "x^7", "x"],
+      "answer": "x^7",
+      "explanation": "本題解析由AI生成。解：\\(x^3 \\cdot x^4 = x^{3+4} = x^7\\)，故正確選項為 \\(x^7\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列各式中，括號內應填 \\(-a\\) 的是",
+      "options": ["a^{12} = -a^3 \\cdot (\\quad)^4", "a^{12} = (-a)^7 \\cdot (\\quad)^5", "a^{12} = -a^6 \\cdot (\\quad)^6", "a^{12} = a^{13} + (\\quad)"],
+      "answer": "a^{12} = (-a)^7 \\cdot (\\quad)^5",
+      "explanation": "本題解析由AI生成。解：\\((-a)^7 \\cdot (-a)^5 = (-a)^{7+5} = a^{12}\\)，故正確選項為 \\(a^{12} = (-a)^7 \\cdot (\\quad)^5\\)。本題考查同底數幂的乘法和負數幂的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若規定一種新運算“&”：\\(a \\& b = 3^a \\times 3^b\\)，如 \\(3 \\& 2 = 3^3 \\times 3^2 = 3^5 = 243\\)，則計算 \\(4 \\& 8\\) 的結果為",
+      "options": ["3^{11}", "3^{12}", "3^{32}", "32"],
+      "answer": "3^{12}",
+      "explanation": "解：根據題意，\\(4 \\& 8 = 3^4 \\times 3^8 = 3^{4+8} = 3^{12}\\)。故選：\\(3^{12}\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第23題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是",
+      "options": ["a^3 + a^3 = a^6", "a^2 \\cdot a^3 = a^6", "a \\cdot a^5 = a^6", "a^3 - a^3 = a"],
+      "answer": "a \\cdot a^5 = a^6",
+      "explanation": "本題解析由AI生成。解：\\(a \\cdot a^5 = a^{1+5} = a^6\\)，故正確選項為 \\(a \\cdot a^5 = a^6\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第24題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算錯誤的是",
+      "options": ["x^2 \\cdot x^3 = x^5", "(-b)^2 \\cdot (-b)^4 = -b^6", "x \\cdot x^3 \\cdot x^5 = x^9", "(a+1)^2 \\cdot (a+1)^3 = (a+1)^5"],
+      "answer": "(-b)^2 \\cdot (-b)^4 = -b^6",
+      "explanation": "本題解析由AI生成。解：\\((-b)^2 \\cdot (-b)^4 = b^2 \\cdot b^4 = b^6\\)，而不是 \\(-b^6\\)，故正確選項為 \\((-b)^2 \\cdot (-b)^4 = -b^6\\)。本題考查同底數幂的乘法和負數幂的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(a \\cdot a^2\\) 結果正確的是",
+      "options": ["a", "a^2", "a^3", "a^4"],
+      "answer": "a^3",
+      "explanation": "解：\\(a \\cdot a^2 = a^{1+2} = a^3\\)。故選：\\(a^3\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第26題，題目無圖，答案無圖"
+    },
+    {
+      "question": "在 \\(y^{m-2} \\cdot y = y^{2m+2}\\) 中，括號內應填的代數式是",
+      "options": ["y^m", "y^{m+4}", "y^{m+2}", "y^{m+3}"],
+      "answer": "y^{m+3}",
+      "explanation": "本題解析由AI生成。解：左邊 \\(y^{m-2} \\cdot y = y^{m-2+1} = y^{m-1}\\)，右邊為 \\(y^{2m+2}\\)。相等則 \\(m-1 = 2m+2\\)，解得 \\(m = -3\\)。代入檢查，\\(y^{m-1} = y^{2m+2}\\)，則 \\(y^{m-1} = y^{m+3}\\)，故正確選項為 \\(y^{m+3}\\)。本題考查同底數幂的乘法和方程解法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第27題，題目無圖，答案無圖"
+    },
+    {
+      "question": "\\(x^{2m+2}\\) 可寫成",
+      "options": ["2x^{m+2}", "x^{2m} + x^2", "x^2 \\cdot x^{m+1}", "x^{2m} \\cdot x^2"],
+      "answer": "x^{2m} \\cdot x^2",
+      "explanation": "本題解析由AI生成。解：\\(x^{2m+2} = x^{2m} \\cdot x^2\\)，故正確選項為 \\(x^{2m} \\cdot x^2\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((-a)^3 \\cdot (-a)^2\\) 的結果是",
+      "options": ["a^6", "-a^6", "a^5", "-a^5"],
+      "answer": "-a^5",
+      "explanation": "本題解析由AI生成。解：\\((-a)^3 = -a^3\\)，\\((-a)^2 = a^2\\)，所以 \\((-a)^3 \\cdot (-a)^2 = (-a^3) \\cdot a^2 = -a^{3+2} = -a^5\\)，故正確選項為 \\(-a^5\\)。本題考查同底數幂的乘法和負數幂的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第29題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下面的計算錯誤的是",
+      "options": ["x^4 \\cdot x^3 = x^7", "(-c)^3 \\cdot (-c)^5 = c^8", "2 \\times 2^{10} = 2^{11}", "a^5 \\cdot a^5 = 2a^{10}"],
+      "answer": "a^5 \\cdot a^5 = 2a^{10}",
+      "explanation": "本題解析由AI生成。解：\\(a^5 \\cdot a^5 = a^{10}\\)，而不是 \\(2a^{10}\\)，故正確選項為 \\(a^5 \\cdot a^5 = 2a^{10}\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第30題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列四個算式：① \\(2^m \\cdot 3^n = 6^{m+n}\\)；② \\(-a^3 \\cdot (-a)^5 = a^8\\)；③ \\(b^2 \\cdot b \\cdot b^2 = b^5\\)；④ \\(p^2 + p^2 + p^2 = 3p^2\\)。其中正確的有",
+      "options": ["1個", "2個", "3個", "4個"],
+      "answer": "3個",
+      "explanation": "本題解析由AI生成。解：\\(-a^3 \\cdot (-a)^5 = a^8\\)，\\(b^2 \\cdot b \\cdot b^2 = b^{2+1+2} = b^5\\)，\\(p^2 + p^2 + p^2 = 3p^2\\)，這三項正確，故正確選項為 \\(3個\\)。本題考查同底數幂的乘法和代數運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第31題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果把 \\(x-2y\\) 看作一個整體，那麼下列計算正確的是",
+      "options": ["(x-2y)^2 \\cdot (2y-x)^3 = (x-2y)^5", "(x-2y)^2 \\cdot (2y-x)^2 = -(x-2y)^4", "(x-2y)^2 \\cdot (2y-x)^3 \\cdot (x-2y) = (x-2y)^7", "(x-2y)^2 \\cdot (2y-x)^3 = -(x-2y)^5"],
+      "answer": "(x-2y)^2 \\cdot (2y-x)^3 = -(x-2y)^5",
+      "explanation": "本題解析由AI生成。解：因為 \\(2y-x = -(x-2y)\\)，所以 \\((x-2y)^2 \\cdot (-(x-2y))^3 = -(x-2y)^5\\)，故正確選項為 \\((x-2y)^2 \\cdot (2y-x)^3 = -(x-2y)^5\\)。本題考查同底數幂的乘法和代數式的等價變換。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第32題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(2^n + 2^n + 2^n + 2^n = 8\\)，則 \\(n\\) 等於",
+      "options": ["1", "2", "3", "4"],
+      "answer": "1",
+      "explanation": "解：\\(2^n + 2^n + 2^n + 2^n = 4 \\times 2^n = 2^2 \\times 2^n = 2^{2+n} = 8 = 2^3\\)。所以 \\(2+n = 3\\)，解得 \\(n = 1\\)。故選：\\(1\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第33題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((-a)^4 \\cdot a^3\\) 的結果是",
+      "options": ["a^7", "a^{12}", "-a^7", "-a^{12}"],
+      "answer": "a^7",
+      "explanation": "本題解析由AI生成。解：\\((-a)^4 = a^4\\)，所以 \\((-a)^4 \\cdot a^3 = a^4 \\cdot a^3 = a^{4+3} = a^7\\)，故正確選項為 \\(a^7\\)。本題考查同底數幂的乘法和負數的偶次幂。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第34題，題目無圖，答案無圖"
+    },
+    {
+      "question": "製作拉麵需將長方形麵條摔勻拉伸後對折，並不斷重複．隨著不斷地對折，麵條根數不斷增加．若一拉麵店一碗麵約有 \\(64\\) 根麵條，一天能拉出 \\(2048\\) 碗拉麵，用底數為 \\(2\\) 的幂表示拉麵的總根數為",
+      "options": ["2^6", "2^{11}", "2^{17}", "2^{66}"],
+      "answer": "2^{17}",
+      "explanation": "解：因為 \\(64 = 2^6\\)，\\(2048 = 2^{11}\\)，所以總根數為 \\(2^6 \\times 2^{11} = 2^{6+11} = 2^{17}\\)。故選：\\(2^{17}\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第36題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(3 \\times 3^{2m} \\times 3^{3m} = 3^{11}\\)，則 \\(m\\) 的值為",
+      "options": ["2", "3", "4", "5"],
+      "answer": "2",
+      "explanation": "本題解析由AI生成。解：\\(3 \\times 3^{2m} \\times 3^{3m} = 3^{1+2m+3m} = 3^{1+5m} = 3^{11}\\)，所以 \\(1+5m = 11\\)，解得 \\(m = 2\\)，故正確選項為 \\(2\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第37題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(x^m = 6\\)，\\(x^n = 3\\)，則 \\(x^{m+n}\\) 的值為",
+      "options": ["2", "3", "9", "18"],
+      "answer": "18",
+      "explanation": "本題解析由AI生成。解：因為 \\(x^m = 6\\)，\\(x^n = 3\\)，所以 \\(x^{m+n} = x^m \\cdot x^n = 6 \\cdot 3 = 18\\)，故正確選項為 \\(18\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第38題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(a^2 \\cdot a^3\\) 的結果是",
+      "options": ["a^2", "a^3", "a^5", "a^6"],
+      "answer": "a^5",
+      "explanation": "本題解析由AI生成。解：\\(a^2 \\cdot a^3 = a^{2+3} = a^5\\)，故正確選項為 \\(a^5\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第39題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(a^3 \\cdot a\\) 的結果是",
+      "options": ["a^2", "a^3", "a^4", "a^5"],
+      "answer": "a^4",
+      "explanation": "本題解析由AI生成。解：\\(a^3 \\cdot a = a^{3+1} = a^4\\)，故正確選項為 \\(a^4\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第40題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(x^2 \\cdot (-x)^3\\) 的結果是",
+      "options": ["x^6", "-x^6", "x^5", "-x^5"],
+      "answer": "-x^5",
+      "explanation": "本題解析由AI生成。解：\\((-x)^3 = -x^3\\)，所以 \\(x^2 \\cdot (-x)^3 = x^2 \\cdot (-x^3) = -x^{2+3} = -x^5\\)，故正確選項為 \\(-x^5\\)。本題考查同底數幂的乘法和負數幂的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第41題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(a^4 \\cdot (-a)^3\\) 的結果是",
+      "options": ["a^{12}", "-a^{12}", "a^7", "-a^7"],
+      "answer": "-a^7",
+      "explanation": "本題解析由AI生成。解：\\((-a)^3 = -a^3\\)，所以 \\(a^4 \\cdot (-a)^3 = a^4 \\cdot (-a^3) = -a^{4+3} = -a^7\\)，故正確選項為 \\(-a^7\\)。本題考查同底數幂的乘法和負數幂的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第42題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(2^2 \\times 2^n = 2^6\\)，則 \\(n\\) 等於",
+      "options": ["4", "3", "2", "5"],
+      "answer": "4",
+      "explanation": "本題解析由AI生成。解：\\(2^2 \\times 2^n = 2^{2+n} = 2^6\\)，所以 \\(2+n = 6\\)，解得 \\(n = 4\\)，故正確選項為 \\(4\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第43題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(x+y-3=0\\)，則 \\(2^x \\times 2^y\\) 的值為",
+      "options": ["64", "8", "6", "12"],
+      "answer": "8",
+      "explanation": "本題解析由AI生成。解：因為 \\(x+y-3 = 0\\)，所以 \\(x+y = 3\\)。則 \\(2^x \\times 2^y = 2^{x+y} = 2^3 = 8\\)，故正確選項為 \\(8\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第44題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算不正確的是",
+      "options": ["5a^3 - a^3 = 4a^3", "2^m \\cdot 3^n = 6^{m+n}", "2^m \\cdot 2^n = 2^{m+n}", "-a^2 \\cdot (-a^3) = a^5"],
+      "answer": "2^m \\cdot 3^n = 6^{m+n}",
+      "explanation": "本題解析由AI生成。解：因為底數不同，\\(2^m \\cdot 3^n\\) 不能直接相乘為 \\(6^{m+n}\\)，故正確選項為 \\(2^m \\cdot 3^n = 6^{m+n}\\)。本題考查同底數幂的乘法法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第45題，題目無圖，答案無圖"
+    }
+  ]
+}
