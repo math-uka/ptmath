@@ -380,7 +380,8 @@
 
         // 初始化滑條（僅在有選擇題時）
         if (hasQuizBank) {
-          document.getElementById('question-slider').max = questionBank.length;
+          const maxQuestions = questionBank.length + (hasChallengeBank ? challengeBank.length : 0);
+          document.getElementById('question-slider').max = maxQuestions;
           document.getElementById('question-count').textContent = 1;
           standardModeBtn.disabled = false;
           customModeBtn.disabled = false;
@@ -486,8 +487,8 @@
       wrongCount = 0;
       passwordRetrieved = false;
       totalQuestions = parseInt(document.getElementById('question-slider').value);
-      availableQuestions = [...questionBank];
-      availableChallengeQuestions = hasChallengeBank ? [...challengeBank] : [];
+      availableQuestions = shuffleArray([...questionBank]);
+      availableChallengeQuestions = hasChallengeBank ? shuffleArray([...challengeBank]) : [];
       currentQuestionCount = 0;
       wrongQuestions.clear();
       consecutiveCorrect = 0;
@@ -617,7 +618,7 @@
         lastIncorrect
       });
 
-      if (currentQuestionCount >= totalQuestions || (availableQuestions.length === 0 && (!isChallengeMode || availableChallengeQuestions.length === 0))) {
+      if (currentQuestionCount >= totalQuestions || (availableQuestions.length === 0 && availableChallengeQuestions.length === 0)) {
         console.log('條件滿足，結束選擇題遊戲：', {
           currentQuestionCount,
           totalQuestions,
@@ -629,27 +630,47 @@
       }
 
       let question, questionIndex, bank, title;
-      if ((isStandardMode && consecutiveCorrect >= 3 && hasChallengeBank && availableChallengeQuestions.length > 0) || (lastIncorrect && isChallengeMode && availableChallengeQuestions.length > 0)) {
-        isChallengeMode = true;
-        const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
-        question = availableChallengeQuestions[randomIndex];
-        questionIndex = challengeBank.indexOf(question);
-        bank = challengeBank;
-        title = challengeTitle;
-        availableChallengeQuestions.splice(randomIndex, 1);
+      if (isStandardMode) {
+        // 標準模式邏輯：連續答對3題或上次答錯時進入挑戰模式
+        if ((consecutiveCorrect >= 3 && hasChallengeBank && availableChallengeQuestions.length > 0) || (lastIncorrect && isChallengeMode && availableChallengeQuestions.length > 0)) {
+          isChallengeMode = true;
+          const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
+          question = availableChallengeQuestions[randomIndex];
+          questionIndex = challengeBank.indexOf(question);
+          bank = challengeBank;
+          title = challengeTitle;
+          availableChallengeQuestions.splice(randomIndex, 1);
+        } else {
+          isChallengeMode = false;
+          const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+          question = availableQuestions[randomIndex];
+          questionIndex = questionBank.indexOf(question);
+          bank = questionBank;
+          title = quizTitle;
+          availableQuestions.splice(randomIndex, 1);
+        }
       } else {
-        isChallengeMode = false;
-        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-        question = availableQuestions[randomIndex];
-        questionIndex = questionBank.indexOf(question);
-        bank = questionBank;
-        title = quizTitle;
-        availableQuestions.splice(randomIndex, 1);
+        // 自訂模式邏輯：先完成 num.json 題目，再完成 num2.json 題目
+        if (availableQuestions.length > 0) {
+          question = availableQuestions.shift(); // 從已打亂的題庫中取第一題
+          questionIndex = questionBank.indexOf(question);
+          bank = questionBank;
+          title = quizTitle;
+        } else if (hasChallengeBank && availableChallengeQuestions.length > 0) {
+          question = availableChallengeQuestions.shift(); // 從已打亂的挑戰題庫中取第一題
+          questionIndex = challengeBank.indexOf(question);
+          bank = challengeBank;
+          title = challengeTitle;
+        } else {
+          console.error('無可用題目');
+          endGame();
+          return;
+        }
       }
 
       updateTitle(title);
 
-      // 顯示挑戰提示
+      // 顯示挑戰提示（僅限標準模式）
       if (isStandardMode && consecutiveCorrect >= 3 && hasChallengeBank && !isChallengeMode && !lastIncorrect) {
         document.getElementById('feedback').innerHTML = `你已連續答對 ${consecutiveCorrect} 題，嘗試做一下挑戰題吧！`;
         MathJax.typeset();
@@ -753,7 +774,7 @@
           consecutiveCorrect = 0;
         }
         lastIncorrect = true;
-        isChallengeMode = hasChallengeBank;
+        isChallengeMode = isStandardMode && hasChallengeBank;
         wrongQuestions.add(questionIndex + (bank === challengeBank ? questionBank.length : 0));
         wrongCount++;
         MathJax.typeset();
@@ -824,7 +845,7 @@
             answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
           }
           // 檢查答案是否已包含 MathJax 標記
-          const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\');
+          const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\)');
           const displayAnswer = isMathExpression ? question.answer : `\\(${question.answer}\\)`;
           div.innerHTML = `
             <p><strong>題目：</strong>${question.question}</p>
@@ -839,7 +860,7 @@
       MathJax.typeset();
     }
 
-    // 初始化：加载題庫和密碼表
+    // 初始化：加載題庫和密碼表
     loadData();
   </script>
 </body>
