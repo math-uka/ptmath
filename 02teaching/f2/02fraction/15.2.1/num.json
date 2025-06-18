@@ -1,0 +1,401 @@
+{
+  "title": "分式的乘除",
+  "questions": [
+    {
+      "question": "化簡 \\(\\frac{16-m^2}{m^2+6m+9} \\cdot \\frac{m+3}{4-m}\\) 的結果正確的是",
+      "options": ["\\frac{4+m}{m+3}", "\\frac{4-m}{m+3}", "\\frac{4+m}{m-3}", "\\frac{4-m}{m-3}"],
+      "answer": "\\frac{4+m}{m+3}",
+      "explanation": "解：\\(\\frac{16-m^2}{m^2+6m+9} \\cdot \\frac{m+3}{4-m} = \\frac{(4-m)(4+m)}{(m+3)^2} \\cdot \\frac{m+3}{4-m} = \\frac{4+m}{m+3}\\)。故選：\\(\\frac{4+m}{m+3}\\)。本題考查分式的乘法，需將分母因式分解並約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目有圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(x=\\sqrt{5}-1\\)，\\(y=\\sqrt{5}+1\\)，那麼代數式 \\(\\frac{x^3-xy^2}{x(x-y)}\\) 的值是",
+      "options": ["2", "\\sqrt{5}", "4", "2\\sqrt{5}"],
+      "answer": "2\\sqrt{5}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{x(x^2-y^2)}{x(x-y)} = \\frac{x(x+y)(x-y)}{x(x-y)} = x+y\\)。代入 \\(x=\\sqrt{5}-1\\)，\\(y=\\sqrt{5}+1\\)，得 \\(x+y=(\\sqrt{5}-1)+(\\sqrt{5}+1)=2\\sqrt{5}\\)。故選：\\(2\\sqrt{5}\\)。本題考查分式化簡及代數式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\left(\\frac{m^3 n}{p}\\right)^2 \\div \\frac{n}{mp}\\) 的結果是",
+      "options": ["\\frac{m^7 n}{p^2}", "\\frac{m^7 n}{p}", "mn^3 p^2", "mn^3 p^3"],
+      "answer": "\\frac{m^7 n}{p}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{m^6 n^2}{p^2} \\cdot \\frac{mp}{n} = \\frac{m^7 n}{p}\\)。故選：\\(\\frac{m^7 n}{p}\\)。本題考查分式的乘除及同底數幂的運算法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((x^3 y^2)^2 \\cdot \\frac{x}{y^3}\\)，得到的結果是",
+      "options": ["xy", "x^7 y^4", "x^7 y", "x^5 y^6"],
+      "answer": "x^7 y",
+      "explanation": "解：\\((x^3 y^2)^2 \\cdot \\frac{x}{y^3} = x^6 y^4 \\cdot \\frac{x}{y^3} = x^7 y\\)。故選：\\(x^7 y\\)。本題考查分式的乘法運算，需正確處理指數。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算正確的是",
+      "options": ["a^2 \\cdot a = a^2", "a^6 \\div a^2 = a^3", "a^2 b - 2ba^2 = -a^2 b", "\\left(-\\frac{3}{2}a\\right)^3 = -\\frac{9}{8a^3}"],
+      "answer": "a^2 b - 2ba^2 = -a^2 b",
+      "explanation": "解：A、\\(a^2 \\cdot a = a^3\\)，不符合題意；B、\\(a^6 \\div a^2 = a^4\\)，不符合題意；C、\\(a^2 b - 2ba^2 = -a^2 b\\)，符合題意；D、\\(\\left(-\\frac{3}{2}a\\right)^3 = -\\frac{27}{8}a^3\\)，不符合題意。故選：\\(a^2 b - 2ba^2 = -a^2 b\\)。本題考查合併同類項及同底數幂的乘除法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{-3a}{b} \\cdot \\frac{1}{6ab}\\) 的結果是",
+      "options": ["-8a^2", "-\\frac{a}{2b}", "\\frac{18a}{b^2}", "-\\frac{1}{2b^2}"],
+      "answer": "-\\frac{1}{2b^2}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{-3a}{b} \\cdot \\frac{1}{6ab} = \\frac{-3}{6b^2} = -\\frac{1}{2b^2}\\)。故選：\\(-\\frac{1}{2b^2}\\)。本題考查分式的乘法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "使 \\(\\frac{x+2}{x-3} \\div \\frac{x+1}{x-2}\\) 有意義的條件是",
+      "options": ["x \\neq 3 且 x \\neq 2", "x \\neq 3 且 x \\neq -1", "x \\neq 2 且 x \\neq -2", "x \\neq -1 且 x \\neq 2 且 x \\neq 3"],
+      "answer": "x \\neq -1 且 x \\neq 2 且 x \\neq 3",
+      "explanation": "本題解析由AI生成。解：分式的分母不能為零，故 \\(x-3 \\neq 0\\)，\\(x-2 \\neq 0\\)，\\(x+1 \\neq 0\\)，即 \\(x \\neq 3\\)，\\(x \\neq 2\\)，\\(x \\neq -1\\)。故選：\\(x \\neq -1 且 x \\neq 2 且 x \\neq 3\\)。本題考查分式有意義的條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\frac{2a}{a^2-b^2} \\div M = \\frac{1}{a-b}\\)，則 \\(M\\) 等於",
+      "options": ["\\frac{2a}{a+b}", "\\frac{a+b}{2a}", "\\frac{2a}{a-b}", "\\frac{a-b}{2a}"],
+      "answer": "\\frac{2a}{a+b}",
+      "explanation": "本題解析由AI生成。解：\\(\\frac{2a}{a^2-b^2} \\div M = \\frac{1}{a-b}\\)，則 \\(M = \\frac{2a}{(a^2-b^2) \\cdot \\frac{1}{a-b}} = \\frac{2a}{(a+b)(a-b) \\cdot \\frac{1}{a-b}} = \\frac{2a}{a+b}\\)。故選：\\(\\frac{2a}{a+b}\\)。本題考查分式的除法及因式分解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(8x^2 y^4 \\cdot \\frac{-3x}{4y^3} \\div \\frac{-x^2 y}{2}\\) 的結果是",
+      "options": ["-3x", "3x", "-12x", "12x"],
+      "answer": "12x",
+      "explanation": "解：原式=\\(8x^2 y^4 \\cdot \\frac{-3x}{4y^3} \\cdot \\frac{-2}{x^2 y} = -6x^3 y \\cdot \\frac{-2}{x^2 y} = 12x\\)。故選：\\(12x\\)。本題考查分式的乘除運算，需正確處理係數和指數。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{1}{a} \\div \\frac{-1}{a^2}\\) 的結果為",
+      "options": ["a", "-a", "-\\frac{1}{a^3}", "\\frac{1}{a^3}"],
+      "answer": "-a",
+      "explanation": "解：原式=\\(\\frac{1}{a} \\cdot (-a^2) = -a\\)。故選：\\(-a\\)。本題考查分式的除法運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是",
+      "options": ["(-a^3)^2 = -a^6", "2a^2 + 3a^2 = 6a^2", "2a^2 \\cdot a^3 = 2a^6", "\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}"],
+      "answer": "\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}",
+      "explanation": "本題解析由AI生成。解：A、\\((-a^3)^2 = a^6\\)，錯誤；B、\\(2a^2 + 3a^2 = 5a^2\\)，錯誤；C、\\(2a^2 \\cdot a^3 = 2a^5\\)，錯誤；D、\\(\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}\\)，正確。故選：\\(\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}\\)。本題考查幂的乘方及分式的運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\left(\\frac{x^3}{y^2}\\right)^2 \\div \\left(\\frac{-x}{y^3}\\right)^2 = 6\\)，則 \\(x^4 y^2\\) 的值為",
+      "options": ["6", "36", "12", "3"],
+      "answer": "6",
+      "explanation": "解：\\(\\left(\\frac{x^3}{y^2}\\right)^2 \\div \\left(\\frac{-x}{y^3}\\right)^2 = \\frac{x^6}{y^4} \\cdot \\frac{y^6}{x^2} = x^4 y^2 = 6\\)。故選：\\(6\\)。本題考查分式的乘除及代數式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{x^2-xy}{x-y} \\div \\frac{1}{x}\\) 的結果是",
+      "options": ["x^2", "x^2 - y", "(x-y)^2", "x"],
+      "answer": "x^2",
+      "explanation": "解：原式=\\(\\frac{x(x-y)}{x-y} \\cdot x = x^2\\)。故選：\\(x^2\\)。本題考查分式的除法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{x^2}{y} \\div \\frac{-y}{x} \\cdot \\frac{y}{x}\\) 的結果是",
+      "options": ["-x", "-\\frac{x^2}{y}", "\\frac{y}{x}", "\\frac{x^2}{y}"],
+      "answer": "-\\frac{x^2}{y}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{x^2}{y} \\cdot \\frac{-x}{y} \\cdot \\frac{y}{x} = -\\frac{x^2}{y}\\)。故選：\\(-\\frac{x^2}{y}\\)。本題考查分式的乘除運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若分式 \\(\\frac{x^2-y^2}{\\Delta}\\) 是最簡分式，則 \\(\\Delta\\) 表示的可以是",
+      "options": ["2x + 2y", "(x-y)^2", "x^2 + 2xy + y^2", "x^2 + y^2"],
+      "answer": "x^2 + y^2",
+      "explanation": "本題解析由AI生成。解：\\(x^2 - y^2 = (x-y)(x+y)\\)，若分式為最簡，則分母 \\(\\Delta\\) 與 \\(x^2 - y^2\\) 無公因式。選項中，\\(x^2 + y^2\\) 無 \\(x-y\\) 或 \\(x+y\\) 因式，滿足條件。故選：\\(x^2 + y^2\\)。本題考查分式的因式分解及最簡條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(x=2035\\)，則式子 \\(\\frac{x^2-2x+1}{x^2-1} \\div \\frac{x-1}{x^2+x}\\) 的值為",
+      "options": ["2033", "2034", "2035", "2036"],
+      "answer": "2035",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{(x-1)^2}{(x-1)(x+1)} \\cdot \\frac{x(x+1)}{x-1} = x\\)。代入 \\(x=2035\\)，得 \\(2035\\)。故選：\\(2035\\)。本題考查分式的除法及代數式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第16題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{-n}{m^2} \\div \\frac{n^2}{m^3} \\div \\frac{m}{n^2}\\) 的結果為",
+      "options": ["-\\frac{m^3}{n^2}", "-\\frac{m^2}{n^3}", "-\\frac{n}{m^4}", "-n"],
+      "answer": "-n",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{-n}{m^2} \\cdot \\frac{m^3}{n^2} \\cdot \\frac{n^2}{m} = -n\\)。故選：\\(-n\\)。本題考查分式的除法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\left(\\frac{3n}{p}\\right)^2 \\div \\frac{mn}{p^2}\\) 的結果是",
+      "options": ["\\frac{9mn^3}{p^3}", "\\frac{3mn^3}{p^3}", "\\frac{3n}{m}", "\\frac{9n}{m}"],
+      "answer": "\\frac{9n}{m}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{9n^2}{p^2} \\cdot \\frac{p^2}{mn} = \\frac{9n}{m}\\)。故選：\\(\\frac{9n}{m}\\)。本題考查分式的除法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\(\\frac{a^2-5a}{a-5}\\)",
+      "options": ["a-5", "a+5", "5", "a"],
+      "answer": "a",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{a(a-5)}{a-5} = a\\)（\\(a \\neq 5\\)）。故選：\\(a\\)。本題考查分式的約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算結果正確的是",
+      "options": ["-\\left(\\frac{y}{2x}\\right)^2 = \\frac{y^2}{4x^2}", "\\left(\\frac{3m}{4n}\\right)^2 = \\frac{3m^2}{4n^2}", "\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{a^2-b^2}", "\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}"],
+      "answer": "\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}",
+      "explanation": "本題解析由AI生成。解：A、\\(-\\left(\\frac{y}{2x}\\right)^2 = -\\frac{y^2}{4x^2}\\)，錯誤；B、\\(\\left(\\frac{3m}{4n}\\right)^2 = \\frac{9m^2}{16n^2}\\)，錯誤；C、\\(\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{(a-b)^2}\\)，錯誤；D、\\(\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}\\)，正確。故選：\\(\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}\\)。本題考查分式的幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{a^2+ab}{a-b} \\div \\frac{ab}{a-b}\\) 的結果是",
+      "options": ["a^2", "\\frac{a^2}{a-b}", "\\frac{a-b}{b}", "\\frac{a+b}{b}"],
+      "answer": "\\frac{a+b}{b}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{a^2+ab}{a-b} \\cdot \\frac{a-b}{ab} = \\frac{a(a+b)}{b} = \\frac{a+b}{b}\\)。故選：\\(\\frac{a+b}{b}\\)。本題考查分式的除法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(x \\div \\frac{x}{y} \\cdot \\frac{1}{x}\\) 的結果為",
+      "options": ["\\frac{x}{y}", "\\frac{y}{x}", "xy", "1"],
+      "answer": "\\frac{y}{x}",
+      "explanation": "本題解析由AI生成。解：原式=\\(x \\cdot \\frac{y}{x} \\cdot \\frac{1}{x} = \\frac{y}{x}\\)。故選：\\(\\frac{y}{x}\\)。本題考查分式的乘除運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡：\\(\\frac{x^2-1}{x^2-4x+4} \\div (x+1) \\cdot \\frac{x^2-3x+2}{x-1}\\)",
+      "options": ["\\frac{x-1}{x-2}", "\\frac{x-1}{x+2}", "\\frac{x+1}{x-2}", "\\frac{x+1}{x+2}"],
+      "answer": "\\frac{x-1}{x-2}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{(x-1)(x+1)}{(x-2)^2} \\cdot \\frac{1}{x+1} \\cdot \\frac{(x-2)(x-1)}{x-1} = \\frac{x-1}{x-2}\\)。故選：\\(\\frac{x-1}{x-2}\\)。本題考查分式的乘除及因式分解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第23題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列式子中，是分式的是",
+      "options": ["\\frac{2x}{\\pi + 3}", "\\frac{x+5}{2}", "\\frac{1}{2x+1}", "\\frac{2}{5}"],
+      "answer": "\\frac{1}{2x+1}",
+      "explanation": "本題解析由AI生成。解：分式的分母需含變數。A、\\(\\pi + 3\\) 為常數；B、2 為常數；C、\\(2x+1\\) 含變數，為分式；D、5 為常數。故選：\\(\\frac{1}{2x+1}\\)。本題考查分式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第24題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算中，錯誤的是",
+      "options": ["\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{-9y^3}{x^6}", "\\left(\\frac{4b^3}{-3c^2}\\right)^2 = \\frac{16b^6}{9c^4}", "\\left(\\frac{5x^3 y^2}{-2z}\\right)^2 = \\frac{25x^6 y^4}{4z^2}", "\\left(\\frac{b^2}{-a^3}\\right)^2 = \\frac{b^4}{a^6}"],
+      "answer": "\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{-9y^3}{x^6}",
+      "explanation": "本題解析由AI生成。解：A、\\(\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{27y^3}{-x^6} = -\\frac{27y^3}{x^6}\\)，錯誤；B、正確；C、正確；D、正確。故選：\\(\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{-9y^3}{x^6}\\)。本題考查分式的幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{x^2 y}{ab^2} \\div \\frac{xy}{3ab}\\)，正確的結果是",
+      "options": ["\\frac{3y}{a}", "\\frac{3x}{ab}", "\\frac{3y}{ab}", "\\frac{3x}{b}"],
+      "answer": "\\frac{3x}{b}",
+      "explanation": "解：\\(\\frac{x^2 y}{ab^2} \\div \\frac{xy}{3ab} = \\frac{x^2 y}{ab^2} \\cdot \\frac{3ab}{xy} = \\frac{3x}{b}\\)。故選：\\(\\frac{3x}{b}\\)。本題考查分式的除法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第26題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\left(\\frac{-3y}{x}\\right)^2\\) 的結果是",
+      "options": ["\\frac{3y^2}{x^2}", "\\frac{9y^2}{x^2}", "\\frac{6y^2}{x^2}", "-\\frac{6y^2}{x^2}"],
+      "answer": "\\frac{9y^2}{x^2}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{(-3y)^2}{x^2} = \\frac{9y^2}{x^2}\\)。故選：\\(\\frac{9y^2}{x^2}\\)。本題考查分式的幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第27題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\left(\\frac{-3x}{x+y}\\right)^2\\) 的結果是",
+      "options": ["\\frac{6x^2}{x^2 + y^2}", "\\frac{9x^2}{x^2 + y^2}", "\\frac{6x^2}{(x+y)^2}", "\\frac{9x^2}{(x+y)^2}"],
+      "answer": "\\frac{9x^2}{(x+y)^2}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{(-3x)^2}{(x+y)^2} = \\frac{9x^2}{(x+y)^2}\\)。故選：\\(\\frac{9x^2}{(x+y)^2}\\)。本題考查分式的幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{a}{b} \\cdot \\frac{b}{ac}\\) 的結果是",
+      "options": ["\\frac{ab}{abc}", "\\frac{a}{c}", "\\frac{1}{c}", "0"],
+      "answer": "\\frac{1}{c}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{a}{b} \\cdot \\frac{b}{ac} = \\frac{a \\cdot b}{b \\cdot ac} = \\frac{1}{c}\\)。故選：\\(\\frac{1}{c}\\)。本題考查分式的乘法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第29題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{a+2}{a-2} \\cdot \\frac{a-2}{2a+4}\\) 的結果為",
+      "options": ["\\frac{1}{2}", "\\frac{a+2}{a-2}", "\\frac{a+2}{2(a-2)}", "2"],
+      "answer": "\\frac{1}{2}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{a+2}{a-2} \\cdot \\frac{a-2}{2(a+2)} = \\frac{1}{2}\\)。故選：\\(\\frac{1}{2}\\)。本題考查分式的乘法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第30題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(\\left(\\frac{a^3}{b^2}\\right)^2 \\div \\left(\\frac{a}{b^3}\\right)^2 = 4\\)，那麼 \\(a^8 b^4\\) =",
+      "options": ["16", "19", "12", "8"],
+      "answer": "16",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{a^6}{b^4} \\cdot \\frac{b^6}{a^2} = a^4 b^2 = 4\\)。則 \\(a^8 b^4 = (a^4 b^2)^2 = 4^2 = 16\\)。故選：\\(16\\)。本題考查分式的除法及代數式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第31題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(\\frac{\\Box}{x+y} \\div \\frac{x}{y^2-x^2}\\) 運算的結果為整式，則“\\(\\Box\\)”中的式子可能是",
+      "options": ["y-x", "y+x", "\\frac{1}{x}", "3x"],
+      "answer": "3x",
+      "explanation": "本題解析由AI生成。解：\\(y^2 - x^2 = (y-x)(y+x)\\)，為使結果為整式，\\(\\Box \\cdot \\frac{1}{(y-x)(y+x)} \\cdot x\\) 需無分母。選項 \\(3x\\) 可使 \\(y+x\\) 約去，結果為整式 \\(\\frac{3}{y-x}\\)。故選：\\(3x\\)。本題考查分式的除法及整式條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第32題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知甲種糖果每千克的售價為 \\(m\\) 元，乙種糖果每千克的售價為 \\(n\\) 元，取甲種糖果 \\(a\\) 千克和乙種糖果 \\(b\\) 千克，混合後的糖果每千克的售價為",
+      "options": ["\\frac{a+b}{m+n} 元", "\\frac{am+bn}{ab} 元", "\\frac{am+bn}{a+b} 元", "\\frac{m+n}{2} 元"],
+      "answer": "\\frac{am+bn}{a+b} 元",
+      "explanation": "本題解析由AI生成。解：總價為 \\(am + bn\\)，總重量為 \\(a + b\\)，平均售價為 \\(\\frac{am+bn}{a+b}\\)。故選：\\(\\frac{am+bn}{a+b} 元\\)。本題考查分式的實際應用。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第33題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算正確的是",
+      "options": ["\\frac{1}{a+b} \\div (a+b) = 1", "\\frac{a^2-1}{a^2-a} = a+1", "\\frac{-b}{2a^2} \\cdot \\frac{a}{-b^2} = -\\frac{1}{2ab}", "\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{8a^3}{b^3}"],
+      "answer": "\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{8a^3}{b^3}",
+      "explanation": "本題解析由AI生成。解：A、\\(\\frac{1}{a+b} \\cdot \\frac{1}{a+b} = \\frac{1}{(a+b)^2}\\)，錯誤；B、\\(\\frac{(a-1)(a+1)}{a(a-1)} = \\frac{a+1}{a}\\)，錯誤；C、\\(\\frac{-b}{2a^2} \\cdot \\frac{a}{-b^2} = \\frac{1}{2ab^2}\\)，錯誤；D、\\(\\frac{4a^2}{b^2} \\cdot \\frac{2a}{b} = \\frac{8a^3}{b^3}\\)，正確。故選：\\(\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{8a^3}{b^3}\\)。本題考查分式的乘除運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第34題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列分式運算，結果正確的是",
+      "options": ["\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}", "\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ad}{bc}", "\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{a^2-b^2}", "\\left(\\frac{3x}{4y}\\right)^3 = \\frac{3x^3}{4y^3}"],
+      "answer": "\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}",
+      "explanation": "本題解析由AI生成。解：A、\\(\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}\\)，正確；B、\\(\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}\\)，錯誤；C、\\(\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{(a-b)^2}\\)，錯誤；D、\\(\\left(\\frac{3x}{4y}\\right)^3 = \\frac{27x^3}{64y^3}\\)，錯誤。故選：\\(\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}\\)。本題考查分式的乘法運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第35題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\left(\\frac{x}{2}\\right)^3 \\cdot \\left(\\frac{4}{x}\\right)^2\\) 的結果是",
+      "options": ["-3x", "3x", "-2x", "2x"],
+      "answer": "2x",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{x^3}{8} \\cdot \\frac{16}{x^2} = 2x\\)。故選：\\(2x\\)。本題考查分式的乘法及幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第36題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\left(\\frac{-2b}{a}\\right)^2\\) 的結果是",
+      "options": ["-\\frac{8a}{b^6}", "\\frac{4b^2}{a^2}", "\\frac{4b}{a^2}", "-\\frac{4b^2}{a^2}"],
+      "answer": "\\frac{4b^2}{a^2}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{(-2b)^2}{a^2} = \\frac{4b^2}{a^2}\\)。故選：\\(\\frac{4b^2}{a^2}\\)。本題考查分式的幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第37題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{-b}{a} \\div \\frac{b}{a^2-a}\\) 的結果是",
+      "options": ["-a-1", "-a+1", "-ab+1", "-ab+b"],
+      "answer": "-a+1",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{-b}{a} \\cdot \\frac{a^2-a}{b} = \\frac{-a(a-1)}{a} = -a+1\\)。故選：\\(-a+1\\)。本題考查分式的除法及因式分解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第38題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(-3xy^2 \\cdot \\frac{2x}{18y^3}\\) 的結果為",
+      "options": ["-\\frac{x^2}{3y}", "-\\frac{x^2}{y}", "-\\frac{x^2}{3y^2}", "-\\frac{x}{3y}"],
+      "answer": "-\\frac{x^2}{3y}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{-3xy^2 \\cdot 2x}{18y^3} = \\frac{-6x^2 y^2}{18y^3} = -\\frac{x^2}{3y}\\)。故選：\\(-\\frac{x^2}{3y}\\)。本題考查分式的乘法及約分。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第39題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(3ab \\div \\frac{b}{3a}\\) 的結果是",
+      "options": ["b^2", "18a", "9a", "9a^2"],
+      "answer": "9a^2",
+      "explanation": "本題解析由AI生成。解：原式=\\(3ab \\cdot \\frac{3a}{b} = 9a^2\\)。故選：\\(9a^2\\)。本題考查分式的除法運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第41題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{2}{x^2-1} \\div \\frac{1}{x-1}\\) 的結果是",
+      "options": ["\\frac{2}{x+1}", "\\frac{2}{x}", "\\frac{2}{x-1}", "2(x+1)"],
+      "answer": "\\frac{2}{x+1}",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{2}{(x-1)(x+1)} \\cdot \\frac{x-1}{1} = \\frac{2}{x+1}\\)。故選：\\(\\frac{2}{x+1}\\)。本題考查分式的除法及因式分解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第42題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(a^3 \\cdot \\left(\\frac{1}{a}\\right)^2\\) 的結果是",
+      "options": ["a", "a^5", "a^6", "a^8"],
+      "answer": "a",
+      "explanation": "本題解析由AI生成。解：原式=\\(a^3 \\cdot \\frac{1}{a^2} = a\\)。故選：\\(a\\)。本題考查分式的乘法及同底數幂的運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第43題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\left(\\frac{-x^2}{y}\\right)^2 \\cdot \\left(\\frac{-y^2}{x}\\right)^3 \\div \\left(\\frac{-y}{x}\\right)^4\\) 的結果是",
+      "options": ["x^5", "-x^5", "\\frac{y^8}{x^3}", "-\\frac{y^8}{x^3}"],
+      "answer": "-x^5",
+      "explanation": "本題解析由AI生成。解：原式=\\(\\frac{x^4}{y^2} \\cdot \\frac{-y^6}{x^3} \\cdot \\frac{x^4}{y^4} = \\frac{-x^5 y^6}{y^6} = -x^5\\)。故選：\\(-x^5\\)。本題考查分式的乘除及幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第44題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\(x^3 \\cdot \\left(\\frac{y^3}{x}\\right)^2\\)",
+      "options": ["xy^6", "xy^5", "x^2 y^5", "x^2 y^6"],
+      "answer": "xy^6",
+      "explanation": "本題解析由AI生成。解：原式=\\(x^3 \\cdot \\frac{y^6}{x^2} = xy^6\\)。故選：\\(xy^6\\)。本題考查分式的乘法及幂運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第45題，題目無圖，答案無圖"
+    }
+  ]
+}
