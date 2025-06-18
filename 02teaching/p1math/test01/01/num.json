@@ -1,0 +1,345 @@
+{
+  "title": "分式的加減 15.2.2num",
+  "questions": [
+    {
+      "question": "化簡 \\(\\frac{x^{2}}{x - 1} + \\frac{x}{1 - x}\\) 的結果是？",
+      "options": ["\\(x + 1\\)", "\\(x - 1\\)", "\\(-x\\)", "\\(x\\)"],
+      "answer": "\\(x\\)",
+      "explanation": "解：原式 \\(= \\frac{x^{2}}{x - 1} - \\frac{x}{x - 1} = \\frac{x(x - 1)}{x - 1} = x\\)。故選：\\(x\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{x}{(x + 1)^{2}} + \\frac{1}{(x + 1)^{2}}\\) 的結果是？",
+      "options": ["\\(\\frac{1}{x + 1}\\)", "\\(\\frac{1}{(x + 1)^{2}}\\)", "\\(1\\)", "\\(x + 1\\)"],
+      "answer": "\\(\\frac{1}{x + 1}\\)",
+      "explanation": "解：原式 \\(= \\frac{x + 1}{(x + 1)^{2}} = \\frac{1}{x + 1}\\)。故選：\\(\\frac{1}{x + 1}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{a + 1}{a^{2} - 2a + 1} \\div (1 + \\frac{2}{a - 1})\\) 的結果是？",
+      "options": ["\\(\\frac{1}{a - 1}\\)", "\\(\\frac{1}{a + 1}\\)", "\\(\\frac{1}{a^{2} - 1}\\)", "\\(\\frac{1}{a^{2} + 1}\\)"],
+      "answer": "\\(\\frac{1}{a - 1}\\)",
+      "explanation": "解：原式 \\(= \\frac{a + 1}{(a - 1)^{2}} \\cdot \\frac{a - 1}{a + 1} = \\frac{1}{a - 1}\\)。故選：\\(\\frac{1}{a - 1}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，若 \\(x\\) 為正整數，則表示 \\(\\frac{(x + 2)^{2}}{x^{2} + 4x + 4} - \\frac{1}{x + 1}\\) 的值的點落在？",
+      "options": ["段①", "段②", "段③", "段④"],
+      "answer": "段②",
+      "explanation": "解：原式 \\(= 1 - \\frac{1}{x + 1} = \\frac{x}{x + 1}\\)，因 \\(\\frac{1}{2} \\leq \\frac{x}{x + 1} < 1\\)，故落在段②。故選：段②。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第4題，題目有圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是？",
+      "options": [
+        "\\((a + b)^{2} = a^{2} + b^{2}\\)",
+        "\\(5a - a = 5\\)",
+        "\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)",
+        "\\((-2a^{2}b)^{3} = -6a^{6}b^{3}\\)"
+      ],
+      "answer": "\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)",
+      "explanation": "解：C選項正確，因 \\(\\frac{a}{a - 2} - \\frac{2}{a - 2} = 1\\)。故選：\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\frac{1}{a} - \\frac{1}{b} = \\frac{1}{3}\\)，則 \\(\\frac{ab}{b - a}\\) 的值是？",
+      "options": ["\\(\\frac{1}{3}\\)", "\\(-\\frac{1}{3}\\)", "\\(3\\)", "\\(-3\\)"],
+      "answer": "\\(3\\)",
+      "explanation": "解：由條件得 \\(\\frac{b - a}{ab} = \\frac{1}{3}\\)，故 \\(\\frac{ab}{b - a} = 3\\)。故選：\\(3\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是？",
+      "options": [
+        "\\(a^{6} \\div a^{2} = a^{3}\\)",
+        "\\(\\frac{a + 1}{a} - \\frac{1}{a} = a (a \\neq 0)\\)",
+        "\\((-2a)^{3} = -6a^{3}\\)",
+        "\\(a^{3} \\cdot a^{2} = a^{5}\\)"
+      ],
+      "answer": "\\(a^{3} \\cdot a^{2} = a^{5}\\)",
+      "explanation": "解：D選項正確，符合指數運算規則。故選：\\(a^{3} \\cdot a^{2} = a^{5}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{a^{2} + 1}{a + 1} - \\frac{2}{a + 1}\\) 的結果是？",
+      "options": ["\\(a - 1\\)", "\\(a + 1\\)", "\\(\\frac{a - 1}{a + 1}\\)", "\\(\\frac{1}{a + 1}\\)"],
+      "answer": "\\(a - 1\\)",
+      "explanation": "解：原式 \\(= \\frac{(a + 1)(a - 1)}{a + 1} = a - 1\\)。故選：\\(a - 1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(a^{2} + 2a - 1 = 0\\)，那麼代數式 \\((a - \\frac{4}{a}) \\cdot \\frac{a^{2}}{a - 2}\\) 的值是？",
+      "options": ["\\(-3\\)", "\\(-1\\)", "\\(1\\)", "\\(3\\)"],
+      "answer": "\\(1\\)",
+      "explanation": "解：原式化簡得 \\(a^{2} + 2a\\)，由條件得值為1。故選：\\(1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{4}{x - 5} + 1\\) 的結果是？",
+      "options": ["\\(\\frac{x + 1}{x - 5}\\)", "\\(\\frac{x - 1}{x - 5}\\)", "\\(\\frac{5}{x - 5}\\)", "\\(\\frac{4}{x - 4}\\)"],
+      "answer": "\\(\\frac{x - 1}{x - 5}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{4 + x - 5}{x - 5} = \\frac{x - 1}{x - 5}\\)。故選：\\(\\frac{x - 1}{x - 5}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{3}{a} + \\frac{2}{a}\\) 的結果是？",
+      "options": ["\\(\\frac{1}{a}\\)", "\\(\\frac{6}{a^{2}}\\)", "\\(\\frac{5}{a}\\)", "\\(\\frac{6}{a}\\)"],
+      "answer": "\\(\\frac{5}{a}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{3 + 2}{a} = \\frac{5}{a}\\)。故選：\\(\\frac{5}{a}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{a - 1}{a} + \\frac{1}{a}\\) 的結果是？",
+      "options": ["\\(0\\)", "\\(1\\)", "\\(a\\)", "\\(a - 2\\)"],
+      "answer": "\\(1\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{a - 1 + 1}{a} = 1\\)。故選：\\(1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(b > a > 0\\)，則分式 \\(\\frac{a}{b}\\) 與 \\(\\frac{a + 1}{b + 1}\\) 的大小關係是？",
+      "options": [
+        "\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)",
+        "\\(\\frac{a}{b} = \\frac{a + 1}{b + 1}\\)",
+        "\\(\\frac{a}{b} > \\frac{a + 1}{b + 1}\\)",
+        "不能確定"
+      ],
+      "answer": "\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)",
+      "explanation": "本題解析由AI生成。解：作差得 \\(\\frac{a - b}{b(b + 1)} < 0\\)，故 \\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)。故選：\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{m^{2}}{m - 1} - \\frac{2m - 1}{m - 1}\\) 的結果是？",
+      "options": ["\\(m + 1\\)", "\\(m - 1\\)", "\\(m - 2\\)", "\\(-m - 2\\)"],
+      "answer": "\\(m - 1\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{(m - 1)^{2}}{m - 1} = m - 1\\)。故選：\\(m - 1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{2y}{x - 2y} + \\frac{x}{2y - x}\\) 的結果是？",
+      "options": ["\\(1\\)", "\\(-1\\)", "\\(2y - x\\)", "\\(x - 2y\\)"],
+      "answer": "\\(-1\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{2y - x}{x - 2y} = -1\\)。故選：\\(-1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{a^{2}}{a - b} - \\frac{b^{2}}{a - b}\\) 的結果是？",
+      "options": ["\\(a^{2} - b^{2}\\)", "\\(a + b\\)", "\\(a - b\\)", "\\(1\\)"],
+      "answer": "\\(a + b\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{(a + b)(a - b)}{a - b} = a + b\\)。故選：\\(a + b\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\left( a - \\frac{1}{b} \\right) \\div \\left( \\frac{1}{a} - b \\right)\\) 的結果是？",
+      "options": ["\\(-\\frac{a}{b}\\)", "\\(\\frac{a}{b}\\)", "\\(-\\frac{b}{a}\\)", "\\(\\frac{b}{a}\\)"],
+      "answer": "\\(-\\frac{a}{b}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{ab - 1}{b} \\div \\frac{1 - ab}{a} = -\\frac{a}{b}\\)。故選：\\(-\\frac{a}{b}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\frac{1}{m} - \\frac{1}{n} = 6\\)，則 \\(\\frac{mn}{m - n}\\) 的值是？",
+      "options": ["\\(6\\)", "\\(-6\\)", "\\(\\frac{1}{6}\\)", "\\(-\\frac{1}{6}\\)"],
+      "answer": "\\(-\\frac{1}{6}\\)",
+      "explanation": "本題解析由AI生成。解：由條件得 \\(\\frac{mn}{m - n} = -\\frac{1}{6}\\)。故選：\\(-\\frac{1}{6}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第24題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{2a}{a + 1} + \\frac{2}{a + 1}\\) 的結果是？",
+      "options": ["\\(1\\)", "\\(2a + 2\\)", "\\(2\\)", "\\(\\frac{4a}{a + 1}\\)"],
+      "answer": "\\(2\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{2(a + 1)}{a + 1} = 2\\)。故選：\\(2\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{x}{x + 1} + \\frac{1}{x + 1}\\) 的結果是？",
+      "options": ["\\(\\frac{x}{x + 1}\\)", "\\(\\frac{1}{x + 1}\\)", "\\(1\\)", "\\(-1\\)"],
+      "answer": "\\(1\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{x + 1}{x + 1} = 1\\)。故選：\\(1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第27題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(M = \\frac{4}{a^{2} - 4}\\)，\\(N = \\frac{1}{a + 2} - \\frac{1}{a - 2}\\)，則 \\(M + N\\) 的值是？",
+      "options": ["\\(1\\)", "\\(-1\\)", "\\(0\\)", "不能確定"],
+      "answer": "\\(0\\)",
+      "explanation": "本題解析由AI生成。解：計算得 \\(N = -\\frac{4}{a^{2} - 4}\\)，故 \\(M + N = 0\\)。故選：\\(0\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{a^{2} - 4}{a} \\div \\left( a + 1 - \\frac{5a - 4}{a} \\right)\\) 的結果是？",
+      "options": ["\\(\\frac{a + 2}{a - 2}\\)", "\\(\\frac{a - 2}{a + 2}\\)", "\\(\\frac{(a - 2)(a + 2)}{a}\\)", "\\(\\frac{a + 2}{a}\\)"],
+      "answer": "\\(\\frac{a + 2}{a - 2}\\)",
+      "explanation": "本題解析由AI生成。解：化簡後得 \\(\\frac{a + 2}{a - 2}\\)。故選：\\(\\frac{a + 2}{a - 2}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第30題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{x}{x - y} - \\frac{y}{x + y}\\) 的結果是？",
+      "options": ["\\(1\\)", "\\(\\frac{x^{2} + y^{2}}{x^{2} - y^{2}}\\)", "\\(\\frac{x - y}{x + y}\\)", "\\(x^{2} + y^{2}\\)"],
+      "answer": "\\(\\frac{x^{2} + y^{2}}{x^{2} - y^{2}}\\)",
+      "explanation": "本題解析由AI生成。解：通分後得 \\(\\frac{x^{2} + y^{2}}{x^{2} - y^{2}}\\)。故選：\\(\\frac{x^{2} + y^{2}}{x^{2} - y^{2}}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第31題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是？",
+      "options": [
+        "\\(5ab - ab = 4\\)",
+        "\\(\\frac{1}{a} + \\frac{1}{b} = \\frac{2}{a + b}\\)",
+        "\\(a^{6} \\div a^{2} = a^{4}\\)",
+        "\\((a^{2}b)^{3} = a^{5}b^{3}\\)"
+      ],
+      "answer": "\\(a^{6} \\div a^{2} = a^{4}\\)",
+      "explanation": "解：C選項正確，符合指數運算規則。故選：\\(a^{6} \\div a^{2} = a^{4}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第32題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{a^{2}}{a - b} - \\frac{b^{2}}{a - b}\\) 的結果是？",
+      "options": ["\\(a - b\\)", "\\(a + b\\)", "\\(\\frac{a + b}{a - b}\\)", "\\(\\frac{a - b}{a + b}\\)"],
+      "answer": "\\(a + b\\)",
+      "explanation": "解：原式 \\(= \\frac{(a + b)(a - b)}{a - b} = a + b\\)。故選：\\(a + b\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第33題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{3}{x} - \\frac{2}{x}\\) 的結果是？",
+      "options": ["\\(\\frac{6}{x^{2}}\\)", "\\(\\frac{6}{x}\\)", "\\(\\frac{5}{2x}\\)", "\\(\\frac{1}{x}\\)"],
+      "answer": "\\(\\frac{1}{x}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{1}{x}\\)。故選：\\(\\frac{1}{x}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第34題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{m^{2}}{m - n} + \\frac{n^{2}}{n - m}\\) 的結果是？",
+      "options": ["\\(m + n\\)", "\\(n - m\\)", "\\(m - n\\)", "\\(-m - n\\)"],
+      "answer": "\\(m + n\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{m^{2} - n^{2}}{m - n} = m + n\\)。故選：\\(m + n\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第35題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{1}{m + 2} + \\frac{4}{m^{2} - 4}\\) 的結果是？",
+      "options": ["\\(m + 2\\)", "\\(m - 2\\)", "\\(\\frac{1}{m + 2}\\)", "\\(\\frac{1}{m - 2}\\)"],
+      "answer": "\\(\\frac{1}{m - 2}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{1}{m - 2}\\)。故選：\\(\\frac{1}{m - 2}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第36題，題目無圖，答案無圖"
+    },
+    {
+      "question": "一項工程，甲單獨做 \\(a\\) 小時完成，乙單獨做 \\(b\\) 小時完成，甲、乙兩人一起完成這項工程所需時間為？",
+      "options": ["\\(\\frac{ab}{a + b}\\) 小時", "\\(\\frac{a + b}{ab}\\) 小時", "\\(a + b\\) 小時", "\\(\\frac{1}{a + b}\\) 小時"],
+      "answer": "\\(\\frac{ab}{a + b}\\) 小時",
+      "explanation": "解：合作效率為 \\(\\frac{1}{a} + \\frac{1}{b}\\)，所需時間 \\(= \\frac{ab}{a + b}\\) 小時。故選：\\(\\frac{ab}{a + b}\\) 小時。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第37題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{3x}{(x - 1)^{2}} - \\frac{3}{(x - 1)^{2}}\\) 的結果是？",
+      "options": ["\\(\\frac{x}{(x - 1)^{2}}\\)", "\\(\\frac{1}{x - 1}\\)", "\\(\\frac{3}{x - 1}\\)", "\\(\\frac{3}{x + 1}\\)"],
+      "answer": "\\(\\frac{3}{x - 1}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{3(x - 1)}{(x - 1)^{2}} = \\frac{3}{x - 1}\\)。故選：\\(\\frac{3}{x - 1}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第38題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算錯誤的是？",
+      "options": [
+        "\\(\\frac{0.2a + b}{0.7a - b} = \\frac{2a + b}{7a - b}\\)",
+        "\\(\\frac{x^{3}y^{2}}{x^{2}y^{3}} = \\frac{x}{y}\\)",
+        "\\(\\frac{a - b}{b - a} = -1\\)",
+        "\\(\\frac{1}{c} + \\frac{2}{c} = \\frac{3}{c}\\)"
+      ],
+      "answer": "\\(\\frac{0.2a + b}{0.7a - b} = \\frac{2a + b}{7a - b}\\)",
+      "explanation": "本題解析由AI生成。解：A選項未正確約分（分子分母應同乘5）。故選：\\(\\frac{0.2a + b}{0.7a - b} = \\frac{2a + b}{7a - b}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第39題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{4x}{x^{2} - 4} - \\frac{x}{x - 2}\\) 的結果是？",
+      "options": ["\\(-x^{2} + 2x\\)", "\\(-x^{2} + 6x\\)", "\\(-\\frac{x}{x + 2}\\)", "\\(\\frac{x}{x - 2}\\)"],
+      "answer": "\\(-\\frac{x}{x + 2}\\)",
+      "explanation": "解：原式 \\(= -\\frac{x}{x + 2}\\)。故選：\\(-\\frac{x}{x + 2}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第40題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{4}{x^{2} - 4} + \\frac{1}{x + 2}\\) 的結果是？",
+      "options": ["\\(x - 2\\)", "\\(\\frac{1}{x + 2}\\)", "\\(\\frac{1}{x - 2}\\)", "\\(\\frac{2}{x + 2}\\)"],
+      "answer": "\\(\\frac{1}{x - 2}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{1}{x - 2}\\)。故選：\\(\\frac{1}{x - 2}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第43題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{-x - 2y}{2xy} + \\frac{x + 6y}{2xy}\\) 的結果是？",
+      "options": ["\\(\\frac{2}{x}\\)", "\\(\\frac{4}{x}\\)", "\\(-\\frac{2}{x}\\)", "\\(-\\frac{4}{x}\\)"],
+      "answer": "\\(\\frac{2}{x}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{4y}{2xy} = \\frac{2}{x}\\)。故選：\\(\\frac{2}{x}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第44題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\left(1 + \\frac{1}{a - 1}\\right) \\div \\frac{a}{a^{2} - 2a + 1}\\) 的結果是？",
+      "options": ["\\(a + 1\\)", "\\(\\frac{1}{a - 1}\\)", "\\(\\frac{a - 1}{a}\\)", "\\(a - 1\\)"],
+      "answer": "\\(a - 1\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{a}{a - 1} \\cdot \\frac{(a - 1)^{2}}{a} = a - 1\\)。故選：\\(a - 1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第45題，題目無圖，答案無圖"
+    }
+  ]
+}
