@@ -1,0 +1,303 @@
+{
+  "title": "分式的加減挑戰題 15.2.2num2",
+  "questions": [
+    {
+      "question": "化簡 \\(\\frac{a + 1}{a^{2} - 2a + 1} \\div (1 + \\frac{2}{a - 1})\\) 的結果是？",
+      "options": [
+        "\\(\\frac{1}{a - 1}\\)",
+        "\\(\\frac{1}{a + 1}\\)",
+        "\\(\\frac{1}{a^{2} - 1}\\)",
+        "\\(\\frac{1}{a^{2} + 1}\\)"
+      ],
+      "answer": "\\(\\frac{1}{a - 1}\\)",
+      "explanation": "解：原式 \\(= \\frac{a + 1}{(a - 1)^{2}} \\div \\frac{a + 1}{a - 1} = \\frac{a + 1}{(a - 1)^{2}} \\cdot \\frac{a - 1}{a + 1} = \\frac{1}{a - 1}\\)。故選：\\(\\frac{1}{a - 1}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，若 \\(x\\) 為正整數，則表示 \\(\\frac{(x + 2)^{2}}{x^{2} + 4x + 4} - \\frac{1}{x + 1}\\) 的值的點落在？",
+      "options": ["段①", "段②", "段③", "段④"],
+      "answer": "段②",
+      "explanation": "解：\\(\\frac{(x + 2)^{2}}{x^{2} + 4x + 4} - \\frac{1}{x + 1} = \\frac{(x + 2)^{2}}{(x + 2)^{2}} - \\frac{1}{x + 1} = 1 - \\frac{1}{x + 1} = \\frac{x}{x + 1}\\)。\n\\(\\because \\frac{x}{x + 1} = \\frac{1}{1 + \\frac{1}{x}}\\)，且 \\(x\\) 為正整數，\\(\\frac{1}{2} \\leq \\frac{x}{x + 1} < 1\\)，故落在段②。故選：段②。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第2題，題目有圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是？",
+      "options": [
+        "\\((a + b)^{2} = a^{2} + b^{2}\\)",
+        "\\(5a - a = 5\\)",
+        "\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)",
+        "\\((-2a^{2}b)^{3} = -6a^{6}b^{3}\\)"
+      ],
+      "answer": "\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)",
+      "explanation": "解：A. 原式 \\(= a^{2} + 2ab + b^{2}\\)；B. 原式 \\(= 4a\\)；C. 原式 \\(= \\frac{a - 2}{a - 2} = 1\\)；D. 原式 \\(= -8a^{6}b^{3}\\)。故選：\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(a^{2} + 2a - 1 = 0\\)，那麼代數式 \\((a - \\frac{4}{a}) \\cdot \\frac{a^{2}}{a - 2}\\) 的值是？",
+      "options": ["\\(-3\\)", "\\(-1\\)", "\\(1\\)", "\\(3\\)"],
+      "answer": "\\(1\\)",
+      "explanation": "解：原式 \\(= \\frac{a^{2} - 4}{a} \\cdot \\frac{a^{2}}{a - 2} = \\frac{(a+2)(a-2)}{a} \\cdot \\frac{a^{2}}{a-2} = a^{2} + 2a\\)。由 \\(a^{2} + 2a = 1\\) 得原式 \\(= 1\\)。故選：\\(1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{2a}{a + 1} + \\frac{2}{a + 1}\\) 的結果是？",
+      "options": ["\\(2\\)", "\\(2a + 2\\)", "\\(1\\)", "\\(\\frac{4a}{a + 1}\\)"],
+      "answer": "\\(2\\)",
+      "explanation": "解：原式 \\(= \\frac{2a + 2}{a + 1} = \\frac{2(a + 1)}{a + 1} = 2\\)。故選：\\(2\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算正確的是？",
+      "options": [
+        "\\((x + y)^{2} = x^{2} + y^{2}\\)",
+        "\\((-\\frac{1}{3}xy^{3})^{2} = \\frac{1}{9}x^{2}y^{6}\\)",
+        "\\(-\\frac{1}{2}x^{3}y^{2}(-6x^{2}y) = -3x^{5}y^{3}\\)",
+        "\\(\\frac{x}{x^{2} - y^{2}} + \\frac{y}{y^{2} - x^{2}} = \\frac{1}{x - y}\\)"
+      ],
+      "answer": "\\((-\\frac{1}{3}xy^{3})^{2} = \\frac{1}{9}x^{2}y^{6}\\)",
+      "explanation": "解：A. 缺少 \\(2xy\\)；B. 正確；C. 結果應為正；D. 結果應為 \\(\\frac{1}{x + y}\\)。故選：\\((-\\frac{1}{3}xy^{3})^{2} = \\frac{1}{9}x^{2}y^{6}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(b > a > 0\\)，則分式 \\(\\frac{a}{b}\\) 與 \\(\\frac{a + 1}{b + 1}\\) 的大小關係是？",
+      "options": [
+        "\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)",
+        "\\(\\frac{a}{b} = \\frac{a + 1}{b + 1}\\)",
+        "\\(\\frac{a}{b} > \\frac{a + 1}{b + 1}\\)",
+        "不能確定"
+      ],
+      "answer": "\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)",
+      "explanation": "解：作差得 \\(\\frac{a - b}{b(b + 1)} < 0\\)（因 \\(b > a > 0\\)），故 \\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)。故選：\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(m + n = 1\\)，那麼 \\((\\frac{2m + n}{m^{2} - mn} + \\frac{1}{m}) \\cdot (m^{2} - n^{2})\\) 的值為？",
+      "options": ["\\(-3\\)", "\\(-1\\)", "\\(1\\)", "\\(3\\)"],
+      "answer": "\\(3\\)",
+      "explanation": "解：原式 \\(= \\frac{3m}{m(m - n)} \\cdot (m + n)(m - n) = 3(m + n) = 3\\)。故選：\\(3\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\left( a + \\frac{1}{a - 2} \\right) \\div \\left( 1 + \\frac{1}{a - 2} \\right)\\) 的結果是？",
+      "options": ["\\(1\\)", "\\(a\\)", "\\(a + 1\\)", "\\(a - 1\\)"],
+      "answer": "\\(a - 1\\)",
+      "explanation": "本題解析由AI生成。解：化簡得 \\(\\frac{(a - 1)^{2}}{a - 2} \\div \\frac{a - 1}{a - 2} = a - 1\\)。故選：\\(a - 1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(m^{2} - 4m - 6 = 0\\)，那麼 \\(\\left( \\frac{m^{2} - m - 4}{m + 3} + 1 \\right) \\div \\frac{m + 1}{m^{2} - 9}\\) 的值為？",
+      "options": ["\\(9\\)", "\\(6\\)", "\\(2 + \\sqrt{10}\\)", "\\(-1\\)"],
+      "answer": "\\(9\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= (m - 1)(m - 3) = m^{2} - 4m + 3\\)，由 \\(m^{2} - 4m = 6\\) 得結果為9。故選：\\(9\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{a^{2} - 4}{a^{2} + 2a + 1} \\div \\frac{a^{2} - 4a + 4}{(a + 1)^{2}} - \\frac{2}{a - 2}\\) 的結果為？",
+      "options": [
+        "\\(\\frac{a + 2}{a - 2}\\)",
+        "\\(\\frac{a - 4}{a - 2}\\)",
+        "\\(\\frac{a}{a - 2}\\)",
+        "\\(a\\)"
+      ],
+      "answer": "\\(\\frac{a}{a - 2}\\)",
+      "explanation": "解：原式 \\(= \\frac{a + 2}{a - 2} - \\frac{2}{a - 2} = \\frac{a}{a - 2}\\)。故選：\\(\\frac{a}{a - 2}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "某小區有一塊邊長為 \\(a\\) 的正方形場地，規劃修建兩條寬為 \\(b\\) 的綠化帶。方案一如圖甲所示，綠化帶面積為 \\(S_{\\text{甲}}\\)；方案二如圖乙所示，綠化帶面積為 \\(S_{\\text{乙}}\\)。設 \\(k = \\frac{S_{\\text{甲}}}{S_{\\text{乙}}}} (a > b > 0)\\)，下列選項中正確的是？",
+      "options": [
+        "\\(0 < k < \\frac{1}{2}\\)",
+        "\\(\\frac{1}{2} < k < 1\\)",
+        "\\(1 < k < \\frac{3}{2}\\)",
+        "\\(\\frac{3}{2} < k < 2\\)"
+      ],
+      "answer": "\\(\\frac{1}{2} < k < 1\\)",
+      "explanation": "解：\\(S_{\\text{甲}} = 2ab - b^{2}\\)，\\(S_{\\text{乙}} = 2ab\\)，故 \\(k = 1 - \\frac{b}{2a}\\)，因 \\(a > b > 0\\) 得 \\(\\frac{1}{2} < k < 1\\)。故選：\\(\\frac{1}{2} < k < 1\\)。",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第13題，題目有圖，答案無圖"
+    },
+    {
+      "question": "若 \\(x\\)，\\(y\\) 滿足 \\(x^{2} + y^{2} + \\frac{5}{4} = 2x + y\\)，則 \\(\\frac{1}{x} + \\frac{1}{y}\\) 值為？",
+      "options": ["\\(3\\)", "\\(\\frac{1}{3}\\)", "\\(2\\)", "\\(\\frac{1}{2}\\)"],
+      "answer": "\\(3\\)",
+      "explanation": "解：配方得 \\((x - 1)^{2} + (y - \\frac{1}{2})^{2} = 0\\)，故 \\(x = 1\\)，\\(y = \\frac{1}{2}\\)，結果為3。故選：\\(3\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(a + b = 2\\)，則代數式 \\((\\frac{b^{2}}{a} - a) \\div \\frac{a - b}{a}\\) 的值為？",
+      "options": ["\\(\\frac{1}{2}\\)", "\\(-\\frac{1}{2}\\)", "\\(2\\)", "\\(-2\\)"],
+      "answer": "\\(-2\\)",
+      "explanation": "解：原式 \\(= -(a + b) = -2\\)。故選：\\(-2\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(\\frac{1}{x} + x = 3\\)，則 \\(\\frac{x^{2}}{x^{4} + x^{2} + 1}\\) 的值為？",
+      "options": ["\\(8\\)", "\\(\\frac{1}{8}\\)", "\\(8\\) 或 \\(\\frac{1}{8}\\)", "無法確定"],
+      "answer": "\\(\\frac{1}{8}\\)",
+      "explanation": "本題解析由AI生成。解：由 \\(x^{2} + \\frac{1}{x^{2}} = 7\\)，原式 \\(= \\frac{1}{x^{2} + 1 + \\frac{1}{x^{2}}} = \\frac{1}{8}\\)。故選：\\(\\frac{1}{8}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第16題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\frac{1}{x} - \\frac{1}{y} = 3\\)，則式子 \\(\\frac{2x + 3xy - 2y}{x - xy - y}\\) 的值是？",
+      "options": ["\\(-\\frac{7}{2}\\)", "\\(-\\frac{11}{2}\\)", "\\(\\frac{9}{2}\\)", "\\(\\frac{3}{4}\\)"],
+      "answer": "\\(\\frac{3}{4}\\)",
+      "explanation": "解：由 \\(x - y = -3xy\\)，原式 \\(= \\frac{-3xy}{-4xy} = \\frac{3}{4}\\)。故選：\\(\\frac{3}{4}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\((\\frac{4}{a^{2} - 4} + \\frac{1}{2 - a}) \\cdot w = 1\\)，則 \\(w =\\)？",
+      "options": [
+        "\\(a + 2 (a \\neq \\pm 2)\\)",
+        "\\(-a + 2 (a \\neq \\pm 2)\\)",
+        "\\(a - 2 (a \\neq \\pm 2)\\)",
+        "\\(-a - 2 (a \\neq \\pm 2)\\)"
+      ],
+      "answer": "\\(-a - 2 (a \\neq \\pm 2)\\)",
+      "explanation": "解：左式化簡為 \\(-\\frac{1}{a + 2}\\)，故 \\(w = -a - 2\\)。故選：\\(-a - 2 (a \\neq \\pm 2)\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知實數 \\(a\\)、\\(b\\) 滿足 \\(a + b = 0\\)，且 \\(ab \\neq 0\\)，則 \\(\\frac{b}{a} + \\frac{a}{b}\\) 的值為？",
+      "options": ["\\(-2\\)", "\\(-1\\)", "\\(1\\)", "\\(2\\)"],
+      "answer": "\\(-2\\)",
+      "explanation": "解：原式 \\(= \\frac{(a + b)^{2} - 2ab}{ab} = -2\\)。故選：\\(-2\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，答案無圖"
+    },
+    {
+      "question": "使式子 \\(\\frac{1}{x^{2} - 1} + \\frac{1}{x - 1} + \\frac{1}{x + 1}\\) 等於 \\(0\\) 的 \\(x\\) 的值是？",
+      "options": ["\\(1\\)", "\\(-1\\)", "\\(3\\)", "\\(-\\frac{1}{2}\\)"],
+      "answer": "\\(-\\frac{1}{2}\\)",
+      "explanation": "本題解析由AI生成。解：通分後得 \\(\\frac{2x + 1}{x^{2} - 1} = 0\\)，解得 \\(x = -\\frac{1}{2}\\)（經檢驗有效）。故選：\\(-\\frac{1}{2}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{a - 2b + 3c}{a + b - c} - \\frac{a - b + c}{a - c + b} + \\frac{2c - b}{c - a - b}\\) 的結果是？",
+      "options": ["\\(0\\)", "\\(1\\)", "\\(-1\\)", "\\(\\frac{2(b - 2c)}{c - a - b}\\)"],
+      "answer": "\\(0\\)",
+      "explanation": "本題解析由AI生成。解：合併後分子為 \\(a - 2b + 3c - a + b - c - 2c + b = 0\\)。故選：\\(0\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，答案無圖"
+    },
+    {
+      "question": "分式 \\(\\frac{2x^{2}y}{(x + y)^{2}}\\) 與 \\(\\frac{x^{2}}{x^{2} - y^{2}}\\) 的最簡公分母是？",
+      "options": [
+        "\\(x^{4} - y^{4}\\)",
+        "\\((x + y)^{2}(x^{2} - y^{2})\\)",
+        "\\((x - y)^{4}\\)",
+        "\\((x + y)^{2}(x - y)\\)"
+      ],
+      "answer": "\\((x + y)^{2}(x - y)\\)",
+      "explanation": "解：因 \\(x^{2} - y^{2} = (x + y)(x - y)\\)，最簡公分母為 \\((x + y)^{2}(x - y)\\)。故選：\\((x + y)^{2}(x - y)\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第23題，題目無圖，答案無圖"
+    },
+    {
+      "question": "定義一種新運算，規則是 \\(x \\ast y = \\frac{1}{x} - \\frac{1}{y}\\)，根據此規則化簡 \\((m + 1) \\ast (m - 1)\\) 的結果為？",
+      "options": [
+        "\\(\\frac{2m}{m^{2} - 1}\\)",
+        "\\(-\\frac{2m}{m^{2} - 1}\\)",
+        "\\(-\\frac{2}{m^{2} - 1}\\)",
+        "\\(\\frac{2}{m^{2} - 1}\\)"
+      ],
+      "answer": "\\(-\\frac{2}{m^{2} - 1}\\)",
+      "explanation": "解：原式 \\(= \\frac{1}{m + 1} - \\frac{1}{m - 1} = -\\frac{2}{m^{2} - 1}\\)。故選：\\(-\\frac{2}{m^{2} - 1}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第24題，題目無圖，答案無圖"
+    },
+    {
+      "question": "一輛貨車送貨上山，並按原路下山。上山速度為 \\(a\\) km/h 時，下山速度為 \\(b\\) km/h，則貨車上、下山的平均速度為？",
+      "options": [
+        "\\(\\frac{1}{2}(a + b) \\text{ km/h}\\)",
+        "\\(\\frac{ab}{a + b} \\text{ km/h}\\)",
+        "\\(\\frac{a + b}{2ab} \\text{ km/h}\\)",
+        "\\(\\frac{2ab}{a + b} \\text{ km/h}\\)"
+      ],
+      "answer": "\\(\\frac{2ab}{a + b} \\text{ km/h}\\)",
+      "explanation": "本題解析由AI生成。解：設路程為 \\(s\\)，平均速度 \\(= \\frac{2s}{\\frac{s}{a} + \\frac{s}{b}} = \\frac{2ab}{a + b}\\) km/h。故選：\\(\\frac{2ab}{a + b} \\text{ km/h}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，答案無圖"
+    },
+    {
+      "question": "一項工程，一半由甲單獨做需要 \\(m\\) h 完成，另一半由乙單獨做需要 \\(n\\) h 完成，則甲、乙合做這項工程所需的時間為？",
+      "options": [
+        "\\(\\frac{m + n}{mn} \\text{ h}\\)",
+        "\\(\\frac{1}{mn} \\text{ h}\\)",
+        "\\(\\frac{mn}{m + n} \\text{ h}\\)",
+        "\\(\\frac{2mn}{m + n} \\text{ h}\\)"
+      ],
+      "answer": "\\(\\frac{2mn}{m + n} \\text{ h}\\)",
+      "explanation": "本題解析由AI生成。解：總效率 \\(= \\frac{1}{2m} + \\frac{1}{2n}\\)，時間 \\(= \\frac{1}{\\frac{1}{2m} + \\frac{1}{2n}} = \\frac{2mn}{m + n}\\) h。故選：\\(\\frac{2mn}{m + n} \\text{ h}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第26題，題目無圖，答案無圖"
+    },
+    {
+      "question": "學完分式運算後，老師出了一道題「化簡：\\(\\frac{x + 3}{x + 2} + \\frac{2 - x}{x^{2} - 4}\\)」。小明的做法是：原式 \\(= \\frac{(x + 3)(x - 2)}{x^{2} - 4} - \\frac{x - 2}{x^{2} - 4} = \\frac{x^{2} + x - 6 - x - 2}{x^{2} - 4} = \\frac{x^{2} - 8}{x^{2} - 4}\\); 小亮的做法是：原式 \\(= (x + 3)(x - 2) + (2 - x) = x^{2} + x - 6 + 2 - x = x^{2} - 4\\); 小芳的做法是：原式 \\(= \\frac{x + 3}{x + 2} - \\frac{x - 2}{(x + 2)(x - 2)} = \\frac{x + 3}{x + 2} - \\frac{1}{x + 2} = \\frac{x + 3 - 1}{x + 2} = 1\\)。其中正確的是？",
+      "options": ["小明", "小亮", "小芳", "沒有正確的"],
+      "answer": "小芳",
+      "explanation": "本題解析由AI生成。解：小芳正確，因原式可化簡為 \\(\\frac{x + 3}{x + 2} - \\frac{1}{x + 2} = 1\\)（\\(x \\neq 2\\)）。故選：小芳。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((m - \\frac{1}{n}) \\div (n - \\frac{1}{m})\\) 的結果是？",
+      "options": ["\\(1\\)", "\\(\\frac{m}{n}\\)", "\\(\\frac{n}{m}\\)", "\\(-1\\)"],
+      "answer": "\\(\\frac{m}{n}\\)",
+      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{mn - 1}{n} \\div \\frac{mn - 1}{m} = \\frac{m}{n}\\)。故選：\\(\\frac{m}{n}\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第29題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\frac{1}{4}m^{2} + \\frac{1}{4}n^{2} = n - m - 2\\)，則 \\(\\frac{1}{m} - \\frac{1}{n}\\) 的值等於？",
+      "options": ["\\(1\\)", "\\(0\\)", "\\(-1\\)", "\\(-\\frac{1}{4}\\)"],
+      "answer": "\\(-1\\)",
+      "explanation": "本題解析由AI生成。解：配方得 \\((m + 2)^{2} + (n - 2)^{2} = 0\\)，故 \\(m = -2\\)，\\(n = 2\\)，結果為 \\(-1\\)。故選：\\(-1\\)。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第30題，題目無圖，答案無圖"
+    }
+  ]
+}

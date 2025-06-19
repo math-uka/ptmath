@@ -1,0 +1,113 @@
+{
+  "title": "挑戰題：1位數加2位數加法",
+  "questions": [
+    {
+      "question": "5 + 23 = ?",
+      "options": ["18", "28", "38", "48"],
+      "answer": "28",
+      "explanation": "本題由AI生成。解：5 + 23 = 28。個位數 5 + 3 = 8，十位數 0 + 2 = 2，合併得 28。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "7 + 14 = ?",
+      "options": ["11", "21", "31", "41"],
+      "answer": "21",
+      "explanation": "本題由AI生成。解：7 + 14 = 21。個位數 7 + 4 = 11，進位 1，十位數 0 + 1 + 1 = 2，合併得 21。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "3 + 46 = ?",
+      "options": ["39", "49", "59", "69"],
+      "answer": "49",
+      "explanation": "本題由AI生成。解：3 + 46 = 49。個位數 3 + 6 = 9，十位數 0 + 4 = 4，合併得 49。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "9 + 32 = ?",
+      "options": ["31", "41", "51", "61"],
+      "answer": "41",
+      "explanation": "本題由AI生成。解：9 + 32 = 41。個位數 9 + 2 = 11，進位 1，十位數 0 + 3 + 1 = 4，合併得 41。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "4 + 25 = ?",
+      "options": ["19", "29", "39", "49"],
+      "answer": "29",
+      "explanation": "本題由AI生成。解：4 + 25 = 29。個位數 4 + 5 = 9，十位數 0 + 2 = 2，合併得 29。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "6 + 17 = ?",
+      "options": ["13", "23", "33", "43"],
+      "answer": "23",
+      "explanation": "本題由AI生成。解：6 + 17 = 23。個位數 6 + 7 = 13，進位 1，十位數 0 + 1 + 1 = 2，合併得 23。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "8 + 11 = ?",
+      "options": ["9", "19", "29", "39"],
+      "answer": "19",
+      "explanation": "本題由AI生成。解：8 + 11 = 19。個位數 8 + 1 = 9，十位數 0 + 1 = 1，合併得 19。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "2 + 38 = ?",
+      "options": ["30", "40", "50", "60"],
+      "answer": "40",
+      "explanation": "本題由AI生成。解：2 + 38 = 40。個位數 2 + 8 = 10，進位 1，十位數 0 + 3 + 1 = 4，合併得 40。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "1 + 47 = ?",
+      "options": ["38", "48", "58", "68"],
+      "answer": "48",
+      "explanation": "本題由AI生成。解：1 + 47 = 48。個位數 1 + 7 = 8，十位數 0 + 4 = 4，合併得 48。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "5 + 36 = ?",
+      "options": ["31", "41", "51", "61"],
+      "answer": "41",
+      "explanation": "本題由AI生成。解：5 + 36 = 41。個位數 5 + 6 = 11，進位 1，十位數 0 + 3 + 1 = 4，合併得 41。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "3 + 29 = ?",
+      "options": ["22", "32", "42", "52"],
+      "answer": "32",
+      "explanation": "本題由AI生成。解：3 + 29 = 32。個位數 3 + 9 = 12，進位 1，十位數 0 + 2 + 1 = 3，合併得 32。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "7 + 22 = ?",
+      "options": ["19", "29", "39", "49"],
+      "answer": "29",
+      "explanation": "本題由AI生成。解：7 + 22 = 29。個位數 7 + 2 = 9，十位數 0 + 2 = 2，合併得 29。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    }
+  ]
+}
