@@ -159,6 +159,28 @@
       font-weight: bold;
       margin-bottom: 20px;
     }
+    .all-questions-container {
+      text-align: left;
+      margin-bottom: 40px;
+    }
+    .all-questions-container h2 {
+      margin-top: 20px;
+      color: #333;
+    }
+    .all-question {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .all-question img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 200px;
+      width: 100%;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -166,6 +188,9 @@
 
   <div class="loading-message" id="loading-message">正在載入題庫...</div>
   <div class="error-message" id="error-message" style="display: none;"></div>
+  <div class="all-questions-container" id="all-questions-container" style="display: none;">
+    <h2>所有題目與解析</h2>
+  </div>
   <div class="mode-selection" id="mode-selection">
     <p>請選擇遊戲模式：</p>
     <button id="standard-mode-btn" onclick="startStandardMode()" disabled>標準模式</button>
@@ -261,6 +286,121 @@
       document.title = `${title} - 測驗 ${quizNumber}`;
     }
 
+    // 顯示所有題目和解析的函數
+    function displayAllQuestionsAndAnswers() {
+      const allQuestionsContainer = document.getElementById('all-questions-container');
+      allQuestionsContainer.innerHTML = '<h2>所有題目與答案</h2>';
+      let hasAnyQuestions = false;
+
+      // 顯示填空題（來自 fib.json）
+      if (hasFibBank && fibQuestionBank.length > 0) {
+        hasAnyQuestions = true;
+        const fibSection = document.createElement('div');
+        fibSection.innerHTML = '<h3>填空題目</h3>';
+        fibQuestionBank.forEach((q, index) => {
+          const div = document.createElement('div');
+          div.className = 'all-question';
+          const isMathAnswer = q.answer.includes('\\(') && q.answer.includes('\\)');
+          const displayAnswer = isMathQuestion ? q.answer} : `\\(${q.answer}\\)`;
+          let imageHtml = q.image ? `<img src="${q.image}" alt="Question Image" class="question-image">` : '';
+          let answerImageHtml = q.answerImage ? `<img src="${q.answerImage}" alt="Answer Image" class="answer-image">` : '';
+          div.innerHTML = `
+            <p><strong>題目 ${index + 1}：</strong>${q.question}</p>
+            ${imageHtml}
+            <p><strong>正確答案：${displayAnswer}</strong></p>
+            <p><strong>解析：${q.explanation}</p>
+            ${answerImageHtml}
+          `;
+          fibSection.appendChild(div);
+        });
+        allQuestionsContainer.appendChild(fibSection);
+      }
+
+      // 顯示選擇題（來自 num.json）
+      if (hasQuizBank && questionBank.length > 0) {
+        hasAnyQuestions = true;
+        const quizSection = document.createElement('div');
+        quizSection.innerHTML = '<h3>標準模式選擇題</h3>';
+        questionBank.forEach((q, index) => {
+          const div = document.createElement('div');
+          div.className = 'all-question';
+          const isMathAnswer = q.answer.includes('\\(') && q.answer.includes('\\)');
+          const displayAnswer = isMathAnswer ? q.answer : `\\(${q.answer}\\)`;
+          let imageHtml = q.image ? `<img src="${q.image}" alt="Image" class="question-image">` : '';
+          let answerImageHtml = q.answerimage ? `<img src="${q.answerimage}" alt="Answer Image" class="answer-image">` : '';
+          div.innerHTML = `
+            <p><strong>題目 ${index + 1}：</strong>${q.question}</p>
+            ${imageHtml}
+            <p><strong>選項：</strong>${q.options.map((o, i) => `${String.fromCharCode(65 + i)}: ${o}`).join(', ')}</p>
+            <p><strong>正確答案：${displayAnswer}</strong></p>
+            <p><strong>解析：${q.explanation}</p>
+            ${answerImageHtml}
+          `;
+          quizSection.appendChild(div);
+        });
+        allQuestionsContainer.appendChild(quizSection);
+      }
+
+      // 顯示挑戰題（來自 num2.json）
+      if (hasChallengeBank && challengeBank.length > 0) {
+        hasAnyQuestions = true;
+        const challengeSection = document.createElement('div');
+        challengeSection.innerHTML = '<h3>挑戰模式選擇題</h3>';
+        challengeBank.forEach((q, index) => {
+          const div = document.createElement('div');
+          div.className = 'all-question';
+          const isMathAnswer = q.answer.includes('\\(') && q.answer.includes('\\)');
+          const displayAnswer = isMathAnswer ? q.answer : `\\(${q.answer}\\)`;
+          let imageHtml = q.image ? `<img src="${q.image}" alt="Question Image" class="question-image">` : '';
+          let answerImageHtml = q.answerimage ? `<img src="${q.answerimage}" alt="Answer Image" class="answer-image">` : '';
+          div.innerHTML = `
+            <p><strong>題目 ${index + 1}：</strong>${q.question}</p>
+            ${imageHtml}
+            <p><strong>選項：${q.options.map((o, i) => `${String.fromCharCode(65 + i)}: ${o}`).join(', ')}</p>
+            <p><strong>正確答案：${displayAnswer}</strong></p>
+            <p><strong>解析：${q.explanation}</p>
+            ${answerImageHtml}
+          `;
+          challengeSection.appendChild(div);
+        });
+        allQuestionsContainer.appendChild(challengeSection);
+      }
+
+      // 顯示 AI 題（來自 numai.json）
+      if (hasAIBank && aiBank.length > 0) {
+        hasAnyQuestions = true;
+        const aiSection = document.createElement('div');
+        aiSection.innerHTML = '<h3>AI 模式選擇題</h3>';
+        aiBank.forEach((q, index) => {
+          const div = document.createElement('div');
+          div.className = 'all-question';
+          const isMathAnswer = q.answer.includes('\\(') && q.answer.includes('\\)');
+          const displayAnswer = isMathAnswer ? q.answer : `\\(${q.answer}\\)`;
+          let imageHtml = q.image ? `<img src="${q.image}" alt="Question Image" class="question-image">` : '';
+          let answerImageHtml = q.answerimage ? `<img src="${q.answerimage}" alt="Answer Image" class="answer-image">` : '';
+          div.innerHTML = `
+            <p><strong>題目 ${index + 1}：</strong>${q.question}</p>
+            ${imageHtml}
+            <p><strong>選項：${q.options.map((o, i) => `${String.fromCharCode(65 + i)}: ${o}`).join(', ')}</p>
+            <p><strong>正確答案：${displayAnswer}</strong></p>
+            <p><strong>解析：${q.explanation}</p>
+            ${answerImageHtml}
+          `;
+          aiSection.appendChild(div);
+        });
+        allQuestionsContainer.appendChild(aiSection);
+      }
+
+      // 如果有任何題目，顯示容器並渲染 MathJax
+      if (hasAnyQuestions) {
+        allQuestionsContainer.style.display = 'block';
+        MathJax.typeset();
+      } else {
+        allQuestionsContainer.innerHTML += '<p>無任何題目可用。</p>';
+        allQuestionsContainer.style.display = 'block';
+      }
+    }
+
     // 加載題庫和密碼表
     async function loadData() {
       const loadingMessageDiv = document.getElementById('loading-message');
@@ -272,7 +412,7 @@
         // 預設標題
         updateTitle(quizTitle);
 
-        // 先嘗試加載填空題題庫
+        // 嘗試加載填空題題庫
         try {
           console.log('開始載入 fib.json');
           const fibResponse = await fetch('fib.json');
@@ -302,15 +442,15 @@
               modeSelection.appendChild(fibButton);
             }
           }
-        } catch (error) {
+        } catch (e) {
           console.warn('填空題題庫載入失敗，填空模式將不可用：', error.message);
           hasFibBank = false;
         }
 
-        // 嘗試加載選擇題題庫
+        // 嘗試載試選擇題題庫
         try {
           console.log('開始載入 num.json');
-          const questionResponse = await fetch('num.json');
+ const questionResponse = await fetch('num.json');
           if (!questionResponse.ok) {
             console.warn(`無法載入 num.json：HTTP 狀態 ${questionResponse.status}，選擇題模式將不可用`);
             hasQuizBank = false;
@@ -327,6 +467,7 @@
                 quizTitle = quizData.title;
                 updateTitle(quizTitle);
               }
+
               console.log('選擇題題庫加載成功，題目數：', questionBank.length);
             }
           }
@@ -347,6 +488,7 @@
             if (!challengeData || !Array.isArray(challengeData.questions) || challengeData.questions.length === 0) {
               console.warn('num2.json 為空或格式錯誤，挑戰題功能將不可用');
               hasChallengeBank = false;
+
             } else {
               hasChallengeBank = true;
               challengeBank = challengeData.questions;
@@ -363,15 +505,15 @@
 
         // 嘗試加載 AI 題庫
         try {
-          console.log('開始載入 numai.json');
+          console.log('開始載入試載入numai.json');
           const aiResponse = await fetch('numai.json');
           if (!aiResponse.ok) {
-            console.warn(`無法載入 numai.json：HTTP 狀態 ${aiResponse.status}，AI題庫功能將不可用`);
+            console.warn(`無法載入 numai.json：HTTP 狀態 ${aiResponse.status}，AI 題庫功能將不可用`);
             hasAIBank = false;
           } else {
             const aiData = await aiResponse.json();
             if (!aiData || !Array.isArray(aiData.questions) || aiData.questions.length === 0) {
-              console.warn('numai.json 為空或格式錯誤，AI題庫功能將不可用');
+              console.warn('numai.json 為空或格式錯誤，AI 題庫功能將不可用');
               hasAIBank = false;
             } else {
               hasAIBank = true;
@@ -379,23 +521,23 @@
               if (aiData.title) {
                 aiTitle = aiData.title;
               }
-              console.log('AI題庫加載成功，題目數：', aiBank.length);
+              console.log('AI 題庫加載成功，題目數：', aiBank.length);
               // 動態添加 AI 題庫按鈕
               const modeSelection = document.getElementById('mode-selection');
               const aiButton = document.createElement('button');
               aiButton.id = 'ai-mode-btn';
-              aiButton.textContent = 'AI題庫';
+              aiButton.textContent = 'AI 題庫';
               aiButton.onclick = startAIMode;
               // 將 AI 按鈕插入到標準模式按鈕之前
               modeSelection.insertBefore(aiButton, standardModeBtn);
             }
           }
         } catch (error) {
-          console.warn('AI題庫載入失敗，AI題庫功能將不可用：', error.message);
+          console.warn('AI 題庫載入失敗，AI 題庫功能將不可用：', error.message);
           hasAIBank = false;
         }
 
-        // 加載密碼表
+        // 嘗試加載密碼表
         try {
           console.log('開始載入 pass.json');
           const passwordResponse = await fetch('pass.json');
@@ -420,7 +562,7 @@
         // 初始化滑條（僅在有選擇題時）
         if (hasQuizBank) {
           const maxQuestions = questionBank.length + (hasChallengeBank ? challengeBank.length : 0);
-          document.getElementById('question-slider').max = maxQuestions;
+          document.getElementById('question-slider').value = maxQuestions;
           document.getElementById('question-count').textContent = 1;
           standardModeBtn.disabled = false;
           customModeBtn.disabled = false;
@@ -439,23 +581,22 @@
           document.getElementById('ai-mode-btn').disabled = false;
         }
 
+        // 顯示所有題目和解析
+        displayAllQuestionsAndAnswers();
+
         // 隱藏載入訊息
         loadingMessageDiv.style.display = 'none';
 
-        // 若無題庫，顯示錯誤訊息
-        if (!hasQuizBank && !hasFibBank && !hasAIBank) {
-          errorMessageDiv.innerHTML = '無法載入任何題庫，請檢查 fib.json、num.json 或 numai.json 是否存在並格式正確。';
-          errorMessageDiv.style.display = 'block';
-        }
       } catch (error) {
         console.error('載入數據失敗:', error);
         loadingMessageDiv.style.display = 'none';
         errorMessageDiv.innerHTML = `無法載入題庫，請檢查檔案是否存在並格式正確（錯誤：${error.message}）。`;
-        errorMessageDiv.style.display = 'block';
+        errorMessageDiv.style.display = 'none'; // 不顯示錯誤訊息
+        displayAllQuestionsAndAnswers(); // 仍嘗試顯示可用題目
       }
     }
 
-    // 隨機打亂陣列（Fisher-Yates 洗牌算法）
+    // 隨機打亂數組（Fisher-Yates 洗牌算法）
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -467,8 +608,8 @@
     // 啟動 AI 模式
     function startAIMode() {
       if (!hasAIBank || aiBank.length === 0) {
-        document.getElementById('error-message').innerHTML = 'AI題庫為空，無法開始遊戲！';
-        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').innerHTML = 'AI 題庫為空，無法開始遊戲！';
+        document.getElementById('error-message').style.display = 'none';
         return;
       }
 
@@ -486,13 +627,15 @@
       lastIncorrect = false;
       updateTitle(aiTitle);
 
-      console.log('AI模式啟動：', {
+      console.log('AI 模式啟動：', {
+        aiTitle,
         totalQuestions,
         availableQuestionsLength: availableQuestions.length,
         availableChallengeQuestionsLength: availableChallengeQuestions.length,
         currentQuestionCount
       });
 
+      document.getElementById('all-questions-container').style.display = 'none'; // 隱藏所有題目
       document.getElementById('mode-selection').style.display = 'none';
       document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
@@ -506,8 +649,8 @@
     // 啟動標準模式
     function startStandardMode() {
       if (!hasQuizBank || questionBank.length === 0) {
-        document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法開始遊戲！';
-        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').innerHTML = '選擇題庫為空，無法開始遊戲！';
+        document.getElementById('error-message').style.display = 'none';
         return;
       }
 
@@ -526,12 +669,14 @@
       updateTitle(quizTitle);
 
       console.log('標準模式啟動：', {
+        quizTitle,
         totalQuestions,
         availableQuestionsLength: availableQuestions.length,
         availableChallengeQuestionsLength: availableChallengeQuestions.length,
         currentQuestionCount
       });
 
+      document.getElementById('all-questions-container').style.display = 'none'; // 隱藏所有題目
       document.getElementById('mode-selection').style.display = 'none';
       document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
@@ -546,13 +691,13 @@
     function showCustomMode() {
       if (!hasQuizBank || questionBank.length === 0) {
         document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法進入自訂模式！';
-        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').style.display = 'none';
         return;
       }
 
       document.getElementById('custom-mode').style.display = 'block';
       const slider = document.getElementById('question-slider');
-      slider.value = 1;
+      slider.value = 1';
       document.getElementById('question-count').textContent = slider.value;
       slider.oninput = () => {
         document.getElementById('question-count').textContent = slider.value;
@@ -563,7 +708,7 @@
     function startCustomMode() {
       if (!hasQuizBank || questionBank.length === 0) {
         document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法開始遊戲！';
-        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').style.display = 'none';
         return;
       }
 
@@ -582,12 +727,14 @@
       updateTitle(quizTitle);
 
       console.log('自訂模式啟動：', {
+        quizTitle,
         totalQuestions,
         availableQuestionsLength: availableQuestions.length,
         availableChallengeQuestionsLength: availableChallengeQuestions.length,
         currentQuestionCount
       });
 
+      document.getElementById('all-questions-container').style.display = 'none'; // 隱藏所有題目
       document.getElementById('mode-selection').style.display = 'none';
       document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
@@ -598,19 +745,20 @@
       displayQuestion();
     }
 
-    // 啟動填空或解答題模式
+    // 啟動填空模式
     function startFibMode() {
       if (!hasFibBank || fibQuestionBank.length === 0) {
         document.getElementById('error-message').innerHTML = '填空題題庫為空或未找到，無法開始填空模式！';
-        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').style.display = 'none';
         return;
       }
 
       usedFibQuestions.clear();
-      isAnswerShown = false;
+      isAnswerDisplayed = false;
       updateTitle(quizTitle);
+      document.getElementById('all-questions-container').style.display = 'none'; // 隱藏所有題目
       document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
+      doc.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'none';
       document.getElementById('question-image-container').style.display = 'none';
@@ -661,15 +809,16 @@
     // 顯示答案和解析
     function showFibAnswer() {
       if (!currentFibQuestion) return;
-      isAnswerShown = true;
-      const feedbackDiv = document.getElementById('fib-feedback');
+      isAnswerDisplayed = true;
+      const fibFeedback = document.getElementById('fib-feedback');
       // 檢查答案是否已包含 MathJax 標記
-      const isMathExpression = currentFibQuestion.answer.includes('\\(') && currentFibQuestion.answer.includes('\\)');
+      const isMathExpression = currentFibQuestion.answer.includes('answer\\(') && (currentFibQuestion.answer.includes('\\)')');
       const displayAnswer = isMathExpression ? currentFibQuestion.answer : `\\(${currentFibQuestion.answer}\\)`;
-      let answerImageHtml = '';
+      let answerImageHtml = html'';
       if (currentFibQuestion.answerimage) {
         answerImageHtml = `<img src="${currentFibQuestion.answerimage}" alt="Answer Image" class="answer-image">`;
       }
+
       feedbackDiv.innerHTML = `
         <p>正確答案：${displayAnswer}</p>
         <p>解析：${currentFibQuestion.explanation}</p>
@@ -680,7 +829,7 @@
 
     // 下一填空題
     function nextFibQuestion() {
-      isAnswerShown = false;
+      isAnswerDisplayed = false;
       displayFibQuestion();
     }
 
@@ -718,117 +867,118 @@
       if (isStandardMode) {
         // 標準模式邏輯：連續答對3題或上次答錯時進入挑戰模式
         if ((consecutiveCorrect >= 3 && hasChallengeBank && availableChallengeQuestions.length > 0) || (lastIncorrect && isChallengeMode && availableChallengeQuestions.length > 0)) {
-          isChallengeMode = true;
-          const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
-          question = availableChallengeQuestions[randomIndex];
-          questionIndex = challengeBank.indexOf(question);
-          bank = challengeBank;
-          title = challengeTitle;
-          availableChallengeQuestions.splice(randomIndex, 1);
+          {
+            isChallengeMode = true;
+            const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
+            question = availableChallengeQuestions[randomIndex];
+            questionIndex = challengeBank.indexOf(question);
+            bank = challengeBank;
+            title = challengeTitle;
+            availableChallengeQuestions.splice(randomIndex, 1);
+          } else {
+            isChallengeMode = false;
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            question = availableQuestions[randomIndex];
+            questionIndex = questionBank.indexOf(question);
+            bank = questionBank;
+            title = quizTitle;
+            availableQuestions.splice(randomIndex, 1);
+          }
+        } else if (isAIMode) {
+          // AI 模式邏輯：僅使用AI 題庫
+          if (availableQuestions.length > 0) {
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            question = availableQuestions[randomIndex];
+            questionIndex = aiBank.indexOf(question);
+            bank = aiBank;
+            title = aiTitle;
+            availableQuestions.splice(randomIndex, 1);
+          } else {
+            console.error('無可用AI 題目');
+            endGame();
+            return;
+          }
         } else {
-          isChallengeMode = false;
-          const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-          question = availableQuestions[randomIndex];
-          questionIndex = questionBank.indexOf(question);
-          bank = questionBank;
-          title = quizTitle;
-          availableQuestions.splice(randomIndex, 1);
+          // 自訂模式邏輯：先完成 num.json 題目，再完成 num2.json 題目
+          if (availableQuestions.length > 0) {
+            question = availableQuestions.shift(); // 從已打亂的題庫中取第一題
+            questionIndex = questionBank.indexOf(question);
+            bank = questionBank;
+            title = quizTitle;
+          } else if (hasChallengeBank && availableChallengeQuestions.length > 0) {
+            question = availableChallengeQuestions.shift(); // 從已打亂的挑戰題庫中取第一題
+            questionIndex = challengeBank.indexOf(question);
+            bank = challengeBank;
+            title = challengeTitle;
+          } else {
+            console.error('無可用題目');
+            endGame();
+            return;
+          }
         }
-      } else if (isAIMode) {
-        // AI模式邏輯：僅使用AI題庫
-        if (availableQuestions.length > 0) {
-          const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-          question = availableQuestions[randomIndex];
-          questionIndex = aiBank.indexOf(question);
-          bank = aiBank;
-          title = aiTitle;
-          availableQuestions.splice(randomIndex, 1);
+
+        updateTitle(title);
+
+        // 顯示挑戰提示（僅限標準模式）
+        if (isStandardMode && consecutiveCorrect >= 3 && hasChallengeBank && !isChallengeMode && !lastIncorrect) {
+          document.getElementById('feedback').innerHTML = `你已連續答對 ${consecutiveCorrect} 題，嘗試做一下挑戰題吧！`;
+          MathJax.typeset();
+          setTimeout(() => {
+            document.getElementById('feedback').innerHTML = '';
+          }, 2000);
+        }
+
+        document.getElementById('question').innerHTML = question.question;
+
+        // 處理圖片
+        const imageContainer = document.getElementById('question-image-container');
+        if (question.image) {
+          imageContainer.innerHTML = `<img src="${question.image}" alt="Question Image" class="question-image">`;
+          imageContainer.style.display = 'block';
         } else {
-          console.error('無可用AI題目');
-          endGame();
-          return;
+          imageContainer.innerHTML = '';
+          imageContainer.style.display = 'none';
         }
-      } else {
-        // 自訂模式邏輯：先完成 num.json 題目，再完成 num2.json 題目
-        if (availableQuestions.length > 0) {
-          question = availableQuestions.shift(); // 從已打亂的題庫中取第一題
-          questionIndex = questionBank.indexOf(question);
-          bank = questionBank;
-          title = quizTitle;
-        } else if (hasChallengeBank && availableChallengeQuestions.length > 0) {
-          question = availableChallengeQuestions.shift(); // 從已打亂的挑戰題庫中取第一題
-          questionIndex = challengeBank.indexOf(question);
-          bank = challengeBank;
-          title = challengeTitle;
-        } else {
-          console.error('無可用題目');
-          endGame();
-          return;
+
+        // 更新剩餘題目數
+        const remaining = totalQuestions - currentQuestionCount;
+        document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題`;
+
+        const shuffledOptions = shuffleArray([...question.options]);
+        console.log('題目:', question.question);
+        console.log('原始選項:', question.options);
+        console.log('打亂後選項:', shuffledOptions);
+        console.log('正確答案:', question.answer);
+        const correctAnswerIndex = shuffledOptions.indexOf(question.answer);
+        console.log('正確答案索引:', correctAnswerIndex);
+        let correctAnswerLabel = correctAnswerIndex >= 0 ? String.fromCharCode(65 + correctAnswerIndex) : '無效';
+        console.log('正確答案標籤:', correctAnswerLabel);
+
+        if (correctAnswerIndex === -1) {
+          console.error('錯誤：正確答案未在選項中找到！', {
+            question: question.question,
+            answer: question.answer,
+            options: shuffledOptions
+          });
+          correctAnswerLabel = '無效';
         }
-      }
 
-      updateTitle(title);
-
-      // 顯示挑戰提示（僅限標準模式）
-      if (isStandardMode && consecutiveCorrect >= 3 && hasChallengeBank && !isChallengeMode && !lastIncorrect) {
-        document.getElementById('feedback').innerHTML = `你已連續答對 ${consecutiveCorrect} 題，嘗試做一下挑戰題吧！`;
-        MathJax.typeset();
-        setTimeout(() => {
-          document.getElementById('feedback').innerHTML = '';
-        }, 2000);
-      }
-
-      document.getElementById('question').innerHTML = question.question;
-
-      // 處理圖片
-      const imageContainer = document.getElementById('question-image-container');
-      if (question.image) {
-        imageContainer.innerHTML = `<img src="${question.image}" alt="Question Image" class="question-image">`;
-        imageContainer.style.display = 'block';
-      } else {
-        imageContainer.innerHTML = '';
-        imageContainer.style.display = 'none';
-      }
-
-      // 更新剩餘題目數
-      const remaining = totalQuestions - currentQuestionCount;
-      document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題`;
-
-      const shuffledOptions = shuffleArray([...question.options]);
-      console.log('題目:', question.question);
-      console.log('原始選項:', question.options);
-      console.log('打亂後選項:', shuffledOptions);
-      console.log('正確答案:', question.answer);
-      const correctAnswerIndex = shuffledOptions.indexOf(question.answer);
-      console.log('正確答案索引:', correctAnswerIndex);
-      let correctAnswerLabel = correctAnswerIndex >= 0 ? String.fromCharCode(65 + correctAnswerIndex) : '無效';
-      console.log('正確答案標籤:', correctAnswerLabel);
-
-      if (correctAnswerIndex === -1) {
-        console.error('錯誤：正確答案未在選項中找到！', {
-          question: question.question,
-          answer: question.answer,
-          options: shuffledOptions
+        const labels = ['A', 'B', 'C', 'D'];
+        labels.forEach((label, index) => {
+          const optionContent = shuffledOptions[index];
+          // 檢查選項是否已經包含數學表達式標記
+          const isMathExpression = optionContent && (optionContent.includes('\\(') && optionContent.includes('\\)'));
+          // 如果沒有數學表達式標記，則添加
+          const displayContent = isMathExpression ? optionContent : `\\(${optionContent}\\)`;
+          document.getElementById(`content-${label}`).innerHTML = displayContent;
+          document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex, question.answer, bank);
         });
-        correctAnswerLabel = '無效';
-      }
 
-      const labels = ['A', 'B', 'C', 'D'];
-      labels.forEach((label, index) => {
-        const optionContent = shuffledOptions[index];
-        // 檢查選項是否已經包含數學表達式標記
-        const isMathExpression = optionContent && (optionContent.includes('\\(') && optionContent.includes('\\)'));
-        // 如果沒有數學表達式標記，則添加
-        const displayContent = isMathExpression ? optionContent : `\\(${optionContent}\\)`;
-        document.getElementById(`content-${label}`).innerHTML = displayContent;
-        document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex, question.answer, bank);
-      });
+        currentQuestionCount++;
 
-      currentQuestionCount++;
-
-      document.getElementById('feedback').innerHTML = '';
-      toggleButtons(false);
-      MathJax.typeset();
+        document.getElementById('feedback').innerHTML = '';
+        toggleButtons(false);
+        MathJax.typeset();
     }
 
     // 檢查選擇題答案
@@ -864,7 +1014,7 @@
           answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
         }
         feedback.innerHTML = `
-          <p>錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}</p>
+          <p>錯誤！正確答案是：${correctAnswerLabel}：${displayAnswer}</p>
           <p>解析：${question.explanation}</p>
           ${answerImageHtml}
         `;
@@ -963,13 +1113,13 @@
             answerImageHtml = `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">`;
           }
           // 檢查答案是否已包含 MathJax 標記
-          const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\)');
+          const isMathExpression = question.answer.includes('');
           const displayAnswer = isMathExpression ? question.answer : `\\(${question.answer}\\)`;
           div.innerHTML = `
             <p><strong>題目：</strong>${question.question}</p>
             ${imageHtml}
-            <p><strong>正確答案：</strong>${displayAnswer}</p>
-            <p><strong>解析：</strong>${question.explanation}</p>
+            <p><strong>正確答案：${displayAnswer}</strong></p>
+            <p><strong>解析：${question.explanation}</p>
             ${answerImageHtml}
           `;
           wrongQuestionsContainer.appendChild(div);
