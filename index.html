@@ -189,8 +189,7 @@
         }
 
         .teaching .slide:nth-child(1) { background: url('images/a01.png') center/contain no-repeat; animation: slide1 15s infinite; }
-        .
-teaching .slide:nth-child(2) { background: url('images/a02.png') center/contain no-repeat; animation: slide2 15s infinite; }
+        .teaching .slide:nth-child(2) { background: url('images/a02.png') center/contain no-repeat; animation: slide2 15s infinite; }
         .teaching .slide:nth-child(3) { background: url('images/a03.png') center/contain no-repeat; animation: slide3 15s infinite; }
 
         .grade .slide:nth-child(1) { background: url('images/b01.png') center/contain no-repeat; animation: slide1 15s infinite; }
@@ -208,6 +207,10 @@ teaching .slide:nth-child(2) { background: url('images/a02.png') center/contain 
         .other .slide:nth-child(1) { background: url('images/e01.png') center/contain no-repeat; animation: slide1 15s infinite; }
         .other .slide:nth-child(2) { background: url('images/e02.png') center/contain no-repeat; animation: slide2 15s infinite; }
         .other .slide:nth-child(3) { background: url('images/e03.png') center/contain no-repeat; animation: slide3 15s infinite; }
+
+        .demo .slide:nth-child(1) { background: url('images/f01.png') center/contain no-repeat; animation: slide1 15s infinite; }
+        .demo .slide:nth-child(2) { background: url('images/f02.png') center/contain no-repeat; animation: slide2 15s infinite; }
+        .demo .slide:nth-child(3) { background: url('images/f03.png') center/contain no-repeat; animation: slide3 15s infinite; }
 
         @keyframes slide1 {
             0%, 20% { opacity: 1; }
@@ -313,6 +316,21 @@ teaching .slide:nth-child(2) { background: url('images/a02.png') center/contain 
                         <span class="dot" onclick="event.stopPropagation(); currentSlide(3, 'other')"></span>
                     </div>
                 </div>
+
+                <!-- 演示 -->
+                <div class="category-card" onclick="window.location.href='06demo/demoindex.html'">
+                    <h2>演示</h2>
+                    <div class="slideshow-container demo">
+                        <div class="slide"></div>
+                        <div class="slide"></div>
+                        <div class="slide"></div>
+                    </div>
+                    <div class="dots-container">
+                        <span class="dot" onclick="event.stopPropagation(); currentSlide(1, 'demo')"></span>
+                        <span class="dot" onclick="event.stopPropagation(); currentSlide(2, 'demo')"></span>
+                        <span class="dot" onclick="event.stopPropagation(); currentSlide(3, 'demo')"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -365,7 +383,7 @@ teaching .slide:nth-child(2) { background: url('images/a02.png') center/contain 
         }
 
         // 初始化每個分類的第一張幻燈片
-        ['teaching', 'grade', 'subject', 'art', 'other'].forEach(category => {
+        ['teaching', 'grade', 'subject', 'art', 'other', 'demo'].forEach(category => {
             currentSlide(1, category);
         });
     </script>
