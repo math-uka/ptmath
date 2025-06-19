@@ -288,15 +288,6 @@
       }
     }
 
-    // 隨機打亂陣列
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-
     // 啟動標準模式
     function startStandardMode() {
       if (!hasQuizBank || questionBank.length === 0) {
@@ -316,8 +307,8 @@
       questionContainer.innerHTML = '';
 
       let questions = [...questionBank].slice(0, STANDARD_MODE_QUESTION_COUNT);
-      if (hasChallengeBank && questions.length < STANDARD_MODE_QUESTION_COUNT) {
-        questions = questions.concat([...challengeBank].slice(0, STANDARD_MODE_QUESTION_COUNT - questions.length));
+      if (hasChallengeBank) {
+        questions = questions.concat([...challengeBank].slice(0, Math.max(0, STANDARD_MODE_QUESTION_COUNT - questions.length)));
       }
 
       questions.forEach((question, index) => {
@@ -428,34 +419,33 @@
       document.getElementById('mode-selection').style.display = 'none';
       document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
-      document.getElementById('question');
+      document.getElementById('question').style.display = 'block';
       document.getElementById('fib-mode').style.display = 'none';
 
-      const questionContainer = document.getElementById('question-title');
+      const questionContainer = document.getElementById('question');
       questionContainer.innerHTML = '';
 
       const questions = [...aiBank];
-
-      questions.forEach((questionId, index) => {
+      questions.forEach((question, index) => {
         const div = document.createElement('div');
         div.className = 'question-item';
-        let imageId = question.image ? `<img src="${image}" alt="Question Image" class="question-image">` : '';
-        let answerImageId = question.answerimage ? `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">` : '';
-        const isMathExpression = question.answer.includes('\\(') && question.explanation.includes('\\)');
-        const displayAnswerId = isMathExpression ? question.answer : true`\\(${question.answer}\\)`;
-        const optionsHtml = question.options.map((option, i) => {
-          const isOptMath = option.includes('\\(') && option.explanation.includes('\\)');
-          const displayOptDisplay = isOptMath ? option : trueOption`\\(${option}\\)`;
-          return `<p>${String.fromCharCode(65 + i)}: ${displayOptDisplay}</p>`;
-        }).join('\n');
+        let imageHtml = question.image ? `<img src="${question.image}" alt="Question Image" class="question-image">` : '';
+        let answerImageHtml = question.answerimage ? `<img src="${question.answerimage}" alt="Answer Image" class="answer-image">` : '';
+        const isMathExpression = question.answer.includes('\\(') && question.answer.includes('\\)');
+        const displayAnswer = isMathExpression ? question.answer : `\\(${question.answer}\\)`;
+        const optionsHtml = question.options.map((opt, i) => {
+          const isOptMath = opt.includes('\\(') && opt.includes('\\)');
+          const displayOpt = isOptMath ? opt : `\\(${opt}\\)`;
+          return `<p>${String.fromCharCode(65 + i)}: ${displayOpt}</p>`;
+        }).join('');
         div.innerHTML = `
           <p><strong>題目 ${index + 1}：</strong>${question.question}</p>
-          ${imageId}
-          <p><strong>選項选项：</strong></p>
+          ${imageHtml}
+          <p><strong>選項：</strong></p>
           ${optionsHtml}
-          <p><strong>正確答案：</strong>${displayAnswerId}</p>
-          <p><strong>解析 :</strong>${question.explanation}</p>
-          ${answerImageId}
+          <p><strong>正確答案：</strong>${displayAnswer}</p>
+          <p><strong>解析：</strong>${question.explanation}</p>
+          ${answerImageHtml}
         `;
         questionContainer.appendChild(div);
       });
@@ -466,7 +456,7 @@
     // 啟動填空或解答題模式
     function startFibMode() {
       if (!hasFibBank || fibQuestionBank.length === 0) {
-        document.getElementById('error-message').innerHTML = '填空題題庫為空或未找到，無法開始載入模式！';
+        document.getElementById('error-message').innerHTML = '填空題題庫為空或未找到，無法開始填空模式！';
         document.getElementById('error-message').style.display = 'block';
         return;
       }
@@ -492,7 +482,7 @@
           <p><strong>題目 ${index + 1}：</strong>${question.question}</p>
           ${imageHtml}
           <p><strong>正確答案：</strong>${displayAnswer}</p>
-          <p><strong>解析 :</strong>${question.explanation}</p>
+          <p><strong>解析：</strong>${question.explanation}</p>
           ${answerImageHtml}
         `;
         fibContainer.appendChild(div);
