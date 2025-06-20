@@ -1,0 +1,356 @@
+{
+  "title": "二次根式章綜合複習",
+  "questions": [
+    {
+      "question": "若 \\(\\sqrt{a-4}\\) 有意義，則 \\(a\\) 的值可以是",
+      "options": ["-1", "0", "2", "6"],
+      "answer": "6",
+      "explanation": "解：\\(\\sqrt{a-4}\\) 有意義，則 \\(a-4 \\geq 0\\)，解得：\\(a \\geq 4\\)，故 \\(a\\) 的值可以是 \\(6\\)。故選：\\(6\\)。本題考查二次根式的有意義條件，正確得出 \\(a\\) 的取值範圍是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "要使二次根式 \\(\\sqrt{2x-4}\\) 在實數範圍內有意義，則 \\(x\\) 的取值範圍是",
+      "options": ["x>2", "x\\geq 2", "x<2", "x=2"],
+      "answer": "x\\geq 2",
+      "explanation": "解：因二次根式 \\(\\sqrt{2x-4}\\) 在實數範圍內有意義，則 \\(2x-4 \\geq 0\\)，解得：\\(x \\geq 2\\)。故選：\\(x\\geq 2\\)。本題考查二次根式的有意義條件，正確利用二次根式的定義是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "按如圖所示的運算程序，若輸入數字“9”，則輸出的結果是",
+      "options": ["7", "11-6\\sqrt{2}", "1", "11-3\\sqrt{2}"],
+      "answer": "7",
+      "explanation": "解：根據運算程序，輸入 9，則 \\(9 \\div 3 - \\sqrt{2} = 3 - \\sqrt{2} > 1\\)，再計算 \\((3-\\sqrt{2})(3+\\sqrt{2}) = 9-2 = 7\\)。故選：\\(7\\)。本題考查二次根式的混合運算，理解程序運算規則是解題關鍵。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(\\sqrt{\\frac{-1}{x-3}}\\) 是二次根式，那麼 \\(x\\) 應滿足的條件是",
+      "options": ["x\\neq 3", "x<3", "x>3", "x\\geq 3"],
+      "answer": "x<3",
+      "explanation": "本題解析由AI生成。解：要使 \\(\\sqrt{\\frac{-1}{x-3}}\\) 是二次根式，\\(\\frac{-1}{x-3} \\geq 0\\)，且 \\(x-3 \\neq 0\\)。解 \\(-1 \\geq 0 \\cdot (x-3)\\)，得 \\(x-3 < 0\\)，即 \\(x < 3\\)。故選：\\(x<3\\)。本題考查二次根式的有意義條件，確保被開方數非負是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "使等式 \\(2\\sqrt{(a-3)^2} = 6-2a\\) 成立的正整數 \\(a\\) 的所有值的平方和為",
+      "options": ["13", "14", "15", "16"],
+      "answer": "14",
+      "explanation": "解：因 \\(2\\sqrt{(a-3)^2} = 6-2a\\)，則 \\(6-2a \\geq 0\\)，解得 \\(a \\leq 3\\)。又 \\(2|a-3| = 6-2a\\)，分情況：(1) 若 \\(a \\geq 3\\)，則 \\(2(a-3) = 6-2a\\)，解得 \\(a=3\\)；(2) 若 \\(a < 3\\)，則 \\(2(3-a) = 6-2a\\)，無解。則正整數 \\(a\\) 為 1, 2, 3，平方和 \\(1^2 + 2^2 + 3^2 = 14\\)。故選：\\(14\\)。本題考查二次根式的性質與方程求解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\sqrt{5} = a\\)，\\(\\sqrt{14} = b\\)，用含 \\(a\\)，\\(b\\) 的式子表示 \\(\\sqrt{0.063}\\)，則下列結果正確的是",
+      "options": ["\\frac{ab}{10}", "\\frac{3ab}{10}", "\\frac{ab}{100}", "\\frac{3ab}{100}"],
+      "answer": "\\frac{3ab}{100}",
+      "explanation": "本題解析由AI生成。解：因 \\(\\sqrt{0.063} = \\sqrt{\\frac{63}{1000}} = \\frac{\\sqrt{63}}{\\sqrt{1000}} = \\frac{\\sqrt{9 \\cdot 7}}{10\\sqrt{10}} = \\frac{3\\sqrt{7}}{10\\sqrt{10}} = \\frac{3\\sqrt{7}\\sqrt{14}}{10\\sqrt{14}\\sqrt{10}} = \\frac{3\\sqrt{5}\\sqrt{14}}{10 \\cdot 10} = \\frac{3ab}{100}\\)，故選：\\(\\frac{3ab}{100}\\)。本題考查二次根式的化簡與性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "用※定義一種新運算：對於任意實數 \\(m\\) 和 \\(n\\)，規定 \\(m※n = m^2 n - mn - 3n\\)，如：\\(1※2 = 1^2 \\cdot 2 - 1 \\cdot 2 - 3 \\cdot 2 = -6\\)。則 \\((-2)※\\sqrt{3}\\) 的結果為",
+      "options": ["3\\sqrt{3}", "-2\\sqrt{3}", "3\\sqrt{2}", "2\\sqrt{3}"],
+      "answer": "3\\sqrt{3}",
+      "explanation": "解：根據※的定義，\\((-2)※\\sqrt{3} = (-2)^2 \\cdot \\sqrt{3} - (-2) \\cdot \\sqrt{3} - 3 \\cdot \\sqrt{3} = 4\\sqrt{3} + 2\\sqrt{3} - 3\\sqrt{3} = 3\\sqrt{3}\\)。故選：\\(3\\sqrt{3}\\)。本題考查定義新運算與二次根式的混合運算，掌握運算順序是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((2\\sqrt{5} - 2\\sqrt{3})(\\sqrt{12} + \\sqrt{20})\\) 的結果是",
+      "options": ["32", "16", "8", "4"],
+      "answer": "8",
+      "explanation": "本題解析由AI生成。解：原式 = \\(2\\sqrt{5}(\\sqrt{12} + \\sqrt{20}) - 2\\sqrt{3}(\\sqrt{12} + \\sqrt{20}) = 2\\sqrt{5} \\cdot 2\\sqrt{3} + 2\\sqrt{5} \\cdot 2\\sqrt{5} - 2\\sqrt{3} \\cdot 2\\sqrt{3} - 2\\sqrt{3} \\cdot 2\\sqrt{5} = 4\\sqrt{15} + 4 \\cdot 5 - 4 \\cdot 3 - 4\\sqrt{15} = 20 - 12 = 8\\)。故選：\\(8\\)。本題考查二次根式的乘法與加減運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "要使二次根式 \\(\\sqrt{x-3}\\) 有意義，則 \\(x\\) 的值可以為",
+      "options": ["0", "1", "2", "4"],
+      "answer": "4",
+      "explanation": "解：根據題意，\\(\\sqrt{x-3}\\) 有意義，則 \\(x-3 \\geq 0\\)，解得 \\(x \\geq 3\\)，則 \\(x\\) 的值可以為 \\(4\\)。故選：\\(4\\)。本題考查二次根式的有意義條件，正確求解不等式是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡二次根式 \\(a\\sqrt{\\frac{-(a+2)}{a^2}}\\) 的結果是",
+      "options": ["\\sqrt{-a-2}", "-\\sqrt{-a-2}", "\\sqrt{a+2}", "-\\sqrt{a+2}"],
+      "answer": "-\\sqrt{-a-2}",
+      "explanation": "解：若二次根式有意義，則 \\(\\frac{-(a+2)}{a^2} \\geq 0\\)，即 \\(-a-2 \\geq 0\\)，解得 \\(a \\leq -2\\)。原式 = \\(\\frac{a}{-a} \\sqrt{-a-2} = -\\sqrt{-a-2}\\)。故選：\\(-\\sqrt{-a-2}\\)。本題考查二次根式的化簡，確定 \\(a\\) 的取值範圍是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，答案無圖"
+    },
+    {
+      "question": "實數 \\(a\\)，\\(b\\) 在數軸上的位置如圖所示，化簡 \\((\\sqrt{a})^2 + \\sqrt{b^2}\\) 的結果是",
+      "options": ["-a+b", "-a-b", "a+b", "a-b"],
+      "answer": "a-b",
+      "explanation": "解：由題意知 \\(b < 0 < a\\)，則 \\((\\sqrt{a})^2 = a\\)，\\(\\sqrt{b^2} = |b| = -b\\)。原式 = \\(a + (-b) = a-b\\)。故選：\\(a-b\\)。本題考查二次根式的性質與數軸，準確化簡是解題關鍵。",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第16題，題目有圖，答案無圖"
+    },
+    {
+      "question": "下列各式計算正確的是",
+      "options": ["\\sqrt{2} + \\sqrt{3} = \\sqrt{5}", "3\\sqrt{2} - \\sqrt{2} = 2\\sqrt{2}", "2 + \\sqrt{2} = 2\\sqrt{2}", "\\sqrt{(-2)^2} = \\pm 2"],
+      "answer": "3\\sqrt{2} - \\sqrt{2} = 2\\sqrt{2}",
+      "explanation": "解：\\(\\sqrt{2} + \\sqrt{3}\\) 不是同類二次根式，不能相加，錯誤；\\(3\\sqrt{2} - \\sqrt{2} = (3-1)\\sqrt{2} = 2\\sqrt{2}\\)，正確；\\(2 + \\sqrt{2}\\) 不是同類二次根式，不能相加，錯誤；\\(\\sqrt{(-2)^2} = \\sqrt{4} = 2\\)，錯誤。故選：\\(3\\sqrt{2} - \\sqrt{2} = 2\\sqrt{2}\\)。本題考查二次根式的加減，係數相加被開方數不變是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(\\sqrt{\\frac{y}{x}} + \\sqrt{\\frac{x}{y}} = \\frac{\\sqrt{11}}{2}\\)，那麼 \\(\\frac{y}{x} + \\frac{x}{y}\\) 的值等於",
+      "options": ["\\frac{3}{4}", "\\frac{5}{4}", "\\frac{7}{4}", "\\frac{9}{4}"],
+      "answer": "\\frac{3}{4}",
+      "explanation": "解：因 \\(\\sqrt{\\frac{y}{x}} + \\sqrt{\\frac{x}{y}} = \\frac{\\sqrt{11}}{2}\\)。兩邊平方，得 \\(\\frac{y}{x} + 2\\sqrt{\\frac{y}{x} \\cdot \\frac{x}{y}} + \\frac{x}{y} = \\frac{11}{4}\\)。即 \\(\\frac{y}{x} + \\frac{x}{y} + 2 = \\frac{11}{4}\\)。解得 \\(\\frac{y}{x} + \\frac{x}{y} = \\frac{3}{4}\\)。故選：\\(\\frac{3}{4}\\)。本題考查分式的化簡與二次根式的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算正確的是",
+      "options": ["\\sqrt{2} + \\sqrt{3} = \\sqrt{5}", "\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{6}", "\\sqrt{8} = 4", "\\sqrt{(-3)^2} = -3"],
+      "answer": "\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{6}",
+      "explanation": "本題解析由AI生成。解：\\(\\sqrt{2} + \\sqrt{3}\\) 不能合併，\\(\\sqrt{5}\\) 錯誤；\\(\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{6}\\)，正確；\\(\\sqrt{8} = 2\\sqrt{2}\\)，不等於 4，錯誤；\\(\\sqrt{(-3)^2} = \\sqrt{9} = 3\\)，錯誤。故選：\\(\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{6}\\)。本題考查二次根式的加法與乘法運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，在一個長方形中無重疊的放入面積分別為 \\(16\\text{cm}^2\\) 和 \\(12\\text{cm}^2\\) 的兩張正方形紙片，則圖中空白部分的面積為",
+      "options": ["(4-2\\sqrt{3})\\text{cm}^2", "(8\\sqrt{3}-4)\\text{cm}^2", "(8\\sqrt{3}-12)\\text{cm}^2", "8\\text{cm}^2"],
+      "answer": "(8\\sqrt{3}-12)\\text{cm}^2",
+      "explanation": "解：由題意知：正方形 ABCH 面積 \\(HC^2 = 16\\text{cm}^2\\)，正方形 LMEF 面積 \\(LM^2 = 12\\text{cm}^2\\)，則 \\(HC = 4\\text{cm}\\)，\\(LM = LF = ME = 2\\sqrt{3}\\text{cm}\\)。空白部分面積 = \\(S_{\\text{長方形HLFG}} + S_{\\text{長方形MCDE}} = HL \\cdot LF + MC \\cdot ME = (HL + MC) \\cdot LF = (HC - LM) \\cdot LF = (4 - 2\\sqrt{3}) \\cdot 2\\sqrt{3} = 8\\sqrt{3} - 12\\text{cm}^2\\)。故選：\\((8\\sqrt{3}-12)\\text{cm}^2\\)。本題考查二次根式的應用與正方形面積計算。",
+      "image": "images/003.png",
+      "answerimage": null,
+      "comment": "第21題，題目有圖，答案無圖"
+    },
+    {
+      "question": "下列式子一定是二次根式的是",
+      "options": ["\\sqrt{-x-2}", "\\sqrt{x}", "\\sqrt{x^2+2}", "\\sqrt{x^2-2}"],
+      "answer": "\\sqrt{x^2+2}",
+      "explanation": "本題解析由AI生成。解：根據二次根式的定義，\\(\\sqrt{a}\\) 中 \\(a \\geq 0\\)。逐項分析：\\(\\sqrt{-x-2}\\) 要求 \\(-x-2 \\geq 0\\)，不一定；\\(\\sqrt{x}\\) 要求 \\(x \\geq 0\\)，不一定；\\(\\sqrt{x^2+2}\\) 中 \\(x^2+2 \\geq 0\\) 恆成立；\\(\\sqrt{x^2-2}\\) 要求 \\(x^2-2 \\geq 0\\)，不一定。故選：\\(\\sqrt{x^2+2}\\)。本題考查二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果 \\(\\sqrt{a} \\cdot \\sqrt{a-3} = \\sqrt{a(a-3)}\\) 成立，那麼",
+      "options": ["a \\geq 0", "0 \\leq a \\leq 3", "a \\geq 3", "a 取任意實數"],
+      "answer": "a \\geq 3",
+      "explanation": "本題解析由AI生成。解：等式 \\(\\sqrt{a} \\cdot \\sqrt{a-3} = \\sqrt{a(a-3)}\\) 成立，需 \\(a \\geq 0\\) 且 \\(a-3 \\geq 0\\)，即 \\(a \\geq 3\\)。等式恆成立，因 \\(\\sqrt{a} \\cdot \\sqrt{a-3} = \\sqrt{a(a-3)}\\) 為二次根式性質。故選：\\(a \\geq 3\\)。本題考查二次根式的性質與有意義條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第23題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(y = \\sqrt{2x-5} + \\sqrt{5-2x} - 3\\)，則 \\(2xy\\) 的值是",
+      "options": ["15", "-15", "\\frac{-15}{2}", "\\frac{15}{2}"],
+      "answer": "-15",
+      "explanation": "解：由 \\(\\sqrt{2x-5} \\geq 0\\)，\\(\\sqrt{5-2x} \\geq 0\\)，得 \\(x \\geq \\frac{5}{2}\\) 且 \\(x \\leq \\frac{5}{2}\\)，解得 \\(x = \\frac{5}{2}\\)。代入 \\(y = \\sqrt{2 \\cdot \\frac{5}{2} - 5} + \\sqrt{5 - 2 \\cdot \\frac{5}{2}} - 3 = \\sqrt{0} + \\sqrt{0} - 3 = -3\\)。則 \\(2xy = 2 \\cdot \\frac{5}{2} \\cdot (-3) = -15\\)。故選：\\(-15\\)。本題考查二次根式的有意義條件與求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\sqrt{23.6} \\approx 4.858\\)，\\(\\sqrt{2.36} \\approx 1.536\\)，則 \\(-\\sqrt{236000} \\approx\\)",
+      "options": ["-485.8", "-48.58", "-153.6", "-1536"],
+      "answer": "-485.8",
+      "explanation": "本題解析由AI生成。解：因 \\(\\sqrt{236000} = \\sqrt{23.6 \\cdot 10^4} = \\sqrt{23.6} \\cdot 10^2 \\approx 4.858 \\cdot 100 = 485.8\\)，則 \\(-\\sqrt{236000} \\approx -485.8\\)。故選：\\(-485.8\\)。本題考查二次根式的數值估算與性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第26題，題目無圖，答案無圖"
+    },
+    {
+      "question": "甲、乙兩名同學對代數式 \\(\\frac{m-n}{\\sqrt{m}+\\sqrt{n}}\\) (\\(m>0, n>0\\)) 分別進行了如下變形：甲：\\(\\frac{m-n}{\\sqrt{m}+\\sqrt{n}} = \\frac{(m-n)(\\sqrt{m}-\\sqrt{n})}{(\\sqrt{m}+\\sqrt{n})(\\sqrt{m}-\\sqrt{n})} = \\sqrt{m}-\\sqrt{n}\\)。乙：\\(\\frac{m-n}{\\sqrt{m}+\\sqrt{n}} = \\frac{(\\sqrt{m}+\\sqrt{n})(\\sqrt{m}-\\sqrt{n})}{\\sqrt{m}+\\sqrt{n}} = \\sqrt{m}-\\sqrt{n}\\)。關於這兩種變形過程的說法正確的是",
+      "options": ["甲、乙都正確", "甲、乙都不正確", "只有甲正確", "只有乙正確"],
+      "answer": "只有乙正確",
+      "explanation": "本題解析由AI生成。解：甲的變形錯誤，因 \\(\\frac{(m-n)(\\sqrt{m}-\\sqrt{n})}{(\\sqrt{m}+\\sqrt{n})(\\sqrt{m}-\\sqrt{n})} = \\frac{m-n}{\\sqrt{m}-\\sqrt{n}}\\)，不等於 \\(\\sqrt{m}-\\sqrt{n}\\)。乙的變形正確，因 \\(\\frac{m-n}{\\sqrt{m}+\\sqrt{n}} = \\frac{(\\sqrt{m}+\\sqrt{n})(\\sqrt{m}-\\sqrt{n})}{\\sqrt{m}+\\sqrt{n}} = \\sqrt{m}-\\sqrt{n}\\)。故選：只有乙正確。本題考查分式化簡與二次根式性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第27題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(n\\) 是一個正整數，\\(\\sqrt{135n}\\) 是整數，則 \\(n\\) 的最小值是",
+      "options": ["3", "5", "15", "25"],
+      "answer": "15",
+      "explanation": "本題解析由AI生成。解：要使 \\(\\sqrt{135n}\\) 為整數，\\(135n\\) 必須為完全平方數。\\(135 = 3^3 \\cdot 5\\)，則 \\(n\\) 需補足使 \\(135n\\) 的指數為偶數。設 \\(n = 3^a \\cdot 5^b\\)，則 \\(135n = 3^{3+a} \\cdot 5^{1+b}\\)，需 \\(3+a\\) 和 \\(1+b\\) 為偶數。最小 \\(n\\) 為 \\(n = 3^1 \\cdot 5^1 = 15\\)，則 \\(\\sqrt{135 \\cdot 15} = \\sqrt{3^4 \\cdot 5^2} = 3^2 \\cdot 5 = 45\\)，為整數。檢查其他選項，均不滿足最小條件。故選：\\(15\\)。本題考查二次根式的性質與完全平方數。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列式子為最簡二次根式的是",
+      "options": ["\\sqrt{\\frac{1}{2}}", "\\sqrt{3}", "\\sqrt{8}", "\\sqrt{4}"],
+      "answer": "\\sqrt{3}",
+      "explanation": "本題解析由AI生成。解：最簡二次根式需滿足：(1) 被開方數不含分母；(2) 被開方數不含能開盡方的因數。逐項分析：\\(\\sqrt{\\frac{1}{2}}\\) 含分母，非最簡；\\(\\sqrt{3}\\) 滿足條件；\\(\\sqrt{8} = 2\\sqrt{2}\\)，含可開方因數；\\(\\sqrt{4} = 2\\)，非根式。故選：\\(\\sqrt{3}\\)。本題考查最簡二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第29題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列各式中，一定是二次根式的是",
+      "options": ["\\sqrt{x}", "\\sqrt{x+2}", "\\sqrt{x^2+2}", "\\sqrt{-x}"],
+      "answer": "\\sqrt{x^2+2}",
+      "explanation": "本題解析由AI生成。解：二次根式要求被開方數 \\(a \\geq 0\\)。逐項分析：\\(\\sqrt{x}\\) 需 \\(x \\geq 0\\)，不一定；\\(\\sqrt{x+2}\\) 需 \\(x+2 \\geq 0\\)，不一定；\\(\\sqrt{x^2+2}\\) 中 \\(x^2+2 \\geq 0\\) 恆成立；\\(\\sqrt{-x}\\) 需 \\(-x \\geq 0\\)，不一定。故選：\\(\\sqrt{x^2+2}\\)。本題考查二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第30題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列二次根式中，不能與 \\(\\sqrt{2}\\) 合併的是",
+      "options": ["\\sqrt{\\frac{1}{2}}", "\\sqrt{8}", "\\sqrt{12}", "\\sqrt{18}"],
+      "answer": "\\sqrt{12}",
+      "explanation": "本題解析由AI生成。解：能與 \\(\\sqrt{2}\\) 合併的二次根式需化簡後被開方數為 2。逐項分析：\\(\\sqrt{\\frac{1}{2}} = \\frac{\\sqrt{2}}{2}\\)，可合併；\\(\\sqrt{8} = 2\\sqrt{2}\\)，可合併；\\(\\sqrt{12} = 2\\sqrt{3}\\)，不可合併；\\(\\sqrt{18} = 3\\sqrt{2}\\)，可合併。故選：\\(\\sqrt{12}\\)。本題考查同類二次根式的定義與化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第32題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列二次根式中，是最簡二次根式的是",
+      "options": ["\\sqrt{\\frac{1}{6}}", "\\sqrt{0.6}", "\\sqrt{6}", "\\sqrt{60}"],
+      "answer": "\\sqrt{6}",
+      "explanation": "解：最簡二次根式需滿足：(1) 被開方數不含分母；(2) 被開方數不含能開盡方的因數。逐項分析：\\(\\sqrt{\\frac{1}{6}} = \\frac{\\sqrt{6}}{6}\\)，含分母，非最簡；\\(\\sqrt{0.6} = \\frac{\\sqrt{15}}{5}\\)，含可開方因數，非最簡；\\(\\sqrt{6}\\) 滿足條件；\\(\\sqrt{60} = 2\\sqrt{15}\\)，含可開方因數，非最簡。故選：\\(\\sqrt{6}\\)。本題考查最簡二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第33題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(a = \\frac{\\sqrt{b^2-1} + \\sqrt{1-b^2}}{b-1} + 4\\)，則 \\(a+b\\) 的值為",
+      "options": ["\\pm 1", "3", "4", "3或5"],
+      "answer": "3",
+      "explanation": "解：由二次根式有意義，\\(b^2-1 \\geq 0\\)，\\(1-b^2 \\geq 0\\)，得 \\(b = \\pm 1\\)。又 \\(b-1 \\neq 0\\)，則 \\(b = -1\\)。代入 \\(a = \\frac{\\sqrt{(-1)^2-1} + \\sqrt{1-(-1)^2}}{-1-1} + 4 = \\frac{\\sqrt{0} + \\sqrt{0}}{-2} + 4 = 4\\)。則 \\(a+b = 4-1 = 3\\)。故選：\\(3\\)。本題考查二次根式與分式的有意義條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第35題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列式子中，是最簡二次根式的是",
+      "options": ["\\sqrt{4}", "\\sqrt{7}", "\\sqrt{12}", "\\sqrt{0.5}"],
+      "answer": "\\sqrt{7}",
+      "explanation": "解：最簡二次根式需滿足：(1) 被開方數不含分母；(2) 被開方數不含能開盡方的因數。逐項分析：\\(\\sqrt{4} = 2\\)，非根式；\\(\\sqrt{7}\\) 滿足條件；\\(\\sqrt{12} = 2\\sqrt{3}\\)，含可開方因數；\\(\\sqrt{0.5} = \\frac{\\sqrt{2}}{2}\\)，含分母，非最簡。故選：\\(\\sqrt{7}\\)。本題考查最簡二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第36題，題目無圖，答案無圖"
+    },
+    {
+      "question": "二次根式 \\(\\sqrt{2x-1}\\) 有意義的條件是",
+      "options": ["x>\\frac{1}{2}", "x<\\frac{1}{2}", "x\\geq \\frac{1}{2}", "x\\leq \\frac{1}{2}"],
+      "answer": "x\\geq \\frac{1}{2}",
+      "explanation": "本題解析由AI生成。解：二次根式 \\(\\sqrt{2x-1}\\) 有意義，需 \\(2x-1 \\geq 0\\)，解得 \\(x \\geq \\frac{1}{2}\\)。故選：\\(x\\geq \\frac{1}{2}\\)。本題考查二次根式的有意義條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第37題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列各式計算正確的是",
+      "options": ["\\sqrt{2} + \\sqrt{3} = \\sqrt{5}", "2 + \\sqrt{2} = 2\\sqrt{2}", "3\\sqrt{2} - \\sqrt{2} = 2\\sqrt{2}", "\\frac{\\sqrt{12} - \\sqrt{10}}{2} = \\sqrt{6} - \\sqrt{5}"],
+      "answer": "3\\sqrt{2} - \\sqrt{2} = 2\\sqrt{2}",
+      "explanation": "解：\\(\\sqrt{2} + \\sqrt{3}\\) 不是同類二次根式，不能合併，錯誤；\\(2 + \\sqrt{2}\\) 不能合併，錯誤；\\(3\\sqrt{2} - \\sqrt{2} = (3-1)\\sqrt{2} = 2\\sqrt{2}\\)，正確；\\(\\frac{\\sqrt{12} - \\sqrt{10}}{2} = \\frac{2\\sqrt{3} - \\sqrt{10}}{2} = \\sqrt{3} - \\frac{\\sqrt{10}}{2}\\)，錯誤。故選：\\(3\\sqrt{2} - \\sqrt{2} = 2\\sqrt{2}\\)。本題考查二次根式的加減運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第38題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列式子中：① \\(0\\)；② \\(a\\)；③ \\(x+y=2\\)；④ \\(x-5\\)；⑤ \\(2a\\)；⑥ \\(\\sqrt{a^2+1}\\)；⑦ \\(a\\neq 1\\)；⑧ \\(x\\leq 3\\)。屬於代數式的有",
+      "options": ["4個", "5個", "6個", "7個"],
+      "answer": "5個",
+      "explanation": "本題解析由AI生成。解：代數式是由數、變數及運算符號組成的式子。逐項分析：① \\(0\\) 是常數，屬代數式；② \\(a\\) 是變數，屬代數式；③ \\(x+y=2\\) 是方程，非代數式；④ \\(x-5\\) 是代數式；⑤ \\(2a\\) 是代數式；⑥ \\(\\sqrt{a^2+1}\\) 是代數式；⑦ \\(a\\neq 1\\) 是條件，非代數式；⑧ \\(x\\leq 3\\) 是不等式，非代數式。共 5 個代數式（①②④⑤⑥）。故選：\\(5個\\)。本題考查代數式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第39題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如果一個三角形的面積為 \\(\\sqrt{12}\\)，一邊長為 \\(\\sqrt{3}\\)，則這條邊上的高是",
+      "options": ["4", "2", "\\sqrt{2}", "2\\sqrt{2}"],
+      "answer": "4",
+      "explanation": "本題解析由AI生成。解：三角形面積公式 \\(\\frac{1}{2} \\cdot \\text{底} \\cdot \\text{高} = \\sqrt{12}\\)。底為 \\(\\sqrt{3}\\)，則 \\(\\frac{1}{2} \\cdot \\sqrt{3} \\cdot h = \\sqrt{12}\\)。解得 \\(h = \\frac{2\\sqrt{12}}{\\sqrt{3}} = \\frac{2 \\cdot 2\\sqrt{3}}{\\sqrt{3}} = 4\\)。故選：\\(4\\)。本題考查二次根式與三角形面積的應用。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第40題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列二次根式是最簡二次根式的是",
+      "options": ["\\sqrt{24}", "\\sqrt{0.2}", "\\sqrt{8a+4}", "\\sqrt{a^2+1}"],
+      "answer": "\\sqrt{a^2+1}",
+      "explanation": "本題解析由AI生成。解：最簡二次根式需被開方數不含分母且無可開盡方的因數。逐項分析：\\(\\sqrt{24} = 2\\sqrt{6}\\)，含可開方因數；\\(\\sqrt{0.2} = \\frac{\\sqrt{2}}{\\sqrt{5}}\\)，含分母；\\(\\sqrt{8a+4} = 2\\sqrt{2a+1}\\)，可能含可開方因數；\\(\\sqrt{a^2+1}\\) 滿足條件，無法進一步化簡。故選：\\(\\sqrt{a^2+1}\\)。本題考查最簡二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第42題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列式子中，屬於最簡二次根式的是",
+      "options": ["\\sqrt{12}", "\\sqrt{\\frac{2}{3}}", "\\sqrt{0.3}", "\\sqrt{7}"],
+      "answer": "\\sqrt{7}",
+      "explanation": "本題解析由AI生成。解：最簡二次根式需被開方數不含分母且無可開盡方的因數。逐項分析：\\(\\sqrt{12} = 2\\sqrt{3}\\)，含可開方因數；\\(\\sqrt{\\frac{2}{3}}\\) 含分母；\\(\\sqrt{0.3} = \\frac{\\sqrt{3}}{\\sqrt{10}}\\)，含分母；\\(\\sqrt{7}\\) 滿足條件。故選：\\(\\sqrt{7}\\)。本題考查最簡二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第43題，題目無圖，答案無圖"
+    },
+    {
+      "question": "設 \\(\\sqrt{10}\\) 的小數部分為 \\(b\\)，則 \\(b(\\sqrt{10}+3)\\) 的結果是",
+      "options": ["1", "是一個無理數", "3", "無法確定"],
+      "answer": "1",
+      "explanation": "本題解析由AI生成。解：設 \\(\\sqrt{10} = 3.162\\)（約值），則小數部分 \\(b = 0.162\\)。計算 \\(b(\\sqrt{10} + 3) = 0.162 \\cdot (3.162 + 3) \\approx 0.162 \\cdot 6.162 \\approx 1\\)。精確計算：\\(\\sqrt{10} = 3+b\\)，則 \\(b(\\sqrt{10} + 3) = b(3+b+3) = b(6+b)\\)。近似 \\(b \\approx 0.162\\)，\\(6+b \\approx 6.162\\)，\\(b(6+b) \\approx 1\\)。故選：\\(1\\)。本題考查二次根式的數值計算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第44題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(a-b = 2\\sqrt{3}-1\\)，\\(ab = \\sqrt{3}\\)，則 \\((a+1)(b-1)\\) 的值為",
+      "options": ["-\\sqrt{3}", "3\\sqrt{3}", "3\\sqrt{2}-1", "\\sqrt{3}-1"],
+      "answer": "-\\sqrt{3}",
+      "explanation": "解：\\((a+1)(b-1) = ab + b - a - 1 = ab - (a-b) - 1\\)。代入 \\(ab = \\sqrt{3}\\)，\\(a-b = 2\\sqrt{3}-1\\)，得 \\(\\sqrt{3} - (2\\sqrt{3}-1) - 1 = \\sqrt{3} - 2\\sqrt{3} + 1 - 1 = -\\sqrt{3}\\)。故選：\\(-\\sqrt{3}\\)。本題考查多項式乘法與二次根式的加減。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第45題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(a = 2-\\sqrt{3}\\)，則 \\(\\sqrt{a^2-2a+1}\\) =",
+      "options": ["1-\\sqrt{3}", "\\sqrt{3}-1", "3-\\sqrt{3}", "\\sqrt{3}-3"],
+      "answer": "\\sqrt{3}-1",
+      "explanation": "解：原式 = \\(\\sqrt{a^2-2a+1} = \\sqrt{(a-1)^2} = |a-1|\\)。因 \\(a = 2-\\sqrt{3}\\), \\(a-1 = 1-\\sqrt{3} < 0\\)，則 \\(|a-1| = -(1-\\sqrt{3}) = \\sqrt{3}-1\\)。故選：\\(\\sqrt{3}-1\\)。本題考查二次根式的化簡與絕對值性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第46題，題目無圖，答案無圖"
+    },
+    {
+      "question": "小明的作業本上有以下四題：① \\(\\sqrt{16a^4} = 4a^2\\)；② \\(\\sqrt{5a} \\cdot \\sqrt{10a} = 5\\sqrt{2}a\\)；③ \\(a\\sqrt{\\frac{1}{a}} = \\sqrt{a^2 \\cdot \\frac{1}{a}} = \\sqrt{a}\\)；④ \\(\\sqrt{3a} - \\sqrt{2a} = \\sqrt{a}\\)。做錯的題是",
+      "options": ["①", "②", "③", "④"],
+      "answer": "④",
+      "explanation": "解：逐項分析：① \\(\\sqrt{16a^4} = 4a^2\\)，正確；② \\(\\sqrt{5a} \\cdot \\sqrt{10a} = \\sqrt{50a^2} = \\sqrt{25 \\cdot 2 \\cdot a^2} = 5\\sqrt{2}a\\)，正確；③ \\(a\\sqrt{\\frac{1}{a}} = \\sqrt{a^2 \\cdot \\frac{1}{a}} = \\sqrt{a}\\)，正確；④ \\(\\sqrt{3a} - \\sqrt{2a}\\) 無法合併，\\(\\sqrt{a}\\) 錯誤。故選：\\(④\\)。本題考查二次根式的化簡與運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第47題，題目無圖，答案無圖"
+    },
+    {
+      "question": "在下列各式中，不是二次根式的有：① \\(\\sqrt{-10}\\)；② \\(\\sqrt{10a}\\) (\\(a \\geq 0\\))；③ \\(\\sqrt{\\frac{m}{n}}\\) (\\(m, n\\) 同號且 \\(n \\neq 0\\))；④ \\(\\sqrt{x^2+1}\\)；⑤ \\(\\sqrt[3]{8}\\)。",
+      "options": ["3個", "2個", "1個", "0個"],
+      "answer": "2個",
+      "explanation": "解：二次根式要求被開方數非負且為二次根。逐項分析：① \\(\\sqrt{-10}\\)，\\(-10 < 0\\)，非二次根式；② \\(\\sqrt{10a}\\) (\\(a \\geq 0\\))，滿足條件；③ \\(\\sqrt{\\frac{m}{n}}\\) (\\(m, n\\) 同號，\\(n \\neq 0\\))，滿足條件；④ \\(\\sqrt{x^2+1}\\)，\\(x^2+1 \\geq 0\\)，滿足條件；⑤ \\(\\sqrt[3]{8}\\) 為三次根式，非二次根式。共 2 個非二次根式（①⑤）。故選：\\(2個\\)。本題考查二次根式的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第48題，題目無圖，答案無圖"
+    },
+    {
+      "question": "\\(\\sqrt{8n}\\) 是整數，正整數 \\(n\\) 的最小值是",
+      "options": ["4", "3", "2", "0"],
+      "answer": "2",
+      "explanation": "解：\\(\\sqrt{8n} = 2\\sqrt{2n}\\)，要使 \\(\\sqrt{8n}\\) 為整數，\\(2n\\) 需為完全平方數。最小正整數 \\(n = 2\\)，則 \\(2n = 4\\)，\\(\\sqrt{8 \\cdot 2} = \\sqrt{16} = 4\\)，為整數。檢查其他選項：\\(n=3\\)，\\(\\sqrt{24} = 2\\sqrt{6}\\)，非整數；\\(n=4\\)，\\(\\sqrt{32} = 4\\sqrt{2}\\)，非整數；\\(n=0\\)，\\(\\sqrt{0} = 0\\)，但非正整數。故選：\\(2\\)。本題考查二次根式的性質與完全平方數。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第49題，題目無圖，答案無圖"
+    }
+  ]
+}

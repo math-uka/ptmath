@@ -1,0 +1,314 @@
+[
+    {
+      "question": "若 \\(\\sqrt{12n}\\) 是正整數，則整數 n 的最小值為 ______．",
+      "answer": "\\(3\\)",
+      "explanation": "解：因 \\(\\sqrt{12n}\\) 是正整數，則 \\(12n = 2^2 \\cdot 3 \\cdot n\\) 必須為完全平方數。為使 \\(12n\\) 為完全平方數，n 需包含至少一個 3（補全 3 的次方為偶數），且 2 的次方已為偶數。故 n 的最小值為 \\(3\\)，此時 \\(12n = 36 = 6^2\\)，\\(\\sqrt{36} = 6\\) 為正整數。本題考查二次根式的概念及完全平方數的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "\\(\\sqrt{8}\\) 與最簡二次根式 \\(\\sqrt{2m-3}\\) 是同類二次根式，則 m 的值為 ______．",
+      "answer": "\\(\\frac{5}{2}\\)",
+      "explanation": "解：\\(\\sqrt{8} = \\sqrt{4 \\cdot 2} = 2\\sqrt{2}\\)，為最簡二次根式。依題意，\\(\\sqrt{2m-3}\\) 與 \\(2\\sqrt{2}\\) 為同類二次根式，則被開方數相同，即 \\(2m-3 = 2\\)。解得 \\(2m = 5\\)，\\(m = \\frac{5}{2}\\)。本題考查同類二次根式的定義及方程求解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "當 \\(x < 1\\) 時，\\(\\sqrt{(x-1)^2}\\) = ______．",
+      "answer": "\\(1-x\\)",
+      "explanation": "解：因 \\(x < 1\\)，則 \\(x-1 < 0\\)，故 \\((x-1)^2 = (1-x)^2\\)。二次根式非負，因此 \\(\\sqrt{(x-1)^2} = \\sqrt{(1-x)^2} = 1-x\\)（因 \\(1-x > 0\\)）。本題考查二次根式的性質及絕對值化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(y = \\sqrt{x-\\frac{1}{2}} + \\sqrt{\\frac{1}{2}-x} - 6\\)，則 \\(xy = ______．",
+      "answer": "\\(-3\\)",
+      "explanation": "解：由二次根式有意義的條件，得 \\(\\{ x-\\frac{1}{2} \\geq 0, \\frac{1}{2}-x \\geq 0 \\}\\)。解不等式組：\\(x \\geq \\frac{1}{2}\\) 且 \\(x \\leq \\frac{1}{2}\\)，故 \\(x = \\frac{1}{2}\\)。代入 \\(y = \\sqrt{\\frac{1}{2}-\\frac{1}{2}} + \\sqrt{\\frac{1}{2}-\\frac{1}{2}} - 6 = 0 + 0 - 6 = -6\\)。因此 \\(xy = \\frac{1}{2} \\cdot (-6) = -3\\)。本題考查二次根式有意義的條件及代數式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(3-\\sqrt{2}\\) 的整數部分為 a，小數部分為 b，則代數式 \\((2+\\sqrt{2}) \\cdot a \\cdot b\\) 的值是 ______．",
+      "answer": "\\(2\\)",
+      "explanation": "解：因 \\(1 < \\sqrt{2} < 2\\)，則 \\(-2 < -\\sqrt{2} < -1\\)，故 \\(1 < 3-\\sqrt{2} < 2\\)。因此 \\(3-\\sqrt{2}\\) 的整數部分 \\(a = 1\\)，小數部分 \\(b = 3-\\sqrt{2} - 1 = 2-\\sqrt{2}\\)。代入 \\((2+\\sqrt{2}) \\cdot a \\cdot b = (2+\\sqrt{2}) \\cdot 1 \\cdot (2-\\sqrt{2}) = (2+\\sqrt{2})(2-\\sqrt{2}) = 4-2 = 2\\)。本題考查無理數的估算及二次根式運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(\\sqrt{84n}\\) 是整數，則正整數 n 的最小值是 ______．",
+      "answer": "\\(21\\)",
+      "explanation": "本題解析由AI生成。解：因 \\(\\sqrt{84n}\\) 為整數，則 \\(84n\\) 必須為完全平方數。分解 \\(84 = 2^2 \\cdot 3 \\cdot 7\\)，則 \\(84n = 2^2 \\cdot 3 \\cdot 7 \\cdot n\\)。為使 \\(84n\\) 為完全平方數，n 需至少包含 \\(3 \\cdot 7 = 21\\)，以補全 3 和 7 的次方為偶數。驗證：當 \\(n = 21\\) 時，\\(84n = 84 \\cdot 21 = 1764 = 42^2\\)，\\(\\sqrt{1764} = 42\\) 為整數。若 n 更小（如 \\(n = 7\\)），則 \\(84 \\cdot 7 = 588\\) 非完全平方數。故 n 的最小值為 \\(21\\)。本題考查二次根式及完全平方數的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "小明做數學題時，發現 \\(\\sqrt{1-\\frac{1}{2}} = \\sqrt{\\frac{1}{2}}\\)；\\(\\sqrt{2-\\frac{2}{5}} = 2\\sqrt{\\frac{2}{5}}\\)；\\(\\sqrt{3-\\frac{3}{10}} = 3\\sqrt{\\frac{3}{10}}\\)；\\(\\sqrt{4-\\frac{4}{17}} = 4\\sqrt{\\frac{4}{17}}\\)；……；按此規律，若 \\(\\sqrt{a-\\frac{8}{b}} = a\\sqrt{\\frac{8}{b}}\\)（a, b 為正整數），則 \\(a+b = ______．",
+      "answer": "\\(73\\)",
+      "explanation": "本題解析由AI生成。解：觀察規律：\\(\\sqrt{n-\\frac{n}{m}} = n\\sqrt{\\frac{n}{m}}\\)，其中 n, m 為正整數。依題意，\\(\\sqrt{a-\\frac{8}{b}} = a\\sqrt{\\frac{8}{b}}\\)。平方兩邊，得 \\(a-\\frac{8}{b} = a^2 \\cdot \\frac{8}{b}\\)。移項：\\(a - a^2 \\cdot \\frac{8}{b} = \\frac{8}{b}\\)。兩邊乘 b，得 \\(ab - 8a^2 = 8\\)。整理：\\(8a^2 - ab + 8 = 0\\)。求解：\\(b = \\frac{8a^2 + 8}{a} = 8a + \\frac{8}{a}\\)。因 b 為正整數，\\(\\frac{8}{a}\\) 必須為整數，故 a 為 8 的正因數：1, 2, 4, 8。試 \\(a = 8\\)：\\(b = 8 \\cdot 8 + \\frac{8}{8} = 64 + 1 = 65\\)，則 \\(a + b = 8 + 65 = 73\\)。驗證其他 a 值無正整數解（如 \\(a = 1\\)，\\(b = 16\\)，但 \\(\\sqrt{1-\\frac{8}{16}} \\neq \\sqrt{\\frac{8}{16}}\\)）。故 \\(a + b = 73\\)。本題考查二次根式的性質及規律推導。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\(\\sqrt{\\frac{1}{3}} \\cdot \\sqrt{27} = ______．",
+      "answer": "\\(3\\)",
+      "explanation": "解：原式 = \\(\\sqrt{\\frac{1}{3} \\cdot 27} = \\sqrt{9} = 3\\)。本題考查二次根式的乘法性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(\\sqrt{x-7}\\) 在實數範圍內有意義，則實數 x 的取值範圍是 ______．",
+      "answer": "\\(x \\geq 7\\)",
+      "explanation": "本題解析由AI生成。解：二次根式 \\(\\sqrt{x-7}\\) 在實數範圍內有意義，則被開方數 \\(x-7 \\geq 0\\)。解得 \\(x \\geq 7\\)。本題考查二次根式有意義的條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若式子 \\(\\sqrt{x-2}\\) 在實數範圍內有意義，則 x 的取值範圍是 ______．",
+      "answer": "\\(x \\geq 2\\)",
+      "explanation": "解：由二次根式有意義的條件，\\(x-2 \\geq 0\\)。解得 \\(x \\geq 2\\)。本題考查二次根式有意義的條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 x，y 為實數，且 \\(y = \\sqrt{x^2-9} - \\sqrt{9-x^2} + 4\\)，則 \\(x-y = ______．",
+      "answer": "\\(-1\\) 或 \\(-7\\)",
+      "explanation": "解：由二次根式有意義的條件，\\(x^2-9 \\geq 0\\) 且 \\(9-x^2 \\geq 0\\)，得 \\(x^2 \\geq 9\\) 且 \\(x^2 \\leq 9\\)，故 \\(x^2 = 9\\)，\\(x = \\pm 3\\)。當 \\(x = 3\\) 時，\\(y = \\sqrt{9-9} - \\sqrt{9-9} + 4 = 0 - 0 + 4 = 4\\)，則 \\(x-y = 3-4 = -1\\)。當 \\(x = -3\\) 時，\\(y = \\sqrt{9-9} - \\sqrt{9-9} + 4 = 4\\)，則 \\(x-y = -3-4 = -7\\)。本題考查二次根式有意義的條件及代數式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(y = \\sqrt{2x-4} + \\sqrt{4-2x} + 5\\)，則 \\(x+3y = ______．",
+      "answer": "\\(17\\)",
+      "explanation": "解：由二次根式有意義的條件，得 \\(\\{ 2x-4 \\geq 0, 4-2x \\geq 0 \\}\\)。解不等式組：\\(x \\geq 2\\) 且 \\(x \\leq 2\\)，故 \\(x = 2\\)。代入 \\(y = \\sqrt{2 \\cdot 2 - 4} + \\sqrt{4 - 2 \\cdot 2} + 5 = \\sqrt{0} + \\sqrt{0} + 5 = 5\\)。則 \\(x + 3y = 2 + 3 \\cdot 5 = 17\\)。本題考查二次根式有意義的條件及代數式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\((\\sqrt{5})^2 = ______．",
+      "answer": "\\(5\\)",
+      "explanation": "本題解析由AI生成。解：\\((\\sqrt{5})^2 = 5\\)。本題考查二次根式的平方性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若代數式 \\(\\frac{2}{\\sqrt{x-3}}\\) 在實數範圍內有意義，則 x 的取值範圍是 ______．",
+      "answer": "\\(x > 3\\)",
+      "explanation": "解：由二次根式有意義及分母不為零的條件，得 \\(\\{ x-3 \\geq 0, x-3 \\neq 0 \\}\\)。解得 \\(x > 3\\)。本題考查二次根式及分式有意義的條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((\\sqrt{2} + \\sqrt{3})(\\sqrt{2} - \\sqrt{3})\\) 的結果為 ______．",
+      "answer": "\\(-1\\)",
+      "explanation": "本題解析由AI生成。解：\\((\\sqrt{2} + \\sqrt{3})(\\sqrt{2} - \\sqrt{3}) = (\\sqrt{2})^2 - (\\sqrt{3})^2 = 2 - 3 = -1\\)。本題考查平方差公式及二次根式運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若式子 \\(\\frac{x}{\\sqrt{x-1}}\\) 在實數範圍內有意義，則 x 的取值範圍是 ______．",
+      "answer": "\\(x > 1\\)",
+      "explanation": "解：由二次根式有意義及分母不為零的條件，得 \\(x-1 > 0\\)。解得 \\(x > 1\\)。本題考查二次根式及分式有意義的條件。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第16題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(a + b = 2\\sqrt{3} + 1\\)，\\(ab = \\sqrt{3}\\)，則 \\((a+1)(b+1) = ______．",
+      "answer": "\\(3\\sqrt{3} + 2\\)",
+      "explanation": "本題解析由AI生成。解：\\((a+1)(b+1) = ab + a + b + 1\\)。已知 \\(a + b = 2\\sqrt{3} + 1\\)，\\(ab = \\sqrt{3}\\)，代入得 \\(ab + a + b + 1 = \\sqrt{3} + (2\\sqrt{3} + 1) + 1 = 3\\sqrt{3} + 2\\)。本題考查代數式的展開及二次根式運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(6-\\sqrt{13}\\) 的整數部分為 x，小數部分為 y，則 \\((2x + \\sqrt{13}) \\cdot y\\) 的值是 ______．",
+      "answer": "\\(3\\)",
+      "explanation": "解：因 \\(3 < \\sqrt{13} < 4\\)，則 \\(2 < 6-\\sqrt{13} < 3\\)。故 \\(6-\\sqrt{13}\\) 的整數部分 \\(x = 2\\)，小數部分 \\(y = 6-\\sqrt{13} - 2 = 4-\\sqrt{13}\\)。則 \\((2x + \\sqrt{13}) \\cdot y = (4 + \\sqrt{13})(4 - \\sqrt{13}) = 16 - 13 = 3\\)。本題考查無理數的估算及二次根式運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 a，b 為有理數，且 \\(\\sqrt{8} + \\sqrt{18} + \\sqrt{\\frac{1}{8}} = a + b\\sqrt{2}\\)，則 \\(ab = ______．",
+      "answer": "\\(0\\)",
+      "explanation": "本題解析由AI生成。解：化簡左邊：\\(\\sqrt{8} = 2\\sqrt{2}\\)，\\(\\sqrt{18} = 3\\sqrt{2}\\)，\\(\\sqrt{\\frac{1}{8}} = \\frac{1}{2\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = \\frac{\\sqrt{2}}{4}\\)。則 \\(\\sqrt{8} + \\sqrt{18} + \\sqrt{\\frac{1}{8}} = 2\\sqrt{2} + 3\\sqrt{2} + \\frac{\\sqrt{2}}{4} = \\left(2 + 3 + \\frac{1}{4}\\right)\\sqrt{2} = \\frac{21}{4}\\sqrt{2}\\)。右邊為 \\(a + b\\sqrt{2}\\)，比較得 \\(a = 0\\)，\\(b = \\frac{21}{4}\\)。故 \\(ab = 0 \\cdot \\frac{21}{4} = 0\\)。本題考查二次根式的化簡及係數比較。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，答案無圖"
+    },
+    {
+      "question": "\\(2a^2 - 14\\) 在實數範圍內因式分解的結果是 ______．",
+      "answer": "\\(2(a-\\sqrt{7})(a+\\sqrt{7})\\)",
+      "explanation": "解：\\(2a^2 - 14 = 2(a^2 - 7) = 2(a - \\sqrt{7})(a + \\sqrt{7})\\)。本題考查二次根式的性質及平方差公式的應用。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\((\\pi - 3\\sqrt{5})^0 + |\\sqrt{3} - 2| - \\sqrt{12} + \\left(\\frac{1}{\\sqrt{3}}\\right)^{-1}\\)；(2) \\((3\\sqrt{18} + \\frac{1}{5}\\sqrt{50} - 4\\sqrt{\\frac{1}{2}})\\div \\sqrt{32}\\)．",
+      "answer": "(1) \\(3 - 2\\sqrt{3}\\)；(2) \\(2\\)",
+      "explanation": "解：(1) \\((\\pi - 3\\sqrt{5})^0 = 1\\)，\\(|\\sqrt{3} - 2| = 2 - \\sqrt{3}\\)（因 \\(\\sqrt{3} < 2\\)），\\(\\sqrt{12} = 2\\sqrt{3}\\)，\\(\\left(\\frac{1}{\\sqrt{3}}\\right)^{-1} = \\sqrt{3}\\)。則原式 = \\(1 + (2 - \\sqrt{3}) - 2\\sqrt{3} + \\sqrt{3} = 3 - 2\\sqrt{3}\\)。(2) 化簡：\\(3\\sqrt{18} = 9\\sqrt{2}\\)，\\(\\frac{1}{5}\\sqrt{50} = \\sqrt{2}\\)，\\(4\\sqrt{\\frac{1}{2}} = 2\\sqrt{2}\\)，\\(\\sqrt{32} = 4\\sqrt{2}\\)。則括號內 = \\(9\\sqrt{2} + \\sqrt{2} - 2\\sqrt{2} = 8\\sqrt{2}\\)。原式 = \\(8\\sqrt{2} \\div 4\\sqrt{2} = 2\\)。本題考查二次根式的混合運算及指數性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\(\\sqrt{32} - 4\\sqrt{\\frac{1}{8}} + \\frac{2}{\\sqrt{2}}\\)；(2) \\((\\sqrt{3} + \\sqrt{2})^2 - (2 + \\sqrt{5})(2 - \\sqrt{5})\\)。",
+      "answer": "(1) \\(4\\sqrt{2}\\)；(2) \\(6 + 2\\sqrt{6}\\)",
+      "explanation": "解：(1) \\(\\sqrt{32} = 4\\sqrt{2}\\)，\\(4\\sqrt{\\frac{1}{8}} = 4 \\cdot \\frac{1}{2\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = \\sqrt{2}\\)，\\(\\frac{2}{\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = \\sqrt{2}\\)。則原式 = \\(4\\sqrt{2} - \\sqrt{2} + \\sqrt{2} = 4\\sqrt{2}\\)。(2) \\((\\sqrt{3} + \\sqrt{2})^2 = 3 + 2\\sqrt{6} + 2\\)，\\((2 + \\sqrt{5})(2 - \\sqrt{5}) = 4 - 5 = -1\\)。則原式 = \\(3 + 2\\sqrt{6} + 2 - (-1) = 6 + 2\\sqrt{6}\\)。本題考查二次根式的混合運算及平方公式。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第23題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\(\\sqrt{18} - \\sqrt{(-2)^2} - 6\\sqrt{\\frac{1}{2}}\\)；(2) \\(\\frac{\\sqrt{20} + \\sqrt{5}}{\\sqrt{5}} - \\sqrt{\\frac{1}{3}} \\cdot \\sqrt{12}\\)．",
+      "answer": "(1) \\(-2\\)；(2) \\(1\\)",
+      "explanation": "本題解析由AI生成。解：(1) \\(\\sqrt{18} = 3\\sqrt{2}\\)，\\(\\sqrt{(-2)^2} = 2\\)，\\(6\\sqrt{\\frac{1}{2}} = 6 \\cdot \\frac{1}{\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = 3\\sqrt{2}\\)。則原式 = \\(3\\sqrt{2} - 2 - 3\\sqrt{2} = -2\\)。(2) \\(\\frac{\\sqrt{20} + \\sqrt{5}}{\\sqrt{5}} = \\frac{2\\sqrt{5} + \\sqrt{5}}{\\sqrt{5}} = 3\\)，\\(\\sqrt{\\frac{1}{3}} \\cdot \\sqrt{12} = \\sqrt{\\frac{12}{3}} = \\sqrt{4} = 2\\)。則原式 = \\(3 - 2 = 1\\)。本題考查二次根式的混合運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第24題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\((\\sqrt{8} + \\sqrt{3}) \\cdot \\sqrt{6}\\)；(2) \\(\\frac{4\\sqrt{2} - 3\\sqrt{6}}{2\\sqrt{2}}\\)。",
+      "answer": "(1) \\(4\\sqrt{3} + 3\\sqrt{2}\\)；(2) \\(2 - \\frac{3\\sqrt{3}}{2}\\)",
+      "explanation": "解：(1) \\(\\sqrt{8} = 2\\sqrt{2}\\)，則原式 = \\((2\\sqrt{2} + \\sqrt{3}) \\cdot \\sqrt{6} = 2\\sqrt{12} + \\sqrt{18} = 4\\sqrt{3} + 3\\sqrt{2}\\)。(2) 原式 = \\(\\frac{4\\sqrt{2}}{2\\sqrt{2}} - \\frac{3\\sqrt{6}}{2\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = 2 - \\frac{3\\sqrt{12}}{4} = 2 - \\frac{6\\sqrt{3}}{4} = 2 - \\frac{3\\sqrt{3}}{2}\\)。本題考查二次根式的乘除運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\((\\sqrt{5} + \\sqrt{6})(\\sqrt{5} - \\sqrt{6})\\)；(2) \\(4\\sqrt{5} + \\sqrt{45} - \\sqrt{8} + 4\\sqrt{2}\\)．",
+      "answer": "(1) \\(-1\\)；(2) \\(7\\sqrt{5} + 2\\sqrt{2}\\)",
+      "explanation": "解：(1) \\((\\sqrt{5} + \\sqrt{6})(\\sqrt{5} - \\sqrt{6}) = (\\sqrt{5})^2 - (\\sqrt{6})^2 = 5 - 6 = -1\\)。(2) \\(\\sqrt{45} = 3\\sqrt{5}\\)，\\(\\sqrt{8} = 2\\sqrt{2}\\)。則原式 = \\(4\\sqrt{5} + 3\\sqrt{5} - 2\\sqrt{2} + 4\\sqrt{2} = 7\\sqrt{5} + 2\\sqrt{2}\\)。本題考查平方差公式及同類二次根式合併。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第26題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\((\\sqrt{3} + 5)(\\sqrt{3} - 5)\\)；(2) \\(\\sqrt{12} + \\frac{\\sqrt{27}}{9} - \\sqrt{\\frac{1}{3}}\\)。",
+      "answer": "(1) \\(-22\\)；(2) \\(2\\sqrt{3}\\)",
+      "explanation": "解：(1) \\((\\sqrt{3} + 5)(\\sqrt{3} - 5) = (\\sqrt{3})^2 - 5^2 = 3 - 25 = -22\\)。(2) \\(\\sqrt{12} = 2\\sqrt{3}\\)，\\(\\frac{\\sqrt{27}}{9} = \\frac{3\\sqrt{3}}{9} = \\frac{\\sqrt{3}}{3}\\)，\\(\\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3}\\)。則原式 = \\(2\\sqrt{3} + \\frac{\\sqrt{3}}{3} - \\frac{\\sqrt{3}}{3} = 2\\sqrt{3}\\)。本題考查平方差公式及二次根式運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第27題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\(\\sqrt{10} \\cdot \\sqrt{2} + \\frac{\\sqrt{15}}{\\sqrt{3}}\\)；(2) \\(\\frac{5\\sqrt{12} - \\sqrt{48}}{\\sqrt{3}} - \\sqrt{\\frac{1}{5}} \\cdot \\sqrt{35} + \\sqrt{28}\\)．",
+      "answer": "(1) \\(3\\sqrt{5}\\)；(2) \\(6 + \\sqrt{7}\\)",
+      "explanation": "本題解析由AI生成。解：(1) \\(\\sqrt{10} \\cdot \\sqrt{2} = \\sqrt{20} = 2\\sqrt{5}\\)，\\(\\frac{\\sqrt{15}}{\\sqrt{3}} = \\sqrt{5}\\)。則原式 = \\(2\\sqrt{5} + \\sqrt{5} = 3\\sqrt{5}\\)。(2) \\(5\\sqrt{12} = 10\\sqrt{3}\\)，\\(\\sqrt{48} = 4\\sqrt{3}\\)，則 \\(\\frac{10\\sqrt{3} - 4\\sqrt{3}}{\\sqrt{3}} = 6\\)。\\(\\sqrt{\\frac{1}{5}} \\cdot \\sqrt{35} = \\sqrt{7}\\)，\\(\\sqrt{28} = 2\\sqrt{7}\\)。則原式 = \\(6 - \\sqrt{7} + 2\\sqrt{7} = 6 + \\sqrt{7}\\)。本題考查二次根式的混合運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\(\\sqrt{\\frac{1}{3}} \\cdot \\sqrt{12} - \\frac{\\sqrt{32}}{\\sqrt{2}}\\)。",
+      "answer": "\\(-2\\)",
+      "explanation": "解：\\(\\sqrt{\\frac{1}{3}} \\cdot \\sqrt{12} = \\sqrt{\\frac{12}{3}} = \\sqrt{4} = 2\\)，\\(\\frac{\\sqrt{32}}{\\sqrt{2}} = \\sqrt{\\frac{32}{2}} = \\sqrt{16} = 4\\)。則原式 = \\(2 - 4 = -2\\)。本題考查二次根式的乘除法及運算順序。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第29題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\(2\\sqrt{12} + 6\\sqrt{\\frac{1}{3}} - 3\\sqrt{48}\\)；(2) \\(\\frac{5\\sqrt{48} - 6\\sqrt{27} + 4\\sqrt{15}}{\\sqrt{3}}\\)；(3) \\((-2\\sqrt{2})^2 - (\\sqrt{2} + 2)^2 + (\\sqrt{2} - 2)^2\\)；(4) \\(\\frac{2}{3}\\sqrt{9x} + 6\\sqrt{\\frac{x}{4}} - 2x\\sqrt{\\frac{1}{x}}\\)。",
+      "answer": "(1) \\(-6\\sqrt{3}\\)；(2) \\(2 + 4\\sqrt{5}\\)；(3) \\(8 - 8\\sqrt{2}\\)；(4) \\(3\\sqrt{x}\\)",
+      "explanation": "本題解析由AI生成。解：(1) \\(2\\sqrt{12} = 4\\sqrt{3}\\)，\\(6\\sqrt{\\frac{1}{3}} = 2\\sqrt{3}\\)，\\(3\\sqrt{48} = 12\\sqrt{3}\\)。則原式 = \\(4\\sqrt{3} + 2\\sqrt{3} - 12\\sqrt{3} = -6\\sqrt{3}\\)。(2) \\(5\\sqrt{48} = 20\\sqrt{3}\\)，\\(6\\sqrt{27} = 18\\sqrt{3}\\)，則 \\(\\frac{20\\sqrt{3} - 18\\sqrt{3} + 4\\sqrt{15}}{\\sqrt{3}} = 2 + 4\\sqrt{5}\\)。(3) \\((-2\\sqrt{2})^2 = 8\\)，\\((\\sqrt{2} + 2)^2 = 6 + 4\\sqrt{2}\\)，\\((\\sqrt{2} - 2)^2 = 6 - 4\\sqrt{2}\\)。則原式 = \\(8 - (6 + 4\\sqrt{2}) + (6 - 4\\sqrt{2}) = 8 - 8\\sqrt{2}\\)。(4) \\(\\frac{2}{3}\\sqrt{9x} = 2\\sqrt{x}\\)，\\(6\\sqrt{\\frac{x}{4}} = 3\\sqrt{x}\\)，\\(2x\\sqrt{\\frac{1}{x}} = 2\\sqrt{x}\\)。則原式 = \\(2\\sqrt{x} + 3\\sqrt{x} - 2\\sqrt{x} = 3\\sqrt{x}\\)。本題考查二次根式的混合運算及化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第30題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\(4\\sqrt{\\frac{1}{2}} - \\sqrt{6} \\cdot \\sqrt{3} + \\frac{\\sqrt{12}}{\\sqrt{3}}\\)。",
+      "answer": "\\(2 - \\sqrt{2}\\)",
+      "explanation": "解：\\(4\\sqrt{\\frac{1}{2}} = 2\\sqrt{2}\\)，\\(\\sqrt{6} \\cdot \\sqrt{3} = \\sqrt{18} = 3\\sqrt{2}\\)，\\(\\frac{\\sqrt{12}}{\\sqrt{3}} = \\sqrt{4} = 2\\)。則原式 = \\(2\\sqrt{2} - 3\\sqrt{2} + 2 = 2 - \\sqrt{2}\\)。本題考查二次根式的混合運算及運算順序。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第31題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\(\\sqrt{6} \\cdot \\sqrt{2} + \\frac{\\sqrt{24}}{\\sqrt{3}} - \\sqrt{48}\\)；(2) \\(\\sqrt{24} \\cdot \\sqrt{\\frac{1}{3}} - 4 \\cdot \\sqrt{\\frac{1}{8}} \\cdot (1 - \\sqrt{2})^0\\)。",
+      "answer": "(1) \\(2\\sqrt{2} - 2\\sqrt{3}\\)；(2) \\(\\sqrt{2}\\)",
+      "explanation": "解：(1) \\(\\sqrt{6} \\cdot \\sqrt{2} = \\sqrt{12} = 2\\sqrt{3}\\)，\\(\\frac{\\sqrt{24}}{\\sqrt{3}} = \\sqrt{8} = 2\\sqrt{2}\\)，\\(\\sqrt{48} = 4\\sqrt{3}\\)。則原式 = \\(2\\sqrt{3} + 2\\sqrt{2} - 4\\sqrt{3} = 2\\sqrt{2} - 2\\sqrt{3}\\)。(2) \\( (1 - \\sqrt{2})^0 = 1\\)，\\(\\sqrt{24} \\cdot \\sqrt{\\frac{1}{3}} = \\sqrt{8} = 2\\sqrt{2}\\)，\\(4 \\cdot \\sqrt{\\frac{1}{8}} = 4 \\cdot \\frac{1}{2\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = \\sqrt{2}\\)。則原式 = \\(2\\sqrt{2} - \\sqrt{2} = \\sqrt{2}\\)。本題考查二次根式的混合運算及指數性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第32題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：(1) \\(\\sqrt{125} - (2\\sqrt{27} - 7\\sqrt{75} + 4\\sqrt{45})\\)；(2) \\((2\\sqrt{6} + \\sqrt{\\frac{2}{3}}) \\cdot \\sqrt{3} - \\sqrt{32}\\)；(3) \\((\\sqrt{3} + 1)^2 - 6\\sqrt{\\frac{1}{3}} - (2\\sqrt{2} + 1)(2\\sqrt{2} - 1)\\)。",
+      "answer": "(1) \\(29\\sqrt{3} - 7\\sqrt{5}\\)；(2) \\(3\\sqrt{2}\\)；(3) \\(-3\\)",
+      "explanation": "本題解析由AI生成。解：(1) \\(\\sqrt{125} = 5\\sqrt{5}\\)，括號內：\\(2\\sqrt{27} = 6\\sqrt{3}\\)，\\(7\\sqrt{75} = 35\\sqrt{3}\\)，\\(4\\sqrt{45} = 12\\sqrt{5}\\)。則 \\(6\\sqrt{3} - 35\\sqrt{3} + 12\\sqrt{5} = -29\\sqrt{3} + 12\\sqrt{5}\\)。原式 = \\(5\\sqrt{5} - (-29\\sqrt{3} + 12\\sqrt{5}) = 29\\sqrt{3} - 7\\sqrt{5}\\)。(2) \\(2\\sqrt{6} \\cdot \\sqrt{3} = 2\\sqrt{18} = 6\\sqrt{2}\\)，\\(\\sqrt{\\frac{2}{3}} \\cdot \\sqrt{3} = \\sqrt{2}\\)。則 \\(6\\sqrt{2} + \\sqrt{2} - \\sqrt{32} = 7\\sqrt{2} - 4\\sqrt{2} = 3\\sqrt{2}\\)。(3) \\((\\sqrt{3} + 1)^2 = 4 + 2\\sqrt{3}\\)，\\(6\\sqrt{\\frac{1}{3}} = 2\\sqrt{3}\\)，\\((2\\sqrt{2} + 1)(2\\sqrt{2} - 1) = 8 - 1 = 7\\)。則原式 = \\(4 + 2\\sqrt{3} - 2\\sqrt{3} - 7 = -3\\)。本題考查二次根式的混合運算及平方公式。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第33題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\((3 + \\sqrt{5} - \\sqrt{3})(3 - \\sqrt{5} + \\sqrt{3})\\)。",
+      "answer": "\\(2\\sqrt{15} + 1\\)",
+      "explanation": "解：令 \\(c = \\sqrt{5} - \\sqrt{3}\\)，則原式 = \\((3 + c)(3 - c) = 9 - c^2\\)。計算 \\(c^2 = (\\sqrt{5} - \\sqrt{3})^2 = 5 - 2\\sqrt{15} + 3 = 8 - 2\\sqrt{15}\\)。則原式 = \\(9 - (8 - 2\\sqrt{15}) = 1 + 2\\sqrt{15}\\)。本題考查平方差公式及二次根式運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第34題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\(\\sqrt{3} (\\sqrt{3} - 4\\sqrt{2}) + \\sqrt{24}\\)。",
+      "answer": "\\(3 - 2\\sqrt{6}\\)",
+      "explanation": "本題解析由AI生成。解：\\(\\sqrt{3} \\cdot \\sqrt{3} = 3\\)，\\(\\sqrt{3} \\cdot (-4\\sqrt{2}) = -4\\sqrt{6}\\)，\\(\\sqrt{24} = 2\\sqrt{6}\\)。則原式 = \\(3 - 4\\sqrt{6} + 2\\sqrt{6} = 3 - 2\\sqrt{6}\\)。本題考查二次根式的乘法及同類項合併。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第35題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算：\\(\\sqrt{12} + \\sqrt{20} - (\\sqrt{3} - \\sqrt{5})\\)。",
+      "answer": "\\(\\sqrt{3} + 3\\sqrt{5}\\)",
+      "explanation": "本題解析由AI生成。解：\\(\\sqrt{12} = 2\\sqrt{3}\\)，\\(\\sqrt{20} = 2\\sqrt{5}\\)，括號展開得 \\(-\\sqrt{3} + \\sqrt{5}\\)。則原式 = \\(2\\sqrt{3} + 2\\sqrt{5} - \\sqrt{3} + \\sqrt{5} = \\sqrt{3} + 3\\sqrt{5}\\)。本題考查二次根式的加減運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第36題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡求值：\\(\\frac{a^2-1}{a^2-2a+1} + \\frac{2a-a^2}{a-2} \\div a\\)，其中 \\(a = \\sqrt{2} + 1\\)。",
+      "answer": "\\(\\sqrt{2}\\)",
+      "explanation": "解：原式 = \\(\\frac{(a+1)(a-1)}{(a-1)^2} + \\frac{a(2-a)}{a-2} \\cdot \\frac{1}{a}\\)。第一項 = \\(\\frac{a+1}{a-1}\\)。第二項 = \\(\\frac{a(a-2)}{-(a-2) \\cdot a} = -1\\)。則原式 = \\(\\frac{a+1}{a-1} - 1 = \\frac{a+1 - (a-1)}{a-1} = \\frac{2}{a-1}\\)。當 \\(a = \\sqrt{2} + 1\\) 時，\\(a-1 = \\sqrt{2}\\)，原式 = \\(\\frac{2}{\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = \\sqrt{2}\\)。本題考查分式的化簡及二次根式求值。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第37題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知一個三角形的三邊長分別為 \\(\\frac{2}{3}\\sqrt{9x}\\)，\\(6\\sqrt{\\frac{x}{4}}\\)，\\(2x\\sqrt{\\frac{1}{x}}\\)。(1) 求它的周長（要求結果化簡）；(2) 請給一個適當的 x 值，使它的周長為整數，並求出此時三角形周長的值。",
+      "answer": "(1) \\(7\\sqrt{x}\\)；(2) 當 \\(x = 4\\) 時，周長為 \\(14\\)",
+      "explanation": "本題解析由AI生成。解：(1) 化簡三邊：\\(\\frac{2}{3}\\sqrt{9x} = 2\\sqrt{x}\\)，\\(6\\sqrt{\\frac{x}{4}} = 3\\sqrt{x}\\)，\\(2x\\sqrt{\\frac{1}{x}} = 2\\sqrt{x}\\)。周長 = \\(2\\sqrt{x} + 3\\sqrt{x} + 2\\sqrt{x} = 7\\sqrt{x}\\)。(2) 令 \\(7\\sqrt{x}\\) 為整數，則 \\(\\sqrt{x}\\) 為整數。取 \\(x = 4\\)，則 \\(\\sqrt{x} = 2\\)，周長 = \\(7 \\cdot 2 = 14\\)。本題考查二次根式的化簡及應用。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第38題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(x = \\frac{\\sqrt{7} + \\sqrt{3}}{2}\\)，\\(y = \\frac{\\sqrt{7} - \\sqrt{3}}{2}\\)，求下列代數式的值：(1) \\(x^2 + 3xy + y^2\\)；(2) \\(\\frac{x}{y} + \\frac{y}{x}\\)。",
+      "answer": "(1) \\(8\\)；(2) \\(5\\)",
+      "explanation": "解：因 \\(x = \\frac{\\sqrt{7} + \\sqrt{3}}{2}\\)，\\(y = \\frac{\\sqrt{7} - \\sqrt{3}}{2}\\)，則 \\(x + y = \\sqrt{7}\\)，\\(xy = \\frac{(\\sqrt{7} + \\sqrt{3})(\\sqrt{7} - \\sqrt{3})}{4} = \\frac{7 - 3}{4} = 1\\)。(1) \\(x^2 + 3xy + y^2 = (x + y)^2 + xy = (\\sqrt{7})^2 + 1 = 8\\)。(2) \\(\\frac{x}{y} + \\frac{y}{x} = \\frac{x^2 + y^2}{xy} = \\frac{(x + y)^2 - 2xy}{xy} = \\frac{7 - 2 \\cdot 1}{1} = 5\\)。本題考查二次根式的運算及代數式化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第39題，題目無圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(a = \\sqrt{7} + 2\\)，\\(b = \\sqrt{7} - 2\\)，求下列代數式的值：(1) \\(a^2 b + b^2 a\\)；(2) \\(a^2 - b^2\\)。",
+      "answer": "(1) \\(6\\sqrt{7}\\)；(2) \\(8\\sqrt{7}\\)",
+      "explanation": "本題解析由AI生成。解：(1) \\(a^2 b + b^2 a = a b (a + b)\\)。因 \\(a + b = (\\sqrt{7} + 2) + (\\sqrt{7} - 2) = 2\\sqrt{7}\\)，\\(ab = (\\sqrt{7} + 2)(\\sqrt{7} - 2) = 7 - 4 = 3\\)。則 \\(a^2 b + b^2 a = 3 \\cdot 2\\sqrt{7} = 6\\sqrt{7}\\)。(2) \\(a^2 - b^2 = (a - b)(a + b) = [(\\sqrt{7} + 2) - (\\sqrt{7} - 2)] \\cdot 2\\sqrt{7} = 4 \\cdot 2\\sqrt{7} = 8\\sqrt{7}\\)。本題考查二次根式的運算及平方差公式。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第40題，題目無圖，答案無圖"
+    }
+]
