@@ -127,32 +127,41 @@
     }
 
     // 驗證選擇題問題
-    function validateQuestion(question, isMultipleChoice = true) {
+    function validateQuestion(question, isMultipleChoice = true, bankName = '未知題庫') {
       try {
         if (!question || typeof question !== 'object') {
-          return { valid: false, error: `無效問題：問題對象為空或不是對象${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+          console.warn(`無效問題（${bankName}）：問題對象為空或不是對象`);
+          return false;
         }
         if (!question.question || typeof question.question !== 'string' || question.question.trim() === '') {
-          return { valid: false, error: `無效問題：問題文本缺失或無效${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+          console.warn(`無效問題（${bankName}）：問題文本缺失或無效`);
+          return false;
         }
         if (!question.answer || typeof question.answer !== 'string' || question.answer.trim() === '') {
-          return { valid: false, error: `無效問題：答案缺失或無效${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+          console.warn(`無效問題（${bankName}）：答案缺失或無效`);
+          return false;
         }
         if (!question.explanation || typeof question.explanation !== 'string' || question.explanation.trim() === '') {
-          return { valid: false, error: `無效問題：解析缺失或無效${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+          console.warn(`無效問題（${bankName}）：解析缺失或無效`);
+          return false;
         }
         if (isMultipleChoice && (!Array.isArray(question.options) || question.options.length < 2 || question.options.some(opt => typeof opt !== 'string' || opt.trim() === ''))) {
-          return { valid: false, error: `無效問題：選擇題選項無效或不足${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+          console.warn(`無效問題（${bankName}）：選擇題選項無效或不足`);
+          return false;
         }
+        // 可選字段：image 和 answerimage
         if (question.image && typeof question.image !== 'string') {
-          return { valid: false, error: `無效問題：圖片路徑無效${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+          console.warn(`無效問題（${bankName}）：圖片路徑無效`);
+          return false;
         }
         if (question.answerimage && typeof question.answerimage !== 'string') {
-          return { valid: false, error: `無效問題：答案圖片路徑無效${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+          console.warn(`無效問題（${bankName}）：答案圖片路徑無效`);
+          return false;
         }
-        return { valid: true, error: '' };
+        return true;
       } catch (error) {
-        return { valid: false, error: `驗證問題時發生錯誤：${error.message}${question.comment ? `（題號/註解：${question.comment}）` : ''}` };
+        console.warn(`驗證問題時發生錯誤（${bankName}）：`, error.message);
+        return false;
       }
     }
 
@@ -162,7 +171,7 @@
       const errorMessageDiv = document.getElementById('error-message');
       const standardModeBtn = document.getElementById('standard-mode-btn');
       const customModeBtn = document.getElementById('custom-mode-btn');
-      let allErrors = [];
+      let errorMessages = [];
 
       try {
         updateTitle(quizTitle);
@@ -173,20 +182,19 @@
           const fibResponse = await fetch('fib.json');
           if (!fibResponse.ok) {
             console.warn(`無法載入 fib.json：HTTP 狀態 ${fibResponse.status}，填空模式將不可用`);
-            allErrors.push(`填空題庫 (fib.json)：無法載入檔案（HTTP 狀態 ${fibResponse.status}）`);
             hasFibBank = false;
           } else {
             const fibData = await fibResponse.json();
             if (!Array.isArray(fibData) || fibData.length === 0 || !fibData[0].question) {
               console.warn('fib.json 為空或格式錯誤，填空模式將不可用');
-              allErrors.push(`填空題庫 (fib.json)：檔案為空或格式錯誤`);
               hasFibBank = false;
             } else {
-              let errors = [];
               fibQuestionBank = fibData.filter((q, index) => {
-                const result = validateQuestion(q, false);
-                if (!result.valid) errors.push(`第 ${index + 1} 題：${result.error}`);
-                return result.valid;
+                const isValid = validateQuestion(q, false, `fib.json 第 ${index + 1} 題`);
+                if (!isValid) {
+                  errorMessages.push(`填空題庫 (fib.json) 第 ${index + 1} 題無效，無法解析`);
+                }
+                return isValid;
               });
               hasFibBank = fibQuestionBank.length > 0;
               if (hasFibBank && fibData.title) {
@@ -194,9 +202,6 @@
                 updateTitle(quizTitle);
               }
               console.log('填空題題庫加載成功，有效題目數：', fibQuestionBank.length);
-              if (errors.length > 0) {
-                allErrors.push(`填空題庫 (fib.json)：<br>${errors.join('<br>')}`);
-              }
               if (hasFibBank) {
                 const modeSelection = document.getElementById('mode-selection');
                 const fibButton = document.createElement('button');
@@ -209,7 +214,6 @@
           }
         } catch (error) {
           console.warn('填空題題庫載入失敗，填空模式將不可用：', error.message);
-          allErrors.push(`填空題庫 (fib.json)：載入失敗（錯誤：${error.message}）`);
           hasFibBank = false;
         }
 
@@ -219,20 +223,19 @@
           const questionResponse = await fetch('num.json');
           if (!questionResponse.ok) {
             console.warn(`無法載入 num.json：HTTP 狀態 ${questionResponse.status}，選擇題模式將不可用`);
-            allErrors.push(`選擇題題庫 (num.json)：無法載入檔案（HTTP 狀態 ${questionResponse.status}）`);
             hasQuizBank = false;
           } else {
             quizData = await questionResponse.json();
             if (!quizData || !Array.isArray(quizData.questions) || quizData.questions.length === 0) {
               console.warn('num.json 為空或格式錯誤，選擇題模式將不可用');
-              allErrors.push(`選擇題題庫 (num.json)：檔案為空或格式錯誤`);
               hasQuizBank = false;
             } else {
-              let errors = [];
               questionBank = quizData.questions.filter((q, index) => {
-                const result = validateQuestion(q);
-                if (!result.valid) errors.push(`第 ${index + 1} 題：${result.error}`);
-                return result.valid;
+                const isValid = validateQuestion(q, true, `num.json 第 ${index + 1} 題`);
+                if (!isValid) {
+                  errorMessages.push(`選擇題題庫 (num.json) 第 ${index + 1} 題無效，無法解析`);
+                }
+                return isValid;
               });
               hasQuizBank = questionBank.length > 0;
               if (hasQuizBank && quizData.title) {
@@ -240,14 +243,10 @@
                 updateTitle(quizTitle);
               }
               console.log('選擇題題庫加載成功，有效題目數：', questionBank.length);
-              if (errors.length > 0) {
-                allErrors.push(`選擇題題庫 (num.json)：<br>${errors.join('<br>')}`);
-              }
             }
           }
         } catch (error) {
           console.warn('選擇題題庫載入失敗，選擇題模式將不可用：', error.message);
-          allErrors.push(`選擇題題庫 (num.json)：載入失敗（錯誤：${error.message}）`);
           hasQuizBank = false;
         }
 
@@ -257,34 +256,29 @@
           const challengeResponse = await fetch('num2.json');
           if (!challengeResponse.ok) {
             console.warn(`無法載入 num2.json：HTTP 狀態 ${challengeResponse.status}，挑戰題功能將不可用`);
-            allErrors.push(`挑戰題題庫 (num2.json)：無法載入檔案（HTTP 狀態 ${challengeResponse.status}）`);
             hasChallengeBank = false;
           } else {
             const challengeData = await challengeResponse.json();
             if (!challengeData || !Array.isArray(challengeData.questions) || challengeData.questions.length === 0) {
-              console.warn('num2.json 為空或格式錯誤，挑戰題功能將不可用`);
-              allErrors.push(`挑戰題題庫 (num2.json)：檔案為空或格式錯誤`);
+              console.warn('num2.json 為空或格式錯誤，挑戰題功能將不可用');
               hasChallengeBank = false;
             } else {
-              let errors = [];
               challengeBank = challengeData.questions.filter((q, index) => {
-                const result = validateQuestion(q);
-                if (!result.valid) errors.push(`第 ${index + 1} 題：${result.error}`);
-                return result.valid;
+                const isValid = validateQuestion(q, true, `num2.json 第 ${index + 1} 題`);
+                if (!isValid) {
+                  errorMessages.push(`挑戰題題庫 (num2.json) 第 ${index + 1} 題無效，無法解析`);
+                }
+                return isValid;
               });
               hasChallengeBank = challengeBank.length > 0;
               if (hasChallengeBank && challengeData.title) {
                 challengeTitle = challengeData.title;
               }
               console.log('挑戰題題庫加載成功，有效題目數：', challengeBank.length);
-              if (errors.length > 0) {
-                allErrors.push(`挑戰題題庫 (num2.json)：<br>${errors.join('<br>')}`);
-              }
             }
           }
         } catch (error) {
           console.warn('挑戰題題庫載入失敗，挑戰題功能將不可用：', error.message);
-          allErrors.push(`挑戰題題庫 (num2.json)：載入失敗（錯誤：${error.message}）`);
           hasChallengeBank = false;
         }
 
@@ -294,29 +288,25 @@
           const aiResponse = await fetch('numai.json');
           if (!aiResponse.ok) {
             console.warn(`無法載入 numai.json：HTTP 狀態 ${aiResponse.status}，AI題庫功能將不可用`);
-            allErrors.push(`AI題庫 (numai.json)：無法載入檔案（HTTP 狀態 ${aiResponse.status}）`);
             hasAIBank = false;
           } else {
             const aiData = await aiResponse.json();
             if (!aiData || !Array.isArray(aiData.questions) || aiData.questions.length === 0) {
               console.warn('numai.json 為空或格式錯誤，AI題庫功能將不可用`);
-              allErrors.push(`AI題庫 (numai.json)：檔案為空或格式錯誤`);
               hasAIBank = false;
             } else {
-              let errors = [];
               aiBank = aiData.questions.filter((q, index) => {
-                const result = validateQuestion(q);
-                if (!result.valid) errors.push(`第 ${index + 1} 題：${result.error}`);
-                return result.valid;
+                const isValid = validateQuestion(q, true, `numai.json 第 ${index + 1} 題`);
+                if (!isValid) {
+                  errorMessages.push(`AI題庫 (numai.json) 第 ${index + 1} 題無效，無法解析`);
+                }
+                return isValid;
               });
               hasAIBank = aiBank.length > 0;
               if (hasAIBank && aiData.title) {
                 aiTitle = aiData.title;
               }
               console.log('AI題庫加載成功，有效題目數：', aiBank.length);
-              if (errors.length > 0) {
-                allErrors.push(`AI題庫 (numai.json)：<br>${errors.join('<br>')}`);
-              }
               if (hasAIBank) {
                 const modeSelection = document.getElementById('mode-selection');
                 const aiButton = document.createElement('button');
@@ -329,7 +319,6 @@
           }
         } catch (error) {
           console.warn('AI題庫載入失敗，AI題庫功能將不可用：', error.message);
-          allErrors.push(`AI題庫 (numai.json)：載入失敗（錯誤：${error.message}）`);
           hasAIBank = false;
         }
 
@@ -355,9 +344,9 @@
 
         loadingMessageDiv.style.display = 'none';
 
-        // 顯示所有錯誤
-        if (allErrors.length > 0) {
-          errorMessageDiv.innerHTML = `題庫載入時發現以下錯誤：<br>${allErrors.join('<br><br>')}`;
+        // 在模式選擇頁面顯示無效題目錯誤
+        if (errorMessages.length > 0) {
+          errorMessageDiv.innerHTML = errorMessages.join('<br>');
           errorMessageDiv.style.display = 'block';
         }
 
@@ -397,11 +386,9 @@
       }
 
       let validQuestionCount = 0;
-      let errors = [];
       questions.forEach((question, index) => {
-        const validation = validateQuestion(question);
-        if (!validation.valid) {
-          errors.push(`第 ${index + 1} 題：${validation.error}`);
+        if (!validateQuestion(question)) {
+          console.warn(`跳過無效問題（索引 ${index}）：`, question);
           return;
         }
         const div = document.createElement('div');
@@ -427,11 +414,6 @@
         questionContainer.appendChild(div);
         validQuestionCount++;
       });
-
-      if (errors.length > 0) {
-        document.getElementById('error-message').innerHTML = `以下題目無法顯示：<br>${errors.join('<br>')}`;
-        document.getElementById('error-message').style.display = 'block';
-      }
 
       if (validQuestionCount === 0) {
         document.getElementById('error-message').innerHTML = '沒有有效的選擇題題目可顯示！';
@@ -486,11 +468,9 @@
       questions = questions.slice(0, totalQuestions);
 
       let validQuestionCount = 0;
-      let errors = [];
       questions.forEach((question, index) => {
-        const validation = validateQuestion(question);
-        if (!validation.valid) {
-          errors.push(`第 ${index + 1} 題：${validation.error}`);
+        if (!validateQuestion(question)) {
+          console.warn(`跳過無效問題（索引 ${index}）：`, question);
           return;
         }
         const div = document.createElement('div');
@@ -516,11 +496,6 @@
         questionContainer.appendChild(div);
         validQuestionCount++;
       });
-
-      if (errors.length > 0) {
-        document.getElementById('error-message').innerHTML = `以下題目無法顯示：<br>${errors.join('<br>')}`;
-        document.getElementById('error-message').style.display = 'block';
-      }
 
       if (validQuestionCount === 0) {
         document.getElementById('error-message').innerHTML = '沒有有效的選擇題題目可顯示！';
@@ -551,11 +526,9 @@
       questionContainer.innerHTML = '';
 
       let validQuestionCount = 0;
-      let errors = [];
       aiBank.forEach((question, index) => {
-        const validation = validateQuestion(question);
-        if (!validation.valid) {
-          errors.push(`第 ${index + 1} 題：${validation.error}`);
+        if (!validateQuestion(question)) {
+          console.warn(`跳過無效問題（索引 ${index}）：`, question);
           return;
         }
         const div = document.createElement('div');
@@ -581,11 +554,6 @@
         questionContainer.appendChild(div);
         validQuestionCount++;
       });
-
-      if (errors.length > 0) {
-        document.getElementById('error-message').innerHTML = `以下題目無法顯示：<br>${errors.join('<br>')}`;
-        document.getElementById('error-message').style.display = 'block';
-      }
 
       if (validQuestionCount === 0) {
         document.getElementById('error-message').innerHTML = '沒有有效的AI題目可顯示！';
@@ -616,11 +584,9 @@
       fibContainer.innerHTML = '';
 
       let validQuestionCount = 0;
-      let errors = [];
       fibQuestionBank.forEach((question, index) => {
-        const validation = validateQuestion(question, false);
-        if (!validation.valid) {
-          errors.push(`第 ${index + 1} 題：${validation.error}`);
+        if (!validateQuestion(question, false)) {
+          console.warn(`跳過無效問題（索引 ${index}）：`, question);
           return;
         }
         const div = document.createElement('div');
@@ -639,11 +605,6 @@
         fibContainer.appendChild(div);
         validQuestionCount++;
       });
-
-      if (errors.length > 0) {
-        document.getElementById('error-message').innerHTML = `以下題目無法顯示：<br>${errors.join('<br>')}`;
-        document.getElementById('error-message').style.display = 'block';
-      }
 
       if (validQuestionCount === 0) {
         document.getElementById('error-message').innerHTML = '沒有有效的填空題題目可顯示！';
