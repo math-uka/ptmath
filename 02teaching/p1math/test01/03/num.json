@@ -1,0 +1,114 @@
+{
+  "title": "小學10以內加減法練習",
+  "questions": [
+    {
+      "question": "3 + 4 = ?",
+      "options": ["6", "7", "8", "9"],
+      "answer": "7",
+      "explanation": "3 + 4 = 7。直接相加得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "6 - 2 = ?",
+      "options": ["3", "4", "5", "6"],
+      "answer": "4",
+      "explanation": "6 - 2 = 4。直接相減得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "5 + 3 = ?",
+      "options": ["7", "8", "9", "10"],
+      "answer": "8",
+      "explanation": "5 + 3 = 8。直接相加得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "8 - 3 = ?",
+      "options": ["4", "5", "6", "7"],
+      "answer": "5",
+      "explanation": "8 - 3 = 5。直接相減得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "2 + 5 = ?",
+      "options": ["6", "7", "8", "9"],
+      "answer": "7",
+      "explanation": "2 + 5 = 7。直接相加得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "9 - 4 = ?",
+      "options": ["4", "5", "6", "7"],
+      "answer": "5",
+      "explanation": "9 - 4 = 5。直接相減得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "7 + 2 = ?",
+      "options": ["8", "9", "10", "11"],
+      "answer": "9",
+      "explanation": "7 + 2 = 9。直接相加得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "10 - 5 = ?",
+      "options": ["4", "5", "6", "7"],
+      "answer": "5",
+      "explanation": "10 - 5 = 5。直接相減得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "4 + 4 = ?",
+      "options": ["7", "8", "9", "10"],
+      "answer": "8",
+      "explanation": "4 + 4 = 8。直接相加得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "6 + 3 = ?",
+      "options": ["8", "9", "10", "11"],
+      "answer": "9",
+      "explanation": "6 + 3 = 9。直接相加得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "7 - 3 = ?",
+      "options": ["3", "4", "5", "6"],
+      "answer": "4",
+      "explanation": "7 - 3 = 4。直接相減得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "5 + 5 = ?",
+      "options": ["9", "10", "11", "12"],
+      "answer": "10",
+      "explanation": "5 + 5 = 10。直接相加得結果。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    }
+  ]
+}
+
