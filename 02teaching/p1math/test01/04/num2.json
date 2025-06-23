@@ -1,0 +1,113 @@
+{
+  "title": "挑戰題：2位數加減法",
+  "questions": [
+    {
+      "question": "23 + 45 = ?",
+      "options": ["68", "78", "88", "98"],
+      "answer": "68",
+      "explanation": "23 + 45 = 68。個位數 3 + 5 = 8，十位數 2 + 4 = 6，合併得 68。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "67 - 32 = ?",
+      "options": ["25", "35", "45", "55"],
+      "answer": "35",
+      "explanation": "67 - 32 = 35。個位數 7 - 2 = 5，十位數 6 - 3 = 3，合併得 35。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "54 + 28 = ?",
+      "options": ["72", "82", "92", "102"],
+      "answer": "82",
+      "explanation": "54 + 28 = 82。個位數 4 + 8 = 12，進位 1，十位數 5 + 2 + 1 = 8，合併得 82。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "81 - 47 = ?",
+      "options": ["24", "34", "44", "54"],
+      "answer": "34",
+      "explanation": "81 - 47 = 34。個位數 1 - 7 需借位，11 - 7 = 4，十位數 7 - 4 = 3，合併得 34。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "36 + 53 = ?",
+      "options": ["79", "89", "99", "109"],
+      "answer": "89",
+      "explanation": "36 + 53 = 89。個位數 6 + 3 = 9，十位數 3 + 5 = 8，合併得 89。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "95 - 29 = ?",
+      "options": ["56", "66", "76", "86"],
+      "answer": "66",
+      "explanation": "95 - 29 = 66。個位數 5 - 9 需借位，15 - 9 = 6，十位數 8 - 2 = 6，合併得 66。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "42 + 37 = ?",
+      "options": ["69", "79", "89", "99"],
+      "answer": "79",
+      "explanation": "42 + 37 = 79。個位數 2 + 7 = 9，十位數 4 + 3 = 7，合併得 79。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，答案無圖"
+    },
+    {
+      "question": "73 - 18 = ?",
+      "options": ["45", "55", "65", "75"],
+      "answer": "55",
+      "explanation": "73 - 18 = 55。個位數 3 - 8 需借位，13 - 8 = 5，十位數 6 - 1 = 5，合併得 55。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+    {
+      "question": "19 + 64 = ?",
+      "options": ["73", "83", "93", "103"],
+      "answer": "83",
+      "explanation": "19 + 64 = 83。個位數 9 + 4 = 13，進位 1，十位數 1 + 6 + 1 = 8，合併得 83。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "88 - 25 = ?",
+      "options": ["53", "63", "73", "83"],
+      "answer": "63",
+      "explanation": "88 - 25 = 63。個位數 8 - 5 = 3，十位數 8 - 2 = 6，合併得 63。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "31 + 58 = ?",
+      "options": ["79", "89", "99", "109"],
+      "answer": "89",
+      "explanation": "31 + 58 = 89。個位數 1 + 8 = 9，十位數 3 + 5 = 8，合併得 89。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，答案無圖"
+    },
+    {
+      "question": "92 - 46 = ?",
+      "options": ["36", "46", "56", "66"],
+      "answer": "46",
+      "explanation": "92 - 46 = 46。個位數 2 - 6 需借位，12 - 6 = 6，十位數 8 - 4 = 4，合併得 46。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    }
+  ]
+}
