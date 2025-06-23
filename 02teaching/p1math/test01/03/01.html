@@ -165,7 +165,7 @@
       }
     }
 
-    // 嘗試解析 JSON 並提取上下文
+    // 嘗試解析 JSON 並提取上下文及 comment
     function parseJsonWithContext(jsonText, fileName) {
       try {
         return JSON.parse(jsonText);
@@ -173,12 +173,24 @@
         const lines = jsonText.split('\n');
         const errorLine = error.lineNumber || parseInt(error.message.match(/line (\d+)/)?.[1]) || 1;
         const errorColumn = error.columnNumber || parseInt(error.message.match(/column (\d+)/)?.[1]) || 1;
-        const contextStart = Math.max(0, errorLine - 3);
-        const contextEnd = Math.min(lines.length, errorLine + 2);
-        const context = lines.slice(contextStart, contextEnd).map((line, i) => 
+        const contextStart = Math.max(0, errorLine - 10); // 擴大上下文範圍以捕捉 comment
+        const contextEnd = Math.min(lines.length, errorLine + 5);
+        const contextLines = lines.slice(contextStart, contextEnd);
+        const context = contextLines.map((line, i) => 
           `${contextStart + i + 1}: ${line}${contextStart + i + 1 === errorLine ? ' <--- 錯誤位置' : ''}`
         ).join('\n');
-        const errorMsg = `解析 ${fileName} 失敗：${error.message}\n錯誤位置：第 ${errorLine} 行，第 ${errorColumn} 列\n附近內容：\n${context}`;
+
+        // 嘗試提取 comment 欄位
+        let comment = '未找到題號';
+        const commentRegex = /"comment"\s*:\s*"([^"]+)"/g;
+        const contextText = contextLines.join('\n');
+        let match;
+        while ((match = commentRegex.exec(contextText)) !== null) {
+          comment = match[1]; // 提取最近的 comment 值
+          break; // 只取第一個匹配的 comment
+        }
+
+        const errorMsg = `解析 ${fileName} 失敗：${error.message}\n錯誤可能涉及題號：${comment}\n錯誤位置：第 ${errorLine} 行，第 ${errorColumn} 列\n附近內容：\n${context}`;
         console.error(errorMsg);
         return { error: errorMsg };
       }
@@ -243,7 +255,7 @@
             }
           }
         } catch (error) {
-          console.warn('填空題庫載入失敗：', error.message);
+          console.warn('填空題題庫載入失敗：', error.message);
           hasFibBank = false;
           errorMessages.push(`填空題庫 (fib.json) 載入失敗：${error.message}`);
         }
@@ -342,7 +354,7 @@
           console.log('開始載入 numai.json');
           const aiResponse = await fetch('numai.json');
           if (!aiResponse.ok) {
-            console.warn(`無法載入 numai.json：HTTP 狀態 ${aiResponse.status}`);
+            console.warn(`無法載入 numai.json：HTTP 狀態 ${challengeResponse.status}`);
             hasAIBank = false;
             errorMessages.push(`無法載入 numai.json（HTTP 狀態 ${aiResponse.status}，請確認檔案是否存在）`);
           } else {
@@ -418,13 +430,13 @@
         }
 
         if (!hasQuizBank && !hasFibBank && !hasAIBank) {
-          errorMessageDiv.innerHTML = '無法載入任何有效題庫，請檢查 fib.json、num.json 或 numai.json 是否存在並格式正確。';
+          errorMessageDiv.innerHTML = '無法載入任何有效題庫，請檢查 fib.json、num.json 或 numai.json 是否存在並格式正確！';
           errorMessageDiv.style.display = 'block';
         }
-      } catch (error) {
+      } catch (err) {
         console.error('載入數據失敗:', error);
         loadingMessageDiv.style.display = 'none';
-        errorMessageDiv.innerHTML = `無法載入題庫，請檢查檔案是否存在並格式正確（錯誤：${error.message}）。`;
+        errorMessageDiv.innerHTML = `無法載入題庫，請檢查檔案是否存在並格式正確：${error.message}`；
         errorMessageDiv.style.display = 'block';
       }
     }
@@ -432,7 +444,7 @@
     // 啟動標準模式
     function startStandardMode() {
       if (!hasQuizBank || questionBank.length === 0) {
-        document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法開始遊戲！';
+        document.getElementById('error-message').innerHTML = '選擇題庫為空，無法開始遊戲！';
         document.getElementById('error-message').style.display = 'block';
         return;
       }
@@ -470,12 +482,12 @@
           return `<p>${String.fromCharCode(65 + i)}: ${displayOpt}</p>`;
         }).join('');
         div.innerHTML = `
-          <p><strong>題目 ${validQuestionCount + 1}：</strong>${question.question}</p>
+          <p><strong>題目 ${validQuestionCount + 1}:</strong>${question.question}</p>
           ${imageHtml}
-          <p><strong>選項：</strong></p>
+          <p><strong>選項:</strong></p>
           ${optionsHtml}
-          <p><strong>正確答案：</strong>${displayAnswer}</p>
-          <p><strong>解析：</strong>${question.explanation}</p>
+          <p><strong>正確答案:</strong>${displayAnswer}</p>
+          <p><strong>解析:</strong>${question.explanation}</p>
           ${answerImageHtml}
         `;
         questionContainer.appendChild(div);
@@ -495,7 +507,7 @@
     // 顯示自訂模式滑條
     function showCustomMode() {
       if (!hasQuizBank || questionBank.length === 0) {
-        document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法進入自訂模式！';
+        document.getElementById('error-message').innerHTML = '選擇題庫為空，無法進入自訂模式！';
         document.getElementById('error-message').style.display = 'block';
         return;
       }
@@ -512,7 +524,7 @@
     // 啟動自訂模式
     function startCustomMode() {
       if (!hasQuizBank || questionBank.length === 0) {
-        document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法開始遊戲！';
+        document.getElementById('error-message').innerHTML = '選擇題庫為空，無法開始遊戲！';
         document.getElementById('error-message').style.display = 'block';
         return;
       }
