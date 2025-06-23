@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -714,149 +715,121 @@
         return;
       }
 
-      // 嘗試顯示題目，若失敗則跳過
-      let attempts = 0;
-      const maxAttempts = availableQuestions.length + availableChallengeQuestions.length;
-
-      while (attempts < maxAttempts) {
-        try {
-          let question, questionIndex, bank, title;
-          if (isStandardMode) {
-            // 標準模式邏輯：連續答對3題或上次答錯時進入挑戰模式
-            if ((consecutiveCorrect >= 3 && hasChallengeBank && availableChallengeQuestions.length > 0) || (lastIncorrect && isChallengeMode && availableChallengeQuestions.length > 0)) {
-              isChallengeMode = true;
-              const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
-              question = availableChallengeQuestions[randomIndex];
-              questionIndex = challengeBank.indexOf(question);
-              bank = challengeBank;
-              title = challengeTitle;
-              availableChallengeQuestions.splice(randomIndex, 1);
-            } else {
-              isChallengeMode = false;
-              const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-              question = availableQuestions[randomIndex];
-              questionIndex = questionBank.indexOf(question);
-              bank = questionBank;
-              title = quizTitle;
-              availableQuestions.splice(randomIndex, 1);
-            }
-          } else if (isAIMode) {
-            // AI模式邏輯：僅使用AI題庫
-            if (availableQuestions.length > 0) {
-              const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-              question = availableQuestions[randomIndex];
-              questionIndex = aiBank.indexOf(question);
-              bank = aiBank;
-              title = aiTitle;
-              availableQuestions.splice(randomIndex, 1);
-            } else {
-              console.error('無可用AI題目');
-              endGame();
-              return;
-            }
-          } else {
-            // 自訂模式邏輯：先完成 num.json 題目，再完成 num2.json 題目
-            if (availableQuestions.length > 0) {
-              question = availableQuestions.shift(); // 從已打亂的題庫中取第一題
-              questionIndex = questionBank.indexOf(question);
-              bank = questionBank;
-              title = quizTitle;
-            } else if (hasChallengeBank && availableChallengeQuestions.length > 0) {
-              question = availableChallengeQuestions.shift(); // 從已打亂的挑戰題庫中取第一題
-              questionIndex = challengeBank.indexOf(question);
-              bank = challengeBank;
-              title = challengeTitle;
-            } else {
-              console.error('無可用題目');
-              endGame();
-              return;
-            }
-          }
-
-          // 驗證題目數據
-          if (!question || !question.question || !question.options || !Array.isArray(question.options) || question.options.length < 4 || !question.answer || !question.explanation) {
-            throw new Error('題目格式無效，缺少必要屬性');
-          }
-
-          updateTitle(title);
-
-          // 顯示挑戰提示（僅限標準模式）
-          if (isStandardMode && consecutiveCorrect >= 3 && hasChallengeBank && !isChallengeMode && !lastIncorrect) {
-            document.getElementById('feedback').innerHTML = `你已連續答對 ${consecutiveCorrect} 題，嘗試做一下挑戰題吧！`;
-            MathJax.typeset();
-            setTimeout(() => {
-              document.getElementById('feedback').innerHTML = '';
-            }, 2000);
-          }
-
-          document.getElementById('question').innerHTML = question.question;
-
-          // 處理圖片
-          const imageContainer = document.getElementById('question-image-container');
-          if (question.image) {
-            imageContainer.innerHTML = `<img src="${question.image}" alt="Question Image" class="question-image">`;
-            imageContainer.style.display = 'block';
-          } else {
-            imageContainer.innerHTML = '';
-            imageContainer.style.display = 'none';
-          }
-
-          // 更新剩餘題目數
-          const remaining = totalQuestions - currentQuestionCount;
-          document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題`;
-
-          const shuffledOptions = shuffleArray([...question.options]);
-          console.log('題目:', question.question);
-          console.log('原始選項:', question.options);
-          console.log('打亂後選項:', shuffledOptions);
-          console.log('正確答案:', question.answer);
-          const correctAnswerIndex = shuffledOptions.indexOf(question.answer);
-          console.log('正確答案索引:', correctAnswerIndex);
-          let correctAnswerLabel = correctAnswerIndex >= 0 ? String.fromCharCode(65 + correctAnswerIndex) : '無效';
-          console.log('正確答案標籤:', correctAnswerLabel);
-
-          if (correctAnswerIndex === -1) {
-            console.error('錯誤：正確答案未在選項中找到！', {
-              question: question.question,
-              answer: question.answer,
-              options: shuffledOptions
-            });
-            correctAnswerLabel = '無效';
-          }
-
-          const labels = ['A', 'B', 'C', 'D'];
-          labels.forEach((label, index) => {
-            const optionContent = shuffledOptions[index];
-            // 檢查選項是否已經包含數學表達式標記
-            const isMathExpression = optionContent && (optionContent.includes('\\(') && optionContent.includes('\\)'));
-            // 如果沒有數學表達式標記，則添加
-            const displayContent = isMathExpression ? optionContent : `\\(${optionContent}\\)`;
-            document.getElementById(`content-${label}`).innerHTML = displayContent;
-            document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex, question.answer, bank);
-          });
-
-          currentQuestionCount++;
-
-          document.getElementById('feedback').innerHTML = '';
-          toggleButtons(false);
-          MathJax.typeset();
-          return; // 成功顯示題目，退出函數
-        } catch (error) {
-          console.warn(`題目顯示失敗，跳過此題：${error.message}`);
-          attempts++;
-          // 如果是最後一次嘗試，結束遊戲
-          if (attempts >= maxAttempts || (availableQuestions.length === 0 && availableChallengeQuestions.length === 0)) {
-            console.error('所有題目都無法顯示，結束遊戲');
-            endGame();
-            return;
-          }
-          continue; // 跳過此題，嘗試下一題
+      let question, questionIndex, bank, title;
+      if (isStandardMode) {
+        // 標準模式邏輯：連續答對3題或上次答錯時進入挑戰模式
+        if ((consecutiveCorrect >= 3 && hasChallengeBank && availableChallengeQuestions.length > 0) || (lastIncorrect && isChallengeMode && availableChallengeQuestions.length > 0)) {
+          isChallengeMode = true;
+          const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
+          question = availableChallengeQuestions[randomIndex];
+          questionIndex = challengeBank.indexOf(question);
+          bank = challengeBank;
+          title = challengeTitle;
+          availableChallengeQuestions.splice(randomIndex, 1);
+        } else {
+          isChallengeMode = false;
+          const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+          question = availableQuestions[randomIndex];
+          questionIndex = questionBank.indexOf(question);
+          bank = questionBank;
+          title = quizTitle;
+          availableQuestions.splice(randomIndex, 1);
+        }
+      } else if (isAIMode) {
+        // AI模式邏輯：僅使用AI題庫
+        if (availableQuestions.length > 0) {
+          const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+          question = availableQuestions[randomIndex];
+          questionIndex = aiBank.indexOf(question);
+          bank = aiBank;
+          title = aiTitle;
+          availableQuestions.splice(randomIndex, 1);
+        } else {
+          console.error('無可用AI題目');
+          endGame();
+          return;
+        }
+      } else {
+        // 自訂模式邏輯：先完成 num.json 題目，再完成 num2.json 題目
+        if (availableQuestions.length > 0) {
+          question = availableQuestions.shift(); // 從已打亂的題庫中取第一題
+          questionIndex = questionBank.indexOf(question);
+          bank = questionBank;
+          title = quizTitle;
+        } else if (hasChallengeBank && availableChallengeQuestions.length > 0) {
+          question = availableChallengeQuestions.shift(); // 從已打亂的挑戰題庫中取第一題
+          questionIndex = challengeBank.indexOf(question);
+          bank = challengeBank;
+          title = challengeTitle;
+        } else {
+          console.error('無可用題目');
+          endGame();
+          return;
         }
       }
 
-      // 如果所有嘗試都失敗
-      console.error('無可用題目可顯示，結束遊戲');
-      endGame();
+      updateTitle(title);
+
+      // 顯示挑戰提示（僅限標準模式）
+      if (isStandardMode && consecutiveCorrect >= 3 && hasChallengeBank && !isChallengeMode && !lastIncorrect) {
+        document.getElementById('feedback').innerHTML = `你已連續答對 ${consecutiveCorrect} 題，嘗試做一下挑戰題吧！`;
+        MathJax.typeset();
+        setTimeout(() => {
+          document.getElementById('feedback').innerHTML = '';
+        }, 2000);
+      }
+
+      document.getElementById('question').innerHTML = question.question;
+
+      // 處理圖片
+      const imageContainer = document.getElementById('question-image-container');
+      if (question.image) {
+        imageContainer.innerHTML = `<img src="${question.image}" alt="Question Image" class="question-image">`;
+        imageContainer.style.display = 'block';
+      } else {
+        imageContainer.innerHTML = '';
+        imageContainer.style.display = 'none';
+      }
+
+      // 更新剩餘題目數
+      const remaining = totalQuestions - currentQuestionCount;
+      document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題`;
+
+      const shuffledOptions = shuffleArray([...question.options]);
+      console.log('題目:', question.question);
+      console.log('原始選項:', question.options);
+      console.log('打亂後選項:', shuffledOptions);
+      console.log('正確答案:', question.answer);
+      const correctAnswerIndex = shuffledOptions.indexOf(question.answer);
+      console.log('正確答案索引:', correctAnswerIndex);
+      let correctAnswerLabel = correctAnswerIndex >= 0 ? String.fromCharCode(65 + correctAnswerIndex) : '無效';
+      console.log('正確答案標籤:', correctAnswerLabel);
+
+      if (correctAnswerIndex === -1) {
+        console.error('錯誤：正確答案未在選項中找到！', {
+          question: question.question,
+          answer: question.answer,
+          options: shuffledOptions
+        });
+        correctAnswerLabel = '無效';
+      }
+
+      const labels = ['A', 'B', 'C', 'D'];
+      labels.forEach((label, index) => {
+        const optionContent = shuffledOptions[index];
+        // 檢查選項是否已經包含數學表達式標記
+        const isMathExpression = optionContent && (optionContent.includes('\\(') && optionContent.includes('\\)'));
+        // 如果沒有數學表達式標記，則添加
+        const displayContent = isMathExpression ? optionContent : `\\(${optionContent}\\)`;
+        document.getElementById(`content-${label}`).innerHTML = displayContent;
+        document.getElementById(`button-${label}`).onclick = () => checkAnswer(label, correctAnswerLabel, questionIndex, question.answer, bank);
+      });
+
+      currentQuestionCount++;
+
+      document.getElementById('feedback').innerHTML = '';
+      toggleButtons(false);
+      MathJax.typeset();
     }
 
     // 檢查選擇題答案
