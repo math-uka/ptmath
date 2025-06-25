@@ -1,316 +1,245 @@
 <!DOCTYPE html>
- <html lang="zh-Hant">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>AI應用工具</title>
-     <style>
-         * {
-             margin: 0;
-             padding: 0;
-             box-sizing: border-box;
-         }
-         body {
-             font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
-             background: #f5f5f7;
-             color: #1d1d1f;
-             min-height: 100vh;
-             line-height: 1.5;
-         }
-         h1 {
-             text-align: center;
-             font-size: 48px;
-             font-weight: 700;
-             padding: 60px 20px 40px;
-             color: #1d1d1f;
-             letter-spacing: -0.02em;
-         }
-         .container {
-             max-width: 1200px;
-             margin: 0 auto;
-             padding: 20px;
-         }
-         .category-list {
-             display: flex;
-             flex-direction: column;
-             gap: 20px;
-             padding: 20px;
-         }
-         .category-item {
-             display: flex;
-             align-items: center;
-             background: white;
-             border-radius: 18px;
-             padding: 20px;
-             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-             transition: transform 0.3s ease, box-shadow 0.3s ease;
-             cursor: pointer;
-         }
-         .category-item:hover {
-             transform: translateY(-5px);
-             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-         }
-         .category-image {
-             width: 200px;
-             height: 150px;
-             margin-right: 20px;
-             border-radius: 12px;
-             overflow: hidden;
-         }
-         .category-image img {
-             width: 100%;
-             height: 100%;
-             object-fit: contain;
-         }
-         .category-content h2 {
-             font-size: 24px;
-             font-weight: 600;
-             color: #1d1d1f;
-             margin-bottom: 10px;
-         }
-         .category-content p {
-             font-size: 16px;
-             color: #6e6e73;
-         }
-         footer {
-             text-align: center;
-             padding: 20px;
-             color: #6e6e73;
-             font-size: 14px;
-         }
-         @media screen and (max-width: 768px) {
-             h1 {
-                 font-size: 36px;
-                 padding: 40px 20px 20px;
-             }
-             .category-item {
-                 flex-direction: column;
-                 align-items: flex-start;
-             }
-             .category-image {
-                 width: 100%;
-                 height: 200px;
-                 margin-right: 0;
-                 margin-bottom: 15px;
-             }
-             .category-content {
-                 width: 100%;
-             }
-         }
-     </style>
-     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
- </head>
- <body>
-     <h1>AI應用工具</h1>
-     <div class="container">
-         <div class="category-list">
-             <div class="category-item" onclick="window.location.href='1sudoku/01.html'">
-                 <div class="category-image">
-                     <img src="images/a01.png" alt="數獨4X4">
-                 </div>
-                 <div class="category-content">
-                     <h2>數獨4X4</h2>
-                     <p> Rule1: Each number appears only once in each row and each column.</p>
-                      <p> Rule2: Each number appears only once in each 田.</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='add-and-subtraction/ans01.html'">
-                 <div class="category-image">
-                     <img src="images/02.png" alt="加減混合計算">
-                 </div>
-                 <div class="category-content">
-                     <h2>加減混合直式計算</h2>
-                     <p>隨機生成加法或減法的直式運算，必定會出現進位或借位</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='position/01.html'">
-                 <div class="category-image">
-                     <img src="images/03.png" alt="Position">
-                 </div>
-                 <div class="category-content">
-                     <h2>Position</h2>
-                     <p>Random position quiz about :in front of, behind, over, under , between</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             
-             <div class="category-item" onclick="window.location.href='position_people_order/01.html'">
-                 <div class="category-image">
-               
-                     <img src="images/04.png" alt="Order and position">
-                 </div>
-                 <div class="category-content">
-                  
-                     <h2>Order and position</h2>
-                     <p>Choose the correct word to show the order and position</p>
-                 </div>
-             </div>
- 
- 
- 
-              <div class="category-item" onclick="window.location.href='02coin/01.html'">
-                 <div class="category-image">
-               
-                     <img src="images/201.png" alt="Order and position">
-                 </div>
-                 <div class="category-content">
-                  
-                     <h2>齊來認識澳門的硬幣   Coin Recognition </h2>
-                     <p>認識一下澳門的各種硬幣10圓5圓2圓1圓等等，並進行計算</p>
-                 </div>
-             </div>
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='shopping_subtration/02.html'">
-                 <div class="category-image">
-                     <img src="images/06.png" alt="購物真有趣（加法）">
-                 </div>
-                 <div class="category-content">
-                     <h2>購物真有趣（加法）</h2>
-                     <p>算一下一共花多少元吧</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-                    <div class="category-item" onclick="window.location.href='shopping_subtration/01.html'">
-                 <div class="category-image">
-                     <img src="images/05.png" alt="購物真有趣（減法）">
-                 </div>
-                 <div class="category-content">
-                     <h2>購物真有趣（減法）</h2>
-                     <p>算一下還剩多少元吧</p>
-                 </div>
-             </div>
- 
- 
- <!--
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具7">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具7</h2>
-                     <p>針對小學六年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具8">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具8</h2>
-                     <p>針對初中一年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具9">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具9</h2>
-                     <p>針對初中二年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/b01.png" alt="工具10">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具10</h2>
-                     <p>針對初中三年級的動態課件</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/d01.png" alt="工具11">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具11</h2>
-                     <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
-                 </div>
-             </div>
- 
- 
- 
- 
- 
- 
- 
-             <div class="category-item" onclick="window.location.href='#'">
-                 <div class="category-image">
-                     <img src="images/e01.png" alt="工具12">
-                 </div>
-                 <div class="category-content">
-                     <h2>工具12</h2>
-                     <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
-                 </div>
-             </div>
--->
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI應用工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        h1 {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 700;
+            padding: 60px 20px 40px;
+            color: #1d1d1f;
+            letter-spacing: -0.02em;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .category-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .category-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .category-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+        .category-content p {
+            font-size: 16px;
+            color: #6e6e73;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6e6e73;
+            font-size: 14px;
+        }
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+                padding: 40px 20px 20px;
+            }
+            .category-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .category-image {
+                width: 100%;
+                height: 200px;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            .category-content {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>AI應用工具</h1>
+    <div class="container">
+        <div class="category-list">
+            <div class="category-item" onclick="window.location.href='1sudoku/01.html'">
+                <div class="category-image">
+                    <img src="00images/a01.png" alt="數獨4X4">
+                </div>
+                <div class="category-content">
+                    <h2>數獨4X4</h2>
+                    <p> Rule1: Each number appears only once in each row and each column.</p>
+                    <p> Rule2: Each number appears only once in each 田.</p>
+                </div>
+            </div>
 
+    <div class="category-item" onclick="window.location.href='08addtion_tools/01.html'">
+                <div class="category-image">
+                    <img src="00images/801.png" alt="加法輔助工具">
+                </div>
+                <div class="category-content">
+                    <h2>加法輔助工具</h2>
+                    <p>幫助學習加法的輔助工具</p>
+                </div>
+            </div>
 
-
-         </div>
-     </div>
-     <footer>
-         <p>© 2025 ukawai</p>
-     </footer>
- </body>
- </html>
+            <div class="category-item" onclick="window.location.href='add-and-subtraction/ans01.html'">
+                <div class="category-image">
+                    <img src="00images/02.png" alt="加減混合計算">
+                </div>
+                <div class="category-content">
+                    <h2>加減混合直式計算</h2>
+                    <p>隨機生成加法或減法的直式運算，必定會出現進位或借位</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='position/01.html'">
+                <div class="category-image">
+                    <img src="00images/03.png" alt="Position">
+                </div>
+                <div class="category-content">
+                    <h2>Position</h2>
+                    <p>Random position quiz about :in front of, behind, over, under , between</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='position_people_order/01.html'">
+                <div class="category-image">
+                    <img src="00images/04.png" alt="Order and position">
+                </div>
+                <div class="category-content">
+                    <h2>Order and position</h2>
+                    <p>Choose the correct word to show the order and position</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='02coin/01.html'">
+                <div class="category-image">
+                    <img src="00images/201.png" alt="Order and position">
+                </div>
+                <div class="category-content">
+                    <h2>齊來認識澳門的硬幣   Coin Recognition </h2>
+                    <p>認識一下澳門的各種硬幣10圓5圓2圓1圓等等，並進行計算</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='shopping_subtration/02.html'">
+                <div class="category-image">
+                    <img src="00images/06.png" alt="購物真有趣（加法）">
+                </div>
+                <div class="category-content">
+                    <h2>購物真有趣（加法）</h2>
+                    <p>算一下一共花多少元吧</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='shopping_subtration/01.html'">
+                <div class="category-image">
+                    <img src="00images/05.png" alt="購物真有趣（減法）">
+                </div>
+                <div class="category-content">
+                    <h2>購物真有趣（減法）</h2>
+                    <p>算一下還剩多少元吧</p>
+                </div>
+            </div>
+        
+            <!--
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/b01.png" alt="工具7">
+                </div>
+                <div class="category-content">
+                    <h2>工具7</h2>
+                    <p>針對小學六年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/b01.png" alt="工具8">
+                </div>
+                <div class="category-content">
+                    <h2>工具8</h2>
+                    <p>針對初中一年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/b01.png" alt="工具9">
+                </div>
+                <div class="category-content">
+                    <h2>工具9</h2>
+                    <p>針對初中二年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/b01.png" alt="工具10">
+                </div>
+                <div class="category-content">
+                    <h2>工具10</h2>
+                    <p>針對初中三年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/d01.png" alt="工具11">
+                </div>
+                <div class="category-content">
+                    <h2>工具11</h2>
+                    <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/e01.png" alt="工具12">
+                </div>
+                <div class="category-content">
+                    <h2>工具12</h2>
+                    <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
+                </div>
+            </div>
+            -->
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>
