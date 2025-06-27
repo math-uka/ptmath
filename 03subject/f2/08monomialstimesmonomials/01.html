@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>單項式乘法練習</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            min-height: 80vh;
+        }
+        .left-panel, .right-panel {
+            flex: 1;
+            padding: 20px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            overflow-y: auto;
+        }
+        .problem-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .problem {
+            font-size: 2em;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .step {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .step h4 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .calculation {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+        }
+        #answerInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .MJX-TEX {
+            font-size: 1.2em !important;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>單項式乘法練習</h1>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="problem-container">
+                <div id="problem" class="problem">問題載入中...</div>
+                <div>
+                    <label for="answerInput">請輸入答案：</label>
+                    <input type="text" id="answerInput">
+                    <button id="checkAnswerBtn">檢查答案</button>
+                </div>
+                <div id="feedback"></div>
+            </div>
+            
+            <div class="button-group">
+                <button id="newProblemBtn">產生新題目</button>
+                <button id="showStepsBtn">顯示解題步驟</button>
+            </div>
+        </div>
+        
+        <div class="right-panel" id="steps"></div>
+    </div>
+    
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // 初始標題計數
+        let titleCount = 1;
+        document.title = `單項式乘法練習 - ${titleCount}`;
+        
+        // 問題變數
+        let coefficient1, coefficient2;
+        let exponents1 = {x: 0, y: 0, z: 0};
+        let exponents2 = {x: 0, y: 0, z: 0};
+        let correctAnswer;
+        let currentStep = 0;
+        let steps = [];
+        
+        // 產生隨機題目
+        function generateProblem() {
+            // 清空解答區域
+            document.getElementById('steps').innerHTML = '';
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = '';
+            
+            // 重置狀態
+            currentStep = 0;
+            document.getElementById('showStepsBtn').textContent = '顯示解題步驟';
+            document.getElementById('showStepsBtn').disabled = false;
+            
+            // 遞增標題計數
+            titleCount++;
+            document.title = `單項式乘法練習 - ${titleCount}`;
+            
+            // 生成隨機係數 (-9到9，不包括0)
+            do {
+                coefficient1 = Math.floor(Math.random() * 19) - 9;
+            } while (coefficient1 === 0);
+            
+            do {
+                coefficient2 = Math.floor(Math.random() * 19) - 9;
+            } while (coefficient2 === 0);
+            
+            // 重置指數
+            exponents1 = {x: 0, y: 0, z: 0};
+            exponents2 = {x: 0, y: 0, z: 0};
+            
+            // 確保總共有3-6個未知數
+            const totalVars = Math.floor(Math.random() * 4) + 3; // 3-6個未知數
+            const availableVars = ['x', 'y', 'z'];
+            
+            // 分配未知數到兩個單項式
+            let assignedVars = [];
+            for (let i = 0; i < totalVars; i++) {
+                const varName = availableVars[Math.floor(Math.random() * availableVars.length)];
+                assignedVars.push(varName);
+            }
+            
+            // 第一個單項式至少有1個未知數
+            const varCount1 = Math.max(1, Math.floor(Math.random() * (assignedVars.length - 1)) + 1);
+            const vars1 = assignedVars.slice(0, varCount1);
+            const vars2 = assignedVars.slice(varCount1);
+            
+            // 為第一個單項式分配指數
+            vars1.forEach(v => {
+                exponents1[v] = Math.floor(Math.random() * 5) + 1; // 指數1-5
+            });
+            
+            // 為第二個單項式分配指數（至少1個未知數）
+            vars2.forEach(v => {
+                exponents2[v] = Math.floor(Math.random() * 5) + 1; // 指數1-5
+            });
+            
+            // 如果第二個單項式沒有未知數，從第一個單項式移動一個過去
+            if (vars2.length === 0) {
+                const moveVar = vars1.pop();
+                exponents1[moveVar] = 0;
+                exponents2[moveVar] = Math.floor(Math.random() * 5) + 1;
+            }
+            
+            // 生成題目表達式
+            const monomial1 = buildMonomial(coefficient1, exponents1);
+            const monomial2 = buildMonomial(coefficient2, exponents2);
+            
+            // 如果第二個單項式是負數，加上括號
+            const displayMonomial2 = coefficient2 < 0 ? `(${monomial2})` : monomial2;
+            
+            document.getElementById('problem').innerHTML = `計算：\\(${monomial1} \\cdot ${displayMonomial2}\\)`;
+            
+            // 計算正確答案
+            correctAnswer = calculateProduct(coefficient1, coefficient2, exponents1, exponents2);
+            
+            // 生成解題步驟
+            generateSolutionSteps(monomial1, monomial2);
+            
+            // 重新渲染MathJax
+            MathJax.typeset();
+        }
+        
+        // 構建單項式字符串
+        function buildMonomial(coeff, exponents) {
+            let parts = [];
+            if (Math.abs(coeff) !== 1 || (exponents.x === 0 && exponents.y === 0 && exponents.z === 0)) {
+                parts.push(coeff);
+            } else if (coeff === -1) {
+                parts.push('-');
+            }
+            
+            ['x', 'y', 'z'].forEach(v => {
+                if (exponents[v] > 0) {
+                    parts.push(`${v}${exponents[v] > 1 ? `^{${exponents[v]}}` : ''}`);
+                }
+            });
+            
+            return parts.join('');
+        }
+        
+        // 計算乘積
+        function calculateProduct(coeff1, coeff2, exp1, exp2) {
+            const finalCoeff = coeff1 * coeff2;
+            const finalExponents = {
+                x: exp1.x + exp2.x,
+                y: exp1.y + exp2.y,
+                z: exp1.z + exp2.z
+            };
+            
+            return buildMonomial(finalCoeff, finalExponents);
+        }
+        
+        // 生成解題步驟
+        function generateSolutionSteps(monomial1, monomial2) {
+            // 在步驟1中也處理負數括號
+            const displayCoeff2 = coefficient2 < 0 ? `(${coefficient2})` : coefficient2;
+            
+            steps = [
+                {
+                    title: "步驟1：係數相乘",
+                    content: `首先將兩個單項式的係數相乘<br>\\(${coefficient1} \\cdot ${displayCoeff2} = ${coefficient1 * coefficient2}\\)`
+                }
+            ];
+            
+            let variableSteps = [];
+            ['x', 'y', 'z'].forEach(v => {
+                if (exponents1[v] > 0 || exponents2[v] > 0) {
+                    const exp1 = exponents1[v] || 0;
+                    const exp2 = exponents2[v] || 0;
+                    if (exp1 > 0 && exp2 > 0) {
+                        variableSteps.push(`\\(${v}^{${exp1}} \\cdot ${v}^{${exp2}} = ${v}^{${exp1 + exp2}}\\) (同底數冪相乘，指數相加)`);
+                    } else if (exp1 > 0) {
+                        variableSteps.push(`保留 \\(${v}^{${exp1}}\\) (第二個單項式沒有${v})`);
+                    } else {
+                        variableSteps.push(`保留 \\(${v}^{${exp2}}\\) (第一個單項式沒有${v})`);
+                    }
+                }
+            });
+            
+            if (variableSteps.length > 0) {
+                steps.push({
+                    title: "步驟2：未知數部分相乘",
+                    content: variableSteps.join('<br>')
+                });
+            }
+            
+            steps.push({
+                title: "步驟3：組合結果",
+                content: `將係數和未知數部分組合起來，得到最終答案：\\(${correctAnswer}\\)`
+            });
+        }
+        
+        // 顯示下一步
+        function showNextStep() {
+            const stepsDiv = document.getElementById('steps');
+            const showStepsBtn = document.getElementById('showStepsBtn');
+            
+            if (currentStep < steps.length) {
+                const step = steps[currentStep];
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'step';
+                stepDiv.innerHTML = `<h4>${step.title}</h4><div>${step.content}</div>`;
+                stepsDiv.appendChild(stepDiv);
+                currentStep++;
+                if (currentStep === steps.length) {
+                    showStepsBtn.textContent = '顯示解題步驟';
+                    showStepsBtn.disabled = true;
+                }
+                MathJax.typeset();
+            }
+        }
+        
+        // 檢查答案
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answerInput').value.trim();
+            const feedback = document.getElementById('feedback');
+            
+            const normalize = (str) => {
+                // 處理特殊情況如 2x^1y^0z^2 簡化為 2xz^2
+                return str.replace(/\s+/g, '')
+                         .replace(/\^{?(\d+)}?/g, '^{$1}')
+                         .replace(/([+-]?)1([a-z])/g, '$1$2')
+                         .replace(/([a-z])\^1(?!\d)/g, '$1')
+                         .replace(/([a-z])\^0(?!\d)/g, '')
+                         .replace(/^-([a-z])/g, '-1$1')
+                         .toLowerCase();
+            };
+            
+            let normalizedUserAnswer = normalize(userAnswer);
+            let normalizedCorrectAnswer = normalize(correctAnswer);
+            
+            if (normalizedUserAnswer === normalizedCorrectAnswer) {
+                feedback.textContent = '✓ 答案正確！';
+                feedback.className = 'correct';
+            } else {
+                feedback.textContent = '✗ 答案錯誤';
+                feedback.className = 'incorrect';
+                document.getElementById('answerInput').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('answerInput').classList.remove('shake');
+                }, 500);
+            }
+        }
+        
+        // 事件監聽
+        document.getElementById('showStepsBtn').addEventListener('click', showNextStep);
+        document.getElementById('newProblemBtn').addEventListener('click', generateProblem);
+        document.getElementById('checkAnswerBtn').addEventListener('click', checkAnswer);
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        // 初始產生題目
+        generateProblem();
+    </script>
+</body>
+</html>

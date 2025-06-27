@@ -6,6 +6,7 @@
     <title>配方法解一元二次方程</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,6 +19,7 @@
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
         }
         h1 {
             font-size: 18px;
@@ -52,6 +54,10 @@
         button:active {
             background-color: #e0e0e0;
         }
+        button:disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
         .input-group {
             display: flex;
             align-items: center;
@@ -78,10 +84,50 @@
             color: #4CAF50;
             font-size: 14px;
         }
-        footer {
+        #stars {
+            margin: 10px 0;
+            font-size: 24px;
+            color: #FFD700;
+        }
+        #feedback {
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
+        #feedback.correct {
+            color: #4CAF50;
+        }
+        #feedback.incorrect {
+            color: #FF0000;
+        }
+        #congratulations {
+            display: none;
             margin-top: 20px;
-            font-size: 12px;
-            color: #555;
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-5px, 0); }
+            20%, 40%, 60%, 80% { transform: translate(5px, 0); }
+            100% { transform: translate(0, 0); }
+        }
+        #content.shake {
+            animation: shake 0.5s;
         }
         @media (max-width: 600px) {
             body {
@@ -107,6 +153,15 @@
             #answer, #hint {
                 font-size: 12px;
             }
+            #stars {
+                font-size: 20px;
+            }
+            #feedback {
+                font-size: 14px;
+            }
+            #congratulations {
+                font-size: 16px;
+            }
             footer {
                 font-size: 10px;
             }
@@ -114,8 +169,11 @@
     </style>
 </head>
 <body>
+    <canvas id="confetti-canvas"></canvas>
     <div id="content">
         <h1>配方法解一元二次方程練習</h1>
+        <div id="stars"></div>
+        <div id="feedback"></div>
         <div class="container">
             <div class="math-problem" id="problem">
                 <!-- 問題將由JavaScript設置 -->
@@ -129,9 +187,9 @@
                     <label for="x2Input">x₂ = </label>
                     <input type="text" id="x2Input" placeholder="輸入 x₂">
                 </div>
-                <button onclick="showHint()">提示</button>
-                <button onclick="showAnswer()">答案</button>
-                <button onclick="nextProblem()">下一題</button>
+                <button id="hintBtn" onclick="showHint()">提示</button>
+                <button id="checkAnswerBtn" onclick="checkAnswer()">檢查答案</button>
+                <button id="nextProblemBtn" onclick="nextProblem()">下一題</button>
             </div>
             <div id="hint">
                 <!-- 提示將由JavaScript設置 -->
@@ -139,6 +197,7 @@
             <div id="answer">
                 <!-- 答案將由JavaScript設置 -->
             </div>
+            <div id="congratulations"></div>
         </div>
         <footer>
             <p>© 2025 ukawai</p>
@@ -149,6 +208,7 @@
     let hintLevel = 0;
     let currentProblem = null;
     let hints = [];
+    let starCount = 0;
 
     function gcd(a, b) {
         a = Math.abs(a);
@@ -159,6 +219,14 @@
             a = t;
         }
         return a;
+    }
+
+    function lcm(a, b) {
+        return Math.abs(a * b) / gcd(a, b);
+    }
+
+    function lcmArray(numbers) {
+        return numbers.reduce((a, b) => lcm(a, b));
     }
 
     function toFraction(value, tolerance = 1e-6, maxDenominator = 1000) {
@@ -183,6 +251,32 @@
         return { num: bestNum / divisor, denom: bestDenom / divisor };
     }
 
+    function parseInput(input) {
+        input = input.trim();
+        if (!input) return null;
+
+        // Handle fraction input (e.g., "1/2", "-3/4")
+        if (input.includes('/')) {
+            const parts = input.split('/');
+            if (parts.length !== 2) return null;
+            let num = parseInt(parts[0].trim());
+            let denom = parseInt(parts[1].trim());
+            if (isNaN(num) || isNaN(denom) || denom === 0) return null;
+            const divisor = gcd(num, denom);
+            return { num: num / divisor, denom: denom / divisor };
+        }
+
+        // Handle decimal or integer input (e.g., "0.5", "-2")
+        const value = parseFloat(input);
+        if (isNaN(value)) return null;
+        return toFraction(value);
+    }
+
+    function areFractionsEqual(frac1, frac2) {
+        if (!frac1 || !frac2) return false;
+        return frac1.num * frac2.denom === frac2.num * frac1.denom;
+    }
+
     function formatNumber(value) {
         if (typeof value === 'object') {
             if (value.denom === 1) return value.num.toString();
@@ -193,14 +287,16 @@
     }
 
     function formatEquation(a, b, c) {
-        let equation = a === 1 ? "x^2" : a === -1 ? "-x^2" : `${a}x^2`;
+        let equation = '';
+        if (a !== 1) equation += `${a}x^2`;
+        else equation += 'x^2';
         if (b !== 0) {
             equation += ` ${b > 0 ? '+' : '-'} ${Math.abs(b)}x`;
         }
         if (c !== 0) {
             equation += ` ${c > 0 ? '+' : '-'} ${Math.abs(c)}`;
         }
-        return equation;
+        return equation + ' = 0';
     }
 
     function formatSolution(x1, x2) {
@@ -212,26 +308,63 @@
     }
 
     function generateQuadraticEquation() {
-        let a, b, c, x1, x2;
-        do {
-            // Generate random quadratic coefficient a (non-zero, -4 to 4)
-            a = Math.floor(Math.random() * 9) - 4; // -4 to 4
-            if (a === 0) a = 1; // Ensure a is non-zero
-            // Generate non-integer roots (e.g., between -5 and 5 with 0.5 increments)
-            x1 = (Math.floor(Math.random() * 21) - 10) / 2; // -5 to 5 in 0.5 steps
-            x2 = (Math.floor(Math.random() * 21) - 10) / 2; // -5 to 5 in 0.5 steps
-            // Calculate b and c: ax^2 + bx + c = a(x - x1)(x - x2)
-            b = -a * (x1 + x2);
-            c = a * x1 * x2;
-            // Convert b and c to integers by scaling
-            const bFrac = toFraction(b);
-            const cFrac = toFraction(c);
-            const scale = bFrac.denom * cFrac.denom;
-            b = bFrac.num * (scale / bFrac.denom);
-            c = cFrac.num * (scale / cFrac.denom);
-        } while (gcd(Math.abs(a), Math.abs(b)) !== 1 || Math.abs(b) > 100 || Math.abs(c) > 100); // Ensure a and b are coprime and coefficients are reasonable
-        console.log(`Generated equation: ${a}x^2 + ${b}x + ${c} = 0, roots: x1=${x1}, x2=${x2}`); // Debug log
-        return { a, b, c, x1, x2 };
+        const aOptions = [-4, -3, -2, -1, 1, 2, 3, 4];
+        const a = aOptions[Math.floor(Math.random() * aOptions.length)];
+        
+        // Generate fractional roots x1 = p1/q1 and x2 = p2/q2
+        const numOptions = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5];
+        const denomOptions = [1, 2, 3, 4, 5];
+        const x1Num = numOptions[Math.floor(Math.random() * numOptions.length)];
+        const x1Denom = denomOptions[Math.floor(Math.random() * denomOptions.length)];
+        const x2Num = numOptions[Math.floor(Math.random() * numOptions.length)];
+        const x2Denom = denomOptions[Math.floor(Math.random() * denomOptions.length)];
+        
+        const x1 = x1Num / x1Denom;
+        const x2 = x2Num / x2Denom;
+        
+        // Compute coefficients using exact integer arithmetic
+        const lcd = x1Denom * x2Denom;
+        const aFinal = a * lcd;
+        const bFinal = -a * (x1Num * x2Denom + x2Num * x1Denom);
+        const cFinal = a * x1Num * x2Num;
+        
+        return { a: aFinal, b: bFinal, c: cFinal, x1, x2 };
+    }
+
+    function displayStars() {
+        const starsDiv = document.getElementById('stars');
+        starsDiv.innerHTML = '★'.repeat(starCount) + '☆'.repeat(3 - starCount);
+    }
+
+    function showFeedback(message, isCorrect, duration = null) {
+        const feedbackDiv = document.getElementById('feedback');
+        feedbackDiv.innerHTML = message;
+        feedbackDiv.className = isCorrect ? 'correct' : 'incorrect';
+        if (duration) {
+            setTimeout(() => {
+                feedbackDiv.innerHTML = '';
+                feedbackDiv.className = '';
+            }, duration);
+        }
+    }
+
+    function shakeScreen() {
+        const contentDiv = document.getElementById('content');
+        contentDiv.classList.add('shake');
+        setTimeout(() => {
+            contentDiv.classList.remove('shake');
+        }, 500);
+    }
+
+    function triggerConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        const confettiInstance = confetti.create(canvas, { resize: true });
+        confettiInstance({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            duration: 3000
+        });
     }
 
     function nextProblem() {
@@ -242,7 +375,7 @@
         currentProblem = generateQuadraticEquation();
 
         const problemDiv = document.getElementById('problem');
-        problemDiv.innerHTML = `用配方法解方程：\\[${formatEquation(currentProblem.a, currentProblem.b, currentProblem.c)} = 0\\]`;
+        problemDiv.innerHTML = `用配方法解方程：\\[${formatEquation(currentProblem.a, currentProblem.b, currentProblem.c)}\\]`;
 
         const answerDiv = document.getElementById('answer');
         answerDiv.style.display = 'none';
@@ -252,6 +385,14 @@
         hintDiv.style.display = 'none';
         hintDiv.innerHTML = '';
 
+        const feedbackDiv = document.getElementById('feedback');
+        feedbackDiv.innerHTML = '';
+        feedbackDiv.className = '';
+
+        const congratulationsDiv = document.getElementById('congratulations');
+        congratulationsDiv.style.display = 'none';
+        congratulationsDiv.innerHTML = '';
+
         const x1Input = document.getElementById('x1Input');
         const x2Input = document.getElementById('x2Input');
         x1Input.value = '';
@@ -259,19 +400,89 @@
         x1Input.disabled = false;
         x2Input.disabled = false;
 
-        // Ensure MathJax renders the new equation
-        if (window.MathJax) {
-            MathJax.typesetPromise([problemDiv]).catch(err => console.error('MathJax typesetting error:', err));
+        const hintBtn = document.getElementById('hintBtn');
+        const checkAnswerBtn = document.getElementById('checkAnswerBtn');
+        const nextProblemBtn = document.getElementById('nextProblemBtn');
+        hintBtn.disabled = false;
+        checkAnswerBtn.disabled = false;
+        nextProblemBtn.disabled = false;
+
+        displayStars();
+        MathJax.typeset();
+    }
+
+    function checkAnswer() {
+        const x1Input = document.getElementById('x1Input').value;
+        const x2Input = document.getElementById('x2Input').value;
+        const userX1 = parseInput(x1Input);
+        const userX2 = parseInput(x2Input);
+
+        if (!userX1 || !userX2) {
+            showFeedback('請輸入有效的答案（分數如 1/2 或小數如 0.5）', false);
+            return;
         }
+
+        const correctX1 = toFraction(currentProblem.x1);
+        const correctX2 = toFraction(currentProblem.x2);
+
+        const isCorrect = (
+            (areFractionsEqual(userX1, correctX1) && areFractionsEqual(userX2, correctX2)) ||
+            (areFractionsEqual(userX1, correctX2) && areFractionsEqual(userX2, correctX1))
+        );
+
+        const x1InputElement = document.getElementById('x1Input');
+        const x2InputElement = document.getElementById('x2Input');
+        const hintBtn = document.getElementById('hintBtn');
+        const checkAnswerBtn = document.getElementById('checkAnswerBtn');
+        const nextProblemBtn = document.getElementById('nextProblemBtn');
+
+        if (isCorrect) {
+            starCount++;
+            showFeedback('恭喜答對, 獲得一粒星星', true, 1500);
+            if (starCount >= 3) {
+                const congratulationsDiv = document.getElementById('congratulations');
+                congratulationsDiv.style.display = 'block';
+                congratulationsDiv.innerHTML = '恭喜完成練習！';
+                x1InputElement.disabled = true;
+                x2InputElement.disabled = true;
+                hintBtn.disabled = true;
+                checkAnswerBtn.disabled = true;
+                nextProblemBtn.disabled = true;
+                triggerConfetti();
+            } else {
+                setTimeout(nextProblem, 1500);
+            }
+        } else {
+            starCount = 0;
+            shakeScreen();
+            showFeedback('回答錯誤', false);
+            x1InputElement.disabled = true;
+            x2InputElement.disabled = true;
+            hintBtn.disabled = true;
+            checkAnswerBtn.disabled = true;
+            nextProblemBtn.disabled = false;
+            const maxHintLevel = currentProblem.b === 0 ? 4 : 7;
+            while (hintLevel < maxHintLevel) {
+                showHint();
+            }
+            const answerDiv = document.getElementById('answer');
+            answerDiv.style.display = 'block';
+        }
+
+        displayStars();
+        MathJax.typeset();
     }
 
     function showHint() {
         const hintDiv = document.getElementById('hint');
         const x1Input = document.getElementById('x1Input');
         const x2Input = document.getElementById('x2Input');
+        const checkAnswerBtn = document.getElementById('checkAnswerBtn');
+        const hintBtn = document.getElementById('hintBtn');
         hintDiv.style.display = 'block';
         x1Input.disabled = true;
         x2Input.disabled = true;
+        checkAnswerBtn.disabled = true;
 
         const { a, b, c, x1, x2 } = currentProblem;
         hintLevel++;
@@ -279,37 +490,60 @@
         const aFrac = toFraction(a);
         const bFrac = toFraction(b);
         const cFrac = toFraction(c);
-        const bOverAFrac = toFraction(b / a);
-        const halfBOverAFrac = toFraction(b / (2 * a));
-        const squareHalfBOverAFrac = toFraction(Math.pow(b / (2 * a), 2));
-        const minusCOverAFrac = toFraction(-c / a);
-        const rightSideFrac = toFraction(-c / a + Math.pow(b / (2 * a), 2));
-        const sqrtRightSideFrac = toFraction(Math.sqrt(Math.abs(-c / a + Math.pow(b / (2 * a), 2))));
         const x1Frac = toFraction(x1);
         const x2Frac = toFraction(x2);
 
-        if (hintLevel === 1) {
-            hints = [`提示 1：將常數項移到右邊，得到：\\[${formatEquation(a, b, 0)} = ${formatNumber({num: -c, denom: 1})}\\]`];
-        } else if (hintLevel === 2) {
-            hints.push(`提示 2：將方程除以二次項係數 ${formatNumber(aFrac)}，得到：\\[${formatNumber({num: 1, denom: 1})}x^2 ${bOverAFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(bOverAFrac.num), denom: bOverAFrac.denom})}x = ${formatNumber(minusCOverAFrac)}\\]`);
-        } else if (hintLevel === 3) {
-            hints.push(`提示 3：兩邊同時加上一次項係數一半的平方：\\[${formatNumber({num: 1, denom: 1})}x^2 ${bOverAFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(bOverAFrac.num), denom: bOverAFrac.denom})}x + \\left(${formatNumber(halfBOverAFrac)}\\right)^2 = ${formatNumber(minusCOverAFrac)} + \\left(${formatNumber(halfBOverAFrac)}\\right)^2\\]`);
-        } else if (hintLevel === 4) {
-            hints.push(`提示 4：將左邊配方：\\[x^2+2\\left(${formatNumber(halfBOverAFrac)}\\right)x+\\left(${formatNumber(halfBOverAFrac)}\\right)^2 = ${formatNumber(minusCOverAFrac)} + \\left(${formatNumber(halfBOverAFrac)}\\right)^2\\]`);
-        } else if (hintLevel === 5) {
-            hints.push(`提示 5：將左邊寫成完全平方形式：\\[\\left(x ${halfBOverAFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(halfBOverAFrac.num), denom: halfBOverAFrac.denom})}\\right)^2 = ${formatNumber(rightSideFrac)}\\]`);
-        } else if (hintLevel === 6) {
-            hints.push(`提示 6：兩邊開平方：\\[x ${halfBOverAFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(halfBOverAFrac.num), denom: halfBOverAFrac.denom})} = \\pm ${formatNumber(sqrtRightSideFrac)}\\]`);
-        } else if (hintLevel >= 7) {
-            hints.push(`提示 7：解出x的值：\\[x_1 = ${formatNumber(x1Frac)}, x_2 = ${formatNumber(x2Frac)}\\]`);
-            showAnswer();
-            return;
+        if (b === 0) {
+            // Case when there is no linear term (b = 0)
+            const rightSideFrac = toFraction(-c / a);
+            const sqrtRightSideFrac = toFraction(Math.sqrt(Math.abs(-c / a)));
+
+            if (hintLevel === 1) {
+                hints = [`提示 1：將常數項移至右邊：\\[${formatNumber(aFrac)}x^2 = ${formatNumber({num: -cFrac.num, denom: cFrac.denom})}\\]`];
+            } else if (hintLevel === 2) {
+                hints.push(`提示 2：兩邊除以二次項係數 ${formatNumber(aFrac)}：\\[x^2 = ${formatNumber(rightSideFrac)}\\]`);
+            } else if (hintLevel === 3) {
+                hints.push(`提示 3：兩邊開平方並解出x的值：\\[x = \\pm ${formatNumber(sqrtRightSideFrac)} \\quad \\text{即} \\quad x_1 = ${formatNumber(x1Frac)}, x_2 = ${formatNumber(x2Frac)}\\]`);
+                hintBtn.disabled = true;
+                showAnswer();
+            } else {
+                hints.push(`提示 4：答案為 \\[${formatSolution(x1Frac, x2Frac)}\\]`);
+                hintBtn.disabled = true;
+                showAnswer();
+                return;
+            }
+        } else {
+            // Case when there is a linear term (b ≠ 0)
+            const bOver2aFrac = toFraction(b / (2 * a));
+            const bOveraFrac = toFraction(b / a);
+            const minusCOveraFrac = toFraction(-c / a);
+            const squareBOver2aFrac = toFraction(Math.pow(b / (2 * a), 2));
+            const rightSideValue = (-c / a) + Math.pow(b / (2 * a), 2);
+            const rightSideFrac = toFraction(rightSideValue);
+            const sqrtRightSideFrac = toFraction(Math.sqrt(Math.abs(rightSideValue)));
+
+            if (hintLevel === 1) {
+                hints = [`提示 1：將常數項移至右邊：\\[${formatNumber(aFrac)}x^2 ${b >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(bFrac.num), denom: bFrac.denom})}x = ${formatNumber({num: -cFrac.num, denom: cFrac.denom})}\\]`];
+            } else if (hintLevel === 2) {
+                hints.push(`提示 2：兩邊除以二次項係數 ${formatNumber(aFrac)}：\\[x^2 ${bOveraFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(bOveraFrac.num), denom: bOveraFrac.denom})}x = ${formatNumber(minusCOveraFrac)}\\]`);
+            } else if (hintLevel === 3) {
+                hints.push(`提示 3：兩邊同時加上一次項係數一半的平方：\\[x^2 ${bOveraFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(bOveraFrac.num), denom: bOveraFrac.denom})}x + \\left(${formatNumber(bOver2aFrac)}\\right)^2 = ${formatNumber(minusCOveraFrac)} + \\left(${formatNumber(bOver2aFrac)}\\right)^2\\]`);
+            } else if (hintLevel === 4) {
+                hints.push(`提示 4：將左邊配方：\\[x^2+2\\left(${formatNumber(bOver2aFrac)}\\right)x+\\left(${formatNumber(bOver2aFrac)}\\right)^2 = ${formatNumber(rightSideFrac)}\\]`);
+            } else if (hintLevel === 5) {
+                hints.push(`提示 5：將左邊寫成完全平方形式：\\[\\left(x ${bOver2aFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(bOver2aFrac.num), denom: bOver2aFrac.denom})}\\right)^2 = ${formatNumber(rightSideFrac)}\\]`);
+            } else if (hintLevel === 6) {
+                hints.push(`提示 6：兩邊開平方：\\[x ${bOver2aFrac.num >= 0 ? '+' : '-'} ${formatNumber({num: Math.abs(bOver2aFrac.num), denom: bOver2aFrac.denom})} = \\pm ${formatNumber(sqrtRightSideFrac)}\\]`);
+            } else if (hintLevel >= 7) {
+                hints.push(`提示 7：解出x的值：\\[x_1 = ${formatNumber(x1Frac)}, x_2 = ${formatNumber(x2Frac)}\\]`);
+                hintBtn.disabled = true;
+                showAnswer();
+                return;
+            }
         }
 
         hintDiv.innerHTML = hints.join('<br>');
-        if (window.MathJax) {
-            MathJax.typesetPromise([hintDiv]).catch(err => console.error('MathJax typesetting error:', err));
-        }
+        MathJax.typeset();
     }
 
     function showAnswer() {
@@ -317,13 +551,16 @@
         answerDiv.style.display = 'block';
         const x1Input = document.getElementById('x1Input');
         const x2Input = document.getElementById('x2Input');
+        const hintBtn = document.getElementById('hintBtn');
+        const checkAnswerBtn = document.getElementById('checkAnswerBtn');
         x1Input.disabled = true;
         x2Input.disabled = true;
-        if (window.MathJax) {
-            MathJax.typesetPromise([answerDiv]).catch(err => console.error('MathJax typesetting error:', err));
-        }
+        hintBtn.disabled = true;
+        checkAnswerBtn.disabled = true;
+        MathJax.typeset();
     }
 
+    displayStars();
     nextProblem();
 </script>
 </body>
