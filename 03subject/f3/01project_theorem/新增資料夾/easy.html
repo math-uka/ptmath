@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>射影定理練習954</title>
+    <title>射影定理練習925</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -79,19 +78,10 @@
         .correct-animation {
             animation: correctFeedback 0.5s ease forwards;
         }
-        .incorrect-animation {
-            animation: incorrectFeedback 0.5s ease;
-        }
         @keyframes correctFeedback {
-            0% { transform: scale(1); background: #ffffff; border-color: #0288d1; }
+            0% { transform: scale(1); background: #ffffff; }
             50% { transform: scale(1.1); background: #c8e6c9; border-color: #388e3c; }
             100% { transform: scale(1); background: #c8e6c9; border-color: #388e3c; }
-        }
-        @keyframes incorrectFeedback {
-            0% { transform: translateX(0); background: #ffffff; border-color: #0288d1; }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); background: #ffcdd2; border-color: #d32f2f; }
-            20%, 40%, 60%, 80% { transform: translateX(5px); background: #ffcdd2; border-color: #d32f2f; }
-            100% { transform: translateX(0); background: #ffcdd2; border-color: #d32f2f; }
         }
         #result {
             font-size: 0.95em;
@@ -138,24 +128,17 @@
             max-width: 600px;
             box-sizing: border-box;
         }
-        #passwordContainer {
-            display: none;
+        #studentIdForm {
             margin-top: 15px;
             text-align: center;
-            width: 100%;
         }
-        #passwordInput {
+        #studentIdInput {
             padding: 8px;
             font-size: 1em;
             border: 2px solid #0288d1;
             border-radius: 5px;
             width: 100px;
             margin-right: 10px;
-        }
-        #passwordInput:disabled {
-            background: #b0bec5;
-            cursor: not-allowed;
-            opacity: 0.7;
         }
         #submitBtn {
             padding: 8px 15px;
@@ -170,29 +153,18 @@
         #submitBtn:hover {
             background: #0277bd;
         }
-        #submitBtn:disabled {
+        #submitBtn:disabled, #studentIdInput:disabled {
             background: #b0bec5;
             cursor: not-allowed;
             opacity: 0.7;
         }
-        #passwordResult {
+        #passwordDisplay {
             margin-top: 10px;
             font-size: 1.1em;
             color: #388e3c;
             font-weight: 500;
         }
-        #passwordResult.error {
-            color: #d32f2f;
-        }
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-        }
+
         @media (min-width: 768px) {
             body {
                 flex-direction: row;
@@ -207,6 +179,7 @@
             #summary { padding: 20px; }
             svg { max-width: 300px; height: 200px; }
         }
+
         @media (max-width: 480px) {
             h1 { font-size: 1.5em; }
             #question { font-size: 0.85em; padding: 8px; }
@@ -215,14 +188,10 @@
             #result { font-size: 0.9em; }
             #summary { padding: 10px; }
             svg { max-width: 200px; height: 120px; }
-            #passwordInput { width: 80px; font-size: 0.9em; }
-            #submitBtn { padding: 6px 12px; font-size: 0.9em; }
-            #passwordResult { font-size: 1em; }
         }
     </style>
 </head>
 <body>
-    <canvas id="confetti-canvas"></canvas>
     <div id="diagram">
         <svg viewBox="0 0 300 200">
             <polygon points="50,150 150,50 280,150" fill="none" stroke="black" stroke-width="2"/>
@@ -239,36 +208,29 @@
         <div id="options"></div>
         <div id="result"></div>
         <div id="summary" style="display: none;"></div>
-        <div id="passwordContainer">
-            <input type="number" id="passwordInput" min="1" max="50" placeholder="輸入 1-50">
-            <button id="submitBtn" onclick="submitPasswordInput()">提交</button>
-            <div id="passwordResult"></div>
-        </div>
     </div>
-    <footer>
-        <p>© 2025 ukawai</p>
-    </footer>
+
     <script>
         let currentQuestion = 0;
-        let correctCount = 0;
         let wrongQuestions = new Set();
         const totalQuestions = 5;
-        let hasPassJson = false;
-        let passJson = null;
 
-        // Check for pass.json at startup
-        async function checkPassJson() {
-            try {
-                const response = await fetch('pass.json');
-                if (response.ok) {
-                    passJson = await response.json();
-                    hasPassJson = true;
-                } else {
-                    hasPassJson = false;
-                }
-            } catch (e) {
-                hasPassJson = false;
-            }
+        // 修復後的加密密碼表（移除多餘的 "]"）
+        const encryptedPasswordMap = {
+            1: "NTgy", 2: "NzM5", 3: "MTk2", 4: "MzI1", 5: "OTQ4",
+            6: "NDE3", 7: "NjUz", 8: "Mjkw", 9: "ODYx", 10: "NDcy",
+            11: "MzA0", 12: "Njg3", 13: "MjU5", 14: "ODM2", 15: "MTQw",
+            16: "NTkz", 17: "NDI4", 18: "NzE1", 19: "MzYy", 20: "OTc0",
+            21: "NTA2", 22: "ODQz", 23: "Njcx", 24: "MDU5", 25: "Nzgy",
+            26: "MTM0", 27: "Njk1", 28: "MzI3", 29: "NDEw", 30: "NTY4",
+            31: "Mjkx", 32: "NzU0", 33: "OTAz", 34: "MjE2", 35: "ODQ5",
+            36: "Mzc1", 37: "NjQy", 38: "MTI4", 39: "NDk3", 40: "NjMw"
+        };
+
+        // 修復後的解密函數
+        function decryptPassword(encrypted) {
+            // 直接進行 BASE64 解碼
+            return atob(encrypted);
         }
 
         function simplifySqrt(n) {
@@ -292,38 +254,60 @@
         function generateQuestion() {
             const ints = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             const irrationals = [2, 3, 5, 6, 7];
-            let a = ints[Math.floor(Math.random() * ints.length)];
-            let b = ints[Math.floor(Math.random() * ints.length)];
+
+            let AD = ints[Math.floor(Math.random() * ints.length)];
+            let DC = ints[Math.floor(Math.random() * ints.length)];
             if (Math.random() < 0.3) {
-                a = irrationals[Math.floor(Math.random() * irrationals.length)];
+                AD = irrationals[Math.floor(Math.random() * irrationals.length)];
             }
-            if (a > b) [a, b] = [b, a];
+            if (Math.random() < 0.3) {
+                DC = irrationals[Math.floor(Math.random() * irrationals.length)];
+            }
+            const AC = AD + DC;
 
-            const c = Math.sqrt(a * b);
-            const d = Math.sqrt(a * a + c * c);
-            const e = Math.sqrt(c * c + b * b);
+            const BD = Math.sqrt(AD * DC);
+            const AB = Math.sqrt(AD * AD + BD * BD);
+            const BC = Math.sqrt(DC * DC + BD * BD);
 
-            const sides = { 'AD': a, 'DC': b, 'BD': c, 'AB': d, 'BC': e };
+            const sides = { 'AB': AB, 'AD': AD, 'AC': AC, 'BD': BD, 'DC': DC, 'BC': BC };
             const sideNames = Object.keys(sides);
-            const given = [];
-            while (given.length < 2) {
-                const side = sideNames[Math.floor(Math.random() * sideNames.length)];
-                if (!given.includes(side)) given.push(side);
-            }
-            let ask = sideNames[Math.floor(Math.random() * sideNames.length)];
-            while (given.includes(ask)) {
-                ask = sideNames[Math.floor(Math.random() * sideNames.length)];
+
+            const questionType = Math.floor(Math.random() * 3);
+            let given, ask;
+
+            switch (questionType) {
+                case 0:
+                    given = ['AB', 'AD', 'AC'].sort(() => Math.random() - 0.5).slice(0, 2);
+                    ask = ['AB', 'AD', 'AC'].find(s => !given.includes(s));
+                    break;
+                case 1:
+                    given = ['BD', 'AD', 'DC'].sort(() => Math.random() - 0.5).slice(0, 2);
+                    ask = ['BD', 'AD', 'DC'].find(s => !given.includes(s));
+                    break;
+                case 2:
+                    given = ['BC', 'AC', 'DC'].sort(() => Math.random() - 0.5).slice(0, 2);
+                    ask = ['BC', 'AC', 'DC'].find(s => !given.includes(s));
+                    break;
             }
 
             const correctAnswer = sides[ask];
+            const optionsSet = new Set([correctAnswer]);
             const otherSides = sideNames.filter(s => s !== ask && !given.includes(s)).map(s => sides[s]);
-            const options = [correctAnswer, ...otherSides.slice(0, 2)];
-            while (options.length < 9) {
-                let fake = Math.floor(Math.random() * 15) + 1;
-                if (!options.includes(fake)) options.push(fake);
+            
+            for (let side of otherSides) {
+                if (optionsSet.size < 3 && !optionsSet.has(side)) {
+                    optionsSet.add(side);
+                }
             }
-            options.sort(() => Math.random() - 0.5);
 
+            while (optionsSet.size < 9) {
+                let fake = Math.floor(Math.random() * 15) + 1;
+                if (!optionsSet.has(fake)) {
+                    optionsSet.add(fake);
+                }
+            }
+
+            const options = Array.from(optionsSet).sort(() => Math.random() - 0.5);
             return { given, ask, sides, options, correctAnswer };
         }
 
@@ -331,24 +315,13 @@
             document.querySelectorAll('.option').forEach(opt => opt.classList.add('disabled'));
         }
 
-        function triggerConfetti() {
-            const canvas = document.getElementById('confetti-canvas');
-            const confettiInstance = confetti.create(canvas, { resize: true });
-            confettiInstance({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                duration: 3000
-            });
-        }
-
         function displayQuestion() {
-            currentQuestion++;
-            if (currentQuestion > totalQuestions) {
+            if (currentQuestion >= totalQuestions) {
                 endGame();
                 return;
             }
 
+            currentQuestion++;
             const q = generateQuestion();
             const givenText = `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${simplifySqrt(q.sides[s])}`).join(', ')}`;
             const askText = `求 ${q.ask} 的長度：`;
@@ -365,12 +338,6 @@
             });
 
             document.getElementById('result').innerHTML = '';
-            document.getElementById('passwordContainer').style.display = 'none';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordResult').innerHTML = '';
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('passwordInput').disabled = false;
-
             if (window.MathJax) {
                 MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
             }
@@ -379,56 +346,20 @@
         function checkAnswer(selected, correct, q, selectedOption) {
             const resultDiv = document.getElementById('result');
             if (Math.abs(selected - correct) < 0.000001) {
-                correctCount++;
                 resultDiv.innerHTML = '答對了！';
                 resultDiv.className = 'correct';
-                disableOptions();
                 selectedOption.classList.add('correct-animation');
+                disableOptions();
                 setTimeout(() => {
-                    nextQuestion();
+                    displayQuestion();
                 }, 1000);
             } else {
                 resultDiv.innerHTML = '答錯了，請再試一次。';
                 resultDiv.className = '';
-                selectedOption.classList.add('incorrect-animation');
                 wrongQuestions.add(JSON.stringify({
                     question: `已知AB\\perp BC，BD\\perp AC，且 ${q.given.map(s => `${s} = ${simplifySqrt(q.sides[s])}`).join(', ')}，求 ${q.ask} 的長度`,
                     answer: simplifySqrt(correct)
                 }));
-            }
-        }
-
-        function nextQuestion() {
-            displayQuestion();
-        }
-
-        function showPasswordInput() {
-            const summary = document.getElementById('summary');
-            summary.innerHTML = '<h2>恭喜完成練習！</h2><p>請輸入 1-50 的數字以獲取密碼：</p>';
-            const passwordContainer = document.getElementById('passwordContainer');
-            passwordContainer.style.display = 'block';
-            if (window.MathJax) {
-                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
-            }
-        }
-
-        function submitPasswordInput() {
-            const passwordInput = document.getElementById('passwordInput').value;
-            const passwordResult = document.getElementById('passwordResult');
-            const number = parseInt(passwordInput);
-
-            if (isNaN(number) || number < 1 || number > 50) {
-                passwordResult.innerHTML = '請輸入 1 到 50 之間的數字';
-                passwordResult.className = 'error';
-            } else {
-                const password = passJson[number.toString()];
-                passwordResult.innerHTML = `密碼：${password}`;
-                passwordResult.className = '';
-                document.getElementById('passwordInput').disabled = true;
-                document.getElementById('submitBtn').disabled = true;
-            }
-            if (window.MathJax) {
-                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
             }
         }
 
@@ -441,31 +372,50 @@
             summary.innerHTML = '<h2>錯題回顧</h2>';
             const wrongArray = Array.from(wrongQuestions).map(JSON.parse);
 
-            if (wrongArray.length === 0 && correctCount === totalQuestions) {
-                summary.innerHTML += '恭喜你，全部答對！<br>';
-                triggerConfetti();
-                if (hasPassJson) {
-                    setTimeout(showPasswordInput, 1200);
-                }
+            if (wrongArray.length === 0) {
+                summary.innerHTML += '恭喜你，全部答對！<br>請輸入你的學號（1-40）以獲取密碼：<br>';
+                summary.innerHTML += `
+                    <div id="studentIdForm">
+                        <input type="number" id="studentIdInput" min="1" max="40" placeholder="學號">
+                        <button id="submitBtn">提交</button>
+                        <div id="passwordDisplay"></div>
+                    </div>
+                `;
+                document.getElementById('submitBtn').addEventListener('click', getPassword);
             } else {
-                if (wrongArray.length > 0) {
-                    wrongArray.forEach((wq, i) => {
-                        summary.innerHTML += `<p>第 ${i + 1} 題：\\(${wq.question}\\)，正確答案：\\(${wq.answer}\\)</p>`;
-                    });
-                } else {
-                    summary.innerHTML += '已完成所有題目！';
+                wrongArray.forEach((wq, i) => {
+                    summary.innerHTML += `<p>第 ${i + 1} 題：\\(${wq.question}\\)，正確答案：\\(${wq.answer}\\)</p>`;
+                });
+                if (window.MathJax) {
+                    MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
                 }
             }
-            if (window.MathJax) {
-                MathJax.typesetPromise().catch(err => console.log('MathJax 渲染錯誤:', err));
+        }
+
+        function getPassword() {
+            const input = document.getElementById('studentIdInput');
+            const studentId = parseInt(input.value);
+            const passwordDisplay = document.getElementById('passwordDisplay');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (studentId >= 1 && studentId <= 40) {
+                const encryptedPassword = encryptedPasswordMap[studentId];
+                const decryptedPassword = decryptPassword(encryptedPassword);
+                passwordDisplay.textContent = `你的密碼是：${decryptedPassword}`;
+                input.disabled = true;
+                submitBtn.disabled = true;
+            } else {
+                passwordDisplay.textContent = '請輸入有效的學號（1-40）！';
+                passwordDisplay.style.color = '#d32f2f';
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            checkPassJson().then(() => {
-                displayQuestion();
-            });
+            displayQuestion();
         });
     </script>
+     <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
 </body>
 </html>
