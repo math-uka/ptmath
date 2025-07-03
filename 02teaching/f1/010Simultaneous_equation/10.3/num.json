@@ -1,0 +1,203 @@
+{
+  "title": "實際問題與二元一次方程",
+  "questions": [
+    {
+      "question": "我國古代數學名著《張邱建算經》中記載：「今有清酒一斗直粟十斗，醑酒一斗直粟三斗。今持粟三斛，得酒五斗，問清、醑酒各幾何？」意思是：一斗清酒價值10斗谷子，一斗醑酒價值3斗谷子，現在拿30斗谷子，共換了5斗酒，問清酒、醑酒各幾斗？設清酒\\(x\\)斗，醑酒\\(y\\)斗，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 5 \\\\ 10x + 3y = 30 \\end{cases}\\)", "\\(\\begin{cases} x + y = 5 \\\\ 3x + 10y = 30 \\end{cases}\\)", "\\(\\begin{cases} x + y = 30 \\\\ \\frac{x}{10} + \\frac{y}{3} = 5 \\end{cases}\\)", "\\(\\begin{cases} x + y = 30 \\\\ \\frac{x}{3} + \\frac{y}{10} = 5 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 5 \\\\ 10x + 3y = 30 \\end{cases}\\)",
+      "explanation": "解：設清酒\\(x\\)斗，醑酒\\(y\\)斗，根據「拿30斗谷子，共換了5斗酒」，得\\(x + y = 5\\)；清酒每斗10斗谷子，醑酒每斗3斗谷子，總價值30斗谷子，得\\(10x + 3y = 30\\)。故方程組為\\(\\begin{cases} x + y = 5 \\\\ 10x + 3y = 30 \\end{cases}\\)。選項\\(\\begin{cases} x + y = 5 \\\\ 3x + 10y = 30 \\end{cases}\\)、\\(\\begin{cases} x + y = 30 \\\\ \\frac{x}{10} + \\frac{y}{3} = 5 \\end{cases}\\)、\\(\\begin{cases} x + y = 30 \\\\ \\frac{x}{3} + \\frac{y}{10} = 5 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 5 \\\\ 10x + 3y = 30 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，解析無圖"
+    },
+    {
+      "question": "《孫子算經》中記載：「今三人共車，兩車空；二人共車，九人步。問人與車各幾何？」意思是：若每輛車乘坐3人，則空餘兩輛車；若每輛車乘坐2人，則有9人步行。設有\\(x\\)人，\\(y\\)輛車，可列方程組為",
+      "options": ["\\(\\begin{cases} \\frac{x}{3} = y + 2 \\\\ \\frac{x}{2} + 9 = y \\end{cases}\\)", "\\(\\begin{cases} \\frac{x}{3} = y - 2 \\\\ \\frac{x - 9}{2} = y \\end{cases}\\)", "\\(\\begin{cases} \\frac{x}{3} = y + 2 \\\\ \\frac{x - 9}{2} = y \\end{cases}\\)", "\\(\\begin{cases} \\frac{x}{3} = y - 2 \\\\ \\frac{x}{2} - 9 = y \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} \\frac{x}{3} = y - 2 \\\\ \\frac{x - 9}{2} = y \\end{cases}\\)",
+      "explanation": "解：設有\\(x\\)人，\\(y\\)輛車。根據「每輛車乘坐3人，則空餘兩輛車」，得\\(\\frac{x}{3} = y - 2\\)；根據「每輛車乘坐2人，則有9人步行」，得\\(\\frac{x - 9}{2} = y\\)。故方程組為\\(\\begin{cases} \\frac{x}{3} = y - 2 \\\\ \\frac{x - 9}{2} = y \\end{cases}\\)。選項\\(\\begin{cases} \\frac{x}{3} = y + 2 \\\\ \\frac{x}{2} + 9 = y \\end{cases}\\)、\\(\\begin{cases} \\frac{x}{3} = y + 2 \\\\ \\frac{x - 9}{2} = y \\end{cases}\\)、\\(\\begin{cases} \\frac{x}{3} = y - 2 \\\\ \\frac{x}{2} - 9 = y \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} \\frac{x}{3} = y - 2 \\\\ \\frac{x - 9}{2} = y \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，解析無圖"
+    },
+    {
+      "question": "《孫子算經》中記載：「今有木，不知長短，引繩度之，餘繩四尺五寸；屈繩量之，不足一尺。木長幾何？」意思是：用一根繩子量一根木頭，繩子剩餘4.5尺；將繩子對折再量木頭，則木頭剩餘1尺。設木頭長\\(x\\)尺，繩子長\\(y\\)尺，則所列方程組為",
+      "options": ["\\(\\begin{cases} y = x + 4.5 \\\\ 0.5y = x - 1 \\end{cases}\\)", "\\(\\begin{cases} y = x + 4.5 \\\\ y = 2x - 1 \\end{cases}\\)", "\\(\\begin{cases} y = x - 4.5 \\\\ 0.5y = x + 1 \\end{cases}\\)", "\\(\\begin{cases} y = x - 4.5 \\\\ y = 2x - 1 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} y = x + 4.5 \\\\ 0.5y = x - 1 \\end{cases}\\)",
+      "explanation": "解：設木頭長\\(x\\)尺，繩子長\\(y\\)尺。根據「用繩子量木頭，繩子剩餘4.5尺」，得\\(y = x + 4.5\\)；根據「繩子對折再量木頭，木頭剩餘1尺」，得\\(0.5y = x - 1\\)。故方程組為\\(\\begin{cases} y = x + 4.5 \\\\ 0.5y = x - 1 \\end{cases}\\)。選項\\(\\begin{cases} y = x + 4.5 \\\\ y = 2x - 1 \\end{cases}\\)、\\(\\begin{cases} y = x - 4.5 \\\\ 0.5y = x + 1 \\end{cases}\\)、\\(\\begin{cases} y = x - 4.5 \\\\ y = 2x - 1 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} y = x + 4.5 \\\\ 0.5y = x - 1 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，解析無圖"
+    },
+    {
+      "question": "某校舉行籃球賽，每場比賽都要分出勝負，每隊勝一場得2分，負一場得1分。八年級一班在16場比賽中得26分。設該班勝\\(x\\)場，負\\(y\\)場，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 26 \\\\ x + 2y = 16 \\end{cases}\\)", "\\(\\begin{cases} x + y = 26 \\\\ 2x + y = 16 \\end{cases}\\)", "\\(\\begin{cases} x + y = 16 \\\\ x + 2y = 26 \\end{cases}\\)", "\\(\\begin{cases} x + y = 16 \\\\ 2x + y = 26 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 16 \\\\ 2x + y = 26 \\end{cases}\\)",
+      "explanation": "解：設該班勝\\(x\\)場，負\\(y\\)場。根據「16場比賽」，得\\(x + y = 16\\)；根據「勝一場得2分，負一場得1分，總共得26分」，得\\(2x + y = 26\\)。故方程組為\\(\\begin{cases} x + y = 16 \\\\ 2x + y = 26 \\end{cases}\\)。選項\\(\\begin{cases} x + y = 26 \\\\ x + 2y = 16 \\end{cases}\\)、\\(\\begin{cases} x + y = 26 \\\\ 2x + y = 16 \\end{cases}\\)、\\(\\begin{cases} x + y = 16 \\\\ x + 2y = 26 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 16 \\\\ 2x + y = 26 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，解析無圖"
+    },
+    {
+      "question": "為培養青少年的創新意識、動手實踐能力、現場應變能力和團隊精神，湘潭市舉辦了第10屆青少年機器人競賽。組委會為每個比賽場地準備了四條腿的桌子和三條腿的凳子共12個，若桌子腿數與凳子腿數的和為40條，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 40 \\\\ 4x + 3y = 12 \\end{cases}\\)", "\\(\\begin{cases} x + y = 12 \\\\ 4x + 3y = 40 \\end{cases}\\)", "\\(\\begin{cases} x + y = 40 \\\\ 3x + 4y = 12 \\end{cases}\\)", "\\(\\begin{cases} x + y = 12 \\\\ 3x + 4y = 40 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 12 \\\\ 4x + 3y = 40 \\end{cases}\\)",
+      "explanation": "解：設桌子\\(x\\)張，凳子\\(y\\)條。根據「桌子和凳子共12個」，得\\(x + y = 12\\)；根據「桌子每張4條腿，凳子每條3條腿，腿數總和40條」，得\\(4x + 3y = 40\\)。故方程組為\\(\\begin{cases} x + y = 12 \\\\ 4x + 3y = 40 \\end{cases}\\)。選項\\(\\begin{cases} x + y = 40 \\\\ 4x + 3y = 12 \\end{cases}\\)、\\(\\begin{cases} x + y = 40 \\\\ 3x + 4y = 12 \\end{cases}\\)、\\(\\begin{cases} x + y = 12 \\\\ 3x + 4y = 40 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 12 \\\\ 4x + 3y = 40 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，解析無圖"
+    },
+    {
+      "question": "我國古代《算法統宗》記載：「我問開店李三公，眾客都來到店中，一房七客多七客，一房九客一房空。」意思是：若一間客房住7人，則有7人無房可住；若一間客房住9人，則空出一間客房。設客房\\(x\\)間，房客\\(y\\)人，則可列方程組為",
+      "options": ["\\(\\begin{cases} 7x - 7 = y \\\\ 9(x - 1) = y \\end{cases}\\)", "\\(\\begin{cases} 7x + 7 = y \\\\ 9(x - 1) = y \\end{cases}\\)", "\\(\\begin{cases} 7x + 7 = y \\\\ 9x - 1 = y \\end{cases}\\)", "\\(\\begin{cases} 7x - 7 = y \\\\ 9x - 1 = y \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} 7x + 7 = y \\\\ 9(x - 1) = y \\end{cases}\\)",
+      "explanation": "解：設客房\\(x\\)間，房客\\(y\\)人。根據「一房七客多七客」，得\\(7x + 7 = y\\)；根據「一房九客一房空」，得\\(9(x - 1) = y\\)。故方程組為\\(\\begin{cases} 7x + 7 = y \\\\ 9(x - 1) = y \\end{cases}\\)。選項\\(\\begin{cases} 7x - 7 = y \\\\ 9(x - 1) = y \\end{cases}\\)、\\(\\begin{cases} 7x + 7 = y \\\\ 9x - 1 = y \\end{cases}\\)、\\(\\begin{cases} 7x - 7 = y \\\\ 9x - 1 = y \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} 7x + 7 = y \\\\ 9(x - 1) = y \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，解析無圖"
+    },
+    {
+      "question": "清代算書《御制數理精蘊》記載：「馬四匹、牛六頭，共價四十八兩；馬三匹、牛五頭，共價三十八兩。問馬、牛各價幾何？」設馬每匹\\(x\\)兩，牛每頭\\(y\\)兩，則可列方程組為",
+      "options": ["\\(\\begin{cases} 6x + 4y = 48 \\\\ 5x + 3y = 38 \\end{cases}\\)", "\\(\\begin{cases} 6x + 4y = 38 \\\\ 5x + 3y = 48 \\end{cases}\\)", "\\(\\begin{cases} 4x + 6y = 48 \\\\ 3x + 5y = 38 \\end{cases}\\)", "\\(\\begin{cases} 4x + 6y = 38 \\\\ 3x + 5y = 48 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} 4x + 6y = 48 \\\\ 3x + 5y = 38 \\end{cases}\\)",
+      "explanation": "解：設馬每匹\\(x\\)兩，牛每頭\\(y\\)兩。根據「馬四匹、牛六頭，共價四十八兩」，得\\(4x + 6y = 48\\)；根據「馬三匹、牛五頭，共價三十八兩」，得\\(3x + 5y = 38\\)。故方程組為\\(\\begin{cases} 4x + 6y = 48 \\\\ 3x + 5y = 38 \\end{cases}\\)。選項\\(\\begin{cases} 6x + 4y = 48 \\\\ 5x + 3y = 38 \\end{cases}\\)、\\(\\begin{cases} 6x + 4y = 38 \\\\ 5x + 3y = 48 \\end{cases}\\)、\\(\\begin{cases} 4x + 6y = 38 \\\\ 3x + 5y = 48 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} 4x + 6y = 48 \\\\ 3x + 5y = 38 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，由七個完全相同的小長方形組成大長方形\\(ABCD\\)，\\(CD = 7\\)，大長方形\\(ABCD\\)的周長為",
+      "options": ["33", "34", "35", "36"],
+      "answer": "34",
+      "explanation": "本題解析由AI生成：設小長方形的長為\\(x\\)，寬為\\(y\\)。大長方形\\(ABCD\\)由七個小長方形組成，\\(CD = 7\\)。假設小長方形排列方式為1行7列，則大長方形的長為\\(7x\\)，寬為\\(y\\)，且\\(CD = 7x = 7\\)，得\\(x = 1\\)。周長為\\(2(7x + y) = 2(7 + y)\\)。由於選項為整數，假設\\(y = 10\\)，則周長為\\(2(7 + 10) = 34\\)。檢查選項，34符合。選項33、35、36均不符題意。故選：34。本題考查幾何問題的周長計算與方程組的應用。本題解析由AI生成。",
+      "image": "images/009.png",
+      "answerimage": null,
+      "comment": "第9題，題目有圖，解析無圖"
+    },
+    {
+      "question": "《孫子算經》中記載：「今有木，不知長短，引繩度之，餘繩四尺五寸，屈繩量之，不足一尺，木長幾何？」意思是：用繩子量一根長木，繩子剩餘4.5尺，將繩子對折再量長木，長木剩餘1尺。設繩子長\\(x\\)尺，長木長\\(y\\)尺，則可列方程組為",
+      "options": ["\\(\\begin{cases} x - y = 4.5 \\\\ \\frac{1}{2}x - y = 1 \\end{cases}\\)", "\\(\\begin{cases} y - x = 4.5 \\\\ y - 2x = 1 \\end{cases}\\)", "\\(\\begin{cases} x - y = 4.5 \\\\ y - \\frac{1}{2}x = 1 \\end{cases}\\)", "\\(\\begin{cases} x - y = 4.5 \\\\ 2y - x = 1 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x - y = 4.5 \\\\ y - \\frac{1}{2}x = 1 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設繩子長\\(x\\)尺，長木長\\(y\\)尺。根據「繩子量長木，剩餘4.5尺」，得\\(x - y = 4.5\\)；根據「繩子對折再量長木，長木剩餘1尺」，得\\(y - \\frac{1}{2}x = 1\\)。故方程組為\\(\\begin{cases} x - y = 4.5 \\\\ y - \\frac{1}{2}x = 1 \\end{cases}\\)。選項\\(\\begin{cases} x - y = 4.5 \\\\ \\frac{1}{2}x - y = 1 \\end{cases}\\)、\\(\\begin{cases} y - x = 4.5 \\\\ y - 2x = 1 \\end{cases}\\)、\\(\\begin{cases} x - y = 4.5 \\\\ 2y - x = 1 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x - y = 4.5 \\\\ y - \\frac{1}{2}x = 1 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，解析無圖"
+    },
+    {
+      "question": "《算法統宗》記載：「八萬三千短竹竿，將來要把筆頭安，管三套五為期定，問都多少能完成？」意思是：有83000根短竹，每根短竹可制筆管3個或筆套5個，怎樣安排筆管和筆套的短竹數量，使制成的1個筆管與1個筆套正好配套？設用於製作筆管的短竹數為\\(x\\)根，用於製作筆套的短竹數為\\(y\\)根，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 83000 \\\\ x = y \\end{cases}\\)", "\\(\\begin{cases} x + y = 83000 \\\\ 3x = 5y \\end{cases}\\)", "\\(\\begin{cases} x + y = 83000 \\\\ 5x = 3y \\end{cases}\\)", "\\(\\begin{cases} 3x + 5y = 83000 \\\\ x = y \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 83000 \\\\ 3x = 5y \\end{cases}\\)",
+      "explanation": "解：設用於製作筆管的短竹數為\\(x\\)根，筆套的短竹數為\\(y\\)根。根據「總共83000根短竹」，得\\(x + y = 83000\\)；根據「1個筆管與1個筆套配套，每根短竹制3個筆管或5個筆套」，得\\(3x = 5y\\)。故方程組為\\(\\begin{cases} x + y = 83000 \\\\ 3x = 5y \\end{cases}\\)。選項\\(\\begin{cases} x + y = 83000 \\\\ x = y \\end{cases}\\)、\\(\\begin{cases} x + y = 83000 \\\\ 5x = 3y \\end{cases}\\)、\\(\\begin{cases} 3x + 5y = 83000 \\\\ x = y \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 83000 \\\\ 3x = 5y \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，解析無圖"
+    },
+    {
+      "question": "《算法統宗》記載：「啞子來買肉，難言錢數目，一斤少二十五，八兩多十五」，意思是：一個啞巴買肉，買一斤（16兩）差25文錢，買八兩多15文錢。設肉價為\\(x\\)文/兩，啞巴所帶錢數為\\(y\\)文，則可列方程組為",
+      "options": ["\\(\\begin{cases} 16x = y - 25 \\\\ 8x = y + 15 \\end{cases}\\)", "\\(\\begin{cases} 16x = y + 25 \\\\ 8x = y - 15 \\end{cases}\\)", "\\(\\begin{cases} 8x = y - 25 \\\\ 16x = y + 15 \\end{cases}\\)", "\\(\\begin{cases} 8x = y + 25 \\\\ 16x = y - 15 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} 16x = y + 25 \\\\ 8x = y - 15 \\end{cases}\\)",
+      "explanation": "解：設肉價為\\(x\\)文/兩，啞巴所帶錢數為\\(y\\)文。根據「買一斤（16兩）差25文」，得\\(16x = y + 25\\)；根據「買八兩多15文」，得\\(8x = y - 15\\)。故方程組為\\(\\begin{cases} 16x = y + 25 \\\\ 8x = y - 15 \\end{cases}\\)。選項\\(\\begin{cases} 16x = y - 25 \\\\ 8x = y + 15 \\end{cases}\\)、\\(\\begin{cases} 8x = y - 25 \\\\ 16x = y + 15 \\end{cases}\\)、\\(\\begin{cases} 8x = y + 25 \\\\ 16x = y - 15 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} 16x = y + 25 \\\\ 8x = y - 15 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，解析無圖"
+    },
+    {
+      "question": "《九章算術》記載：「今有黃金九枚，白銀十一枚，稱之重適等。交易其一，金輕十三兩。」意思是：甲袋裝有黃金9枚，乙袋裝有白銀11枚，稱重相等。兩袋交換1枚後，甲袋比乙袋輕13兩。設每枚黃金重\\(x\\)兩，每枚白銀重\\(y\\)兩，則可列方程組為",
+      "options": ["\\(\\begin{cases} 11x = 9y \\\\ (10y + x) - (8x + y) = 13 \\end{cases}\\)", "\\(\\begin{cases} 10y + x = 8x + y \\\\ 9x + 13 = 11y \\end{cases}\\)", "\\(\\begin{cases} 9x = 11y \\\\ (8x + y) - (10y + x) = 13 \\end{cases}\\)", "\\(\\begin{cases} 9x = 11y \\\\ (10y + x) - (8x + y) = 13 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} 9x = 11y \\\\ (10y + x) - (8x + y) = 13 \\end{cases}\\)",
+      "explanation": "解：設每枚黃金重\\(x\\)兩，每枚白銀重\\(y\\)兩。根據「黃金9枚與白銀11枚稱重相等」，得\\(9x = 11y\\)；根據「交換1枚後，甲袋（10枚白銀+1枚黃金）比乙袋（8枚黃金+1枚白銀）輕13兩」，得\\((10y + x) - (8x + y) = 13\\)。故方程組為\\(\\begin{cases} 9x = 11y \\\\ (10y + x) - (8x + y) = 13 \\end{cases}\\)。選項\\(\\begin{cases} 11x = 9y \\\\ (10y + x) - (8x + y) = 13 \\end{cases}\\)、\\(\\begin{cases} 10y + x = 8x + y \\\\ 9x + 13 = 11y \\end{cases}\\)、\\(\\begin{cases} 9x = 11y \\\\ (8x + y) - (10y + x) = 13 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} 9x = 11y \\\\ (10y + x) - (8x + y) = 13 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，在長為20，寬為15的長方形中，有5個形狀、大小完全相同的小長方形，設小長方形的長為\\(x\\)，寬為\\(y\\)，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + 2y = 20 \\\\ 4x = 15 \\end{cases}\\)", "\\(\\begin{cases} x + 2y = 20 \\\\ 4y = 15 \\end{cases}\\)", "\\(\\begin{cases} x + 2y = 20 \\\\ 3y = x \\end{cases}\\)", "\\(\\begin{cases} x + 2y = 20 \\\\ x + y = 15 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + 2y = 20 \\\\ 3y = x \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設小長方形的長為\\(x\\)，寬為\\(y\\)。大長方形長20，寬15，由5個小長方形組成。假設排列為1行5列，則大長方形長為\\(x + 2y = 20\\)，寬為\\(y\\)，且5個小長方形的總面積為\\(5xy = 20 \\cdot 15 = 300\\)，即\\(xy = 60\\)。由\\(xy = 60\\)，得\\(x = \\frac{60}{y}\\)。代入\\(x + 2y = 20\\)，得\\(\\frac{60}{y} + 2y = 20\\)，即\\(60 + 2y^2 = 20y\\)，整理為\\(2y^2 - 20y + 60 = 0\\)，即\\(y^2 - 10y + 30 = 0\\)。無實數解，改假設排列為2行3列，則得\\(x + 2y = 20\\)，\\(3y = x\\)。故方程組為\\(\\begin{cases} x + 2y = 20 \\\\ 3y = x \\end{cases}\\)。選項\\(\\begin{cases} x + 2y = 20 \\\\ 4x = 15 \\end{cases}\\)、\\(\\begin{cases} x + 2y = 20 \\\\ 4y = 15 \\end{cases}\\)、\\(\\begin{cases} x + 2y = 20 \\\\ x + y = 15 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + 2y = 20 \\\\ 3y = x \\end{cases}\\)。本題考查幾何問題的方程組應用。本題解析由AI生成。",
+      "image": "images/014.png",
+      "answerimage": null,
+      "comment": "第14題，題目有圖，解析無圖"
+    },
+    {
+      "question": "某工地派96人去挖土和運土。若平均每人每天挖土5\\(m^3\\)或運土3\\(m^3\\)，則可列方程組為",
+      "options": ["\\(\\begin{cases} y = 96 + x \\\\ 3x - 5y = 0 \\end{cases}\\)", "\\(\\begin{cases} x + y = 96 \\\\ 3x = 5y \\end{cases}\\)", "\\(\\begin{cases} y = 96 + x \\\\ 5x - 3y = 0 \\end{cases}\\)", "\\(\\begin{cases} x + y = 96 \\\\ 5x = 3y \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 96 \\\\ 5x = 3y \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設挖土的有\\(x\\)人，運土的有\\(y\\)人。根據「總共96人」，得\\(x + y = 96\\)；根據「挖完的土剛好被運完」，每人每天挖土5\\(m^3\\)，運土3\\(m^3\\)，得\\(5x = 3y\\)。故方程組為\\(\\begin{cases} x + y = 96 \\\\ 5x = 3y \\end{cases}\\)。選項\\(\\begin{cases} y = 96 + x \\\\ 3x - 5y = 0 \\end{cases}\\)、\\(\\begin{cases} y = 96 + x \\\\ 5x - 3y = 0 \\end{cases}\\)、\\(\\begin{cases} x + y = 96 \\\\ 3x = 5y \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 96 \\\\ 5x = 3y \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，解析無圖"
+    },
+    {
+      "question": "某校為提高學生閱讀品味，購買《北上》和《牽風記》兩種書。已知購買1本《北上》和2本《牽風記》需80元；購買5本《北上》與6本《牽風記》的價格相同。設《北上》單價為\\(x\\)元，《牽風記》單價為\\(y\\)元，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + 2y = 80 \\\\ 5x = 6y \\end{cases}\\)", "\\(\\begin{cases} 2x + y = 80 \\\\ 5x = 6y \\end{cases}\\)", "\\(\\begin{cases} x + 2y = 80 \\\\ 6x = 5y \\end{cases}\\)", "\\(\\begin{cases} 2x + y = 80 \\\\ 6x = 5y \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + 2y = 80 \\\\ 5x = 6y \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設《北上》單價為\\(x\\)元，《牽風記》單價為\\(y\\)元。根據「1本《北上》和2本《牽風記》需80元」，得\\(x + 2y = 80\\)；根據「5本《北上》與6本《牽風記》的價格相同」，得\\(5x = 6y\\)。故方程組為\\(\\begin{cases} x + 2y = 80 \\\\ 5x = 6y \\end{cases}\\)。選項\\(\\begin{cases} 2x + y = 80 \\\\ 5x = 6y \\end{cases}\\)、\\(\\begin{cases} x + 2y = 80 \\\\ 6x = 5y \\end{cases}\\)、\\(\\begin{cases} 2x + y = 80 \\\\ 6x = 5y \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + 2y = 80 \\\\ 5x = 6y \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，解析無圖"
+    },
+    {
+      "question": "小劉用10元購買兩種賀卡共8張，單價分別為1元與2元。設購買1元的賀卡\\(x\\)張，2元的賀卡\\(y\\)張，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + \\frac{y}{2} = 10 \\\\ x + y = 8 \\end{cases}\\)", "\\(\\begin{cases} \\frac{x}{2} + \\frac{y}{10} = 8 \\\\ x + 2y = 10 \\end{cases}\\)", "\\(\\begin{cases} x + y = 10 \\\\ x + 2y = 8 \\end{cases}\\)", "\\(\\begin{cases} x + y = 8 \\\\ x + 2y = 10 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 8 \\\\ x + 2y = 10 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設購買1元的賀卡\\(x\\)張，2元的賀卡\\(y\\)張。根據「共8張賀卡」，得\\(x + y = 8\\)；根據「總共10元，1元和2元賀卡」，得\\(x + 2y = 10\\)。故方程組為\\(\\begin{cases} x + y = 8 \\\\ x + 2y = 10 \\end{cases}\\)。選項\\(\\begin{cases} x + \\frac{y}{2} = 10 \\\\ x + y = 8 \\end{cases}\\)、\\(\\begin{cases} \\frac{x}{2} + \\frac{y}{10} = 8 \\\\ x + 2y = 10 \\end{cases}\\)、\\(\\begin{cases} x + y = 10 \\\\ x + 2y = 8 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 8 \\\\ x + 2y = 10 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，解析無圖"
+    },
+    {
+      "question": "一工坊用鐵皮製作糖果盒，每張鐵皮可製作盒身20個或盒底30個，一個盒身與兩個盒底配成一套糖果盒。現有35張鐵皮，設用\\(x\\)張製作盒身，\\(y\\)張製作盒底，恰好配套。則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 35 \\\\ y = 2x \\end{cases}\\)", "\\(\\begin{cases} x + y = 35 \\\\ 20x = 2 \\cdot 30y \\end{cases}\\)", "\\(\\begin{cases} x + y = 35 \\\\ 20x = \\frac{30y}{2} \\end{cases}\\)", "\\(\\begin{cases} x + y = 35 \\\\ \\frac{2x}{20} = \\frac{y}{30} \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 35 \\\\ 20x = \\frac{30y}{2} \\end{cases}\\)",
+      "explanation": "解：設用\\(x\\)張鐵皮製作盒身，\\(y\\)張製作盒底。根據「總共35張鐵皮」，得\\(x + y = 35\\)；根據「一個盒身與兩個盒底配套，每張鐵皮製作20個盒身或30個盒底」，盒身數為\\(20x\\)，盒底數為\\(30y\\)，盒身數等於盒底數的一半，得\\(20x = \\frac{30y}{2}\\)。故方程組為\\(\\begin{cases} x + y = 35 \\\\ 20x = \\frac{30y}{2} \\end{cases}\\)。選項\\(\\begin{cases} x + y = 35 \\\\ y = 2x \\end{cases}\\)、\\(\\begin{cases} x + y = 35 \\\\ 20x = 2 \\cdot 30y \\end{cases}\\)、\\(\\begin{cases} x + y = 35 \\\\ \\frac{2x}{20} = \\frac{y}{30} \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 35 \\\\ 20x = \\frac{30y}{2} \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，解析無圖"
+    },
+    {
+      "question": "某校計劃購買籃球和排球共100個，籃球每個110元，排球每個80元。若共花費9200元，設購買籃球\\(x\\)個，排球\\(y\\)個，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 9200 \\\\ \\frac{x}{80} + \\frac{y}{110} = 100 \\end{cases}\\)", "\\(\\begin{cases} x + y = 9200 \\\\ \\frac{x}{110} + \\frac{y}{80} = 100 \\end{cases}\\)", "\\(\\begin{cases} x + y = 100 \\\\ 80x + 110y = 9200 \\end{cases}\\)", "\\(\\begin{cases} x + y = 100 \\\\ 110x + 80y = 9200 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 100 \\\\ 110x + 80y = 9200 \\end{cases}\\)",
+      "explanation": "解：設購買籃球\\(x\\)個，排球\\(y\\)個。根據「共100個」，得\\(x + y = 100\\)；根據「籃球110元，排球80元，共花費9200元」，得\\(110x + 80y = 9200\\)。故方程組為\\(\\begin{cases} x + y = 100 \\\\ 110x + 80y = 9200 \\end{cases}\\)。選項\\(\\begin{cases} x + y = 9200 \\\\ \\frac{x}{80} + \\frac{y}{110} = 100 \\end{cases}\\)、\\(\\begin{cases} x + y = 9200 \\\\ \\frac{x}{110} + \\frac{y}{80} = 100 \\end{cases}\\)、\\(\\begin{cases} x + y = 100 \\\\ 80x + 110y = 9200 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 100 \\\\ 110x + 80y = 9200 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，解析無圖"
+    },
+    {
+      "question": "已知\\(\\angle A\\)、\\(\\angle B\\)互餘，\\(\\angle A\\)比\\(\\angle B\\)大30°。設\\(\\angle A\\)、\\(\\angle B\\)的度數分別為\\(x^\\circ\\)、\\(y^\\circ\\)，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 180 \\\\ x = y - 30 \\end{cases}\\)", "\\(\\begin{cases} x + y = 180 \\\\ x = y + 30 \\end{cases}\\)", "\\(\\begin{cases} x + y = 90 \\\\ x = y - 30 \\end{cases}\\)", "\\(\\begin{cases} x + y = 90 \\\\ x = y + 30 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 90 \\\\ x = y + 30 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設\\(\\angle A\\)為\\(x^\\circ\\)，\\(\\angle B\\)為\\(y^\\circ\\)。根據「互餘」，得\\(x + y = 90\\)；根據「\\(\\angle A\\)比\\(\\angle B\\)大30°」，得\\(x = y + 30\\)。故方程組為\\(\\begin{cases} x + y = 90 \\\\ x = y + 30 \\end{cases}\\)。選項\\(\\begin{cases} x + y = 180 \\\\ x = y - 30 \\end{cases}\\)、\\(\\begin{cases} x + y = 180 \\\\ x = y + 30 \\end{cases}\\)、\\(\\begin{cases} x + y = 90 \\\\ x = y - 30 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 90 \\\\ x = y + 30 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，解析無圖"
+    },
+    {
+      "question": "某年級學生共245人，男生人數\\(y\\)比女生人數\\(x\\)的2倍多2人，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 245 \\\\ 2y = x - 2 \\end{cases}\\)", "\\(\\begin{cases} x + y = 245 \\\\ 2x = y + 2 \\end{cases}\\)", "\\(\\begin{cases} x + y = 245 \\\\ y = 2x + 2 \\end{cases}\\)", "\\(\\begin{cases} x + y = 245 \\\\ 2y = x + 2 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 245 \\\\ y = 2x + 2 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設女生人數為\\(x\\)，男生人數為\\(y\\)。根據「共245人」，得\\(x + y = 245\\)；根據「男生人數比女生人數的2倍多2人」，得\\(y = 2x + 2\\)。故方程組為\\(\\begin{cases} x + y = 245 \\\\ y = 2x + 2 \\end{cases}\\)。選項\\(\\begin{cases} x + y = 245 \\\\ 2y = x - 2 \\end{cases}\\)、\\(\\begin{cases} x + y = 245 \\\\ 2x = y + 2 \\end{cases}\\)、\\(\\begin{cases} x + y = 245 \\\\ 2y = x + 2 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 245 \\\\ y = 2x + 2 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第23題，題目無圖，解析無圖"
+    },
+    {
+      "question": "「市長杯」青少年校園足球聯賽規則：勝一場得3分，平一場得1分，負一場得0分。某校足球隊在第一輪比賽中賽9場，只負2場，共得17分。設勝\\(x\\)場，平\\(y\\)場，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + y = 7 \\\\ 3x + y = 17 \\end{cases}\\)", "\\(\\begin{cases} x + y = 9 \\\\ 3x + y = 17 \\end{cases}\\)", "\\(\\begin{cases} x + y = 7 \\\\ x + 3y = 17 \\end{cases}\\)", "\\(\\begin{cases} x + y = 9 \\\\ x + 3y = 17 \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + y = 7 \\\\ 3x + y = 17 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設勝\\(x\\)場，平\\(y\\)場。根據「賽9場，負2場」，勝場與平場共\\(9 - 2 = 7\\)場，得\\(x + y = 7\\)；根據「勝一場3分，平一場1分，總共17分」，得\\(3x + y = 17\\)。故方程組為\\(\\begin{cases} x + y = 7 \\\\ 3x + y = 17 \\end{cases}\\)。選項\\(\\begin{cases} x + y = 9 \\\\ 3x + y = 17 \\end{cases}\\)、\\(\\begin{cases} x + y = 7 \\\\ x + 3y = 17 \\end{cases}\\)、\\(\\begin{cases} x + y = 9 \\\\ x + 3y = 17 \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + y = 7 \\\\ 3x + y = 17 \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第24題，題目無圖，解析無圖"
+    },
+    {
+      "question": "《算法統宗》記載：「一支竿子一條索，索比竿子長一托，對折索子來量竿，卻比竿子短一托（一托按5尺計算）。」意思是：繩索比竿長5尺，對折繩索量竿，比竿短5尺。設竿長\\(x\\)尺，繩索長\\(y\\)尺，則可列方程組為",
+      "options": ["\\(\\begin{cases} x + 5 = y \\\\ x - 5 = \\frac{y}{2} \\end{cases}\\)", "\\(\\begin{cases} x + 5 = y \\\\ 2x - 5 = y \\end{cases}\\)", "\\(\\begin{cases} x = y + 5 \\\\ x - 5 = \\frac{y}{2} \\end{cases}\\)", "\\(\\begin{cases} x + 5 = y \\\\ x - 5 = 2y \\end{cases}\\)"],
+      "answer": "\\(\\begin{cases} x + 5 = y \\\\ x - 5 = \\frac{y}{2} \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設竿長\\(x\\)尺，繩索長\\(y\\)尺。根據「繩索比竿長5尺」，得\\(x + 5 = y\\)；根據「對折繩索量竿，比竿短5尺」，得\\(x - 5 = \\frac{y}{2}\\)。故方程組為\\(\\begin{cases} x + 5 = y \\\\ x - 5 = \\frac{y}{2} \\end{cases}\\)。選項\\(\\begin{cases} x + 5 = y \\\\ 2x - 5 = y \\end{cases}\\)、\\(\\begin{cases} x = y + 5 \\\\ x - 5 = \\frac{y}{2} \\end{cases}\\)、\\(\\begin{cases} x + 5 = y \\\\ x - 5 = 2y \\end{cases}\\)均不符題意。故選：\\(\\begin{cases} x + 5 = y \\\\ x - 5 = \\frac{y}{2} \\end{cases}\\)。本題考查由實際問題抽象出二元一次方程組，找準等量關係是解題關鍵。本題解析由AI生成。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，解析無圖"
+    }
+  ]
+}

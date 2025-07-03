@@ -1,0 +1,195 @@
+{
+  "title": "三元一次方程組",
+  "questions": [
+    {
+      "question": "下列方程組不是三元一次方程組的是",
+      "options": [
+        "\\(\\begin{cases} x = 5 \\\\ x + y = 7 \\\\ x + y + z = 6 \\end{cases}\\)",
+        "\\(\\begin{cases} x + y = 3 \\\\ y + z = 4 \\\\ z + x = 2 \\end{cases}\\)",
+        "\\(\\begin{cases} x + 3y - z = 1 \\\\ 2x - y + z = 3 \\\\ 3x + y - z = 5 \\end{cases}\\)",
+        "\\(\\begin{cases} x + y - z = 7 \\\\ xy - z = 1 \\\\ x - 3y = 4 \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} x + y - z = 7 \\\\ xy - z = 1 \\\\ x - 3y = 4 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：三元一次方程組要求每個方程為線性且含三個未知數。選項A、B、C的方程均為一次方程，未知數為x、y、z。選項D的第二方程\\(xy - z = 1\\)含\\(xy\\)，為非線性項，非一次方程。故選項\\(\\begin{cases} x + y - z = 7 \\\\ xy - z = 1 \\\\ x - 3y = 4 \\end{cases}\\)不是三元一次方程組。本題考查三元一次方程組的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，解析無圖"
+    },
+    {
+      "question": "下列方程是三元一次方程的是",
+      "options": ["\\(x + 2yz = 3\\)", "\\(x + 3y = 4 - z\\)", "\\(2x - 3y = 5\\)", "\\(\\frac{2}{x} + y - z = 1\\)"],
+      "answer": "\\(x + 3y = 4 - z\\)",
+      "explanation": "本題解析由AI生成：三元一次方程需含三個未知數且為線性。選項A含\\(2yz\\)，為非線性；選項B可整理為\\(x + 3y + z = 4\\)，為三元一次方程；選項C僅含x、y，無z；選項D含\\(\\frac{2}{x}\\)，為非線性。故選項\\(x + 3y = 4 - z\\)為三元一次方程。本題考查三元一次方程的識別。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，解析無圖"
+    },
+    {
+      "question": "解方程組\\(\\begin{cases} 3x + z = 6 \\\\ 4x - y + 2z = 11 \\\\ 5x + 2y - 3z = 4 \\end{cases}\\)時，要使解法較為簡便，應",
+      "options": ["先消去\\(x\\)", "先消去\\(y\\)", "先消去\\(z\\)", "先消去常數"],
+      "answer": "先消去\\(y\\)",
+      "explanation": "第一方程\\(3x + z = 6\\)無\\(y\\)，故用第二方程\\(4x - y + 2z = 11\\)與第三方程\\(5x + 2y - 3z = 4\\)消去\\(y\\)，可得二元方程組，簡化計算。選項先消去\\(x\\)需調整多個方程，選項先消去\\(z\\)增加計算量，選項先消去常數不可行。故選項先消去\\(y\\)最簡便。本題考查三元一次方程組的消元策略。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，解析無圖"
+    },
+    {
+      "question": "以\\(\\begin{cases} x = 3 \\\\ y = 1 \\\\ z = -1 \\end{cases}\\)為解建立一個三元一次方程，不正確的是",
+      "options": [
+        "\\(3x - 4y + 2z = 3\\)",
+        "\\(\\frac{1}{3}x - y + z = -1\\)",
+        "\\(x + y - z = -2\\)",
+        "\\(\\frac{x}{2} - \\frac{2}{3}y - z = \\frac{5}{6}\\)"
+      ],
+      "answer": "\\(x + y - z = -2\\)",
+      "explanation": "將\\(x = 3\\)、\\(y = 1\\)、\\(z = -1\\)代入各選項。選項\\(3x - 4y + 2z = 3\\)：左邊=\\(3 \\cdot 3 - 4 \\cdot 1 + 2 \\cdot (-1) = 9 - 4 - 2 = 3\\)，成立；選項\\(\\frac{1}{3}x - y + z = -1\\)：左邊=\\(\\frac{1}{3} \\cdot 3 - 1 + (-1) = 1 - 1 - 1 = -1\\)，成立；選項\\(x + y - z = -2\\)：左邊=\\(3 + 1 - (-1) = 5\\)，右邊=\\(-2\\)，不成立；選項\\(\\frac{x}{2} - \\frac{2}{3}y - z = \\frac{5}{6}\\):左邊=\\(\\frac{3}{2} - \\frac{2}{3} \\cdot 1 - (-1) = \\frac{3}{2} - \\frac{2}{3} + 1 = \\frac{5}{6}\\)，成立。選項\\(x + y - z = -2\\)不正確。本題考查三元一次方程的驗證。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，解析無圖"
+    },
+    {
+      "question": "下列是三元一次方程組的是",
+      "options": [
+        "\\(\\begin{cases} 2x = 5 \\\\ x^2 + y = 7 \\\\ x + y + z = 6 \\end{cases}\\)",
+        "\\(\\begin{cases} \\frac{3}{x} - y + z = -2 \\\\ x - 2y + z = 9 \\\\ y = -3 \\end{cases}\\)",
+        "\\(\\begin{cases} x + y - z = 7 \\\\ xyz = 1 \\\\ x - 3y = 4 \\end{cases}\\)",
+        "\\(\\begin{cases} x + y = 2 \\\\ y + z = 1 \\\\ x + z = 9 \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} x + y = 2 \\\\ y + z = 1 \\\\ x + z = 9 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：三元一次方程組要求每個方程為線性且含三個未知數。選項A的第二方程\\(x^2 + y = 7\\)含\\(x^2\\)，非線性；選項B的第一方程\\(\\frac{3}{x} - y + z = -2\\)含\\(\\frac{3}{x}\\)，非線性；選項C的第二方程\\(xyz = 1\\)含\\(xyz\\)，非線性；選項D的方程均為一次且含x、y、z。故選項\\(\\begin{cases} x + y = 2 \\\\ y + z = 1 \\\\ x + z = 9 \\end{cases}\\)為三元一次方程組。本題考查三元一次方程組的識別。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，解析無圖"
+    },
+    {
+      "question": "三元一次方程\\(x - y + z = 3\\)有無數個解，下列四組值中，不是該方程的解的是",
+      "options": [
+        "\\(\\begin{cases} x = 1 \\\\ y = 1 \\\\ z = 3 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 2 \\\\ y = 1 \\\\ z = 2 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 2 \\\\ y = 3 \\\\ z = 4 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 3 \\\\ y = 2 \\\\ z = 1 \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} x = 3 \\\\ y = 2 \\\\ z = 1 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：將各選項代入\\(x - y + z = 3\\)。選項\\(x = 1, y = 1, z = 3\\)：\\(1 - 1 + 3 = 3\\)，成立；選項\\(x = 2, y = 1, z = 2\\)：\\(2 - 1 + 2 = 3\\)，成立；選項\\(x = 2, y = 3, z = 4\\)：\\(2 - 3 + 4 = 3\\)，成立；選項\\(x = 3, y = 2, z = 1\\)：\\(3 - 2 + 1 = 2\\)，不成立。選項\\(\\begin{cases} x = 3 \\\\ y = 2 \\\\ z = 1 \\end{cases}\\)不是解。本題考查三元一次方程的解驗證。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，解析無圖"
+    },
+    {
+      "question": "三元一次方程組\\(\\begin{cases} x - y = 1 \\\\ y - z = 1 \\\\ x + z = 6 \\end{cases}\\)的解是",
+      "options": [
+        "\\(\\begin{cases} x = 2 \\\\ y = 3 \\\\ z = 4 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 2 \\\\ y = 4 \\\\ z = 3 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 3 \\\\ y = 2 \\\\ z = 4 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 4 \\\\ y = 3 \\\\ z = 2 \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} x = 4 \\\\ y = 3 \\\\ z = 2 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：由第一方程\\(x - y = 1\\)，得\\(x = y + 1\\)。代入第三方程\\(x + z = 6\\)，得\\(y + 1 + z = 6\\)，即\\(y + z = 5\\)。與第二方程\\(y - z = 1\\)聯立，解得\\(y = 3, z = 2\\)。代入\\(x = y + 1\\)，得\\(x = 4\\)。驗證：\\(4 - 3 = 1\\)，\\(3 - 2 = 1\\)，\\(4 + 2 = 6\\)，均成立。選項\\(\\begin{cases} x = 4 \\\\ y = 3 \\\\ z = 2 \\end{cases}\\)正確。本題考查三元一次方程組的代入消元法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第11題，題目無圖，解析無圖"
+    },
+    {
+      "question": "解方程組\\(\\begin{cases} 2x - 3y + 2z = 2 \\\\ 3x + 4y - 2z = 5 \\\\ 4x + 5y - 4z = 2 \\end{cases}\\)，將三元一次方程組消元轉化為二元一次方程組\\(\\begin{cases} 5x + y = 7 \\\\ 8x - y = 6 \\end{cases}\\)，需經歷的步驟是",
+      "options": [
+        "\\(\\begin{cases} ① + ② \\\\ ① \\times 2 + ③ \\end{cases}\\)",
+        "\\(\\begin{cases} ① + ② \\\\ ② \\times 2 - ③ \\end{cases}\\)",
+        "\\(\\begin{cases} ① + ② \\\\ ① \\times 2 - ③ \\end{cases}\\)",
+        "\\(\\begin{cases} ② \\times 2 - ③ \\\\ ① \\times 2 + ③ \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} ① + ② \\\\ ① \\times 2 + ③ \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：設方程①\\(2x - 3y + 2z = 2\\)，②\\(3x + 4y - 2z = 5\\)，③\\(4x + 5y - 4z = 2\\)。計算①+②：\\(5x + y = 7\\)；計算①\\times 2 + ③：\\(4x - 6y + 4z + 4x + 5y - 4z = 4 + 2\\)，得\\(8x - y = 6\\)。得到\\(\\begin{cases} 5x + y = 7 \\\\ 8x - y = 6 \\end{cases}\\)。選項\\(\\begin{cases} ① + ② \\\\ ① \\times 2 + ③ \\end{cases}\\)正確。本題考查三元一次方程組的消元轉化。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，解析無圖"
+    },
+    {
+      "question": "三元一次方程組\\(\\begin{cases} x + y = 1 \\\\ y + z = 5 \\\\ z + x = 6 \\end{cases}\\)的解是",
+      "options": [
+        "\\(\\begin{cases} x = 1 \\\\ y = 0 \\\\ z = 5 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 1 \\\\ y = 2 \\\\ z = 4 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 1 \\\\ y = 0 \\\\ z = 4 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 4 \\\\ y = 1 \\\\ z = 0 \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} x = 1 \\\\ y = 0 \\\\ z = 5 \\end{cases}\\)",
+      "explanation": "由第一方程\\(x + y = 1\\)，得\\(x = 1 - y\\)。代入第三方程\\(z + x = 6\\)，得\\(z + 1 - y = 6\\)，即\\(y - z = -5\\)。與第二方程\\(y + z = 5\\)聯立，解得\\(y = 0, z = 5\\)。代入\\(x = 1 - y\\)，得\\(x = 1\\)。驗證：\\(1 + 0 = 1\\)，\\(0 + 5 = 5\\)，\\(5 + 1 = 6\\)，均成立。選項\\(\\begin{cases} x = 1 \\\\ y = 0 \\\\ z = 5 \\end{cases}\\)正確。本題考查三元一次方程組的代入消元法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，解析無圖"
+    },
+    {
+      "question": "解方程組\\(\\begin{cases} 3x - y + 2z = 3 \\\\ 2x + y - 4z = 11 \\\\ 7x + y - 5z = 1 \\end{cases}\\)，若要使計算簡便，消元的方法應選取",
+      "options": ["先消去\\(x\\)", "先消去\\(y\\)", "先消去\\(z\\)", "以上說法都不對"],
+      "answer": "先消去\\(y\\)",
+      "explanation": "本題解析由AI生成：觀察方程，第二方程\\(2x + y - 4z = 11\\)與第三方程\\(7x + y - 5z = 1\\)的\\(y\\)係數相同（+1），相減可消去\\(y\\)，得\\(5x - z = -10\\)。再與第一方程\\(3x - y + 2z = 3\\)結合，繼續消元，計算較簡便。選項先消去\\(x\\)或\\(z\\)需更多調整，選項以上說法都不對不適用。選項先消去\\(y\\)最簡便。本題考查三元一次方程組的消元策略。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，解析無圖"
+    },
+    {
+      "question": "方程組\\(\\begin{cases} x + y = -1 \\\\ z + x = 0 \\\\ y + z = 1 \\end{cases}\\)的解是",
+      "options": [
+        "\\(\\begin{cases} x = 1 \\\\ y = 0 \\\\ z = -1 \\end{cases}\\)",
+        "\\(\\begin{cases} x = 0 \\\\ y = -1 \\\\ z = 1 \\end{cases}\\)",
+        "\\(\\begin{cases} x = -1 \\\\ y = 1 \\\\ z = 0 \\end{cases}\\)",
+        "\\(\\begin{cases} x = -1 \\\\ y = 0 \\\\ z = 1 \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} x = -1 \\\\ y = 0 \\\\ z = 1 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：由第二方程\\(z + x = 0\\)，得\\(x = -z\\)。代入第一方程\\(x + y = -1\\)，得\\(-z + y = -1\\)，即\\(y - z = -1\\)。與第三方程\\(y + z = 1\\)聯立，解得\\(y = 0, z = 1\\)。代入\\(x = -z\\)，得\\(x = -1\\)。驗證：\\(-1 + 0 = -1\\)，\\(1 + (-1) = 0\\)，\\(0 + 1 = 1\\)，均成立。選項\\(\\begin{cases} x = -1 \\\\ y = 0 \\\\ z = 1 \\end{cases}\\)正確。本題考查三元一次方程組的代入消元法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第16題，題目無圖，解析無圖"
+    },
+    {
+      "question": "已知方程組\\(\\begin{cases} x + y - 5z = 0 \\\\ x - y + z = 0 \\end{cases}\\)，其中\\(xyz \\neq 0\\)，則\\(x:y:z=\\)",
+      "options": [
+        "\\(\\frac{2}{3}{1}\\)",
+        "\\(\\frac{1}{2}{3}\\)",
+        "\\(\\frac{1}{4}{1}\\)",
+        "\\(\\frac{3}{2}{1}\\)"
+      ],
+      "answer": "\\(\\frac{2}{3}{1}\\)",
+      "explanation": "本題解析由AI生成：設\\(x = 2k, y = 3k, z = k\\)（對應選項\\(\\frac{2}{3}{1}\\))，代入第一方程\\(x + y - 5z = 0\\)，得\\(2k + 3k - 5k = 0\\)，成立；代入第二方程\\(x - y + z = 0\\)，得\\(2k - 3k + k = 0\\)，成立。且\\(xyz \\neq 0\\)滿足。其他選項如\\(\\frac{1}{2}{3}\\)（設\\(x = k, y = 2k, z = 3k\\)）代入第一方程得\\(k + 2k - 15k = -12k \\neq 0\\)，不成立。選項\\(\\frac{2}{3}{1}\\)正確。本題考查三元一次方程組的比率解法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，解析無圖"
+    },
+    {
+      "question": "解三元一次方程組\\(\\begin{cases} 5x - 2y + 3z = 6 \\\\ 6x + 4y - 5z = 5 \\\\ 3x + 8y - 2z = 9 \\end{cases}\\)，最簡單的方法是先消去未知數",
+      "options": ["\\(x\\)", "\\(y\\)", "\\(z\\)", "都一樣"],
+      "answer": "\\(y\\)",
+      "explanation": "本題解析由AI生成：觀察方程，第二方程\\(6x + 4y - 5z = 5\\)與第三方程\\(3x + 8y - 2z = 9\\)的\\(y\\)係數（4和8）可通過倍數調整相消，計算較簡便。例如，第二方程\\times 2得\\(12x + 8y - 10z = 10\\)，與第三方程相減，消去\\(y\\)。選項先消去\\(x\\)或\\(z\\)需更多步驟，選項都一樣不適用。選項\\(y\\)最簡單。本題考查三元一次方程組的消元策略。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，解析無圖"
+    },
+    {
+      "question": "解三元一次方程組\\(\\begin{cases} x + y + z = 3 \\\\ 3x + 2y + z = 10 \\\\ 2x - y + z = -1 \\end{cases}\\)，如果消掉未知數\\(z\\)，則應將方程組變形為",
+      "options": [
+        "\\(① + ③, ① \\times 2 - ②\\)",
+        "\\(① + ③, ③ \\times 2 + ②\\)",
+        "\\(② - ①, ② - ③\\)",
+        "\\(① - ②, ① \\times 2 - ③\\)"
+      ],
+      "answer": "\\(② - ①, ② - ③\\)",
+      "explanation": "本題解析由AI生成：設方程①\\(x + y + z = 3\\)，②\\(3x + 2y + z = 10\\)，③\\(2x - y + z = -1\\)。計算②-①：\\(3x + 2y + z - (x + y + z) = 10 - 3\\)，得\\(2x + y = 7\\)；計算②-③：\\(3x + 2y + z - (2x - y + z) = 10 - (-1)\\)，得\\(x + 3y = 11\\)。得到二元方程組\\(\\begin{cases} 2x + y = 7 \\\\ x + 3y = 11 \\end{cases}\\)。選項\\(② - ①, ② - ③\\)正確。本題考查三元一次方程組的消元轉化。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，解析無圖"
+    },
+    {
+      "question": "以下方程組中，屬於三元一次方程組的是",
+      "options": [
+        "\\(\\begin{cases} 2x + 3y = 4 \\\\ 2y + z = 5 \\\\ x^2 + y = 1 \\end{cases}\\)",
+        "\\(\\begin{cases} \\frac{1}{x} + \\frac{1}{y} + \\frac{1}{z} = \\frac{1}{6} \\\\ 3x - 4y = 3 \\\\ x + z = 2 \\end{cases}\\)",
+        "\\(\\begin{cases} x + y + z = 2 \\\\ x - 2y = 3 \\\\ y - 6z = 9 \\end{cases}\\)",
+        "\\(\\begin{cases} x - y = 2 \\\\ 2x - 3y = 4 \\\\ 2x - 2y = 4 \\end{cases}\\)"
+      ],
+      "answer": "\\(\\begin{cases} x + y + z = 2 \\\\ x - 2y = 3 \\\\ y - 6z = 9 \\end{cases}\\)",
+      "explanation": "本題解析由AI生成：三元一次方程組要求每個方程為線性且含三個未知數。選項A的第三方程\\(x^2 + y = 1\\)含\\(x^2\\)，非線性；選項B的第一方程\\(\\frac{1}{x} + \\frac{1}{y} + \\frac{1}{z} = \\frac{1}{6}\\)含倒數，非線性；選項C的方程均為一次且含x、y、z；選項D的方程僅含x、y，無z。選項\\(\\begin{cases} x + y + z = 2 \\\\ x - 2y = 3 \\\\ y - 6z = 9 \\end{cases}\\)為三元一次方程組。本題考查三元一次方程組的識別。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，解析無圖"
+    }
+  ]
+}
