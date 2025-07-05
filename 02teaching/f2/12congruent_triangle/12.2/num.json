@@ -1,0 +1,266 @@
+{
+  "title": "全等三角形的判定",
+  "questions": [
+    {
+      "question": "如圖，在三角形 \\(ABC\\) 與三角形 \\(DEF\\) 全等的情況下，四點 \\(B\\)、\\(E\\)、\\(C\\)、\\(F\\) 在同一直線上，\\(BC = 7\\)，\\(EC = 5\\)，則 \\(CF\\) 的長度為",
+      "options": ["\\(2\\)", "\\(3\\)", "\\(5\\)", "\\(7\\)"],
+      "answer": "\\(2\\)",
+      "explanation": "解：因三角形 \\(ABC\\) 與三角形 \\(DEF\\) 全等，故對應邊相等，即 \\(BC = EF\\)。已知 \\(BC = 7\\)，因此 \\(EF = 7\\)。又因 \\(EC = 5\\)，在直線上，\\(CF = EF - EC = 7 - 5 = 2\\)。故選：\\(2\\)。本題考查全等三角形的對應邊性質，關鍵是利用全等性質與直線上的點關係計算。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第1題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，用尺規作圖製作 \\(\\angle AOC = \\angle AOB\\) 的第一步是以點 \\(O\\) 為圓心，任意長度為半徑畫弧交 \\(OA\\)、\\(OB\\) 於點 \\(E\\)、\\(F\\)，則第二步的作圖方法為",
+      "options": ["以點 \\(F\\) 為圓心，\\(OE\\) 長為半徑畫弧", "以點 \\(F\\) 為圓心，\\(EF\\) 長為半徑畫弧", "以點 \\(E\\) 為圓心，\\(OE\\) 長為半徑畫弧", "以點 \\(E\\) 為圓心，\\(EF\\) 長為半徑畫弧"],
+      "answer": "以點 \\(E\\) 為圓心，\\(EF\\) 長為半徑畫弧",
+      "explanation": "解：製作 \\(\\angle AOC = \\angle AOB\\) 的尺規作圖依據三角形全等判定（SSS）。第一步已確保 \\(OE = OE\\)、\\(OF = OG\\)，第二步需確保 \\(EF = EG\\)。因此，應以點 \\(E\\) 為圓心，\\(EF\\) 長為半徑畫弧，與第一步的弧交於點 \\(G\\)，從而保證三角形全等。故選：以點 \\(E\\) 為圓心，\\(EF\\) 長為半徑畫弧。本題考查尺規作圖的基本步驟與全等三角形判定。",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第2題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知 \\(\\angle 1 = \\angle 2\\)，\\(AC = AD\\)，增加下列條件：① \\(AB = AE\\)；② \\(BC = ED\\)；③ \\(\\angle C = \\angle D\\)；④ \\(\\angle B = \\angle E\\)。其中能使三角形 \\(ABC\\) 與三角形 \\(AED\\) 全等的條件有",
+      "options": ["4個", "3個", "2個", "1個"],
+      "answer": "3個",
+      "explanation": "解：已知 \\(\\angle 1 = \\angle 2\\)，即 \\(\\angle BAC = \\angle EAD\\)（即角 \\(BAC\\) 平行角 \\(EAD\\)），且 \\(AC = AD\\)。逐一分析選項：① 若 \\(AB = AE\\)，則三角形 \\(ABC\\) 與 \\(AED\\) 滿足 SAS（\\(AC = AD\\), \\(\\angle BAC = \\angle EAD\\), \\(AB = AE\\)），全等成立；② 若 \\(BC = ED\\)，僅滿足 SSA，無法判定全等；③ 若 \\(\\angle C = \\angle D\\)，則滿足 ASA（\\(\\angle BAC = \\angle EAD\\), \\(AC = AD\\), \\(\\angle C = \\angle D\\)），全等成立；④ 若 \\(\\angle B = \\angle E\\)，則滿足 AAS（\\(\\angle BAC = \\angle EAD\\), \\(AC = AD\\), \\(\\angle B = \\angle E\\)），全等成立。因此，①、③、④ 三個條件可使全等成立。故選：3個。本題考查三角形全等判定方法，需熟悉 SAS、ASA、AAS 的應用。",
+      "image": "images/003.png",
+      "answerimage": null,
+      "comment": "第3題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知 \\(MB = ND\\)，\\(\\angle MBA = \\angle NDC\\)，下列條件中不能判定三角形 \\(ABM\\) 與三角形 \\(CDN\\) 全等的是",
+      "options": ["\\(\\angle M = \\angle N\\)", "\\(AB = CD\\)", "\\(AM = CN\\)", "\\(AM \\parallel CN\\)（即 AM 平行 CN）"],
+      "answer": "\\(AM = CN\\)",
+      "explanation": "解：已知 \\(MB = ND\\)，\\(\\angle MBA = \\angle NDC\\)，逐一分析選項：選項 \\(\\angle M = \\angle N\\)，滿足 ASA（\\(\\angle M = \\angle N\\), \\(MB = ND\\), \\(\\angle MBA = \\angle NDC\\)），全等成立；選項 \\(AB = CD\\)，滿足 SAS（\\(MB = ND\\), \\(\\angle MBA = \\angle NDC\\), \\(AB = CD\\)），全等成立；選項 \\(AM = CN\\)，僅滿足 SSA（\\(MB = ND\\), \\(\\angle MBA = \\angle NDC\\), \\(AM = CN\\)），無法判定全等；選項 \\(AM \\parallel CN\\)（即 AM 平行 CN），則 \\(\\angle MAB = \\angle NCD\\)，滿足 AAS（\\(\\angle MAB = \\angle NCD\\), \\(\\angle MBA = \\angle NDC\\), \\(MB = ND\\)），全等成立。因此，選項 \\(AM = CN\\) 不能判定全等。故選：\\(AM = CN\\)。本題考查三角形全等判定，需注意 SSA 無法保證全等。",
+      "image": "images/004.png",
+      "answerimage": null,
+      "comment": "第4題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，將一長方形紙片按所示方式折疊，\\(BC\\)、\\(BD\\) 為折痕，則 \\(\\angle CBD\\) 的度數為",
+      "options": ["\\(60^\\circ\\)", "\\(75^\\circ\\)", "\\(90^\\circ\\)", "\\(95^\\circ\\)"],
+      "answer": "\\(90^\\circ\\)",
+      "explanation": "解：根據折疊性質，折疊前後對應角相等，即 \\(\\angle ABC = \\angle A'BC\\)，\\(\\angle DBE = \\angle DBE'\\)。因此，\\(\\angle ABC + \\angle DBE = \\angle A'BC + \\angle DBE' = \\angle CBD\\)。在三角形 \\(CBD\\) 中，\\(\\angle ABC + \\angle DBE + \\angle CBD = 180^\\circ\\)，即 \\(\\angle CBD + \\angle CBD = 180^\\circ\\)，故 \\(\\angle CBD = 90^\\circ\\)。故選：\\(90^\\circ\\)。本題考查折疊性質與三角形內角和的應用。",
+      "image": "images/005.png",
+      "answerimage": null,
+      "comment": "第5題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，欲測量圓形工件外徑，設計卡鉗，點 \\(O\\) 為卡鉗兩柄交點，且 \\(OA = OB = OC = OD\\)。若工件恰好通過卡鉗 \\(AB\\)，則工件外徑等於 \\(CD\\) 的長度，依據是全等三角形的判定條件",
+      "options": ["SSS", "SAS", "ASA", "AAS"],
+      "answer": "SAS",
+      "explanation": "解：連接 \\(AB\\)、\\(CD\\)。在三角形 \\(ABO\\) 與三角形 \\(DCO\\) 中，\\(OA = OD\\)，\\(OB = OC\\)，\\(\\angle AOB = \\angle DOC\\)（對頂角）。根據 SAS（\\(OA = OD\\), \\(\\angle AOB = \\angle DOC\\), \\(OB = OC\\)），三角形 \\(ABO\\) 與三角形 \\(DCO\\) 全等，故 \\(AB = CD\\)。因此，工件外徑等於 \\(CD\\)。故選：SAS。本題考查全等三角形在實際應用中的判定。",
+      "image": "images/006.png",
+      "answerimage": null,
+      "comment": "第6題，題目有圖，解析無圖"
+    },
+    {
+      "question": "已知 \\(\\angle AOB\\)，欲用尺規作圖製作 \\(\\angle A'O'B' = \\angle AOB\\)。該尺規作圖的依據是",
+      "options": ["SAS", "SSS", "AAS", "ASA"],
+      "answer": "SSS",
+      "explanation": "解：根據尺規作圖過程，製作 \\(\\angle A'O'B' = \\angle AOB\\) 時，確保 \\(O'C' = OC\\)，\\(O'D' = OD\\)，\\(C'D' = CD\\)。在三角形 \\(O'C'D'\\) 與三角形 \\(OCD\\) 中，\\(O'C' = OC\\)，\\(O'D' = OD\\)，\\(C'D' = CD\\)，根據 SSS，三角形全等，故 \\(\\angle O' = \\angle O\\)。故選：SSS。本題考查尺規作圖與全等三角形判定的關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第7題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知 \\(BF = DE\\)，\\(AB \\parallel DE\\)（即 AB 平行 DE），要使三角形 \\(ABF\\) 與三角形 \\(CDE\\) 全等，添加的條件可以是",
+      "options": ["\\(BE = DF\\)", "\\(AF = CE\\)", "\\(AB = CD\\)", "\\(\\angle B = \\angle D\\)"],
+      "answer": "\\(AB = CD\\)",
+      "explanation": "解：因 \\(AB \\parallel DE\\)（即 AB 平行 DE），則 \\(\\angle B = \\angle D\\)。已知 \\(BF = DE\\)，若添加 \\(AB = CD\\)，在三角形 \\(ABF\\) 與三角形 \\(CDE\\) 中，\\(\\angle B = \\angle D\\)，\\(AB = CD\\)，\\(BF = DE\\)，滿足 SAS，三角形全等。其他選項：\\(BE = DF\\) 或 \\(AF = CE\\) 僅構成 SSA，\\(\\angle B = \\angle D\\) 已由平行線滿足，無需重複添加。故選：\\(AB = CD\\)。本題考查平行線性質與全等三角形判定。",
+      "image": "images/008.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知 \\(\\angle C = \\angle D = 90^\\circ\\)，添加一個條件，可使用 HL 判定直角三角形 \\(ABC\\) 與直角三角形 \\(ABD\\) 全等。以下條件適合的是",
+      "options": ["\\(AC = AD\\)", "\\(AB = AB\\)", "\\(\\angle ABC = \\angle ABD\\)", "\\(\\angle BAC = \\angle BAD\\)"],
+      "answer": "\\(AC = AD\\)",
+      "explanation": "解：在直角三角形 \\(ABC\\) 與直角三角形 \\(ABD\\) 中，\\(\\angle C = \\angle D = 90^\\circ\\)，斜邊 \\(AB = AB\\)（公共邊）。根據 HL，需添加一對直角邊相等。選項 \\(AC = AD\\) 滿足 HL（\\(AB = AB\\), \\(\\angle C = \\angle D\\), \\(AC = AD\\)），全等成立。其他選項：\\(AB = AB\\) 已知，\\(\\angle ABC = \\angle ABD\\) 或 \\(\\angle BAC = \\angle BAD\\) 構成 AAS，非 HL。故選：\\(AC = AD\\)。本題考查直角三角形 HL 判定的應用。",
+      "image": "images/009.png",
+      "answerimage": null,
+      "comment": "第9題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，用直尺和圓規製作 \\(\\angle A'O'B' = \\angle AOB\\) 的示意圖，根據三角形全等知識，畫出 \\(\\angle A'O'B' = \\angle AOB\\) 的依據是",
+      "options": ["SAS", "ASA", "AAS", "SSS"],
+      "answer": "SSS",
+      "explanation": "解：根據作圖過程，\\(O'C' = OC\\)，\\(O'D' = OD\\)，\\(C'D' = CD\\)。在三角形 \\(O'C'D'\\) 與三角形 \\(OCD\\) 中，\\(O'C' = OC\\)，\\(O'D' = OD\\)，\\(C'D' = CD\\)，根據 SSS，三角形全等，故 \\(\\angle A'O'B' = \\angle AOB\\)。故選：SSS。本題考查尺規作圖的理論依據與全等三角形判定。",
+      "image": "images/010.png",
+      "answerimage": null,
+      "comment": "第10題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知點 \\(A\\)、\\(D\\)、\\(C\\)、\\(F\\) 在同一直線上，\\(AB = DE\\)，\\(BC = EF\\)，要使三角形 \\(ABC\\) 與三角形 \\(DEF\\) 全等，還需添加的條件是",
+      "options": ["\\(\\angle BCA = \\angle F\\)", "\\(\\angle B = \\angle E\\)", "\\(BC \\parallel EF\\)（即 BC 平行 EF）", "\\(\\angle A = \\angle EDF\\)"],
+      "answer": "\\(\\angle B = \\angle E\\)",
+      "explanation": "解：已知 \\(AB = DE\\)，\\(BC = EF\\)，在三角形 \\(ABC\\) 與三角形 \\(DEF\\) 中，若添加 \\(\\angle B = \\angle E\\)，則滿足 SAS（\\(AB = DE\\), \\(\\angle B = \\angle E\\), \\(BC = EF\\)），三角形全等。其他選項：\\(\\angle BCA = \\angle F\\) 或 \\(\\angle A = \\angle EDF\\) 僅構成 SSA，\\(BC \\parallel EF\\)（即 BC 平行 EF）導致 \\(\\angle F = \\angle BCA\\)，仍為 SSA，無法判定全等。故選：\\(\\angle B = \\angle E\\)。本題考查全等三角形判定與平行線性質。",
+      "image": "images/011.png",
+      "answerimage": null,
+      "comment": "第11題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，在三角形 \\(ACD\\) 與三角形 \\(ABD\\) 中，\\(\\angle C = \\angle B\\)，再添加一個條件，能判定三角形 \\(ADC\\) 與三角形 \\(ADB\\) 全等的是",
+      "options": ["\\(AC = AB\\)", "\\(\\angle ADC = \\angle ADB\\)", "\\(CD = BD\\)", "\\(AC \\perp CD\\)（即 AC 垂直 CD）"],
+      "answer": "\\(\\angle ADC = \\angle ADB\\)",
+      "explanation": "解：已知 \\(\\angle C = \\angle B\\)，\\(AD = AD\\)（公共邊）。選項 \\(\\angle ADC = \\angle ADB\\)，則滿足 AAS（\\(\\angle C = \\angle B\\), \\(\\angle ADC = \\angle ADB\\), \\(AD = AD\\)），三角形全等。其他選項：\\(AC = AB\\) 或 \\(CD = BD\\) 僅構成 SSA，\\(AC \\perp CD\\)（即 AC 垂直 CD）使 \\(\\angle C = 90^\\circ\\)，但 \\(\\angle B\\) 不一定為 \\(90^\\circ\\)，無法判定全等。故選：\\(\\angle ADC = \\angle ADB\\)。本題考查全等三角形判定方法。",
+      "image": "images/012.png",
+      "answerimage": null,
+      "comment": "第12題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知 \\(\\angle 1 = \\angle 2\\)，要使三角形 \\(ABD\\) 與三角形 \\(ACD\\) 全等，還需從下列條件中補選一個，錯誤的選法是",
+      "options": ["\\(AB = AC\\)", "\\(DB = DC\\)", "\\(\\angle ADB = \\angle ADC\\)", "\\(\\angle B = \\angle C\\)"],
+      "answer": "\\(DB = DC\\)",
+      "explanation": "解：已知 \\(\\angle 1 = \\angle 2\\)，\\(AD = AD\\)（公共邊）。選項 \\(AB = AC\\)，滿足 SAS（\\(AB = AC\\), \\(\\angle 1 = \\angle 2\\), \\(AD = AD\\)），全等成立；選項 \\(\\angle ADB = \\angle ADC\\)，滿足 ASA（\\(\\angle 1 = \\angle 2\\), \\(AD = AD\\), \\(\\angle ADB = \\angle ADC\\)），全等成立；選項 \\(\\angle B = \\angle C\\)，滿足 AAS（\\(\\angle B = \\angle C\\), \\(\\angle 1 = \\angle 2\\), \\(AD = AD\\)），全等成立；選項 \\(DB = DC\\)，僅構成 SSA，無法判定全等。故選：\\(DB = DC\\)。本題考查全等三角形判定的正確應用。",
+      "image": "images/013.png",
+      "answerimage": null,
+      "comment": "第13題，題目有圖，解析無圖"
+    },
+    {
+      "question": "下列各組條件中不能判定三角形 \\(ABC\\) 與三角形 \\(A'B'C'\\) 全等的是",
+      "options": ["\\(\\angle A = \\angle A'\\)，\\(\\angle B = \\angle B'\\)，\\(AB = A'B'\\)", "\\(\\angle A = \\angle A'\\)，\\(AB = A'B'\\)，\\(AC = A'C'\\)", "\\(\\angle A = \\angle A'\\)，\\(AB = A'B'\\)，\\(BC = B'C'\\)", "\\(AB = A'B'\\)，\\(AC = A'C'\\)，\\(BC = B'C'\\)"],
+      "answer": "\\(\\angle A = \\angle A'\\)，\\(AB = A'B'\\)，\\(BC = B'C'\\)",
+      "explanation": "解：逐一分析選項：選項 \\(\\angle A = \\angle A'\\)，\\(\\angle B = \\angle B'\\)，\\(AB = A'B'\\)，滿足 ASA，全等成立；選項 \\(\\angle A = \\angle A'\\)，\\(AB = A'B'\\)，\\(AC = A'C'\\)，滿足 SAS，全等成立；選項 \\(\\angle A = \\angle A'\\)，\\(AB = A'B'\\)，\\(BC = B'C'\\)，僅構成 SSA（角 \\(A\\) 非兩邊夾角），無法判定全等；選項 \\(AB = A'B'\\)，\\(AC = A'C'\\)，\\(BC = B'C'\\)，滿足 SSS，全等成立。故選：\\(\\angle A = \\angle A'\\)，\\(AB = A'B'\\)，\\(BC = B'C'\\)。本題考查全等三角形判定的嚴謹性。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(AB = DB\\)，\\(\\angle 1 = \\angle 2\\)，添加下列條件不能判定三角形 \\(ABC\\) 與三角形 \\(DBE\\) 全等的是",
+      "options": ["\\(BC = BE\\)", "\\(AC = DE\\)", "\\(\\angle A = \\angle D\\)", "\\(\\angle ACB = \\angle DEB\\)"],
+      "answer": "\\(AC = DE\\)",
+      "explanation": "解：已知 \\(\\angle 1 = \\angle 2\\)，則 \\(\\angle ABC = \\angle DBE\\)（角加法），\\(AB = DB\\)。選項 \\(BC = BE\\)，滿足 SAS（\\(AB = DB\\), \\(\\angle ABC = \\angle DBE\\), \\(BC = BE\\)），全等成立；選項 \\(\\angle A = \\angle D\\)，滿足 ASA（\\(\\angle 1 = \\angle 2\\), \\(AB = DB\\), \\(\\angle A = \\angle D\\)），全等成立；選項 \\(\\angle ACB = \\angle DEB\\)，滿足 AAS（\\(\\angle ACB = \\angle DEB\\), \\(\\angle ABC = \\angle DBE\\), \\(AB = DB\\)），全等成立；選項 \\(AC = DE\\)，僅構成 SSA，無法判定全等。故選：\\(AC = DE\\)。本題考查全等三角形判定的正確應用。",
+      "image": "images/015.png",
+      "answerimage": null,
+      "comment": "第15題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，在等腰三角形 \\(ABC\\) 中，點 \\(D\\)、\\(E\\) 分別在腰 \\(AB\\)、\\(AC\\) 上，添加下列條件，不能判定三角形 \\(ABE\\) 與三角形 \\(ACD\\) 全等的是",
+      "options": ["\\(AD = AE\\)", "\\(BE = CD\\)", "\\(\\angle ADC = \\angle AEB\\)", "\\(\\angle DCB = \\angle EBC\\)"],
+      "answer": "\\(BE = CD\\)",
+      "explanation": "解：因 \\(ABC\\) 為等腰三角形，\\(\\angle ABC = \\angle ACB\\)，\\(AB = AC\\)。選項 \\(AD = AE\\)，滿足 SAS（\\(AB = AC\\), \\(\\angle ABC = \\angle ACB\\), \\(AD = AE\\)），全等成立；選項 \\(\\angle ADC = \\angle AEB\\)，滿足 AAS（\\(\\angle ABC = \\angle ACB\\), \\(AB = AC\\), \\(\\angle ADC = \\angle AEB\\)），全等成立；選項 \\(\\angle DCB = \\angle EBC\\)，則 \\(\\angle ABE = \\angle ACD\\)，滿足 ASA（\\(\\angle ABC = \\angle ACB\\), \\(AB = AC\\), \\(\\angle ABE = \\angle ACD\\)），全等成立；選項 \\(BE = CD\\)，無法構成有效全等條件。故選：\\(BE = CD\\)。本題考查等腰三角形性質與全等判定。",
+      "image": "images/016.png",
+      "answerimage": null,
+      "comment": "第16題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(OA = OB\\)，\\(OC = OD\\)，\\(\\angle O = 50^\\circ\\)，\\(\\angle D = 35^\\circ\\)，則 \\(\\angle AEC\\) 的度數為",
+      "options": ["\\(60^\\circ\\)", "\\(50^\\circ\\)", "\\(45^\\circ\\)", "\\(30^\\circ\\)"],
+      "answer": "\\(60^\\circ\\)",
+      "explanation": "解：在三角形 \\(AOD\\) 中，\\(\\angle O = 50^\\circ\\)，\\(\\angle D = 35^\\circ\\)，則 \\(\\angle OAD = 180^\\circ - 50^\\circ - 35^\\circ = 95^\\circ\\)。在三角形 \\(AOD\\) 與三角形 \\(BOC\\) 中，\\(OA = OB\\)，\\(OC = OD\\)，\\(\\angle O = \\angle O\\)，根據 SAS，三角形全等，故 \\(\\angle OBC = \\angle OAD = 95^\\circ\\)。在四邊形 \\(OBEA\\) 中，內角和為 \\(360^\\circ\\)，\\(\\angle AEB = 360^\\circ - 95^\\circ - 95^\\circ - 50^\\circ = 120^\\circ\\)。因 \\(\\angle AEB + \\angle AEC = 180^\\circ\\)，故 \\(\\angle AEC = 180^\\circ - 120^\\circ = 60^\\circ\\)。故選：\\(60^\\circ\\)。本題考查全等三角形與四邊形內角和的應用。",
+      "image": "images/017.png",
+      "answerimage": null,
+      "comment": "第17題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，若三角形 \\(ABC\\) 與三角形 \\(ADE\\) 全等，則下列結論中一定成立的是",
+      "options": ["\\(AC = DE\\)", "\\(\\angle BAD = \\angle CAE\\)", "\\(AB = AE\\)", "\\(\\angle ABC = \\angle AED\\)"],
+      "answer": "\\(\\angle BAD = \\angle CAE\\)",
+      "explanation": "解：因三角形 \\(ABC\\) 與三角形 \\(ADE\\) 全等，對應邊與角相等：\\(AC = AE\\)，\\(AB = AD\\)，\\(\\angle ABC = \\angle ADE\\)，\\(\\angle BAC = \\angle DAE\\)。由 \\(\\angle BAC = \\angle DAE\\)，則 \\(\\angle BAC - \\angle DAC = \\angle DAE - \\angle DAC\\)，即 \\(\\angle BAD = \\angle CAE\\)。其他選項：\\(AC = DE\\)、\\(AB = AE\\)、\\(\\angle ABC = \\angle AED\\) 不一定為對應關係，故不一定成立。故選：\\(\\angle BAD = \\angle CAE\\)。本題考查全等三角形的對應關係。",
+      "image": "images/018.png",
+      "answerimage": null,
+      "comment": "第18題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，用 \\(\\angle B = \\angle C\\)，\\(\\angle 1 = \\angle 2\\)，直接判定三角形 \\(ABD\\) 與三角形 \\(ACD\\) 全等的理由是",
+      "options": ["AAS", "SSS", "ASA", "SAS"],
+      "answer": "AAS",
+      "explanation": "解：在三角形 \\(ABD\\) 與三角形 \\(ACD\\) 中，\\(\\angle B = \\angle C\\)，\\(\\angle 1 = \\angle 2\\)，\\(AD = AD\\)（公共邊）。根據 AAS（\\(\\angle B = \\angle C\\), \\(\\angle 1 = \\angle 2\\), \\(AD = AD\\)），三角形全等。故選：AAS。本題考查全等三角形判定的應用。",
+      "image": "images/019.png",
+      "answerimage": null,
+      "comment": "第19題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知 \\(\\angle C = \\angle D = 90^\\circ\\)，有四個可添加的條件：① \\(AC = BD\\)；② \\(BC = AD\\)；③ \\(\\angle CAB = \\angle DBA\\)；④ \\(\\angle CBA = \\angle DAB\\)。能使三角形 \\(ABC\\) 與三角形 \\(BAD\\) 全等的條件有",
+      "options": ["1個", "2個", "3個", "4個"],
+      "answer": "4個",
+      "explanation": "解：在直角三角形 \\(ABC\\) 與直角三角形 \\(BAD\\) 中，\\(\\angle C = \\angle D = 90^\\circ\\)，\\(AB = AB\\)（公共邊）。逐一分析：① \\(AC = BD\\)，滿足 HL（\\(AB = AB\\), \\(\\angle C = \\angle D\\), \\(AC = BD\\)），全等成立；② \\(BC = AD\\)，滿足 HL（\\(AB = AB\\), \\(\\angle C = \\angle D\\), \\(BC = AD\\)），全等成立；③ \\(\\angle CAB = \\angle DBA\\)，滿足 AAS（\\(\\angle C = \\angle D\\), \\(AB = AB\\), \\(\\angle CAB = \\angle DBA\\)），全等成立；④ \\(\\angle CBA = \\angle DAB\\)，滿足 AAS（\\(\\angle C = \\angle D\\), \\(AB = AB\\), \\(\\angle CBA = \\angle DAB\\)），全等成立。因此，四個條件均可使全等成立。故選：4個。本題考查直角三角形全等判定。",
+      "image": "images/020.png",
+      "answerimage": null,
+      "comment": "第20題，題目有圖，解析無圖"
+    },
+    {
+      "question": "下列命題的逆命題是假命題的是",
+      "options": ["兩直線平行，同位角相等", "兩直線平行，內錯角相等", "兩三角形全等，三對對應邊相等", "兩三角形全等，三對對應角相等"],
+      "answer": "兩三角形全等，三對對應角相等",
+      "explanation": "解：逐一分析逆命題：選項「兩直線平行，同位角相等」的逆命題為「同位角相等，兩直線平行」，正確；選項「兩直線平行，內錯角相等」的逆命題為「內錯角相等，兩直線平行」，正確；選項「兩三角形全等，三對對應邊相等」的逆命題為「三對對應邊相等，兩三角形全等」，正確（SSS）；選項「兩三角形全等，三對對應角相等」的逆命題為「三對對應角相等，兩三角形全等」，錯誤（AAA 不能判定全等）。故選：兩三角形全等，三對對應角相等。本題考查命題與逆命題的真假判斷。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，在三角形 \\(ABC\\) 中，\\(\\angle B = \\angle C\\)，\\(BF = CD\\)，\\(BD = CE\\)，\\(\\angle A = 50^\\circ\\)，則 \\(\\angle FDE\\) 的度數為",
+      "options": ["\\(75^\\circ\\)", "\\(70^\\circ\\)", "\\(65^\\circ\\)", "\\(60^\\circ\\)"],
+      "answer": "\\(65^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：因 \\(\\angle B = \\angle C\\)，三角形 \\(ABC\\) 為等腰三角形，\\(\\angle B = \\angle C = \\frac{180^\\circ - 50^\\circ}{2} = 65^\\circ\\)。在三角形 \\(ABD\\) 與三角形 \\(ACE\\) 中，\\(BD = CE\\)，\\(\\angle B = \\angle C\\)，\\(AB = AC\\)（等腰三角形性質），根據 SAS，三角形全等，故 \\(\\angle ADB = \\angle AEC\\)。因 \\(BF = CD\\)，在三角形 \\(BFD\\) 與三角形 \\(CDE\\) 中，\\(BD = CE\\)，\\(\\angle ADB = \\angle AEC\\)，\\(BF = CD\\)，根據 SAS，三角形全等，故 \\(\\angle FDE = \\angle AEC = 65^\\circ\\)（因 \\(\\angle AEC = \\angle B = 65^\\circ\\)）。故選：\\(65^\\circ\\)。本題考查等腰三角形與全等三角形的綜合應用。",
+      "image": "images/022.png",
+      "answerimage": null,
+      "comment": "第22題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(AB = AD\\)，添加一個條件後，三角形 \\(ABC\\) 與三角形 \\(ADC\\) 不一定全等的是",
+      "options": ["\\(CB = CD\\)", "\\(\\angle BAC = \\angle DAC\\)", "\\(\\angle BCA = \\angle DCA\\)", "\\(\\angle B = \\angle D = 90^\\circ\\)"],
+      "answer": "\\(\\angle BCA = \\angle DCA\\)",
+      "explanation": "本題解析由AI生成：解：已知 \\(AB = AD\\)。選項 \\(CB = CD\\)，在三角形 \\(ABC\\) 與三角形 \\(ADC\\) 中，\\(AB = AD\\)，\\(CB = CD\\)，\\(AD = AD\\)，滿足 SSS，全等成立；選項 \\(\\angle BAC = \\angle DAC\\)，滿足 SAS（\\(AB = AD\\), \\(\\angle BAC = \\angle DAC\\), \\(AD = AD\\)），全等成立；選項 \\(\\angle B = \\angle D = 90^\\circ\\)，滿足 HL（\\(AB = AD\\), \\(\\angle B = \\angle D = 90^\\circ\\)），全等成立；選項 \\(\\angle BCA = \\angle DCA\\)，僅構成 AAS（\\(AB = AD\\), \\(\\angle BCA = \\angle DCA\\)），但可能因角度對應不唯一而不全等。故選：\\(\\angle BCA = \\angle DCA\\)。本題考查全等三角形判定的嚴謹性。",
+      "image": "images/023.png",
+      "answerimage": null,
+      "comment": "第23題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(O\\) 是 \\(\\angle BAC\\) 內一點，且點 \\(O\\) 到 \\(AB\\)、\\(AC\\) 的距離 \\(OE = OF\\)，則三角形 \\(AEO\\) 與三角形 \\(AFO\\) 全等的依據是",
+      "options": ["HL", "AAS", "SSS", "ASA"],
+      "answer": "HL",
+      "explanation": "解：因 \\(OE \\perp AB\\)，\\(OF \\perp AC\\)，則 \\(\\angle AEO = \\angle AFO = 90^\\circ\\)。又 \\(OE = OF\\)，\\(AO = AO\\)（公共邊）。在直角三角形 \\(AEO\\) 與直角三角形 \\(AFO\\) 中，\\(\\angle AEO = \\angle AFO\\)，\\(AO = AO\\)，\\(OE = OF\\)，根據 HL，三角形全等。故選：HL。本題考查直角三角形全等判定的應用。",
+      "image": "images/024.png",
+      "answerimage": null,
+      "comment": "第24題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，在三角形 \\(ABC\\) 與三角形 \\(ABD\\) 中，已知 \\(\\angle CAB = \\angle DAB\\)，不添加輔助線的前提下，要使三角形 \\(ABC\\) 與三角形 \\(ABD\\) 全等，只需再添加的條件不可以是",
+      "options": ["\\(AC = AD\\)", "\\(BC = BD\\)", "\\(\\angle C = \\angle D\\)", "\\(\\angle CBE = \\angle DBE\\)"],
+      "answer": "\\(BC = BD\\)",
+      "explanation": "解：已知 \\(\\angle CAB = \\angle DAB\\)，\\(AB = AB\\)（公共邊）。選項 \\(AC = AD\\)，滿足 SAS（\\(AC = AD\\), \\(\\angle CAB = \\angle DAB\\), \\(AB = AB\\)），全等成立；選項 \\(\\angle C = \\angle D\\)，滿足 AAS（\\(\\angle C = \\angle D\\), \\(\\angle CAB = \\angle DAB\\), \\(AB = AB\\)），全等成立；選項 \\(\\angle CBE = \\angle DBE\\)，則 \\(\\angle ABC = \\angle ABD\\)，滿足 ASA（\\(\\angle CAB = \\angle DAB\\), \\(AB = AB\\), \\(\\angle ABC = \\angle ABD\\)），全等成立；選項 \\(BC = BD\\)，僅構成 SSA，無法判定全等。故選：\\(BC = BD\\)。本題考查全等三角形判定的正確應用。",
+      "image": "images/025.png",
+      "answerimage": null,
+      "comment": "第25題，題目有圖，解析無圖"
+    },
+    {
+      "question": "下列說法中，正確的個數是：① 斜邊和一直角邊對應相等的兩個直角三角形全等；② 有兩邊和它們的夾角對應相等的兩個直角三角形全等；③ 一銳角和斜邊對應相等的兩個直角三角形全等；④ 兩個銳角對應相等的兩個直角三角形全等",
+      "options": ["1個", "2個", "3個", "4個"],
+      "answer": "3個",
+      "explanation": "解：逐一分析：① 斜邊和直角邊相等，滿足 HL，正確；② 兩邊及其夾角相等，滿足 SAS，正確；③ 一銳角和斜邊相等，滿足 AAS（因直角已知），正確；④ 兩個銳角相等，因直角三角形直角已知，僅構成 AAA，錯誤。故正確說法有 3 個（①、②、③）。故選：3個。本題考查直角三角形全等判定的多種形式。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第26題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(AB \\parallel DE\\)（即 AB 平行 DE），\\(AB = DE\\)，添加下列條件，仍不能判定三角形 \\(ABC\\) 與三角形 \\(DEF\\) 全等的是",
+      "options": ["\\(AC = DF\\)", "\\(BF = CE\\)", "\\(\\angle A = \\angle D\\)", "\\(AC \\parallel DF\\)（即 AC 平行 DF）"],
+      "answer": "\\(AC = DF\\)",
+      "explanation": "解：因 \\(AB \\parallel DE\\)（即 AB 平行 DE），則 \\(\\angle B = \\angle E\\)，且 \\(AB = DE\\)。選項 \\(BF = CE\\)，則 \\(BC = EF\\)，滿足 SAS（\\(AB = DE\\), \\(\\angle B = \\angle E\\), \\(BC = EF\\)），全等成立；選項 \\(\\angle A = \\angle D\\)，滿足 ASA（\\(\\angle A = \\angle D\\), \\(AB = DE\\), \\(\\angle B = \\angle E\\)），全等成立；選項 \\(AC \\parallel DF\\)（即 AC 平行 DF），則 \\(\\angle ACB = \\angle DFE\\)，滿足 AAS（\\(\\angle ACB = \\angle DFE\\), \\(\\angle B = \\angle E\\), \\(AB = DE\\)），全等成立；選項 \\(AC = DF\\)，僅構成 SSA，無法判定全等。故選：\\(AC = DF\\)。本題考查平行線與全等三角形判定的應用。",
+      "image": "images/027.png",
+      "answerimage": null,
+      "comment": "第27題，題目有圖，解析無圖"
+    },
+    {
+      "question": "根據下列條件能畫出唯一三角形 \\(ABC\\) 的是",
+      "options": ["\\(AB = 3\\)，\\(BC = 4\\)，\\(AC = 8\\)", "\\(AB = 4\\)，\\(BC = 3\\)，\\(\\angle A = 30^\\circ\\)", "\\(\\angle A = 30^\\circ\\)，\\(\\angle B = 70^\\circ\\)，\\(\\angle C = 80^\\circ\\)", "\\(\\angle A = 60^\\circ\\)，\\(\\angle B = 30^\\circ\\)，\\(AB = 4\\)"],
+      "answer": "\\(\\angle A = 60^\\circ\\)，\\(\\angle B = 30^\\circ\\)，\\(AB = 4\\)",
+      "explanation": "本題解析由AI生成：解：逐一分析：選項 \\(AB = 3\\)，\\(BC = 4\\)，\\(AC = 8\\)，三邊不滿足三角形不等式（\\(3 + 4 < 8\\)），無法構成三角形；選項 \\(AB = 4\\)，\\(BC = 3\\)，\\(\\angle A = 30^\\circ\\)，滿足 SAS，但可能有兩解（正弦定理）；選項 \\(\\angle A = 30^\\circ\\)，\\(\\angle B = 70^\\circ\\)，\\(\\angle C = 80^\\circ\\)，僅有三個角（AAA），無法確定唯一三角形；選項 \\(\\angle A = 60^\\circ\\)，\\(\\angle B = 30^\\circ\\)，\\(AB = 4\\)，滿足 ASA（第三角 \\(\\angle C = 90^\\circ\\)），可唯一確定三角形。故選：\\(\\angle A = 60^\\circ\\)，\\(\\angle B = 30^\\circ\\)，\\(AB = 4\\)。本題考查三角形唯一性的判定。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，將兩根鋼條的中點連在一起，製成測量工件內槽寬的卡鉗。若測量得 \\(A'B' = 10\\) cm，則工件內槽寬 \\(AB\\) 為",
+      "options": ["\\(11\\) cm", "\\(10\\) cm", "\\(9\\) cm", "\\(8\\) cm"],
+      "answer": "\\(10\\) cm",
+      "explanation": "解：連接 \\(A'B'\\)。因點 \\(O\\) 為 \\(AA'\\)、\\(BB'\\) 的中點，則 \\(OA = OA'\\)，\\(OB = OB'\\)。在三角形 \\(AOB\\) 與三角形 \\(A'OB'\\) 中，\\(AO = A'O\\)，\\(BO = B'O\\)，\\(\\angle AOB = \\angle A'OB'\\)（對頂角），根據 SAS，三角形全等，故 \\(AB = A'B'\\)。已知 \\(A'B' = 10\\) cm，則 \\(AB = 10\\) cm。故選：\\(10\\) cm。本題考查全等三角形在測量中的應用。",
+      "image": "images/029.png",
+      "answerimage": null,
+      "comment": "第29題，題目有圖，解析無圖"
+    }
+  ]
+}
