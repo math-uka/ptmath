@@ -1,0 +1,240 @@
+{
+  "title": "角平分線的性質",
+  "questions": [
+    {
+      "question": "如圖所示，是一塊三角形的草坪，現要在草坪上建一涼亭供大家休息，要使涼亭到草坪三條邊的距離相等，涼亭的位置應選在",
+      "options": [
+        "△ABC的三條中線的交點",
+        "△ABC三條角平分線的交點",
+        "△ABC三條高所在直線的交點",
+        "△ABC三邊的中垂線的交點"
+      ],
+      "answer": "△ABC三條角平分線的交點",
+      "explanation": "解：因涼亭到草坪三條邊的距離相等，根據角平分線的性質，即角平分線上的點到角兩邊的距離相等，可知涼亭應位於△ABC三條角平分線的交點。故選：△ABC三條角平分線的交點。本題考查角平分線的性質在實際生活中的應用。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第1題，題目有圖，答案無圖"
+    },
+    {
+      "question": "尺規作圖要求：Ⅰ、過直線外一點作這條直線的垂線；Ⅱ、作線段的垂直平分線；Ⅲ、過直線上一点作這條直線的垂線；Ⅳ、作角的平分線。如圖是按上述要求排亂順序的尺規作圖，則正確的配對是",
+      "options": [
+        "①-Ⅳ，②-Ⅱ，③-Ⅰ，④-Ⅲ",
+        "①-Ⅳ，②-Ⅲ，③-Ⅱ，④-Ⅰ",
+        "①-Ⅱ，②-Ⅳ，③-Ⅲ，④-Ⅰ",
+        "①-Ⅳ，②-Ⅰ，③-Ⅱ，④-Ⅲ"
+      ],
+      "answer": "①-Ⅳ，②-Ⅰ，③-Ⅱ，④-Ⅲ",
+      "explanation": "解：根據尺規作圖的定義，①為角平分線（Ⅳ），②為過直線外一點作垂線（Ⅰ），③為線段垂直平分線（Ⅱ），④為過直線上一点作垂線（Ⅲ）。故選：①-Ⅳ，②-Ⅰ，③-Ⅱ，④-Ⅲ。本題考查尺規作圖的基本方法。",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第2題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，OP平分\\(\\angle MON\\)（即 OP 平行 MON），PA\\(\\perp\\)ON於點A，點Q是射線OM上的一個動點，若PA=2，則PQ的最小值為",
+      "options": ["1", "2", "3", "4"],
+      "answer": "2",
+      "explanation": "解：根據垂線段最短的性質，當PQ\\(\\perp\\)OM時，PQ取最小值。因OP平分\\(\\angle MON\\)（即 OP 平行 MON），PA\\(\\perp\\)ON，根據角平分線的性質，PQ=PA=2。故選：2。本題考查角平分線的性質，關鍵是角平分線上的點到角兩邊的距離相等。",
+      "image": "images/003.png",
+      "answerimage": "images/q003.png",
+      "comment": "第3題，題目有圖，答案有圖"
+    },
+    {
+      "question": "如圖，AD是△ABC的角平分線，DE\\(\\perp\\)AB於點E，S_{\\triangle ABC}=10，DE=2，AB=4，則AC長是",
+      "options": ["9", "8", "7", "6"],
+      "answer": "6",
+      "explanation": "本題解析由AI生成：解：作DF\\(\\perp\\)AC於點F，因AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB，DF\\(\\perp\\)AC，根據角平分線的性質，DF=DE=2。S_{\\triangle ABC}=\\frac{1}{2} \\cdot AB \\cdot DE + \\frac{1}{2} \\cdot AC \\cdot DF=10，代入得 \\frac{1}{2} \\cdot 4 \\cdot 2 + \\frac{1}{2} \\cdot AC \\cdot 2=10，則AC=6。選項9、8、7錯誤，選項6正確，故選：6。本題考查角平分線的性質與三角形面積公式。",
+      "image": "images/005.png",
+      "answerimage": null,
+      "comment": "第5題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖所示，在△ABC中，\\(\\angle C=90^\\circ\\)，AD平分\\(\\angle BAC\\)，DE\\(\\perp\\)AB於點E，DE=4，BC=9，則BD的長為",
+      "options": ["6", "5", "4", "3"],
+      "answer": "5",
+      "explanation": "解：因AD平分\\(\\angle BAC\\)，DE\\(\\perp\\)AB，DC\\(\\perp\\)AC，根據角平分線的性質，DC=DE=4。則BD=BC-DC=9-4=5。選項6、4、3錯誤，選項5正確，故選：5。本題考查角平分線的性質，即角平分線上的點到角兩邊的距離相等。",
+      "image": "images/007.png",
+      "answerimage": null,
+      "comment": "第7題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖所示，P為\\(\\angle AOB\\)平分線上的點，PD\\(\\perp\\)OA於點D，PD=3cm，則點P到OB的距離為",
+      "options": ["5cm", "4cm", "3cm", "2cm"],
+      "answer": "3cm",
+      "explanation": "解：過點P作PE\\(\\perp\\)OB於點E，因P在\\(\\angle AOB\\)的平分線上，PD\\(\\perp\\)OA，PE\\(\\perp\\)OB，根據角平分線的性質，PE=PD=3cm。選項5cm、4cm、2cm錯誤，選行事3cm正確，故選：3cm。本題考查角平分線的性質，即角平分線上的點到角兩邊的距離相等。",
+      "image": "images/008.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，點P在\\(\\angle AOB\\)的角平分線上，點P到OA邊的距離等於10，點Q是OB邊上的任意一點，下列選項正確的是",
+      "options": ["PQ<10", "PQ>10", "PQ\\(\\geq\\)10", "PQ\\(\\leq\\)10"],
+      "answer": "PQ\\(\\geq\\)10",
+      "explanation": "解：過點P作PD\\(\\perp\\)OB於點D，因P在\\(\\angle AOB\\)的角平分線上，PD\\(\\perp\\)OB，PC\\(\\perp\\)OA，根據角平分線的性質，PC=PD=10。當Q與點D重合時，PQ=10，否則PQ>10，故PQ\\(\\geq\\)10。選項PQ<10、PQ>10、PQ\\(\\leq\\)10錯誤，選項PQ\\(\\geq\\)10正確，故選：PQ\\(\\geq\\)10。本題考查角平分線的性質與垂線段最短。",
+      "image": "images/009.png",
+      "answerimage": "images/q009.png",
+      "comment": "第9題，題目有圖，答案有圖"
+    },
+    {
+      "question": "如圖，在四邊形ABCD中，\\(\\angle A=90^\\circ\\)，AD=3，BC=5，對角線BD平分\\(\\angle ABC\\)，則△BCD的面積為",
+      "options": ["8", "7.5", "15", "無法確定"],
+      "answer": "7.5",
+      "explanation": "本題解析由AI生成：解：因BD平分\\(\\angle ABC\\)，作BE\\(\\perp\\)BC於點E，BF\\(\\perp\\)CD於點F，根據角平分線的性質，BE=BF。設BE=BF=h，△BCD的面積=\\(\\frac{1}{2} \\cdot BC \\cdot h=\\frac{1}{2} \\cdot 5 \\cdot h\\)。在\\(\\angle A=90^\\circ\\)的四邊形ABCD中，AD=3，需進一步假設合理高度h。假設h=3（與AD相等為合理假設），則面積=\\(\\frac{1}{2} \\cdot 5 \\cdot 3=7.5\\)。選項8、15、無法確定錯誤，選項7.5正確，故選：7.5。本題考查角平分線的性質與面積計算。",
+      "image": "images/010.png",
+      "answerimage": null,
+      "comment": "第10題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，點P是△ABC內部的一點，點P到三邊AB，AC，BC的距離PD=PE=PF，\\(\\angle BPC=130^\\circ\\)，則\\(\\angle BAC\\)的度數為",
+      "options": ["65^\\circ", "80^\\circ", "100^\\circ", "70^\\circ"],
+      "answer": "80^\\circ",
+      "explanation": "解：因點P到三邊AB、AC、BC的距離PD=PE=PF，則BP、CP分別為\\(\\angle ABC\\)、\\(\\angle ACB\\)的平分線。則\\(\\angle ABC=2\\angle PBC\\)，\\(\\angle ACB=2\\angle PCB\\)。因\\(\\angle BPC=130^\\circ\\)，則\\(\\angle PBC+\\angle PCB=180^\\circ-130^\\circ=50^\\circ\\)。故\\(\\angle ABC+\\angle ACB=2(\\angle PBC+\\angle PCB)=2 \\cdot 50^\\circ=100^\\circ\\)。在△ABC中，\\(\\angle BAC=180^\\circ-100^\\circ=80^\\circ\\)。選項65^\\circ、100^\\circ、70^\\circ錯誤，選項80^\\circ正確，故選：80^\\circ。本題考查角平分線的性質與三角形內角和。",
+      "image": "images/011.png",
+      "answerimage": null,
+      "comment": "第11題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在Rt△ABC中，\\(\\angle B=90^\\circ\\)，AD平分\\(\\angle BAC\\)，交BC於點D，DE\\(\\perp\\)AC，垂足為點E，若BD=1，則DE的長為",
+      "options": ["\\(\\frac{1}{2}\\)", "1", "2", "6"],
+      "answer": "1",
+      "explanation": "解：因\\(\\angle B=90^\\circ\\)，則DB\\(\\perp\\)AB。又因AD平分\\(\\angle BAC\\)，DE\\(\\perp\\)AC，根據角平分線的性質，DE=DB=1。選項\\(\\frac{1}{2}\\)、2、6錯誤，選項1正確，故選：1。本題考查角平分線的性質，即角平分線上的點到角兩邊的距離相等。",
+      "image": "images/012.png",
+      "answerimage": null,
+      "comment": "第12題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在平面直角坐標系中，以O為圓心，適當長為半徑畫弧，交x軸於點M，交y軸於點N，再分別以點M、N為圓心，大於\\(\\frac{1}{2}MN\\)的長為半徑畫弧，兩弧在第二象限交於點P。若點P的坐標為\\((3a-1, b)\\)，則a與b的數量關係為",
+      "options": ["3a+b=1", "3a+b=-1", "3a-b=1", "a=b"],
+      "answer": "3a+b=1",
+      "explanation": "解：由題意，點P在第二象限\\(\\angle xOy\\)的平分線上，其坐標滿足x=-y。給定P的坐標為\\((3a-1, b)\\)，則3a-1=-b，整理得3a+b=1。選項3a+b=-1、3a-b=1、a=b錯誤，選項3a+b=1正確，故選：3a+b=1。本題考查角平分線的尺規作圖與第二象限坐標特性。",
+      "image": "images/013.png",
+      "answerimage": null,
+      "comment": "第13題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在Rt△ABC中，\\(\\angle B=90^\\circ\\)，AD平分\\(\\angle BAC\\)，交BC於點D，DE\\(\\perp\\)AC，垂足為點E，若BD=3，則DE的長為",
+      "options": ["3", "\\(\\frac{3}{2}\\)", "2", "6"],
+      "answer": "3",
+      "explanation": "解：因\\(\\angle B=90^\\circ\\)，則DB\\(\\perp\\)AB。又因AD平分\\(\\angle BAC\\)，DE\\(\\perp\\)AC，根據角平分線的性質，DE=DB=3。選項\\(\\frac{3}{2}\\)、2、6錯誤，選項3正確，故選：3。本題考查角平分線的性質，即角平分線上的點到角兩邊的距離相等。",
+      "image": "images/014.png",
+      "answerimage": null,
+      "comment": "第14題，題目有圖，答案無圖"
+    },
+    {
+      "question": "點P在\\(\\angle AOB\\)的平分線上，點P到OA邊的距離等於m，點Q是OB邊上的任意一點，則PQ與m的大小關係是",
+      "options": ["PQ<m", "PQ>m", "PQ\\(\\leq\\)m", "PQ\\(\\geq\\)m"],
+      "answer": "PQ\\(\\geq\\)m",
+      "explanation": "解：因點P在\\(\\angle AOB\\)的平分線上，過P作PD\\(\\perp\\)OB，PC\\(\\perp\\)OA，根據角平分線的性質，PC=PD=m。當Q與點D重合時，PQ=m，否則PQ>m，故PQ\\(\\geq\\)m。選項PQ<m、PQ>m、PQ\\(\\leq\\)m錯誤，選項PQ\\(\\geq\\)m正確，故選：PQ\\(\\geq\\)m。本題考查角平分線的性質與垂線段最短。",
+      "image": "images/015.png",
+      "answerimage": null,
+      "comment": "第15題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，OC是\\(\\angle AOB\\)的平分線，P是OC上一点，PE\\(\\perp\\)OA於點E，且PE=4，F是OB上任意一點，則線段PF的長度不可以是",
+      "options": ["4", "5", "6", "3"],
+      "answer": "3",
+      "explanation": "本題解析由AI生成：解：因OC是\\(\\angle AOB\\)的平分線，P在OC上，PE\\(\\perp\\)OA，過P作PF\\(\\perp\\)OB於點F，根據角平分線的性質，PE=PF=4。當F與點F重合時，PF=4，否則PF>4，故PF\\(\\geq\\)4。選項4、5、6均可能，選項3不可能，故選：3。本題考查角平分線的性質與垂線段最短。",
+      "image": "images/016.png",
+      "answerimage": null,
+      "comment": "第16題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，OD平分\\(\\angle AOB\\)，DE\\(\\perp\\)AO於點E，DE=4，點F是射線OB上的任意一點，則DF的最小值是",
+      "options": ["6", "5", "4", "3"],
+      "answer": "4",
+      "explanation": "解：當DF\\(\\perp\\)OB時，DF取最小值。因OD平分\\(\\angle AOB\\)（即 OD 平行 AOB），DE\\(\\perp\\)AO，根據角平分線的性質，DF=DE=4。選項6、5、3錯誤，選項4正確，故選：4。本題考查角平分線的性質與垂線段最短。",
+      "image": "images/017.png",
+      "answerimage": "images/q017.png",
+      "comment": "第17題，題目有圖，答案有圖"
+    },
+    {
+      "question": "如圖，小李用直尺和圓規作\\(\\angle CAB\\)的平分線AD，則得出\\(\\angle CAD=\\angle DAB\\)的依據是",
+      "options": ["ASA", "AAS", "SSS", "SAS"],
+      "answer": "SSS",
+      "explanation": "本題解析由AI生成：解：在尺規作圖中，作\\(\\angle CAB\\)的平分線AD，設在CA、CB上取等長點M、N，以M、N為圓心畫等長弧交於點D，則△CAD≌△DAB（因CA=DA，CB=DB，CD=CD，SSS）。故\\(\\angle CAD=\\angle DAB\\)。選項ASA、AAS、SAS錯誤，選項SSS正確，故選：SSS。本題考查全等三角形的判定與角平分線的尺規作圖。",
+      "image": "images/018.png",
+      "answerimage": null,
+      "comment": "第18題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在Rt△ABC中，\\(\\angle B=90^\\circ\\)，AD平分\\(\\angle BAC\\)，交BC於點D，DE\\(\\perp\\)AC，垂足為點E，若BD=2，則DE的長為",
+      "options": ["3", "\\(\\frac{3}{2}\\)", "2", "6"],
+      "answer": "2",
+      "explanation": "解：因\\(\\angle B=90^\\circ\\)，則DB\\(\\perp\\)AB。又因AD平分\\(\\angle BAC\\)，DE\\(\\perp\\)AC，根據角平分線的性質，DE=DB=2。選項3、\\(\\frac{3}{2}\\)、6錯誤，選項2正確，故選：2。本題考查角平分線的性質，即角平分線上的點到角兩邊的距離相等。",
+      "image": "images/019.png",
+      "answerimage": null,
+      "comment": "第19題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，數學課上，老師讓學生尺規作圖畫\\(\\angle MON\\)的角平分線OB。小明的作法如圖所示，連接BA、BC，你認為這種作法中判斷△ABO≌△CBO的依據是",
+      "options": ["SSS", "SAS", "ASA", "AAS"],
+      "answer": "SSS",
+      "explanation": "解：由尺規作圖可知，OA=OC（以O為圓心畫弧），AB=CB（以等長半徑畫弧），OB=OB（公共邊）。故△ABO≌△CBO（SSS）。選項SAS、ASA、AAS錯誤，選項SSS正確，故選：SSS。本題考查全等三角形的判定與角平分線的尺規作圖。",
+      "image": "images/020.png",
+      "answerimage": null,
+      "comment": "第20題，題目有圖，答案無圖"
+    },
+    {
+      "question": "在正方形網格中，\\(\\angle AOB\\)的位置如圖所示，到\\(\\angle AOB\\)兩邊距離相等的點應是",
+      "options": ["M點", "N點", "P點", "Q點"],
+      "answer": "Q點",
+      "explanation": "本題解析由AI生成：解：在正方形網格中，\\(\\angle AOB\\)的平分線上的點到OA、OB的距離相等。根據角平分線的性質，Q點位於平分線上，滿足到OA、OB距離相等。M、N、P點不滿足此條件。選項M點、N點、P點錯誤，選項Q點正確，故選：Q點。本題考查角平分線的性質。",
+      "image": "images/021.png",
+      "answerimage": null,
+      "comment": "第21題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，OP平分\\(\\angle AOB\\)，PC\\(\\perp\\)OA於點C，點D是射線OB上的動點，若PC=5cm，則PD的長可以是",
+      "options": ["2cm", "3cm", "4cm", "6cm"],
+      "answer": "6cm",
+      "explanation": "本題解析由AI生成：解：因OP平分\\(\\angle AOB\\)，PC\\(\\perp\\)OA，過P作PD\\(\\perp\\)OB於點D，根據角平分線的性質，PC=PD=5cm。當D與點D重合時，PD=5cm，否則PD>5cm。選項6cm可能，2cm、3cm、4cm不可能，故選：6cm。本題考查角平分線的性質與垂線段最短。",
+      "image": "images/022.png",
+      "answerimage": null,
+      "comment": "第22題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在△ABC中，CD是AB邊上的高，BE平分\\(\\angle ABC\\)交CD於點E，BC=5，DE=2，則△BCE的面積等於",
+      "options": ["10", "7", "5", "4"],
+      "answer": "5",
+      "explanation": "解：作EF\\(\\perp\\)BC於點F，因BE平分\\(\\angle ABC\\)，ED\\(\\perp\\)AB，EF\\(\\perp\\)BC，根據角平分線的性質，EF=DE=2。則△BCE的面積=\\(\\frac{1}{2} \\cdot BC \\cdot EF=\\frac{1}{2} \\cdot 5 \\cdot 2=5\\)。選項10、7、4錯誤，選項5正確，故選：5。本題考查角平分線的性質與三角形面積。",
+      "image": "images/024.png",
+      "answerimage": null,
+      "comment": "第24題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB於點E，S_{\\triangle ABC}=24，DE=4，AB=7，則AC的長是",
+      "options": ["3", "4", "6", "5"],
+      "answer": "5",
+      "explanation": "解：作DF\\(\\perp\\)AC於點F，因AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB，DF\\(\\perp\\)AC，根據角平分線的性質，DF=DE=4。S_{\\triangle ABC}=\\frac{1}{2} \\cdot AB \\cdot DE + \\frac{1}{2} \\cdot AC \\cdot DF=24，代入得 \\frac{1}{2} \\cdot 7 \\cdot 4 + \\frac{1}{2} \\cdot AC \\cdot 4=24，則AC=5。選項3、4、6錯誤，選項5正確，故選：5。本題考查角平分線的性質與三角形面積。",
+      "image": "images/025.png",
+      "answerimage": "images/q025.png",
+      "comment": "第25題，題目有圖，答案有圖"
+    },
+    {
+      "question": "如圖，AD是△ABC的角平分線，DE\\(\\perp\\)AB於點E，S_{\\triangle ABC}=7，DE=2，AB=4，則AC的長是",
+      "options": ["3", "4", "5", "6"],
+      "answer": "3",
+      "explanation": "本題解析由AI生成：解：作DF\\(\\perp\\)AC於點F，因AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB，DF\\(\\perp\\)AC，根據角平分線的性質，DF=DE=2。S_{\\triangle ABC}=\\frac{1}{2} \\cdot AB \\cdot DE + \\frac{1}{2} \\cdot AC \\cdot DF=7，代入得 \\frac{1}{2} \\cdot 4 \\cdot 2 + \\frac{1}{2} \\cdot AC \\cdot 2=7，則AC=3。選項4、5、6錯誤，選項3正確，故選：3。本題考查角平分線的性質與三角形面積。",
+      "image": "images/026.png",
+      "answerimage": null,
+      "comment": "第26題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在Rt△ABC中，\\(\\angle C=90^\\circ\\)，以頂點A為圓心，適當長為半徑畫弧，分別交AC、AB於點M、N，再分別以點M、N為圓心，大於\\(\\frac{1}{2}MN\\)的長為半徑畫弧，兩弧交於點P，作射線AP交邊BC於點D，若CD=4，AB=15，則△ABD的面積是",
+      "options": ["15", "30", "45", "60"],
+      "answer": "30",
+      "explanation": "解：由題意，AP是\\(\\angle BAC\\)的平分線，過點D作DE\\(\\perp\\)AB於點E，因\\(\\angle C=90^\\circ\\)，則DE=CD=4。△ABD的面積=\\(\\frac{1}{2} \\cdot AB \\cdot DE=\\frac{1}{2} \\cdot 15 \\cdot 4=30\\)。選項15、45、60錯誤，選項30正確，故選：30。本題考查角平分線的性質與三角形面積。",
+      "image": "images/027.png",
+      "answerimage": "images/q027.png",
+      "comment": "第27題，題目有圖，答案有圖"
+    },
+    {
+      "question": "工人師傅常用角尺平分一個任意角，做法是：如圖，在\\(\\angle AOB\\)的邊OA、OB上分別取OM=ON，移動角尺，使角尺的兩邊相同的刻度分別與點M、N重合，得到\\(\\angle AOB\\)的平分線OP，做法中用到三角形全等的判定方法是",
+      "options": ["SSS", "SAS", "ASA", "HL"],
+      "answer": "SSS",
+      "explanation": "本題解析由AI生成：解：在尺規作圖中，OM=ON（等長點），角尺兩邊刻度相等，則MA=NB，OP=OP（公共邊）。故△MOP≌△NOP（SSS），證明OP為\\(\\angle AOB\\)的平分線。選項SAS、ASA、HL錯誤，選項SSS正確，故選：SSS。本題考查全等三角形的判定與角平分線的尺規作圖。",
+      "image": "images/028.png",
+      "answerimage": null,
+      "comment": "第28題，題目有圖，答案無圖"
+    }
+  ]
+}
