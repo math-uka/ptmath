@@ -68,6 +68,24 @@
         .generate-btn:hover {
             background-color: #4A00B5;
         }
+        .generate-btn.hide {
+            background-color: #ff4444;
+        }
+        .generate-btn.hide:hover {
+            background-color: #cc0000;
+        }
+        .random-btn {
+            background-color: #FF9800;
+        }
+        .random-btn:hover {
+            background-color: #F57C00;
+        }
+        .clear-btn {
+            background-color: #ff4444;
+        }
+        .clear-btn:hover {
+            background-color: #cc0000;
+        }
         .error {
             color: red;
             font-size: 16px;
@@ -84,14 +102,16 @@
         }
         canvas {
             margin-top: 20px;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>一元一次不等式解集工具</h1>
-        <button onclick="addInequality()">新增不等式</button>
-        <button class="generate-btn" onclick="generateAllSolutions()">生成解集</button>
+        <button class="random-btn" onclick="generateRandomInequality()">隨機</button>
+        <button class="clear-btn" onclick="clearAllInputs()">清除</button>
+        <button class="generate-btn" onclick="toggleGenerateSolutions()" id="generate-btn">生成解集</button>
         <div id="inequality-container"></div>
         <div class="error" id="error"></div>
         <div class="solution-display" id="solution"></div>
@@ -103,6 +123,7 @@
 
     <script>
         let inequalities = [];
+        let showSolution = false;
         const maxInequalities = 3;
         const colors = [
             [255, 0, 0],   // 紅色
@@ -111,33 +132,66 @@
         ];
         let solutionBounds = { lowerBound: -10, upperBound: 10, lowerInclusive: true, upperInclusive: true, hasSolution: false };
 
-        function addInequality() {
-            if (inequalities.length >= maxInequalities) {
-                document.getElementById('error').textContent = '最多只能輸入3組不等式';
+        function initializeInequalities() {
+            for (let index = 0; index < maxInequalities; index++) {
+                const inequality = { operator: '', constant: 0, valid: false, hidden: false };
+                inequalities.push(inequality);
+                const container = document.getElementById('inequality-container');
+                const div = document.createElement('div');
+                div.className = 'input-group';
+                div.id = `inequality-${index}`;
+                div.innerHTML = `
+                    <span class="color-block" style="background-color: rgb(${colors[index][0]}, ${colors[index][1]}, ${colors[index][2]});"></span>
+                    <label>輸入不等式 ${index + 1}：</label>
+                    <input type="text" id="input-${index}" placeholder="輸入 x 不等號 常數">
+                    <div>
+                        <button class="x-btn" onclick="insertOperator(${index}, 'x')">x</button>
+                        <button onclick="insertOperator(${index}, '>')">></button>
+                        <button onclick="insertOperator(${index}, '<')"><</button>
+                        <button onclick="insertOperator(${index}, '>=')">≥</button>
+                        <button onclick="insertOperator(${index}, '<=')">≤</button>
+                        <button class="hide-btn" onclick="toggleHideInequality(${index})" id="hide-btn-${index}">隱藏</button>
+                    </div>
+                `;
+                container.appendChild(div);
+                const inputElement = document.getElementById(`input-${index}`);
+                inputElement.addEventListener('input', () => parseInput(index));
+                parseInput(index);
+            }
+        }
+
+        function clearAllInputs() {
+            for (let index = 0; index < maxInequalities; index++) {
+                const input = document.getElementById(`input-${index}`);
+                if (input) {
+                    input.value = '';
+                    inequalities[index].operator = '';
+                    inequalities[index].constant = 0;
+                    inequalities[index].valid = false;
+                    parseInput(index);
+                }
+            }
+            showSolution = false;
+            document.getElementById('generate-btn').textContent = '生成解集';
+            document.getElementById('generate-btn').classList.remove('hide');
+            document.getElementById('solution').innerHTML = '';
+        }
+
+        function generateRandomInequality() {
+            let index = inequalities.findIndex(ineq => !ineq.valid || ineq.hidden);
+            if (index === -1) {
+                document.getElementById('error').textContent = '所有輸入框已填滿有效不等式，請隱藏或修改現有不等式';
                 return;
             }
-            const index = inequalities.length;
-            const inequality = { operator: '', constant: 0, valid: false, hidden: false };
-            inequalities.push(inequality);
-            const container = document.getElementById('inequality-container');
-            const div = document.createElement('div');
-            div.className = 'input-group';
-            div.id = `inequality-${index}`;
-            div.innerHTML = `
-                <span class="color-block" style="background-color: rgb(${colors[index][0]}, ${colors[index][1]}, ${colors[index][2]});"></span>
-                <label>輸入不等式 ${index + 1}：</label>
-                <input type="text" id="input-${index}" placeholder="輸入 x 不等號 常數">
-                <div>
-                    <button class="x-btn" onclick="insertOperator(${index}, 'x')">x</button>
-                    <button onclick="insertOperator(${index}, '>')">></button>
-                    <button onclick="insertOperator(${index}, '<')"><</button>
-                    <button onclick="insertOperator(${index}, '>=')">≥</button>
-                    <button onclick="insertOperator(${index}, '<=')">≤</button>
-                    <button class="hide-btn" onclick="toggleHideInequality(${index})" id="hide-btn-${index}">隱藏</button>
-                </div>
-            `;
-            container.appendChild(div);
-            document.getElementById(`input-${index}`).addEventListener('input', () => parseInput(index));
+            const operators = ['>', '<', '>=', '<='];
+            const randomOperator = operators[Math.floor(Math.random() * operators.length)];
+            const randomConstant = Math.floor(Math.random() * 21) - 10; // Integer from -10 to 10
+            const input = document.getElementById(`input-${index}`);
+            input.value = `x ${randomOperator} ${randomConstant}`;
+            inequalities[index].hidden = false;
+            const button = document.getElementById(`hide-btn-${index}`);
+            button.textContent = '隱藏';
+            button.style.backgroundColor = '#ff4444';
             parseInput(index);
         }
 
@@ -153,9 +207,11 @@
         }
 
         function parseInput(index) {
-            const input = document.getElementById(`input-${index}`).value;
+            const input = document.getElementById(`input-${index}`);
+            if (!input) return;
+            const value = input.value;
             const regex = /^x\s*(>|>=|<|<=)\s*([-]?\d*\.?\d*)$/;
-            const match = input.match(regex);
+            const match = value.match(regex);
             const error = document.getElementById('error');
             error.textContent = '';
             if (match) {
@@ -169,7 +225,9 @@
             } else {
                 inequalities[index].valid = false;
             }
-            generateAllSolutions();
+            if (showSolution) {
+                generateAllSolutions();
+            }
         }
 
         function toggleHideInequality(index) {
@@ -177,8 +235,22 @@
             const button = document.getElementById(`hide-btn-${index}`);
             button.textContent = inequalities[index].hidden ? '顯示' : '隱藏';
             button.style.backgroundColor = inequalities[index].hidden ? '#4CAF50' : '#ff4444';
-            button.style.backgroundColor = inequalities[index].hidden ? '#4CAF50' : '#ff4444';
-            generateAllSolutions();
+            if (showSolution) {
+                generateAllSolutions();
+            }
+        }
+
+        function toggleGenerateSolutions() {
+            showSolution = !showSolution;
+            const generateBtn = document.getElementById('generate-btn');
+            generateBtn.textContent = showSolution ? '隱藏解集' : '生成解集';
+            generateBtn.classList.toggle('hide', showSolution);
+            if (showSolution) {
+                generateAllSolutions();
+            } else {
+                document.getElementById('solution').innerHTML = '';
+                solutionBounds.hasSolution = false;
+            }
         }
 
         function generateAllSolutions() {
@@ -188,17 +260,12 @@
             let validInequalities = inequalities.filter(ineq => ineq.valid && !ineq.hidden && ineq.constant >= -10 && ineq.constant <= 10);
             
             if (validInequalities.length === 0) {
-                if (inequalities.length === 0) {
-                    error.textContent = '請新增至少一組不等式';
-                } else {
-                    error.textContent = '請確保至少一組有效且未隱藏的不等式';
-                }
+                error.textContent = '請確保至少一組有效且未隱藏的不等式';
                 solutionBounds.hasSolution = false;
                 return;
             }
 
             error.textContent = '';
-            // 計算共同解集
             let lowerBound = -10, upperBound = 10;
             let lowerInclusive = true, upperInclusive = true;
             let hasLower = false, hasUpper = false;
@@ -250,12 +317,18 @@
             solutionBounds.lowerInclusive = lowerInclusive;
             solutionBounds.upperInclusive = upperInclusive;
 
-            solutionContainer.innerHTML = `共同解集：\\(${solutionText}\\)`;
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, solutionContainer]);
+            if (showSolution) {
+                solutionContainer.innerHTML = `共同解集：\\(${solutionText}\\)`;
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, solutionContainer]);
+            }
         }
 
-        // p5.js 繪製數軸
         function setup() {
+            let canvasContainer = document.getElementById('canvas-container');
+            if (!canvasContainer) {
+                console.error('Canvas container not found!');
+                return;
+            }
             let canvas = createCanvas(650, 120);
             canvas.parent('canvas-container');
             background(255);
@@ -263,79 +336,72 @@
 
         function draw() {
             background(255);
-            // 繪製數軸
             stroke(0);
             strokeWeight(2);
-            line(50, 80, 600, 80); // 數軸
-            // 數軸右端箭頭
+            line(50, 80, 600, 80);
             triangle(600, 80, 590, 75, 590, 85);
-            line(325, 70, 325, 90); // 原點刻度
+            line(325, 70, 325, 90);
             textAlign(CENTER);
             textSize(12);
             text('0', 325, 100);
             for (let i = -10; i <= 10; i++) {
                 let x = 325 + i * 25;
-                line(x, 75, x, 85); // 刻度線
-                text(i, x, 100); // 數字標記
+                line(x, 75, x, 85);
+                text(i, x, 100);
             }
 
-            // 繪製最終解集的黃色填充區域
-            if (solutionBounds.hasSolution) {
+            if (showSolution && solutionBounds.hasSolution) {
                 let lowerX = 325 + solutionBounds.lowerBound * 25;
                 let upperX = 325 + solutionBounds.upperBound * 25;
-                fill(255, 255, 0, 100); // 半透明黃色
+                fill(255, 255, 0, 100);
                 noStroke();
                 if (solutionBounds.lowerBound === solutionBounds.upperBound && solutionBounds.lowerInclusive && solutionBounds.upperInclusive) {
-                    // 單點情況
-                    ellipse(lowerX, 65, 8, 8); // 繪製單點
+                    ellipse(lowerX, 65, 8, 8);
                 } else if (solutionBounds.lowerBound < solutionBounds.upperBound) {
-                    // 區間情況
-                    rect(lowerX, 55, upperX - lowerX, 25); // 填充最終解集區間
+                    rect(lowerX, 55, upperX - lowerX, 25);
                 } else if (!solutionBounds.hasLower && solutionBounds.hasUpper) {
-                    // 只有上界
                     rect(50, 55, upperX - 50, 25);
                 } else if (solutionBounds.hasLower && !solutionBounds.hasUpper) {
-                    // 只有下界
                     rect(lowerX, 55, 600 - lowerX, 25);
                 }
             }
 
-            // 繪製每組不等式的線條（無填充，無箭頭）
             inequalities.forEach((ineq, index) => {
                 if (ineq.valid && !ineq.hidden && ineq.constant >= -10 && ineq.constant <= 10) {
                     let xPos = 325 + ineq.constant * 25;
-                    let yPos = 55 - index * 15; // 數軸上方：55, 40, 25
-                    // 繪製線條和圓圈
+                    let yPos = 55 - index * 15;
                     stroke(colors[index][0], colors[index][1], colors[index][2]);
                     strokeWeight(4);
                     if (ineq.operator === '>' || ineq.operator === '>=') {
-                        line(xPos, yPos, 600, yPos); // 延長至數軸右端，無箭頭
-                        line(xPos, yPos, xPos, 80); // 豎線連接圈和數軸
+                        line(xPos, yPos, 600, yPos);
+                        line(xPos, yPos, xPos, 80);
                         if (ineq.operator === '>=') {
                             fill(colors[index][0], colors[index][1], colors[index][2]);
-                            ellipse(xPos, yPos, 8, 8); // 實心圈
+                            ellipse(xPos, yPos, 8, 8);
                         } else {
-                            fill(255, 255, 255); // 空心圈填充白色
+                            fill(255, 255, 255);
                             stroke(colors[index][0], colors[index][1], colors[index][2]);
                             strokeWeight(4);
-                            ellipse(xPos, yPos, 12, 12); // 空心圈，較大
+                            ellipse(xPos, yPos, 12, 12);
                         }
                     } else if (ineq.operator === '<' || ineq.operator === '<=') {
-                        line(xPos, yPos, 50, yPos); // 延長至數軸左端，無箭頭
-                        line(xPos, yPos, xPos, 80); // 豎線連接圈和數軸
+                        line(xPos, yPos, 50, yPos);
+                        line(xPos, yPos, xPos, 80);
                         if (ineq.operator === '<=') {
                             fill(colors[index][0], colors[index][1], colors[index][2]);
-                            ellipse(xPos, yPos, 8, 8); // 實心圈
+                            ellipse(xPos, yPos, 8, 8);
                         } else {
-                            fill(255, 255, 255); // 空心圈填充白色
+                            fill(255, 255, 255);
                             stroke(colors[index][0], colors[index][1], colors[index][2]);
                             strokeWeight(4);
-                            ellipse(xPos, yPos, 12, 12); // 空心圈，較大
+                            ellipse(xPos, yPos, 12, 12);
                         }
                     }
                 }
             });
         }
+
+        window.onload = initializeInequalities;
     </script>
 </body>
 </html>
