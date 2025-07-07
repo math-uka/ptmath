@@ -187,7 +187,7 @@
       "answer": "43.62 mm",
       "explanation": "解：由題意，\\(CB \\parallel DF\\)（即CB平行DF），則 \\(\\triangle ADF \\sim \\triangle ABC\\)。根據相似三角形對應邊成比例，\\(\\frac{DF}{BC} = \\frac{AD}{AB}\\)。已知 \\(AD = 3\\) m，\\(AB = 5\\) m，\\(BC = 72.7\\) mm，則 \\(\\frac{DF}{72.7} = \\frac{3}{5}\\)。解得 \\(DF = 72.7 \\cdot \\frac{3}{5} = 43.62\\) mm。選項4.36 mm、29.08 mm、121.17 mm均不滿足比例關係，故此項錯誤。選項43.62 mm正確。故選：43.62 mm。本題考查相似三角形對應邊成比例的應用。",
       "image": "images/021.png",
-      "answerimage": null,
+      "answerimage":"images/q021.png",
       "comment": "第21題，題目有圖，答案無圖"
     },
     {
