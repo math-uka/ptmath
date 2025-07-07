@@ -35,18 +35,10 @@
       "answer": "2",
       "explanation": "解：根據垂線段最短的性質，當PQ\\(\\perp\\)OM時，PQ取最小值。因OP平分\\(\\angle MON\\)（即 OP 平行 MON），PA\\(\\perp\\)ON，根據角平分線的性質，PQ=PA=2。故選：2。本題考查角平分線的性質，關鍵是角平分線上的點到角兩邊的距離相等。",
       "image": "images/003.png",
-      "answerimage": "images/q003.png",
+      "answerimage":null,
       "comment": "第3題，題目有圖，答案有圖"
     },
-    {
-      "question": "如圖，AD是△ABC的角平分線，DE\\(\\perp\\)AB於點E，S_{\\triangle ABC}=10，DE=2，AB=4，則AC長是",
-      "options": ["9", "8", "7", "6"],
-      "answer": "6",
-      "explanation": "本題解析由AI生成：解：作DF\\(\\perp\\)AC於點F，因AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB，DF\\(\\perp\\)AC，根據角平分線的性質，DF=DE=2。S_{\\triangle ABC}=\\frac{1}{2} \\cdot AB \\cdot DE + \\frac{1}{2} \\cdot AC \\cdot DF=10，代入得 \\frac{1}{2} \\cdot 4 \\cdot 2 + \\frac{1}{2} \\cdot AC \\cdot 2=10，則AC=6。選項9、8、7錯誤，選項6正確，故選：6。本題考查角平分線的性質與三角形面積公式。",
-      "image": "images/005.png",
-      "answerimage": null,
-      "comment": "第5題，題目有圖，答案無圖"
-    },
+
     {
       "question": "如圖所示，在△ABC中，\\(\\angle C=90^\\circ\\)，AD平分\\(\\angle BAC\\)，DE\\(\\perp\\)AB於點E，DE=4，BC=9，則BD的長為",
       "options": ["6", "5", "4", "3"],
@@ -200,24 +192,7 @@
       "answerimage": null,
       "comment": "第24題，題目有圖，答案無圖"
     },
-    {
-      "question": "如圖，AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB於點E，S_{\\triangle ABC}=24，DE=4，AB=7，則AC的長是",
-      "options": ["3", "4", "6", "5"],
-      "answer": "5",
-      "explanation": "解：作DF\\(\\perp\\)AC於點F，因AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB，DF\\(\\perp\\)AC，根據角平分線的性質，DF=DE=4。S_{\\triangle ABC}=\\frac{1}{2} \\cdot AB \\cdot DE + \\frac{1}{2} \\cdot AC \\cdot DF=24，代入得 \\frac{1}{2} \\cdot 7 \\cdot 4 + \\frac{1}{2} \\cdot AC \\cdot 4=24，則AC=5。選項3、4、6錯誤，選項5正確，故選：5。本題考查角平分線的性質與三角形面積。",
-      "image": "images/025.png",
-      "answerimage": "images/q025.png",
-      "comment": "第25題，題目有圖，答案有圖"
-    },
-    {
-      "question": "如圖，AD是△ABC的角平分線，DE\\(\\perp\\)AB於點E，S_{\\triangle ABC}=7，DE=2，AB=4，則AC的長是",
-      "options": ["3", "4", "5", "6"],
-      "answer": "3",
-      "explanation": "本題解析由AI生成：解：作DF\\(\\perp\\)AC於點F，因AD是△ABC中\\(\\angle BAC\\)的平分線，DE\\(\\perp\\)AB，DF\\(\\perp\\)AC，根據角平分線的性質，DF=DE=2。S_{\\triangle ABC}=\\frac{1}{2} \\cdot AB \\cdot DE + \\frac{1}{2} \\cdot AC \\cdot DF=7，代入得 \\frac{1}{2} \\cdot 4 \\cdot 2 + \\frac{1}{2} \\cdot AC \\cdot 2=7，則AC=3。選項4、5、6錯誤，選項3正確，故選：3。本題考查角平分線的性質與三角形面積。",
-      "image": "images/026.png",
-      "answerimage": null,
-      "comment": "第26題，題目有圖，答案無圖"
-    },
+   
     {
       "question": "如圖，在Rt△ABC中，\\(\\angle C=90^\\circ\\)，以頂點A為圓心，適當長為半徑畫弧，分別交AC、AB於點M、N，再分別以點M、N為圓心，大於\\(\\frac{1}{2}MN\\)的長為半徑畫弧，兩弧交於點P，作射線AP交邊BC於點D，若CD=4，AB=15，則△ABD的面積是",
       "options": ["15", "30", "45", "60"],
