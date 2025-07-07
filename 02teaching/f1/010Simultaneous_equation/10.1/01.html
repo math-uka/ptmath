@@ -34,16 +34,6 @@
     .mode-selection button:hover:not(:disabled) {
       background-color: #d0d0d0;
     }
-    .custom-mode {
-      margin-top: 20px;
-    }
-    .custom-mode input[type="range"] {
-      width: 200px;
-    }
-    .custom-mode label {
-      display: block;
-      margin-bottom: 10px;
-    }
     .question-container, .fib-mode-container {
       font-size: 1.2em;
     }
@@ -94,6 +84,18 @@
     .feedback, .fib-feedback {
       margin-top: 20px;
       font-weight: bold;
+    }
+    .next-question-button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      border: 1px solid #999;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+    }
+    .next-question-button:hover {
+      background-color: #d0d0d0;
     }
     .password-input input[type="number"] {
       padding: 5px;
@@ -169,12 +171,6 @@
   <div class="mode-selection" id="mode-selection">
     <p>請選擇遊戲模式：</p>
     <button id="standard-mode-btn" onclick="startStandardMode()" disabled>標準模式</button>
-    <button id="custom-mode-btn" onclick="showCustomMode()" disabled>自訂模式</button>
-  </div>
-  <div class="custom-mode" id="custom-mode" style="display: none;">
-    <label>選擇題目數量：<span id="question-count">1</span></label>
-    <input type="range" id="question-slider" min="1" value="1">
-    <button onclick="startCustomMode()">開始</button>
   </div>
   <div class="question-container" id="question" style="display: none;"></div>
   <div id="question-image-container" style="display: none;"></div>
@@ -206,7 +202,7 @@
     <div class="fib-feedback" id="fib-feedback"></div>
   </div>
   <div class="password-input" id="password-input" style="display: none;">
-    <p>恭喜！你全對或只錯一題！輸入 1~50 的數字以獲取密碼：</p>
+    <p>恭喜！你已完成挑戰！輸入學號以獲取密碼：</p>
     <input type="number" id="password-number" min="1" max="50" placeholder="輸入 1~50">
     <button id="password-submit">提交</button>
     <div class="password-result" id="password-result"></div>
@@ -218,18 +214,19 @@
   </footer>
 
   <script>
-    // 標準模式的題目數量
-    const STANDARD_MODE_QUESTION_COUNT = 10;
+    // 標準模式的預設題目數量和允許錯誤數
+    let STANDARD_MODE_QUESTION_COUNT = 10; // 預設值
+    let STANDARD_MODE_MAX_WRONG = 1; // 預設值
 
-    let quizData = {}; // 整個測驗數據
+    let quizData = {}; // 整个测验数据
     let questionBank = []; // 選擇題題庫（從 quizData.questions 獲取）
     let challengeBank = []; // 挑戰題題庫（從 num2.json）
     let hasChallengeBank = false; // 是否有挑戰題庫
-    let aiBank = []; // AI題庫（從 numai.json）
+    let aiBank = []; // AI題庫（從 hanya.json）
     let hasAIBank = false; // 是否有AI題庫
     let quizTitle = "自我測驗"; // num.json 標題
     let challengeTitle = "挑戰測驗"; // num2.json 標題
-    let aiTitle = "AI測驗"; // numai.json 標題
+    let aiTitle = "AI測驗"; // hanya.json 標題
     let currentTitle = quizTitle; // 當前標題
     let fibQuestionBank = []; // 填空題題庫
     let passwordBank = {};
@@ -246,13 +243,14 @@
     let totalQuestions = 0;
     let currentQuestionCount = 0;
     let isStandardMode = false;
-    let isAIMode = false; // 是否為AI模式
+    let isAiMode = false; // 是否為AI模式
     let passwordRetrieved = false;
     let currentFibQuestion = null; // 當前填空題
     let isAnswerShown = false; // 追蹤是否顯示答案
     let consecutiveCorrect = 0; // 連續答對次數
     let isChallengeMode = false; // 是否使用挑戰題庫
     let lastIncorrect = false; // 追蹤上次是否答錯
+    let hasTotalConfig = false; // 是否有 total.json 配置文件
 
     // 更新標題
     function updateTitle(title) {
@@ -266,11 +264,37 @@
       const loadingMessageDiv = document.getElementById('loading-message');
       const errorMessageDiv = document.getElementById('error-message');
       const standardModeBtn = document.getElementById('standard-mode-btn');
-      const customModeBtn = document.getElementById('custom-mode-btn');
 
       try {
         // 預設標題
         updateTitle(quizTitle);
+
+        // 嘗試加載 total.json
+        try {
+          console.log('開始載入 total.json');
+          const totalResponse = await fetch('total.json');
+          if (!totalResponse.ok) {
+            console.warn(`無法載入 total.json：HTTP 狀態 ${totalResponse.status}，使用預設標準模式設定（10題，允許錯1題）`);
+            hasTotalConfig = false;
+          } else {
+            const totalData = await totalResponse.json();
+            if (!totalData || typeof totalData !== 'object' || !Number.isInteger(totalData.questionCount) || !Number.isInteger(totalData.maxWrong) || totalData.questionCount < 1 || totalData.maxWrong < 0) {
+              console.warn('total.json 格式錯誤或數值無效，使用預設標準模式設定（10題，允許錯1題）');
+              hasTotalConfig = false;
+            } else {
+              hasTotalConfig = true;
+              STANDARD_MODE_QUESTION_COUNT = totalData.questionCount;
+              STANDARD_MODE_MAX_WRONG = totalData.maxWrong;
+              console.log('total.json 加載成功：', {
+                questionCount: STANDARD_MODE_QUESTION_COUNT,
+                maxWrong: STANDARD_MODE_MAX_WRONG
+              });
+            }
+          }
+        } catch (error) {
+          console.warn('total.json 載入失敗，使用預設標準模式設定（10題，允許錯1題）：', error.message);
+          hasTotalConfig = false;
+        }
 
         // 先嘗試加載填空題題庫
         try {
@@ -385,7 +409,7 @@
               const aiButton = document.createElement('button');
               aiButton.id = 'ai-mode-btn';
               aiButton.textContent = 'AI題庫';
-              aiButton.onclick = startAIMode;
+              aiButton.onclick = startAiMode;
               // 將 AI 按鈕插入到標準模式按鈕之前
               modeSelection.insertBefore(aiButton, standardModeBtn);
             }
@@ -419,14 +443,9 @@
 
         // 初始化滑條（僅在有選擇題時）
         if (hasQuizBank) {
-          const maxQuestions = questionBank.length + (hasChallengeBank ? challengeBank.length : 0);
-          document.getElementById('question-slider').max = maxQuestions;
-          document.getElementById('question-count').textContent = 1;
           standardModeBtn.disabled = false;
-          customModeBtn.disabled = false;
         } else {
           standardModeBtn.style.display = 'none';
-          customModeBtn.style.display = 'none';
         }
 
         // 啟用填空模式按鈕
@@ -465,7 +484,7 @@
     }
 
     // 啟動 AI 模式
-    function startAIMode() {
+    function startAiMode() {
       if (!hasAIBank || aiBank.length === 0) {
         document.getElementById('error-message').innerHTML = 'AI題庫為空，無法開始遊戲！';
         document.getElementById('error-message').style.display = 'block';
@@ -473,7 +492,7 @@
       }
 
       isStandardMode = false;
-      isAIMode = true;
+      isAiMode = true;
       wrongCount = 0;
       passwordRetrieved = false;
       totalQuestions = aiBank.length; // 使用 AI 題庫的所有題目
@@ -494,7 +513,6 @@
       });
 
       document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'block';
       document.getElementById('remaining-questions').style.display = 'block';
@@ -512,7 +530,7 @@
       }
 
       isStandardMode = true;
-      isAIMode = false;
+      isAiMode = false;
       wrongCount = 0;
       passwordRetrieved = false;
       totalQuestions = STANDARD_MODE_QUESTION_COUNT;
@@ -527,69 +545,13 @@
 
       console.log('標準模式啟動：', {
         totalQuestions,
+        maxWrong: STANDARD_MODE_MAX_WRONG,
         availableQuestionsLength: availableQuestions.length,
         availableChallengeQuestionsLength: availableChallengeQuestions.length,
         currentQuestionCount
       });
 
       document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
-      document.getElementById('error-message').style.display = 'none';
-      document.getElementById('question').style.display = 'block';
-      document.getElementById('remaining-questions').style.display = 'block';
-      document.getElementById('options').style.display = 'table';
-      document.getElementById('fib-mode').style.display = 'none';
-      displayQuestion();
-    }
-
-    // 顯示自訂模式滑條
-    function showCustomMode() {
-      if (!hasQuizBank || questionBank.length === 0) {
-        document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法進入自訂模式！';
-        document.getElementById('error-message').style.display = 'block';
-        return;
-      }
-
-      document.getElementById('custom-mode').style.display = 'block';
-      const slider = document.getElementById('question-slider');
-      slider.value = 1;
-      document.getElementById('question-count').textContent = slider.value;
-      slider.oninput = () => {
-        document.getElementById('question-count').textContent = slider.value;
-      };
-    }
-
-    // 啟動自訂模式
-    function startCustomMode() {
-      if (!hasQuizBank || questionBank.length === 0) {
-        document.getElementById('error-message').innerHTML = '選擇題題庫為空，無法開始遊戲！';
-        document.getElementById('error-message').style.display = 'block';
-        return;
-      }
-
-      isStandardMode = false;
-      isAIMode = false;
-      wrongCount = 0;
-      passwordRetrieved = false;
-      totalQuestions = parseInt(document.getElementById('question-slider').value);
-      availableQuestions = shuffleArray([...questionBank]);
-      availableChallengeQuestions = hasChallengeBank ? shuffleArray([...challengeBank]) : [];
-      currentQuestionCount = 0;
-      wrongQuestions.clear();
-      consecutiveCorrect = 0;
-      isChallengeMode = false;
-      lastIncorrect = false;
-      updateTitle(quizTitle);
-
-      console.log('自訂模式啟動：', {
-        totalQuestions,
-        availableQuestionsLength: availableQuestions.length,
-        availableChallengeQuestionsLength: availableChallengeQuestions.length,
-        currentQuestionCount
-      });
-
-      document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'block';
       document.getElementById('remaining-questions').style.display = 'block';
@@ -610,7 +572,6 @@
       isAnswerShown = false;
       updateTitle(quizTitle);
       document.getElementById('mode-selection').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('question').style.display = 'none';
       document.getElementById('question-image-container').style.display = 'none';
@@ -700,15 +661,18 @@
         availableQuestionsLength: availableQuestions.length,
         availableChallengeQuestionsLength: availableChallengeQuestions.length,
         isChallengeMode,
-        lastIncorrect
+        lastIncorrect,
+        consecutiveCorrect
       });
 
-      if (currentQuestionCount >= totalQuestions || (availableQuestions.length === 0 && availableChallengeQuestions.length === 0)) {
+      if (currentQuestionCount >= totalQuestions || (availableQuestions.length === 0 && availableChallengeQuestions.length === 0) || (isStandardMode && wrongCount > STANDARD_MODE_MAX_WRONG)) {
         console.log('條件滿足，結束選擇題遊戲：', {
           currentQuestionCount,
           totalQuestions,
           availableQuestionsLength: availableQuestions.length,
-          availableChallengeQuestionsLength: availableChallengeQuestions.length
+          availableChallengeQuestionsLength: availableChallengeQuestions.length,
+          wrongCount,
+          maxWrong: isStandardMode ? STANDARD_MODE_MAX_WRONG : 'N/A'
         });
         endGame();
         return;
@@ -716,8 +680,8 @@
 
       let question, questionIndex, bank, title;
       if (isStandardMode) {
-        // 標準模式邏輯：連續答對3題或上次答錯時進入挑戰模式
-        if ((consecutiveCorrect >= 3 && hasChallengeBank && availableChallengeQuestions.length > 0) || (lastIncorrect && isChallengeMode && availableChallengeQuestions.length > 0)) {
+        // 標準模式邏輯：僅在連續答對3題且有挑戰題庫時進入挑戰模式，且上次不能是答錯
+        if (consecutiveCorrect >= 3 && hasChallengeBank && availableChallengeQuestions.length > 0 && !lastIncorrect) {
           isChallengeMode = true;
           const randomIndex = Math.floor(Math.random() * availableChallengeQuestions.length);
           question = availableChallengeQuestions[randomIndex];
@@ -734,7 +698,7 @@
           title = quizTitle;
           availableQuestions.splice(randomIndex, 1);
         }
-      } else if (isAIMode) {
+      } else if (isAiMode) {
         // AI模式邏輯：僅使用AI題庫
         if (availableQuestions.length > 0) {
           const randomIndex = Math.floor(Math.random() * availableQuestions.length);
@@ -840,21 +804,22 @@
         correctAnswerLabel,
         questionIndex,
         correctAnswerContent,
-        bank: bank === challengeBank ? 'challengeBank' : bank === aiBank ? 'aiBank' : 'questionBank'
+        bank: bank === challengeBank ? 'challengeBank' : bank === aiBank ? 'aiBank' : 'questionBank',
+        consecutiveCorrect,
+        isChallengeMode
       });
 
       if (selected === correctAnswerLabel) {
-        if (isStandardMode || isAIMode) {
+        if (isStandardMode || isAiMode) {
           consecutiveCorrect++;
         }
         lastIncorrect = false;
-        isChallengeMode = (isStandardMode || isAIMode) && consecutiveCorrect >= 3 && hasChallengeBank;
         feedback.innerHTML = '正確！正在加載下一題...';
         feedback.style.color = 'green';
         toggleButtons(true);
         setTimeout(() => {
           quizNumber++;
-          updateTitle(isChallengeMode ? challengeTitle : isAIMode ? aiTitle : quizTitle);
+          updateTitle(isChallengeMode ? challengeTitle : isAiMode ? aiTitle : quizTitle);
           displayQuestion();
         }, 1000);
       } else {
@@ -867,27 +832,40 @@
           <p>錯誤！正確答案是 ${correctAnswerLabel}：${displayAnswer}</p>
           <p>解析：${question.explanation}</p>
           ${answerImageHtml}
+          <button class="next-question-button" onclick="nextQuestion()">下一題</button>
         `;
         feedback.style.color = 'red';
         wrongQuestions.add(questionIndex + (bank === challengeBank ? questionBank.length : bank === aiBank ? questionBank.length + challengeBank.length : 0));
-        if (isStandardMode || isAIMode) {
+        if (isStandardMode || isAiMode) {
           consecutiveCorrect = 0;
           if (bank === challengeBank) {
             // 挑戰題答錯：不增加錯題數量、不減少剩餘題數、返回主要題庫
             currentQuestionCount--;
-            isChallengeMode = hasChallengeBank;
+            isChallengeMode = false; // 明確返回 num.json 題庫
             lastIncorrect = true;
           } else {
             // 普通題或AI題答錯：正常增加錯題數量
             wrongCount++;
-            isChallengeMode = hasChallengeBank;
+            isChallengeMode = false; // 確保下題從 num.json 開始
             lastIncorrect = true;
           }
         } else {
           // 自訂模式：正常增加錯題數量
           wrongCount++;
         }
+        toggleButtons(true);
         MathJax.typeset();
+      }
+    }
+
+    // 下一題函數
+    function nextQuestion() {
+      if (isStandardMode && wrongCount > STANDARD_MODE_MAX_WRONG) {
+        endGame();
+      } else {
+        quizNumber++;
+        updateTitle(isChallengeMode ? challengeTitle : isAiMode ? aiTitle : quizTitle);
+        displayQuestion();
       }
     }
 
@@ -920,16 +898,19 @@
 
     // 選擇題遊戲結束
     function endGame() {
-      document.getElementById('question').innerHTML = '遊戲結束！所有題目已完成。';
+      let endMessage = '遊戲結束！所有題目已完成。';
+      if (isStandardMode && wrongCount > STANDARD_MODE_MAX_WRONG) {
+        endMessage = `遊戲結束！你已錯 ${wrongCount} 題，超過允許的最大錯誤數 ${STANDARD_MODE_MAX_WRONG} 題。`;
+      }
+      document.getElementById('question').innerHTML = endMessage;
       document.getElementById('question-image-container').style.display = 'none';
       document.getElementById('remaining-questions').style.display = 'none';
       document.getElementById('options').style.display = 'none';
       document.getElementById('feedback').style.display = 'none';
       document.getElementById('fib-mode').style.display = 'none';
-      document.getElementById('custom-mode').style.display = 'none';
 
-      // 僅在標準模式或AI模式下、錯題 ≤ 1 且存在密碼表時顯示密碼輸入框
-      if ((isStandardMode || isAIMode) && wrongCount <= 1 && hasPasswordBank) {
+      // 僅在標準模式或AI模式下、錯題 ≤ STANDARD_MODE_MAX_WRONG 且存在密碼表時顯示密碼輸入框
+      if ((isStandardMode || isAiMode) && wrongCount <= STANDARD_MODE_MAX_WRONG && hasPasswordBank) {
         document.getElementById('password-input').style.display = 'block';
         document.getElementById('password-submit').onclick = handlePasswordSubmit;
       }
