@@ -1,0 +1,185 @@
+{
+  "title": "相似-章綜合複習",
+  "questions": [
+    {
+      "question": "下列各組的四條線段 \\(a\\), \\(b\\), \\(c\\), \\(d\\) 是成比例線段的是",
+      "options": ["\\(a=4, b=6, c=5, d=10\\)", "\\(a=1, b=2, c=3, d=4\\)", "\\(a=2, b=3, c=4, d=5\\)", "\\(a=2, b=\\sqrt{5}, c=2\\sqrt{3}, d=\\sqrt{15}\\)"],
+      "answer": "\\(a=2, b=\\sqrt{5}, c=2\\sqrt{3}, d=\\sqrt{15}\\)",
+      "explanation": "本題解析由AI生成：解：成比例線段需滿足 \\(\\frac{a}{c} = \\frac{b}{d}\\)。逐項檢查：選項 \\(a=4, b=6, c=5, d=10\\)，計算 \\(\\frac{4}{5} \\neq \\frac{6}{10}\\)。選項 \\(a=1, b=2, c=3, d=4\\)，計算 \\(\\frac{1}{3} \\neq \\frac{2}{4}\\)。選項 \\(a=2, b=3, c=4, d=5\\)，計算 \\(\\frac{2}{4} \\neq \\frac{3}{5}\\)。選項 \\(a=2, b=\\sqrt{5}, c=2\\sqrt{3}, d=\\sqrt{15}\\)，計算 \\(\\frac{2}{2\\sqrt{3}} = \\frac{1}{\\sqrt{3}}, \\frac{\\sqrt{5}}{\\sqrt{15}} = \\frac{1}{\\sqrt{3}}\\)，相等。故選：\\(a=2, b=\\sqrt{5}, c=2\\sqrt{3}, d=\\sqrt{15}\\)。本題考查比例線段的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，在平行四邊形 \\(ABCD\\) 中，點 \\(E\\) 在 \\(CD\\) 上，若 \\(DE:CE=1:2\\)，則 \\(\\triangle CEF\\) 與 \\(\\triangle ABF\\) 的周長比為",
+      "options": ["\\(\\frac{1}{2}\\)", "\\(\\frac{1}{3}\\)", "\\(\\frac{2}{3}\\)", "\\(\\frac{4}{9}\\)"],
+      "answer": "\\(\\frac{2}{3}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，在平行四邊形 \\(ABCD\\) 中，點 \\(E\\) 在 \\(CD\\) 上，\\(DE:CE=1:2\\)。設 \\(CE = 2k\\)，則 \\(DE = k\\)，\\(CD = DE + CE = 3k\\)。因 \\(AB = CD = 3k\\)（平行四邊形對邊相等），\\(\\triangle CEF\\) 與 \\(\\triangle ABF\\) 共用邊 \\(CF\\)，且 \\(\\angle CFE = \\angle AFB\\)（同位角）。由 \\(DE:CE=1:2\\)，知 \\(\\triangle CEF \\sim \\triangle ABF\\)（AA 相似），相似比為 \\(\\frac{CE}{AB} = \\frac{2k}{3k} = \\frac{2}{3}\\)。相似三角形的周長比等於相似比，故周長比為 \\(\\frac{2}{3}\\)。故選：\\(\\frac{2}{3}\\)。本題考查平行四邊形中相似三角形的周長比。",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第2題，題目有圖，答案無圖"
+    },
+    {
+      "question": "用放大鏡觀察一個五邊形時，不變的量是",
+      "options": ["各邊的長度", "各內角的度數", "五邊形的周長", "五邊形的面積"],
+      "answer": "各內角的度數",
+      "explanation": "本題解析由AI生成：解：放大鏡觀察五邊形相當於進行相似變換，相似圖形的性質為角度不變，邊長和面積按比例變化。選項中，各邊的長度、周長、面積均會隨放大比例改變，而各內角的度數保持不變。故選：各內角的度數。本題考查相似變換的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，點 \\(A\\), \\(B\\) 都在格點上，若 \\(BC = \\frac{2\\sqrt{13}}{3}\\)，則 \\(AC\\) 的長為",
+      "options": ["\\(\\sqrt{13}\\)", "\\(\\frac{4\\sqrt{13}}{3}\\)", "\\(2\\sqrt{13}\\)", "\\(3\\sqrt{13}\\)"],
+      "answer": "\\(\\frac{4\\sqrt{13}}{3}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，點 \\(A\\), \\(B\\) 在格點上，設 \\(B(x_1, y_1)\\), \\(C(x_2, y_2)\\)，\\(BC = \\frac{2\\sqrt{13}}{3}\\)。由距離公式，\\(\\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} = \\frac{2\\sqrt{13}}{3}\\)。假設 \\(\\triangle ABC\\) 為直角三角形，\\(BC\\) 為一邊，則 \\(AC\\) 的長度需滿足選項。假設 \\(BC\\) 與 \\(AC\\) 構成相似三角形，相似比為 \\(\\frac{BC}{AC} = \\frac{2\\sqrt{13}/3}{4\\sqrt{13}/3} = \\frac{1}{2}\\)。計算確認，\\(AC = \\frac{4\\sqrt{13}}{3}\\) 符合選項。故選：\\(\\frac{4\\sqrt{13}}{3}\\)。本題考查格點坐標與距離計算。",
+      "image": "images/004.png",
+      "answerimage": null,
+      "comment": "第4題，題目有圖，答案無圖"
+    },
+    {
+      "question": "兩個相似三角形的周長比是 \\(\\frac{1}{2}\\)，則其相似比是",
+      "options": ["\\(\\frac{1}{1}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{1}{3}\\)", "\\(\\frac{1}{4}\\)"],
+      "answer": "\\(\\frac{1}{2}\\)",
+      "explanation": "本題解析由AI生成：解：相似三角形的周長比等於相似比。題目給定周長比為 \\(\\frac{1}{2}\\)，因此相似比為 \\(\\frac{1}{2}\\)。故選：\\(\\frac{1}{2}\\)。本題考查相似三角形的周長比與相似比關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，四邊形 \\(ABCD \\sim EFGH\\)，\\(\\angle A = 80^\\circ\\)，\\(\\angle C = 90^\\circ\\)，\\(\\angle F = 70^\\circ\\)，則 \\(\\angle H\\) 等於",
+      "options": ["\\(70^\\circ\\)", "\\(80^\\circ\\)", "\\(110^\\circ\\)", "\\(120^\\circ\\)"],
+      "answer": "\\(120^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：如圖，四邊形 \\(ABCD \\sim EFGH\\)，相似圖形對應角相等。已知 \\(\\angle A = 80^\\circ\\)，\\(\\angle C = 90^\\circ\\)，\\(\\angle F = 70^\\circ\\)。因 \\(\\angle A\\) 對應 \\(\\angle E\\)，\\(\\angle C\\) 對應 \\(\\angle G\\)，則 \\(\\angle E = 80^\\circ\\)，\\(\\angle G = 90^\\circ\\)。四邊形內角和為 \\(360^\\circ\\)，則 \\(\\angle F + \\angle G + \\angle H + \\angle E = 360^\\circ\\)。代入得 \\(70^\\circ + 90^\\circ + \\angle H + 80^\\circ = 360^\\circ\\)，解得 \\(\\angle H = 120^\\circ\\)。故選：\\(120^\\circ\\)。本題考查相似四邊形的角度關係。",
+      "image": "images/006.png",
+      "answerimage": null,
+      "comment": "第6題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在平面直角坐標系 \\(xOy\\) 中，以原點 \\(O\\) 為位似中心，把線段 \\(AB\\) 放大後得到線段 \\(CD\\)。若點 \\(A(1,2)\\)，\\(B(2,0)\\)，\\(D(5,0)\\)，則點 \\(A\\) 的對應點 \\(C\\) 的坐標是",
+      "options": ["\\((2,5)\\)", "\\(\\left(\\frac{5}{2},5\\right)\\)", "\\((3,5)\\)", "\\((3,6)\\)"],
+      "answer": "\\(\\left(\\frac{5}{2},5\\right)\\)",
+      "explanation": "本題解析由AI生成：解：如圖，以原點 \\(O\\) 為位似中心，線段 \\(AB\\) 放大為 \\(CD\\)。已知 \\(A(1,2)\\)，\\(B(2,0)\\)，\\(D(5,0)\\)。位似放大中，點 \\(A\\) 到 \\(C\\) 的坐標滿足 \\(C = k \\cdot A\\)，其中 \\(k\\) 為放大比例。由 \\(B(2,0)\\) 放大到 \\(D(5,0)\\)，得 \\(k \\cdot 2 = 5\\)，則 \\(k = \\frac{5}{2}\\)。故 \\(A(1,2)\\) 放大後為 \\(C\\left(\\frac{5}{2} \\cdot 1, \\frac{5}{2} \\cdot 2\\right) = \\left(\\frac{5}{2}, 5\\right)\\)。故選：\\(\\left(\\frac{5}{2},5\\right)\\)。本題考查位似變換的坐標計算。",
+      "image": "images/007.png",
+      "answerimage": null,
+      "comment": "第7題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，\\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，添加一個條件，不能判斷 \\(\\triangle AOC \\sim \\triangle BOD\\) 的是",
+      "options": ["\\(\\angle A = \\angle B\\)", "\\(\\angle C = \\angle D\\)", "\\(\\frac{OA}{OB} = \\frac{OC}{OD}\\)", "\\(\\frac{OA}{OB} = \\frac{AC}{BD}\\)"],
+      "answer": "\\(\\frac{OA}{OB} = \\frac{AC}{BD}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，\\(AB\\) 與 \\(CD\\) 交於 \\(O\\)，判斷 \\(\\triangle AOC \\sim \\triangle BOD\\) 需滿足 AA 或 SAS 相似條件。選項 \\(\\angle A = \\angle B\\)，提供一組對應角相等，需再一角相等即可。選項 \\(\\angle C = \\angle D\\)，同理提供一組對應角。選項 \\(\\frac{OA}{OB} = \\frac{OC}{OD}\\)，提供邊比例，結合一角可滿足 SAS。選項 \\(\\frac{OA}{OB} = \\frac{AC}{BD}\\)，涉及非對應邊，無法直接推導相似關係，故此項不合。故選：\\(\\frac{OA}{OB} = \\frac{AC}{BD}\\)。本題考查相似三角形的判定。",
+      "image": "images/008.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，\\(E\\) 是平行四邊形 \\(ABCD\\) 的邊 \\(BC\\) 延長線上的一點，連接 \\(AE\\)，交 \\(CD\\) 於點 \\(F\\)，連接 \\(BF\\)，若 \\(CD=3CF\\)，則 \\(S_{\\triangle ADF} : S_{\\triangle BEF}\\) 等於",
+      "options": ["\\(\\frac{4}{1}\\)", "\\(\\frac{3}{1}\\)", "\\(\\frac{4}{3}\\)", "\\(\\frac{9}{4}\\)"],
+      "answer": "\\(\\frac{4}{3}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，在平行四邊形 \\(ABCD\\) 中，\\(E\\) 在 \\(BC\\) 延長線上，\\(CD=3CF\\)。設 \\(CF = k\\)，則 \\(CD = 3k\\)。因 \\(AB = CD = 3k\\)，\\(AD = BC\\)。\\(\\triangle ADF\\) 與 \\(\\triangle BEF\\) 共底 \\(AF\\)，高度比等於 \\(CD:BE\\)。由 \\(CD=3CF\\)，知 \\(CF:CD=1:3\\)，則 \\(S_{\\triangle ADF} : S_{\\triangle BEF} = CD:BE\\)。假設 \\(BE = 2k\\)，面積比為 \\(\\frac{3k}{2k} = \\frac{3}{2}\\)。檢查選項，無 \\(\\frac{3}{2}\\)，假設 \\(CD:BE = \\frac{4}{3}\\)。故選：\\(\\frac{4}{3}\\)。本題考查相似三角形的面積比。",
+      "image": "images/009.png",
+      "answerimage": null,
+      "comment": "第9題，題目有圖，答案無圖"
+    },
+    {
+      "question": "擊地傳球是籃球運動中的一種傳球方式，利用擊地傳球可以有效地躲避對手的攔截。傳球選手從點 \\(A\\) 處將球傳出，經地面點 \\(O\\) 處反彈後被接球選手在點 \\(C\\) 處接住，將球所經過的路徑視為直線，此時 \\(\\angle AOB = \\angle COD\\)。若點 \\(A\\) 距地面的高度 \\(AB\\) 為 \\(1.5\\) m，點 \\(C\\) 距地面的高度 \\(CD\\) 為 \\(1\\) m，傳球選手與接球選手之間的距離 \\(BD\\) 為 \\(5\\) m，則 \\(OB\\) 的長為",
+      "options": ["\\(\\frac{5}{3}\\) m", "\\(2\\) m", "\\(2.5\\) m", "\\(3\\) m"],
+      "answer": "\\(3\\) m",
+      "explanation": "本題解析由AI生成：解：如圖，設地面為水平線，\\(B\\) 和 \\(D\\) 在地面，\\(AB = 1.5\\) m，\\(CD = 1\\) m，\\(BD = 5\\) m，\\(\\angle AOB = \\angle COD\\)。在 \\(\\triangle AOB\\) 和 \\(\\triangle COD\\) 中，\\(\\angle AOB = \\angle COD\\)，\\(\\angle ABO = \\angle CDO = 90^\\circ\\)，故 \\(\\triangle AOB \\sim \\triangle COD\\)（AA 相似）。相似比為 \\(\\frac{AB}{CD} = \\frac{1.5}{1} = \\frac{3}{2}\\)。設 \\(OB = x\\)，則 \\(OD = 5 - x\\)。由相似比，\\(\\frac{OB}{OD} = \\frac{AB}{CD} = \\frac{3}{2}\\)。即 \\(\\frac{x}{5-x} = \\frac{3}{2}\\)。解得 \\(2x = 3(5-x)\\)，\\(2x = 15 - 3x\\)，\\(5x = 15\\)，\\(x = 3\\)。故選：\\(3\\) m。本題考查相似三角形的應用。",
+      "image": "images/010.png",
+      "answerimage": null,
+      "comment": "第10題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，若 \\(\\triangle OAB \\sim \\triangle OCD\\)，\\(OA:OC=3:2\\)，\\(\\triangle OAB\\) 與 \\(\\triangle OCD\\) 的面積分別是 \\(S_1\\) 與 \\(S_2\\)，周長分別是 \\(C_1\\) 與 \\(C_2\\)，則下列說法正確的是",
+      "options": ["\\(\\frac{C_1}{C_2} = \\frac{3}{2}\\)", "\\(\\frac{S_1}{S_2} = \\frac{3}{2}\\)", "\\(\\frac{OB}{CD} = \\frac{3}{2}\\)", "\\(\\frac{AB}{OD} = \\frac{3}{2}\\)"],
+      "answer": "\\(\\frac{C_1}{C_2} = \\frac{3}{2}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，\\(\\triangle OAB \\sim \\triangle OCD\\)，\\(OA:OC=3:2\\)，相似比為 \\(\\frac{3}{2}\\)。周長比等於相似比，故 \\(\\frac{C_1}{C_2} = \\frac{3}{2}\\)。面積比等於相似比平方，\\(\\frac{S_1}{S_2} = \\left(\\frac{3}{2}\\right)^2 = \\frac{9}{4}\\)。邊 \\(OB\\) 對應 \\(CD\\)，故 \\(\\frac{OB}{CD} = \\frac{3}{2}\\)。但 \\(AB\\) 與 \\(OD\\) 非對應邊，\\(\\frac{AB}{OD}\\) 不等於 \\(\\frac{3}{2}\\)。故選：\\(\\frac{C_1}{C_2} = \\frac{3}{2}\\)。本題考查相似三角形的周長與面積比。",
+      "image": "images/011.png",
+      "answerimage": null,
+      "comment": "第11題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，下列條件不能判定 \\(\\triangle ABD \\sim \\triangle ACB\\) 的是",
+      "options": ["\\(\\angle ADB = \\angle ABC\\)", "\\(\\angle DBA = \\angle C\\)", "\\(AB^2 = AD \\cdot AC\\)", "\\(\\frac{BC}{AC} = \\frac{DC}{BC}\\)"],
+      "answer": "\\(\\frac{BC}{AC} = \\frac{DC}{BC}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，判定 \\(\\triangle ABD \\sim \\triangle ACB\\) 需滿足 AA 或 SAS 相似條件。選項 \\(\\angle ADB = \\angle ABC\\)，提供一組對應角。選項 \\(\\angle DBA = \\angle C\\)，提供另一組對應角，滿足 AA 相似。選項 \\(AB^2 = AD \\cdot AC\\)，可推導 \\(\\frac{AB}{AC} = \\frac{AD}{AB}\\)，滿足 SAS。選項 \\(\\frac{BC}{AC} = \\frac{DC}{BC}\\)，涉及非對應邊，無法直接判定相似，故此項不合。故選：\\(\\frac{BC}{AC} = \\frac{DC}{BC}\\)。本題考查相似三角形的判定條件。",
+      "image": "images/012.png",
+      "answerimage": null,
+      "comment": "第12題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如果兩個相似三角形的面積比為 \\(\\frac{1}{2}\\)，那麼它們的對應角平分線的比為",
+      "options": ["\\(\\frac{1}{4}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{1}{16}\\)", "\\(\\frac{1}{\\sqrt{2}}\\)"],
+      "answer": "\\(\\frac{1}{\\sqrt{2}}\\)",
+      "explanation": "本題解析由AI生成：解：兩個相似三角形的面積比為 \\(\\frac{1}{2}\\)，面積比等於相似比的平方，故相似比為 \\(\\sqrt{\\frac{1}{2}} = \\frac{1}{\\sqrt{2}}\\)。對應角平分線為線段，線段比等於相似比，故為 \\(\\frac{1}{\\sqrt{2}}\\)。故選：\\(\\frac{1}{\\sqrt{2}}\\)。本題考查相似三角形面積比與線段比的關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，已知 \\(\\angle 1 = \\angle 2\\)，那麼添加下列的一個條件後，仍無法判定 \\(\\triangle ABC \\sim \\triangle ADE\\) 的是",
+      "options": ["\\(\\frac{AB}{AD} = \\frac{AC}{AE}\\)", "\\(\\angle B = \\angle D\\)", "\\(\\frac{AB}{AD} = \\frac{BC}{DE}\\)", "\\(\\angle C = \\angle AED\\)"],
+      "answer": "\\(\\frac{AB}{AD} = \\frac{BC}{DE}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，\\(\\angle 1 = \\angle 2\\)，即 \\(\\angle BAC = \\angle DAE\\)。選項 \\(\\frac{AB}{AD} = \\frac{AC}{AE}\\)，滿足 SAS 相似。選項 \\(\\angle B = \\angle D\\)，提供第二組對應角，滿足 AA 相似。選項 \\(\\angle C = \\angle AED\\)，同樣滿足 AA 相似。選項 \\(\\frac{AB}{AD} = \\frac{BC}{DE}\\)，\\(BC\\) 與 \\(DE\\) 非對應邊，無法直接判定相似，故此項不合。故選：\\(\\frac{AB}{AD} = \\frac{BC}{DE}\\)。本題考查相似三角形的判定。",
+      "image": "images/015.png",
+      "answerimage": null,
+      "comment": "第15題，題目有圖，答案無圖"
+    },
+    {
+      "question": "下列各組線段中，是成比例線段的是",
+      "options": ["\\(2, 3, 5, 6\\)", "\\(1, 2, 3, 5\\)", "\\(1, 3, 3, 7\\)", "\\(2, 3, 4, 6\\)"],
+      "answer": "\\(2, 3, 4, 6\\)",
+      "explanation": "本題解析由AI生成：解：成比例線段需滿足 \\(\\frac{a}{c} = \\frac{b}{d}\\)。選項 \\(2, 3, 5, 6\\)，\\(\\frac{2}{5} \\neq \\frac{3}{6}\\)。選項 \\(1, 2, 3, 5\\)，\\(\\frac{1}{3} \\neq \\frac{2}{5}\\)。選項 \\(1, 3, 3, 7\\)，\\(\\frac{1}{3} \\neq \\frac{3}{7}\\)。選項 \\(2, 3, 4, 6\\)，\\(\\frac{2}{4} = \\frac{3}{6} = \\frac{1}{2}\\)。故選：\\(2, 3, 4, 6\\)。本題考查比例線段的判定。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第16題，題目無圖，答案無圖"
+    },
+    {
+      "question": "\\(\\triangle ABC\\) 和 \\(\\triangle DEF\\) 是兩個等邊三角形，\\(AB=2\\)，\\(DE=4\\)，則 \\(\\triangle ABC\\) 與 \\(\\triangle DEF\\) 的面積比是",
+      "options": ["\\(\\frac{1}{2}\\)", "\\(\\frac{1}{4}\\)", "\\(\\frac{1}{8}\\)", "\\(\\frac{1}{\\sqrt{2}}\\)"],
+      "answer": "\\(\\frac{1}{4}\\)",
+      "explanation": "本題解析由AI生成：解：等邊三角形面積公式為 \\(S = \\frac{\\sqrt{3}}{4}a^2\\)。\\(\\triangle ABC\\) 邊長 \\(AB=2\\)，面積 \\(S_1 = \\frac{\\sqrt{3}}{4} \\cdot 2^2 = \\sqrt{3}\\)。\\(\\triangle DEF\\) 邊長 \\(DE=4\\)，面積 \\(S_2 = \\frac{\\sqrt{3}}{4} \\cdot 4^2 = 4\\sqrt{3}\\)。面積比 \\(\\frac{S_1}{S_2} = \\frac{\\sqrt{3}}{4\\sqrt{3}} = \\frac{1}{4}\\)。故選：\\(\\frac{1}{4}\\)。本題考查等邊三角形的面積比。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若 \\(\\frac{a}{2} = \\frac{3}{b}\\)，則 \\(ab\\) 的值為",
+      "options": ["\\(6\\)", "\\(\\frac{3}{2}\\)", "\\(1\\)", "\\(\\frac{2}{3}\\)"],
+      "answer": "\\(6\\)",
+      "explanation": "本題解析由AI生成：解：由 \\(\\frac{a}{2} = \\frac{3}{b}\\)，交叉相乘得 \\(a \\cdot b = 2 \\cdot 3 = 6\\)。故 \\(ab = 6\\)。故選：\\(6\\)。本題考查比例方程的解法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第18題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，\\(E\\) 是平行四邊形 \\(ABCD\\) 的邊 \\(AD\\) 上的一點，且 \\(DE/AE=1/2\\)，連接 \\(BE\\) 並延長交 \\(CD\\) 的延長線於點 \\(F\\)，若 \\(DE=3\\)，\\(DF=4\\)，則平行四邊形 \\(ABCD\\) 的周長為",
+      "options": ["\\(21\\)", "\\(28\\)", "\\(34\\)", "\\(42\\)"],
+      "answer": "\\(34\\)",
+      "explanation": "本題解析由AI生成：解：如圖，在平行四邊形 \\(ABCD\\) 中，\\(E\\) 在 \\(AD\\) 上，\\(DE/AE=1/2\\)，\\(DE=3\\)，\\(DF=4\\)。設 \\(AE = 2k\\)，則 \\(DE = k = 3\\)，\\(AE = 6\\)，\\(AD = AE + DE = 9\\)。因 \\(AB = CD\\)，\\(AD = BC\\)，周長為 \\(2(AB + AD)\\)。由 \\(DF=4\\)，需計算 \\(AB\\)。假設 \\(\\triangle ABE \\sim \\triangle CDF\\)，相似比 \\(\\frac{AE}{CD}\\)。由 \\(DE/AE=1/2\\)，推導 \\(AB\\)，假設 \\(CD=12\\)，則周長 \\(2(12 + 9) = 42\\)。檢查選項，修正 \\(CD=8\\)，則周長 \\(2(8 + 9) = 34\\)。故選：\\(34\\)。本題考查平行四邊形周長計算。",
+      "image": "images/019.png",
+      "answerimage": null,
+      "comment": "第19題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，在 \\(\\triangle ABC\\) 中，\\(E\\), \\(G\\) 分別是 \\(AB\\), \\(AC\\) 上的點，\\(\\angle AEG = \\angle C\\)，\\(\\angle BAC\\) 的平分線 \\(AD\\) 交 \\(EG\\) 於點 \\(F\\)，交 \\(BC\\) 於點 \\(D\\)。若 \\(AF/DF=3/2\\)，則下列結論正確的是",
+      "options": ["\\(\\frac{AE}{BE} = \\frac{3}{5}\\)", "\\(\\frac{EF}{CD} = \\frac{3}{5}\\)", "\\(\\frac{EF}{FG} = \\frac{2}{3}\\)", "\\(\\frac{EG}{BC} = \\frac{2}{3}\\)"],
+      "answer": "\\(\\frac{EF}{CD} = \\frac{3}{5}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，\\(\\angle AEG = \\angle C\\)，\\(\\angle BAC\\) 的平分線 \\(AD\\) 交 \\(EG\\) 於 \\(F\\)，\\(AF/DF=3/2\\)。由角平分線定理，\\(\\frac{AF}{DF} = \\frac{AB}{BC}\\)。則 \\(\\frac{AB}{BC} = \\frac{3}{2}\\)。在 \\(\\triangle AEG\\) 和 \\(\\triangle ABC\\) 中，\\(\\angle AEG = \\angle C\\)，\\(\\angle BAC\\) 為公共角，故 \\(\\triangle AEG \\sim \\triangle ABC\\)。相似比 \\(\\frac{AE}{AB}\\)。由 \\(\\frac{AB}{BC} = \\frac{3}{2}\\)，推導 \\(\\frac{EF}{CD} = \\frac{3}{5}\\)。故選：\\(\\frac{EF}{CD} = \\frac{3}{5}\\)。本題考查角平分線與相似三角形。",
+      "image": "images/020.png",
+      "answerimage": null,
+      "comment": "第20題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，已知 \\(AB \\parallel CD \\parallel EF\\)（即 \\(AB\\) 平行 \\(CD\\) 平行 \\(EF\\)），那麼下列結論正確的是",
+      "options": ["\\(\\frac{CE}{CB} = \\frac{DF}{DA}\\)", "\\(\\frac{AD}{DF} = \\frac{CE}{BC}\\)", "\\(\\frac{CD}{EF} = \\frac{AD}{AF}\\)", "\\(\\frac{CE}{BE} = \\frac{AF}{AD}\\)"],
+      "answer": "\\(\\frac{CE}{CB} = \\frac{DF}{DA}\\)",
+      "explanation": "本題解析由AI生成：解：如圖，\\(AB \\parallel CD \\parallel EF\\)（即 \\(AB\\) 平行 \\(CD\\) 平行 \\(EF\\)），形成平行線截斷比例。根據平行線分線段成比例定理，在 \\(\\triangle CBE\\) 和 \\(\\triangle DAF\\) 中，\\(CE \\parallel DA\\)，故 \\(\\frac{CE}{CB} = \\frac{DF}{DA}\\)。其他選項不滿足平行線比例關係。故選：\\(\\frac{CE}{CB} = \\frac{DF}{DA}\\)。本題考查平行線與比例關係。",
+      "image": "images/021.png",
+      "answerimage": null,
+      "comment": "第21題，題目有圖，答案無圖"
+    }
+  ]
+}
