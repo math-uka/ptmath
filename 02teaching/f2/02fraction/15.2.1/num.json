@@ -41,7 +41,7 @@
       "question": "下列計算正確的是",
       "options": ["a^2 \\cdot a = a^2", "a^6 \\div a^2 = a^3", "a^2 b - 2ba^2 = -a^2 b", "\\left(-\\frac{3}{2}a\\right)^3 = -\\frac{9}{8a^3}"],
       "answer": "a^2 b - 2ba^2 = -a^2 b",
-      "explanation": "解：A、\\(a^2 \\cdot a = a^3\\)，不符合題意；B、\\(a^6 \\div a^2 = a^4\\)，不符合題意；C、\\(a^2 b - 2ba^2 = -a^2 b\\)，符合題意；D、\\(\\left(-\\frac{3}{2}a\\right)^3 = -\\frac{27}{8}a^3\\)，不符合題意。故選：\\(a^2 b - 2ba^2 = -a^2 b\\)。本題考查合併同類項及同底數幂的乘除法。",
+      "explanation": "解：\\(a^2 \\cdot a = a^3\\)，不正確；\\(a^6 \\div a^2 = a^4\\)，不正確；\\(a^2 b - 2ba^2 = -a^2 b\\)，正確；\\(\\left(-\\frac{3}{2}a\\right)^3 = -\\frac{27}{8}a^3\\)，不正確。故選：\\(a^2 b - 2ba^2 = -a^2 b\\)。本題考查合併同類項及同底數幂的乘除法。",
       "image": null,
       "answerimage": null,
       "comment": "第5題，題目無圖，答案無圖"
@@ -95,7 +95,7 @@
       "question": "下列運算正確的是",
       "options": ["(-a^3)^2 = -a^6", "2a^2 + 3a^2 = 6a^2", "2a^2 \\cdot a^3 = 2a^6", "\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}"],
       "answer": "\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}",
-      "explanation": "本題解析由AI生成。解：A、\\((-a^3)^2 = a^6\\)，錯誤；B、\\(2a^2 + 3a^2 = 5a^2\\)，錯誤；C、\\(2a^2 \\cdot a^3 = 2a^5\\)，錯誤；D、\\(\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}\\)，正確。故選：\\(\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}\\)。本題考查幂的乘方及分式的運算。",
+      "explanation": "本題解析由AI生成。解：\\((-a^3)^2 = a^6\\)，不正確；\\(2a^2 + 3a^2 = 5a^2\\)，不正確；\\(2a^2 \\cdot a^3 = 2a^5\\)，不正確；\\(\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}\\)，正確。故選：\\(\\left(-\\frac{b^2}{2a}\\right)^3 = -\\frac{b^6}{8a^3}\\)。本題考查幂的乘方及分式的運算。",
       "image": null,
       "answerimage": null,
       "comment": "第11題，題目無圖，答案無圖"
@@ -131,7 +131,7 @@
       "question": "若分式 \\(\\frac{x^2-y^2}{\\Delta}\\) 是最簡分式，則 \\(\\Delta\\) 表示的可以是",
       "options": ["2x + 2y", "(x-y)^2", "x^2 + 2xy + y^2", "x^2 + y^2"],
       "answer": "x^2 + y^2",
-      "explanation": "本題解析由AI生成。解：\\(x^2 - y^2 = (x-y)(x+y)\\)，若分式為最簡，則分母 \\(\\Delta\\) 與 \\(x^2 - y^2\\) 無公因式。選項中，\\(x^2 + y^2\\) 無 \\(x-y\\) 或 \\(x+y\\) 因式，滿足條件。故選：\\(x^2 + y^2\\)。本題考查分式的因式分解及最簡條件。",
+      "explanation": "本題解析由AI生成。解：\\(x^2 - y^2 = (x-y)(x+y)\\)，若分式為最簡，則分母 \\(\\Delta\\) 與 \\(x^2 - y^2\\) 無公因式。\\(2x + 2y\\) 含 \\(x+y\\) 因式，不正確；\\((x-y)^2\\) 含 \\(x-y\\) 因式，不正確；\\(x^2 + 2xy + y^2 = (x+y)^2\\) 含 \\(x+y\\) 因式，不正確；\\(x^2 + y^2\\) 無 \\(x-y\\) 或 \\(x+y\\) 因式，正確。故選：\\(x^2 + y^2\\)。本題考查分式的因式分解及最簡條件。",
       "image": null,
       "answerimage": null,
       "comment": "第15題，題目無圖，答案無圖"
@@ -176,7 +176,7 @@
       "question": "下列計算結果正確的是",
       "options": ["-\\left(\\frac{y}{2x}\\right)^2 = \\frac{y^2}{4x^2}", "\\left(\\frac{3m}{4n}\\right)^2 = \\frac{3m^2}{4n^2}", "\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{a^2-b^2}", "\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}"],
       "answer": "\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}",
-      "explanation": "本題解析由AI生成。解：A、\\(-\\left(\\frac{y}{2x}\\right)^2 = -\\frac{y^2}{4x^2}\\)，錯誤；B、\\(\\left(\\frac{3m}{4n}\\right)^2 = \\frac{9m^2}{16n^2}\\)，錯誤；C、\\(\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{(a-b)^2}\\)，錯誤；D、\\(\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}\\)，正確。故選：\\(\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}\\)。本題考查分式的幂運算。",
+      "explanation": "本題解析由AI生成。解：\\(-\\left(\\frac{y}{2x}\\right)^2 = -\\frac{y^2}{4x^2}\\)，不正確；\\(\\left(\\frac{3m}{4n}\\right)^2 = \\frac{9m^2}{16n^2}\\)，不正確；\\(\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{(a-b)^2}\\)，不正確；\\(\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}\\)，正確。故選：\\(\\left(-\\frac{a^3}{2b}\\right)^3 = -\\frac{a^9}{8b^3}\\)。本題考查分式的幂運算。",
       "image": null,
       "answerimage": null,
       "comment": "第20題，題目無圖，答案無圖"
@@ -212,7 +212,7 @@
       "question": "下列式子中，是分式的是",
       "options": ["\\frac{2x}{\\pi + 3}", "\\frac{x+5}{2}", "\\frac{1}{2x+1}", "\\frac{2}{5}"],
       "answer": "\\frac{1}{2x+1}",
-      "explanation": "本題解析由AI生成。解：分式的分母需含變數。A、\\(\\pi + 3\\) 為常數；B、2 為常數；C、\\(2x+1\\) 含變數，為分式；D、5 為常數。故選：\\(\\frac{1}{2x+1}\\)。本題考查分式的定義。",
+      "explanation": "本題解析由AI生成。解：分式的分母需含變數。\\(\\frac{2x}{\\pi + 3}\\) 分母 \\(\\pi + 3\\) 為常數，不正確；\\(\\frac{x+5}{2}\\) 分母 2 為常數，不正確；\\(\\frac{1}{2x+1}\\) 分母 \\(2x+1\\) 含變數，正確；\\(\\frac{2}{5}\\) 分母 5 為常數，不正確。故選：\\(\\frac{1}{2x+1}\\)。本題考查分式的定義。",
       "image": null,
       "answerimage": null,
       "comment": "第24題，題目無圖，答案無圖"
@@ -221,7 +221,7 @@
       "question": "下列計算中，錯誤的是",
       "options": ["\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{-9y^3}{x^6}", "\\left(\\frac{4b^3}{-3c^2}\\right)^2 = \\frac{16b^6}{9c^4}", "\\left(\\frac{5x^3 y^2}{-2z}\\right)^2 = \\frac{25x^6 y^4}{4z^2}", "\\left(\\frac{b^2}{-a^3}\\right)^2 = \\frac{b^4}{a^6}"],
       "answer": "\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{-9y^3}{x^6}",
-      "explanation": "本題解析由AI生成。解：A、\\(\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{27y^3}{-x^6} = -\\frac{27y^3}{x^6}\\)，錯誤；B、正確；C、正確；D、正確。故選：\\(\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{-9y^3}{x^6}\\)。本題考查分式的幂運算。",
+      "explanation": "本題解析由AI生成。解：\\(\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{27y^3}{-x^6} = -\\frac{27y^3}{x^6}\\)，不正確；\\(\\left(\\frac{4b^3}{-3c^2}\\right)^2 = \\frac{16b^6}{9c^4}\\)，正確；\\(\\left(\\frac{5x^3 y^2}{-2z}\\right)^2 = \\frac{25x^6 y^4}{4z^2}\\)，正確；\\(\\left(\\frac{b^2}{-a^3}\\right)^2 = \\frac{b^4}{a^6}\\)，正確。故選：\\(\\left(\\frac{3y}{-x^2}\\right)^3 = \\frac{-9y^3}{x^6}\\) 不正確。本題考查分式的幂運算。",
       "image": null,
       "answerimage": null,
       "comment": "第25題，題目無圖，答案無圖"
@@ -284,7 +284,7 @@
       "question": "若 \\(\\frac{\\Box}{x+y} \\div \\frac{x}{y^2-x^2}\\) 運算的結果為整式，則“\\(\\Box\\)”中的式子可能是",
       "options": ["y-x", "y+x", "\\frac{1}{x}", "3x"],
       "answer": "3x",
-      "explanation": "本題解析由AI生成。解：\\(y^2 - x^2 = (y-x)(y+x)\\)，為使結果為整式，\\(\\Box \\cdot \\frac{1}{(y-x)(y+x)} \\cdot x\\) 需無分母。選項 \\(3x\\) 可使 \\(y+x\\) 約去，結果為整式 \\(\\frac{3}{y-x}\\)。故選：\\(3x\\)。本題考查分式的除法及整式條件。",
+      "explanation": "本題解析由AI生成。解：\\(y^2 - x^2 = (y-x)(y+x)\\)，為使結果為整式，\\(\\Box \\cdot \\frac{1}{(y-x)(y+x)} \\cdot x\\) 需無分母。\\(y-x\\) 無法約去 \\(y-x\\) 因式，不正確；\\(y+x\\) 無法約去 \\(y-x\\) 因式，不正確；\\(\\frac{1}{x}\\) 引入分母，不正確；\\(3x\\) 可使 \\(y+x\\) 約去，結果為整式 \\(\\frac{3}{y-x}\\)。故選：\\(3x\\)。本題考查分式的除法及整式條件。",
       "image": null,
       "answerimage": null,
       "comment": "第32題，題目無圖，答案無圖"
@@ -302,7 +302,7 @@
       "question": "下列計算正確的是",
       "options": ["\\frac{1}{a+b} \\div (a+b) = 1", "\\frac{a^2-1}{a^2-a} = a+1", "\\frac{-b}{2a^2} \\cdot \\frac{a}{-b^2} = -\\frac{1}{2ab}", "\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{8a^3}{b^3}"],
       "answer": "\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{8a^3}{b^3}",
-      "explanation": "本題解析由AI生成。解：A、\\(\\frac{1}{a+b} \\cdot \\frac{1}{a+b} = \\frac{1}{(a+b)^2}\\)，錯誤；B、\\(\\frac{(a-1)(a+1)}{a(a-1)} = \\frac{a+1}{a}\\)，錯誤；C、\\(\\frac{-b}{2a^2} \\cdot \\frac{a}{-b^2} = \\frac{1}{2ab^2}\\)，錯誤；D、\\(\\frac{4a^2}{b^2} \\cdot \\frac{2a}{b} = \\frac{8a^3}{b^3}\\)，正確。故選：\\(\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{8a^3}{b^3}\\)。本題考查分式的乘除運算。",
+      "explanation": "本題解析由AI生成。解：\\(\\frac{1}{a+b} \\div (a+b) = \\frac{1}{(a+b)^2}\\)，不正確；\\(\\frac{a^2-1}{a^2-a} = \\frac{(a-1)(a+1)}{a(a-1)} = \\frac{a+1}{a}\\)，不正確；\\(\\frac{-b}{2a^2} \\cdot \\frac{a}{-b^2} = \\frac{1}{2ab^2}\\)，不正確；\\(\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{4a^2}{b^2} \\cdot \\frac{2a}{b} = \\frac{8a^3}{b^3}\\)，正確。故選：\\(\\left(\\frac{2a}{b}\\right)^2 \\div \\frac{b}{2a} = \\frac{8a^3}{b^3}\\) 正確。本題考查分式的乘除運算。",
       "image": null,
       "answerimage": null,
       "comment": "第34題，題目無圖，答案無圖"
@@ -311,7 +311,7 @@
       "question": "下列分式運算，結果正確的是",
       "options": ["\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}", "\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ad}{bc}", "\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{a^2-b^2}", "\\left(\\frac{3x}{4y}\\right)^3 = \\frac{3x^3}{4y^3}"],
       "answer": "\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}",
-      "explanation": "本題解析由AI生成。解：A、\\(\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}\\)，正確；B、\\(\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}\\)，錯誤；C、\\(\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{(a-b)^2}\\)，錯誤；D、\\(\\left(\\frac{3x}{4y}\\right)^3 = \\frac{27x^3}{64y^3}\\)，錯誤。故選：\\(\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}\\)。本題考查分式的乘法運算。",
+      "explanation": "本題解析由AI生成。解：\\(\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}\\)，正確；\\(\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}\\)，不正確；\\(\\left(\\frac{2a}{a-b}\\right)^2 = \\frac{4a^2}{(a-b)^2}\\)，不正確；\\(\\left(\\frac{3x}{4y}\\right)^3 = \\frac{27x^3}{64y^3}\\)，不正確。故選：\\(\\frac{m^4}{n^5} \\cdot \\frac{n^4}{m^3} = \\frac{m}{n}\\) 正確。本題考查分式的乘法運算。",
       "image": null,
       "answerimage": null,
       "comment": "第35題，題目無圖，答案無圖"
