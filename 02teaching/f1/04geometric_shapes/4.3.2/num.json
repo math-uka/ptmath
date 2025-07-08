@@ -1,0 +1,194 @@
+{
+  "title": "角的比較與運算",
+  "questions": [
+    {
+      "question": "如圖，將一副三角板疊在一起，使它們的直角頂點重合於O點，已知 \\(\\angle AOB = 160^\\circ\\)，則 \\(\\angle COD\\) 的度數為",
+      "options": ["\\(20^\\circ\\)", "\\(30^\\circ\\)", "\\(40^\\circ\\)", "\\(50^\\circ\\)"],
+      "answer": "\\(20^\\circ\\)",
+      "explanation": "解：由 \\(\\angle AOC = \\angle AOB - \\angle BOC\\)，得 \\(\\angle AOC = 160^\\circ - 90^\\circ = 70^\\circ\\)。再由 \\(\\angle COD = \\angle AOD - \\angle AOC\\)，得 \\(\\angle COD = 90^\\circ - 70^\\circ = 20^\\circ\\)。故選：\\(20^\\circ\\)。本題考查角的和差計算。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第1題，題目有圖，解析無圖"
+    },
+    {
+      "question": "若 \\(\\angle 1 = 40.4^\\circ\\)，\\(\\angle 2 = 40^\\circ 4'\\)，則 \\(\\angle 1\\) 與 \\(\\angle 2\\) 的關係是",
+      "options": ["\\(\\angle 1 = \\angle 2\\)", "\\(\\angle 1 > \\angle 2\\)", "\\(\\angle 1 < \\angle 2\\)", "無法確定"],
+      "answer": "\\(\\angle 1 > \\angle 2\\)",
+      "explanation": "本題解析由AI生成：解：將 \\(\\angle 2 = 40^\\circ 4'\\) 轉換為十進制度數，4' = \\(\\frac{4}{60}\\) 度 = \\(0.0667^\\circ\\)，故 \\(\\angle 2 = 40^\\circ + 0.0667^\\circ = 40.0667^\\circ\\)。比較 \\(\\angle 1 = 40.4^\\circ\\) 與 \\(\\angle 2 = 40.0667^\\circ\\)，顯然 \\(40.4^\\circ > 40.0667^\\circ\\)，即 \\(\\angle 1 > \\angle 2\\)。故選：\\(\\angle 1 > \\angle 2\\)。本題考查度分秒轉換與角度比較。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(\\angle AOC = \\angle BOD = 90^\\circ\\)，\\(\\angle AOD = 126^\\circ\\)，則 \\(\\angle BOC\\) 的度數為",
+      "options": ["\\(36^\\circ\\)", "\\(44^\\circ\\)", "\\(54^\\circ\\)", "\\(63^\\circ\\)"],
+      "answer": "\\(54^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：由 \\(\\angle AOC = \\angle BOD = 90^\\circ\\)，\\(\\angle AOD = 126^\\circ\\)。在四邊形 AOBD 中，\\(\\angle AOC + \\angle BOC + \\angle BOD + \\angle AOD = 360^\\circ\\)。代入得 \\(90^\\circ + \\angle BOC + 90^\\circ + 126^\\circ = 360^\\circ\\)，化簡得 \\(\\angle BOC = 360^\\circ - 306^\\circ = 54^\\circ\\)。故選：\\(54^\\circ\\)。本題考查四邊形內角和與角的計算。",
+      "image": "images/003.png",
+      "answerimage": null,
+      "comment": "第3題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，下列各式中不正確的是",
+      "options": ["\\(\\angle AOC = \\angle 1 + \\angle 2\\)", "\\(\\angle AOC = \\angle AOD - \\angle 3\\)", "\\(\\angle 1 + \\angle 2 = \\angle 3\\)", "\\(\\angle AOD - \\angle 1 - \\angle 3 = \\angle 2\\)"],
+      "answer": "\\(\\angle 1 + \\angle 2 = \\angle 3\\)",
+      "explanation": "解：選項 \\(\\angle AOC = \\angle 1 + \\angle 2\\) 正確，因 \\(\\angle AOC\\) 由 \\(\\angle 1\\) 和 \\(\\angle 2\\) 組成；選項 \\(\\angle AOC = \\angle AOD - \\angle 3\\) 正確，因 \\(\\angle AOC\\) 可由 \\(\\angle AOD\\) 減去 \\(\\angle 3\\) 得到；選項 \\(\\angle 1 + \\angle 2 = \\angle 3\\) 不一定正確，因 \\(\\angle 1 + \\angle 2\\) 未必等於 \\(\\angle 3\\)；選項 \\(\\angle AOD - \\angle 1 - \\angle 3 = \\angle 2\\) 正確，因 \\(\\angle AOD = \\angle 1 + \\angle 2 + \\angle 3\\)，故 \\(\\angle AOD - \\angle 1 - \\angle 3 = \\angle 2\\)。故選：\\(\\angle 1 + \\angle 2 = \\angle 3\\)。本題考查角的和差關係。",
+      "image": "images/004.png",
+      "answerimage": null,
+      "comment": "第4題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，點 O 在直線 AB 上，射線 OC 平分 \\(\\angle DOB\\)。若 \\(\\angle DOC = 35^\\circ\\)，則 \\(\\angle AOD\\) 等於",
+      "options": ["\\(35^\\circ\\)", "\\(70^\\circ\\)", "\\(110^\\circ\\)", "\\(145^\\circ\\)"],
+      "answer": "\\(110^\\circ\\)",
+      "explanation": "解：因射線 OC 平分 \\(\\angle DOB\\)，則 \\(\\angle BOC = \\angle DOC = 35^\\circ\\)。故 \\(\\angle BOD = \\angle BOC + \\angle DOC = 35^\\circ + 35^\\circ = 70^\\circ\\)。因點 O 在直線 AB 上，\\(\\angle AOD + \\angle BOD = 180^\\circ\\)，則 \\(\\angle AOD = 180^\\circ - 70^\\circ = 110^\\circ\\)。故選：\\(110^\\circ\\)。本題考查角平分線與直線上角度關係。",
+      "image": "images/005.png",
+      "answerimage": null,
+      "comment": "第5題，題目有圖，解析無圖"
+    },
+    {
+      "question": "在同一平面上，若 \\(\\angle BOA = 60.3^\\circ\\)，\\(\\angle BOC = 20^\\circ 30'\\)，則 \\(\\angle AOC\\) 的度數是",
+      "options": ["\\(80.6^\\circ\\)", "\\(40^\\circ\\)", "\\(80.8^\\circ\\) 或 \\(39.8^\\circ\\)", "\\(80.6^\\circ\\) 或 \\(40^\\circ\\)"],
+      "answer": "\\(80.8^\\circ\\) 或 \\(39.8^\\circ\\)",
+      "explanation": "解：將 \\(\\angle BOC = 20^\\circ 30'\\) 轉換為十進制度數，30' = \\(\\frac{30}{60}\\) 度 = \\(0.5^\\circ\\)，故 \\(\\angle BOC = 20.5^\\circ\\)。由角的和差，\\(\\angle AOC = \\angle BOA + \\angle BOC = 60.3^\\circ + 20.5^\\circ = 80.8^\\circ\\)，或 \\(\\angle AOC = \\angle BOA - \\angle BOC = 60.3^\\circ - 20.5^\\circ = 39.8^\\circ\\)。故選：\\(80.8^\\circ\\) 或 \\(39.8^\\circ\\)。本題考查度分秒轉換與角的和差。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，下列條件中不能確定 OC 是 \\(\\angle AOB\\) 的平分線的是",
+      "options": ["\\(\\angle AOC = \\angle BOC\\)", "\\(\\angle AOB = 2 \\angle AOC\\)", "\\(\\angle AOC + \\angle BOC = \\angle AOB\\)", "\\(\\angle BOC = \\frac{1}{2} \\angle AOB\\)"],
+      "answer": "\\(\\angle AOC + \\angle BOC = \\angle AOB\\)",
+      "explanation": "本題解析由AI生成：解：OC 是 \\(\\angle AOB\\) 的平分線，則 \\(\\angle AOC = \\angle BOC\\)。選項 \\(\\angle AOC = \\angle BOC\\) 直接滿足平分線定義，正確；選項 \\(\\angle AOB = 2 \\angle AOC\\) 因 \\(\\angle AOB = \\angle AOC + \\angle BOC\\)，若 \\(\\angle AOC = \\angle BOC\\)，則 \\(\\angle AOB = 2 \\angle AOC\\)，正確；選項 \\(\\angle BOC = \\frac{1}{2} \\angle AOB\\) 同理正確；選項 \\(\\angle AOC + \\angle BOC = \\angle AOB\\) 僅表示角的加法關係，不足以確定 \\(\\angle AOC = \\angle BOC\\)，故此項不能確定 OC 是平分線。故選：\\(\\angle AOC + \\angle BOC = \\angle AOB\\)。本題考查角平分線的定義。",
+      "image": "images/007.png",
+      "answerimage": null,
+      "comment": "第7題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知 O 為直線 AB 上一點，OC 平分 \\(\\angle AOD\\)，\\(\\angle BOD = 3 \\angle DOE\\)，\\(\\angle COE = \\alpha\\)，則 \\(\\angle BOE\\) 的度數為",
+      "options": ["\\(360^\\circ - 4 \\alpha\\)", "\\(180^\\circ - 4 \\alpha\\)", "\\(\\alpha\\)", "\\(2 \\alpha - 60^\\circ\\)"],
+      "answer": "\\(360^\\circ - 4 \\alpha\\)",
+      "explanation": "解：因 OC 平分 \\(\\angle AOD\\)，則 \\(\\angle AOC = \\angle COD\\)。設 \\(\\angle COD = \\theta\\)，則 \\(\\angle AOD = 2 \\theta\\)。又 \\(\\angle BOD = 3 \\angle DOE\\)，設 \\(\\angle DOE = \\beta\\)，則 \\(\\angle BOD = 3 \\beta\\)。因 \\(\\angle COE = \\alpha\\)，即 \\(\\angle COD + \\frac{1}{2} \\angle BOE = \\alpha\\)。由直線 AB 上，\\(\\angle AOD + \\angle BOD + \\angle BOE = 360^\\circ\\)。代入得 \\(2 \\theta + 3 \\beta + \\angle BOE = 360^\\circ\\)。又 \\(\\theta + \\frac{1}{2} \\angle BOE = \\alpha\\)，則 \\(\\frac{1}{2} \\angle BOE = \\alpha - \\theta\\)，\\(\\angle BOE = 2 \\alpha - 2 \\theta\\)。代入 \\(\\angle AOD + \\angle BOD = 180^\\circ - \\angle COE - \\frac{1}{2} \\angle BOE\\)，得 \\(\\angle BOE = 360^\\circ - 4 \\alpha\\)。故選：\\(360^\\circ - 4 \\alpha\\)。本題考查角平分線與角度關係。",
+      "image": "images/008.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，解析無圖"
+    },
+    {
+      "question": "下午14時整，鐘表的時針與分針構成的角度是",
+      "options": ["\\(30^\\circ\\)", "\\(60^\\circ\\)", "\\(90^\\circ\\)", "\\(120^\\circ\\)"],
+      "answer": "\\(60^\\circ\\)",
+      "explanation": "解：鐘表分為12等份，每份為 \\(30^\\circ\\)。14時整，分針在12，時針在2，相差2格，故角度為 \\(2 \\times 30^\\circ = 60^\\circ\\)。故選：\\(60^\\circ\\)。本題考查鐘表時針與分針的夾角計算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(\\angle AOB = \\angle COD\\)，則",
+      "options": ["\\(\\angle 1 = \\angle 2\\)", "\\(\\angle 1 < \\angle 2\\)", "\\(\\angle 1 > \\angle 2\\)", "無法比較 \\(\\angle 1\\) 與 \\(\\angle 2\\) 的大小"],
+      "answer": "\\(\\angle 1 = \\angle 2\\)",
+      "explanation": "本題解析由AI生成：解：因 \\(\\angle AOB = \\angle COD\\)，且兩角在同一平面內，根據對頂角相等的性質，\\(\\angle 1 = \\angle 2\\)。故選：\\(\\angle 1 = \\angle 2\\)。本題考查對頂角的性質。",
+      "image": "images/010.png",
+      "answerimage": null,
+      "comment": "第10題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，直線 AB、CD 相交於點 O，OA 平分 \\(\\angle EOC\\)。若 \\(\\angle EOC : \\angle EOD = 1 : 2\\)，則 \\(\\angle BOD\\) 等於",
+      "options": ["\\(30^\\circ\\)", "\\(36^\\circ\\)", "\\(45^\\circ\\)", "\\(72^\\circ\\)"],
+      "answer": "\\(30^\\circ\\)",
+      "explanation": "解：因 \\(\\angle EOC : \\angle EOD = 1 : 2\\)，且 \\(\\angle EOC + \\angle EOD = 180^\\circ\\)，設 \\(\\angle EOC = x\\)，則 \\(\\angle EOD = 2x\\)。解 \\(x + 2x = 180^\\circ\\)，得 \\(x = 60^\\circ\\)，故 \\(\\angle EOC = 60^\\circ\\)。因 OA 平分 \\(\\angle EOC\\)，則 \\(\\angle AOC = \\frac{1}{2} \\angle EOC = 30^\\circ\\)。由同角的補角相等，\\(\\angle BOD = \\angle AOC = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查補角與角平分線的性質。",
+      "image": "images/011.png",
+      "answerimage": null,
+      "comment": "第11題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，OC 是 \\(\\angle AOB\\) 的平分線，若 \\(\\angle BOC = 36^\\circ\\)，則 \\(\\angle AOB\\) 的度數為",
+      "options": ["\\(72^\\circ\\)", "\\(60^\\circ\\)", "\\(54^\\circ\\)", "\\(36^\\circ\\)"],
+      "answer": "\\(72^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：因 OC 是 \\(\\angle AOB\\) 的平分線，則 \\(\\angle AOC = \\angle BOC = 36^\\circ\\)。故 \\(\\angle AOB = \\angle AOC + \\angle BOC = 36^\\circ + 36^\\circ = 72^\\circ\\)。故選：\\(72^\\circ\\)。本題考查角平分線的定義。",
+      "image": "images/012.png",
+      "answerimage": null,
+      "comment": "第12題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，若 \\(\\angle BAD = \\angle CAD\\)，\\(\\angle BCE = \\angle ACE\\)，則下列結論中錯誤的是",
+      "options": ["AD 平分 \\(\\angle BAC\\)", "CE 平分 \\(\\angle ACD\\)", "\\(\\angle BCE = \\frac{1}{2} \\angle ACB\\)", "CE 是 \\(\\angle ABC\\) 的平分線"],
+      "answer": "CE 是 \\(\\angle ABC\\) 的平分線",
+      "explanation": "本題解析由AI生成：解：因 \\(\\angle BAD = \\angle CAD\\)，則 AD 平分 \\(\\angle BAC\\)，選項 AD 平分 \\(\\angle BAC\\) 正確；因 \\(\\angle BCE = \\angle ACE\\)，則 CE 平分 \\(\\angle ACD\\)，選項 CE 平分 \\(\\angle ACD\\) 正確；選項 \\(\\angle BCE = \\frac{1}{2} \\angle ACB\\) 需 \\(\\angle BCE = \\angle ACE = \\frac{1}{2} \\angle ACB\\)，由 \\(\\angle BCE = \\angle ACE\\) 可得，選項正確；選項 CE 是 \\(\\angle ABC\\) 的平分線需 \\(\\angle ABC = \\angle ABE + \\angle CBE\\)，但 \\(\\angle BCE = \\angle ACE\\) 不保證 CE 平分 \\(\\angle ABC\\)，故此項錯誤。故選：CE 是 \\(\\angle ABC\\) 的平分線。本題考查角平分線的性質。",
+      "image": "images/013.png",
+      "answerimage": null,
+      "comment": "第13題，題目有圖，解析無圖"
+    },
+    {
+      "question": "在 \\(\\angle AOB\\) 內任取一點 C，作射線 OC，那麼一定有",
+      "options": ["\\(\\angle AOB > \\angle AOC\\)", "\\(\\angle AOC > \\angle BOC\\)", "\\(\\angle BOC = \\angle AOB\\)", "\\(\\angle AOC = \\angle BOC\\)"],
+      "answer": "\\(\\angle AOB > \\angle AOC\\)",
+      "explanation": "本題解析由AI生成：解：因點 C 在 \\(\\angle AOB\\) 內，則 \\(\\angle AOB = \\angle AOC + \\angle BOC\\)。故 \\(\\angle AOB > \\angle AOC\\) 且 \\(\\angle AOB > \\angle BOC\\)。選項 \\(\\angle AOC > \\angle BOC\\)、\\(\\angle BOC = \\angle AOB\\)、\\(\\angle AOC = \\angle BOC\\) 不一定成立，僅 \\(\\angle AOB > \\angle AOC\\) 一定成立。故選：\\(\\angle AOB > \\angle AOC\\)。本題考查角的分解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，AM 為 \\(\\angle BAC\\) 的平分線，下列等式錯誤的是",
+      "options": ["\\(\\frac{1}{2} \\angle BAC = \\angle BAM\\)", "\\(\\angle BAM = \\angle CAM\\)", "\\(\\angle BAM = 2 \\angle CAM\\)", "\\(2 \\angle CAM = \\angle BAC\\)"],
+      "answer": "\\(\\angle BAM = 2 \\angle CAM\\)",
+      "explanation": "解：因 AM 為 \\(\\angle BAC\\) 的平分線，則 \\(\\angle BAM = \\angle CAM\\)，且 \\(\\angle BAC = \\angle BAM + \\angle CAM = 2 \\angle BAM = 2 \\angle CAM\\)。故 \\(\\frac{1}{2} \\angle BAC = \\angle BAM\\)、\\(\\angle BAM = \\angle CAM\\)、\\(2 \\angle CAM = \\angle BAC\\) 正確，而 \\(\\angle BAM = 2 \\angle CAM\\) 錯誤，因 \\(\\angle BAM = \\angle CAM\\)。故選：\\(\\angle BAM = 2 \\angle CAM\\)。本題考查角平分線的定義。",
+      "image": "images/015.png",
+      "answerimage": null,
+      "comment": "第15題，題目有圖，解析無圖"
+    },
+    {
+      "question": "在 \\(\\angle AOB\\) 的內部任取一點 C，作射線 OC，那麼有",
+      "options": ["\\(\\angle AOC = \\angle BOC\\)", "\\(\\angle AOC > \\angle BOC\\)", "\\(\\angle BOC > \\angle AOB\\)", "\\(\\angle AOB > \\angle AOC\\)"],
+      "answer": "\\(\\angle AOB > \\angle AOC\\)",
+      "explanation": "解：如圖：因點 C 在 \\(\\angle AOB\\) 內，則 \\(\\angle AOB = \\angle AOC + \\angle BOC\\)。故 \\(\\angle AOB > \\angle AOC\\) 且 \\(\\angle AOB > \\angle BOC\\)。選項 \\(\\angle AOC = \\angle BOC\\)、\\(\\angle AOC > \\angle BOC\\)、\\(\\angle BOC > \\angle AOB\\) 不一定成立，僅 \\(\\angle AOB > \\angle AOC\\) 一定成立。故選：\\(\\angle AOB > \\angle AOC\\)。本題考查角的分解。",
+      "image": null,
+      "answerimage":"images/q017.png",
+      "comment": "第17題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，將一副三角板（\\(\\angle E = 45^\\circ\\)，\\(\\angle B = 30^\\circ\\)）按圖中的方式擺放，A、C、D 三點在同一直線上，則 \\(\\angle BCE\\) 等於",
+      "options": ["\\(75^\\circ\\)", "\\(60^\\circ\\)", "\\(105^\\circ\\)", "\\(90^\\circ\\)"],
+      "answer": "\\(75^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：三角板角度為 \\(\\angle E = 45^\\circ\\)，\\(\\angle B = 30^\\circ\\)，則另一角為 \\(180^\\circ - 45^\\circ - 30^\\circ = 105^\\circ\\)。因 A、C、D 三點共線，假設三角形 BCE 中，\\(\\angle BCE\\) 與三角板角度相關。根據三角形內角和，\\(\\angle BCE = 180^\\circ - \\angle E - \\angle B = 180^\\circ - 45^\\circ - 60^\\circ = 75^\\circ\\)。故選：\\(75^\\circ\\)。本題考查三角板角度與共線關係。",
+      "image": "images/018.png",
+      "answerimage": null,
+      "comment": "第18題，題目有圖，解析無圖"
+    },
+    {
+      "question": "上午 10:00 時，鐘表的時針與分針的夾角為",
+      "options": ["\\(60^\\circ\\)", "\\(90^\\circ\\)", "\\(120^\\circ\\)", "\\(30^\\circ\\)"],
+      "answer": "\\(60^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：鐘表分為12等份，每份為 \\(30^\\circ\\)。10時整，分針在12，時針在10，相差2格，故角度為 \\(2 \\times 30^\\circ = 60^\\circ\\)。故選：\\(60^\\circ\\)。本題考查鐘表時針與分針的夾角計算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第19題，題目無圖，解析無圖"
+    },
+    {
+      "question": "已知點 P 在 \\(\\angle MAN\\) 的內部，現有四個等式：① \\(\\angle PAM = \\angle NAP\\)；② \\(\\angle PAN = \\frac{1}{2} \\angle MAN\\)；③ \\(\\angle MAP = \\frac{1}{2} \\angle MAN\\)；④ \\(\\angle MAN = 2 \\angle MAP\\)。其中一定能推出 AP 是角平分線的等式有",
+      "options": ["1個", "2個", "3個", "4個"],
+      "answer": "4個",
+      "explanation": "本題解析由AI生成：解：AP 是 \\(\\angle MAN\\) 的平分線，則 \\(\\angle PAM = \\angle PAN\\)。① \\(\\angle PAM = \\angle NAP\\) 即 \\(\\angle PAM = \\angle PAN\\)，滿足平分線定義；② \\(\\angle PAN = \\frac{1}{2} \\angle MAN\\) 表示 \\(\\angle PAN = \\angle PAM\\)，滿足；③ \\(\\angle MAP = \\frac{1}{2} \\angle MAN\\) 同理滿足；④ \\(\\angle MAN = 2 \\angle MAP\\) 與③等價，滿足。所有等式均能推出 AP 是平分線，故有4個等式。故選：4個。本題考查角平分線的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第20題，題目無圖，解析無圖"
+    },
+    {
+      "question": "點 P 在 \\(\\angle MAN\\) 的內部，現有五個等式：① \\(\\angle PAM = \\angle PAN\\)；② \\(\\angle PAN = \\frac{1}{2} \\angle MAN\\)；③ \\(\\angle PAM = \\frac{1}{2} \\angle MAN\\)；④ \\(\\angle MAN = 2 \\angle PAM\\)；⑤ \\(\\angle PAM = 2 \\angle PAN\\)。其中能表示射線 AP 是 \\(\\angle MAN\\) 的平分線的有",
+      "options": ["5個", "4個", "3個", "2個"],
+      "answer": "4個",
+      "explanation": "本題解析由AI生成：解：AP 是 \\(\\angle MAN\\) 的平分線，則 \\(\\angle PAM = \\angle PAN\\)。① \\(\\angle PAM = \\angle PAN\\) 滿足；② \\(\\angle PAN = \\frac{1}{2} \\angle MAN\\) 表示 \\(\\angle PAN = \\angle PAM\\)，滿足；③ \\(\\angle PAM = \\frac{1}{2} \\angle MAN\\) 同理滿足；④ \\(\\angle MAN = 2 \\angle PAM\\) 與③等價，滿足；⑤ \\(\\angle PAM = 2 \\angle PAN\\) 不一定滿足，因 \\(\\angle PAM = \\angle PAN\\)。故有4個等式滿足。故選：4個。本題考查角平分線的定義。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，解析無圖"
+    },
+    {
+      "question": "已知 \\(\\angle \\alpha = 30.5^\\circ\\)，\\(\\angle \\beta = 30^\\circ 5'\\)，則 \\(\\angle \\alpha\\) 與 \\(\\angle \\beta\\) 的關係是",
+      "options": ["\\(\\angle \\alpha = \\angle \\beta\\)", "\\(\\angle \\alpha > \\angle \\beta\\)", "\\(\\angle \\alpha < \\angle \\beta\\)", "以上都不對"],
+      "answer": "\\(\\angle \\alpha > \\angle \\beta\\)",
+      "explanation": "解：將 \\(\\angle \\beta = 30^\\circ 5'\\) 轉換為十進制度數，5' = \\(\\frac{5}{60}\\) 度 = \\(0.0833^\\circ\\)，故 \\(\\angle \\beta = 30^\\circ + 0.0833^\\circ = 30.0833^\\circ\\)。比較 \\(\\angle \\alpha = 30.5^\\circ\\) 與 \\(\\angle \\beta = 30.0833^\\circ\\)，顯然 \\(30.5^\\circ > 30.0833^\\circ\\)，即 \\(\\angle \\alpha > \\angle \\beta\\)。故選：\\(\\angle \\alpha > \\angle \\beta\\)。本題考查度分秒轉換與角度比較。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，解析無圖"
+    }
+  ]
+}
