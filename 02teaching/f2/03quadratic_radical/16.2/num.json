@@ -1,11 +1,11 @@
 {
-  "title": "16.2 根式的乘除",
+  "title": "根式的乘除",
   "questions": [
     {
       "question": "下列二次根式是最簡二次根式的是",
       "options": ["\\(\\sqrt{\\frac{1}{2}}\\)", "\\(\\sqrt{\\frac{12}{7}}\\)", "\\(\\sqrt{8}\\)", "\\(\\sqrt{3}\\)"],
       "answer": "\\(\\sqrt{3}\\)",
-      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數不含能開得盡方的因數或因式。A：\\(\\sqrt{\\frac{1}{2}} = \\frac{\\sqrt{2}}{2}\\)，含分母，錯誤；B：\\(\\sqrt{\\frac{12}{7}} = \\frac{2\\sqrt{21}}{7}\\)，含分母，錯誤；C：\\(\\sqrt{8} = 2\\sqrt{2}\\)，含可開方因數，錯誤；D：\\(\\sqrt{3}\\)，滿足條件，正確。故選：\\(\\sqrt{3}\\)。本題考查最簡二次根式的定義。",
+      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數不含能開得盡方的因數或因式。\\(\\sqrt{\\frac{1}{2}} = \\frac{\\sqrt{2}}{2}\\)，含分母，不正確；\\(\\sqrt{\\frac{12}{7}} = \\frac{2\\sqrt{21}}{7}\\)，含分母，不正確；\\(\\sqrt{8} = 2\\sqrt{2}\\)，含可開方因數，不正確；\\(\\sqrt{3}\\)，滿足條件，正確。本題考查最簡二次根式的定義。",
       "image": null,
       "answerimage": null,
       "comment": "第1題，題目無圖，答案無圖"
@@ -14,7 +14,7 @@
       "question": "下列式子中，屬於最簡二次根式的是",
       "options": ["\\(\\sqrt{12}\\)", "\\(\\sqrt{\\frac{2}{3}}\\)", "\\(\\sqrt{0.3}\\)", "\\(\\sqrt{7}\\)"],
       "answer": "\\(\\sqrt{7}\\)",
-      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數不含能開得盡方的因數或因式。A：\\(\\sqrt{12} = 2\\sqrt{3}\\)，可化簡，錯誤；B：\\(\\sqrt{\\frac{2}{3}} = \\frac{\\sqrt{6}}{3}\\)，含分母，錯誤；C：\\(\\sqrt{0.3} = \\frac{\\sqrt{30}}{10}\\)，含分母，錯誤；D：\\(\\sqrt{7}\\)，滿足條件，正確。故選：\\(\\sqrt{7}\\)。本題考查最簡二次根式的定義。",
+      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數不含能開得盡方的因數或因式。\\(\\sqrt{12} = 2\\sqrt{3}\\)，可化簡，不正確；\\(\\sqrt{\\frac{2}{3}} = \\frac{\\sqrt{6}}{3}\\)，含分母，不正確；\\(\\sqrt{0.3} = \\frac{\\sqrt{30}}{10}\\)，含分母，不正確；\\(\\sqrt{7}\\)，滿足條件，正確。本題考查最簡二次根式的定義。",
       "image": null,
       "answerimage": null,
       "comment": "第2題，題目無圖，答案無圖"
@@ -23,7 +23,7 @@
       "question": "下列二次根式是最簡二次根式的是",
       "options": ["\\(\\sqrt{\\frac{1}{3}}\\)", "\\(\\sqrt{8}\\)", "\\(\\sqrt{14}\\)", "\\(\\sqrt{12}\\)"],
       "answer": "\\(\\sqrt{14}\\)",
-      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數不含能開得盡方的因數或因式。A：\\(\\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3}\\)，含分母，錯誤；B：\\(\\sqrt{8} = 2\\sqrt{2}\\)，可化簡，錯誤；C：\\(\\sqrt{14}\\)，滿足條件，正確；D：\\(\\sqrt{12} = 2\\sqrt{3}\\)，可化簡，錯誤。故選：\\(\\sqrt{14}\\)。本題考查最簡二次根式的定義。",
+      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數不含能開得盡方的因數或因式。\\(\\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3}\\)，含分母，不正確；\\(\\sqrt{8} = 2\\sqrt{2}\\)，可化簡，不正確；\\(\\sqrt{14}\\)，滿足條件，正確；\\(\\sqrt{12} = 2\\sqrt{3}\\)，可化簡，不正確。本題考查最簡二次根式的定義。",
       "image": null,
       "answerimage": null,
       "comment": "第3題，題目無圖，答案無圖"
@@ -32,7 +32,7 @@
       "question": "下列計算正確的是",
       "options": ["\\(\\sqrt{(-3)^2} = -3\\)", "\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{7}\\)", "\\(\\sqrt{9} \\div \\sqrt{3} = 3\\)", "\\(\\sqrt{2}^2 = 2\\)"],
       "answer": "\\(\\sqrt{2}^2 = 2\\)",
-      "explanation": "解：A：\\(\\sqrt{(-3)^2} = \\sqrt{9} = 3\\)，錯誤；B：\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{10}\\)，非 \\(\\sqrt{7}\\)。錯誤；C：\\(\\sqrt{9} \\div \\sqrt{3} = \\sqrt{3}\\)，非 3，錯誤；D：\\(\\sqrt{2}^2 = 2\\)，正確。故選：\\(\\sqrt{2}^2 = 2\\)。本題考查二次根式的性質與乘除運算。",
+      "explanation": "解：\\(\\sqrt{(-3)^2} = \\sqrt{9} = 3\\)，不正確；\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{10}\\)，非 \\(\\sqrt{7}\\)，不正確；\\(\\sqrt{9} \\div \\sqrt{3} = \\sqrt{3}\\)，非 3，不正確；\\(\\sqrt{2}^2 = 2\\)，正確。本題考查二次根式的性質與乘除運算。",
       "image": null,
       "answerimage": null,
       "comment": "第4題，題目無圖，答案無圖"
@@ -41,7 +41,7 @@
       "question": "下列根式中，是最簡二次根式的是",
       "options": ["\\(\\sqrt{0.2b}\\)", "\\(\\sqrt{12a-12b}\\)", "\\(\\sqrt{x^2-y^2}\\)", "\\(\\sqrt{5ab^2}\\)"],
       "answer": "\\(\\sqrt{x^2-y^2}\\)",
-      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母或小數；(2) 被開方數的因式指數不大於 1。A：\\(\\sqrt{0.2b} = \\frac{\\sqrt{5b}}{5}\\)，含分母，錯誤；B：\\(\\sqrt{12a-12b} = 2\\sqrt{3a-3b}\\)，可化簡，錯誤；C：\\(\\sqrt{x^2-y^2}\\)，不可化簡，正確；D：\\(\\sqrt{5ab^2} = |b|\\sqrt{5a}\\)，可化簡，錯誤。故選：\\(\\sqrt{x^2-y^2}\\)。本題考查最簡二次根式的定義。",
+      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母或小數；(2) 被開方數的因式指數不大於 1。\\(\\sqrt{0.2b} = \\frac{\\sqrt{5b}}{5}\\)，含分母，不正確；\\(\\sqrt{12a-12b} = 2\\sqrt{3a-3b}\\)，可化簡，不正確；\\(\\sqrt{x^2-y^2}\\)，不可化簡，正確；\\(\\sqrt{5ab^2} = |b|\\sqrt{5a}\\)，可化簡，不正確。本題考查最簡二次根式的定義。",
       "image": null,
       "answerimage": null,
       "comment": "第5題，題目無圖，答案無圖"
@@ -50,7 +50,7 @@
       "question": "下列計算正確的是",
       "options": ["\\(\\sqrt{(-4)^2} = 2\\)", "\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{10}\\)", "\\(\\sqrt{2}^2 = 4\\)", "\\(\\sqrt{6} \\div \\sqrt{2} = 3\\)"],
       "answer": "\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{10}\\)",
-      "explanation": "解：A：\\(\\sqrt{(-4)^2} = \\sqrt{16} = 4\\)，錯誤；B：\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{10}\\)，正確；C：\\(\\sqrt{2}^2 = 2\\)，錯誤；D：\\(\\sqrt{6} \\div \\sqrt{2} = \\sqrt{3}\\)，錯誤。故選：\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{10}\\)。本題考查二次根式的乘除法。",
+      "explanation": "解：\\(\\sqrt{(-4)^2} = \\sqrt{16} = 4\\)，不正確；\\(\\sqrt{2} \\times \\sqrt{5} = \\sqrt{10}\\)，正確；\\(\\sqrt{2}^2 = 2\\)，不正確；\\(\\sqrt{6} \\div \\sqrt{2} = \\sqrt{3}\\)，不正確。本題考查二次根式的乘除法。",
       "image": null,
       "answerimage": null,
       "comment": "第6題，題目無圖，答案無圖"
@@ -59,7 +59,7 @@
       "question": "計算 \\(-\\sqrt{2} \\times \\sqrt{5}\\) 的結果為",
       "options": ["\\(\\sqrt{10}\\)", "\\(-\\sqrt{10}\\)", "\\(\\sqrt{7}\\)", "\\(-\\sqrt{7}\\)"],
       "answer": "\\(-\\sqrt{10}\\)",
-      "explanation": "本題解析由 AI 生成。解：根據二次根式乘法法則，\\(-\\sqrt{2} \\times \\sqrt{5} = -\\sqrt{2 \\times 5} = -\\sqrt{10}\\)。故選：\\(-\\sqrt{10}\\)。本題考查二次根式的乘法運算。",
+      "explanation": "解：根據二次根式乘法法則，\\(-\\sqrt{2} \\times \\sqrt{5} = -\\sqrt{2 \\times 5} = -\\sqrt{10}\\)。本題考查二次根式的乘法運算。",
       "image": null,
       "answerimage": null,
       "comment": "第7題，題目無圖，答案無圖"
@@ -68,7 +68,7 @@
       "question": "估計 \\((2\\sqrt{3} + 6\\sqrt{2}) \\times \\sqrt{\\frac{1}{3}}\\) 的值應在",
       "options": ["4 和 5 之間", "5 和 6 之間", "6 和 7 之間", "7 和 8 之間"],
       "answer": "6 和 7 之間",
-      "explanation": "解：原式 = \\((2\\sqrt{3} + 6\\sqrt{2}) \\times \\frac{\\sqrt{3}}{3} = 2\\sqrt{3} \\times \\frac{\\sqrt{3}}{3} + 6\\sqrt{2} \\times \\frac{\\sqrt{3}}{3} = 2 + 2\\sqrt{6}\\)。因 \\(\\sqrt{24} = 2\\sqrt{6}\\)，且 \\(4 < \\sqrt{24} < 5\\)，故 \\(6 < 2 + \\sqrt{24} < 7\\)。故選：6 和 7 之間。本題考查二次根式的乘法與無理數估算。",
+      "explanation": "解：原式 = \\((2\\sqrt{3} + 6\\sqrt{2}) \\times \\frac{\\sqrt{3}}{3} = 2\\sqrt{3} \\times \\frac{\\sqrt{3}}{3} + 6\\sqrt{2} \\times \\frac{\\sqrt{3}}{3} = 2 + 2\\sqrt{6}\\)。因 \\(\\sqrt{24} = 2\\sqrt{6}\\)，且 \\(4 < \\sqrt{24} < 5\\)，故 \\(6 < 2 + \\sqrt{24} < 7\\)。本題考查二次根式的乘法與無理數估算。",
       "image": null,
       "answerimage": null,
       "comment": "第8題，題目無圖，答案無圖"
@@ -77,7 +77,7 @@
       "question": "將 \\(\\sqrt{\\frac{45}{2}}\\) 化為最簡二次根式，其結果是",
       "options": ["\\(\\frac{\\sqrt{45}}{2}\\)", "\\(\\frac{\\sqrt{90}}{2}\\)", "\\(\\frac{9\\sqrt{10}}{2}\\)", "\\(\\frac{3}{2}\\sqrt{10}\\)"],
       "answer": "\\(\\frac{3}{2}\\sqrt{10}\\)",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{\\frac{45}{2}} = \\sqrt{\\frac{45}{2}} = \\sqrt{\\frac{9 \\times 5}{2}} = \\frac{\\sqrt{9} \\times \\sqrt{5}}{\\sqrt{2}} = \\frac{3\\sqrt{5}}{\\sqrt{2}} = \\frac{3\\sqrt{10}}{2}\\)。故選：\\(\\frac{3}{2}\\sqrt{10}\\)。本題考查二次根式的化簡。",
+      "explanation": "解：\\(\\sqrt{\\frac{45}{2}} = \\sqrt{\\frac{9 \\times 5}{2}} = \\frac{\\sqrt{9} \\times \\sqrt{5}}{\\sqrt{2}} = \\frac{3\\sqrt{5}}{\\sqrt{2}} = \\frac{3\\sqrt{10}}{2}\\)。本題考查二次根式的化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第9題，題目無圖，答案無圖"
@@ -86,7 +86,7 @@
       "question": "下列二次根式中是最簡二次根式的是",
       "options": ["\\(\\sqrt{12}\\)", "\\(\\sqrt{\\frac{1}{3}}\\)", "\\(\\sqrt{3a^2}\\)", "\\(\\sqrt{a^2+1}\\)"],
       "answer": "\\(\\sqrt{a^2+1}\\)",
-      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數的因式指數不大於 1。A：\\(\\sqrt{12} = 2\\sqrt{3}\\)，可化簡，錯誤；B：\\(\\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3}\\)，含分母，錯誤；C：\\(\\sqrt{3a^2} = a\\sqrt{3}\\) (\\(a \\geq 0\\))，可化簡，錯誤；D：\\(\\sqrt{a^2+1}\\)，不可化簡，正確。故選：\\(\\sqrt{a^2+1}\\)。本題考查最簡二次根式的定義。",
+      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數的因式指數不大於 1。\\(\\sqrt{12} = 2\\sqrt{3}\\)，可化簡，不正確；\\(\\sqrt{\\frac{1}{3}} = \\frac{\\sqrt{3}}{3}\\)，含分母，不正確；\\(\\sqrt{3a^2} = a\\sqrt{3}\\) (\\(a \\geq 0\\))，可化簡，不正確；\\(\\sqrt{a^2+1}\\)，不可化簡，正確。本題考查最簡二次根式的定義。",
       "image": null,
       "answerimage": null,
       "comment": "第10題，題目無圖，答案無圖"
@@ -95,7 +95,7 @@
       "question": "計算 \\(\\sqrt{14} \\times \\sqrt{7}\\) 的結果為",
       "options": ["2\\sqrt{7}", "7\\sqrt{2}", "3\\sqrt{7}", "\\(\\sqrt{98}\\)"],
       "answer": "7\\sqrt{2}",
-      "explanation": "解：\\(\\sqrt{14} \\times \\sqrt{7} = \\sqrt{14 \\times 7} = \\sqrt{98} = \\sqrt{49 \\times 2} = 7\\sqrt{2}\\)。故選：7\\sqrt{2}。本題考查二次根式的乘法運算。",
+      "explanation": "解：\\(\\sqrt{14} \\times \\sqrt{7} = \\sqrt{14 \\times 7} = \\sqrt{98} = \\sqrt{49 \\times 2} = 7\\sqrt{2}\\)。本題考查二次根式的乘法運算。",
       "image": null,
       "answerimage": null,
       "comment": "第11題，題目無圖，答案無圖"
@@ -104,7 +104,7 @@
       "question": "計算 \\(\\sqrt{\\frac{4}{3}} \\div \\sqrt{\\frac{1}{3}}\\) 的結果為",
       "options": ["\\(\\frac{3}{2}\\)", "\\(\\frac{2}{3}\\)", "\\(\\sqrt{2}\\)", "2"],
       "answer": "2",
-      "explanation": "解：\\(\\sqrt{\\frac{4}{3}} \\div \\sqrt{\\frac{1}{3}} = \\sqrt{\\frac{4}{3} \\div \\frac{1}{3}} = \\sqrt{\\frac{4}{3} \\times 3} = \\sqrt{4} = 2\\)。故選：2。本題考查二次根式的除法運算。",
+      "explanation": "解：\\(\\sqrt{\\frac{4}{3}} \\div \\sqrt{\\frac{1}{3}} = \\sqrt{\\frac{4}{3} \\div \\frac{1}{3}} = \\sqrt{\\frac{4}{3} \\times 3} = \\sqrt{4} = 2\\)。本題考查二次根式的除法運算。",
       "image": null,
       "answerimage": null,
       "comment": "第12題，題目無圖，答案無圖"
@@ -113,7 +113,7 @@
       "question": "計算 \\(\\sqrt{18} \\div \\sqrt{\\frac{3}{4}} \\times \\sqrt{\\frac{4}{3}}\\) 的結果為",
       "options": ["3\\sqrt{2}", "4\\sqrt{2}", "5\\sqrt{2}", "6\\sqrt{2}"],
       "answer": "4\\sqrt{2}",
-      "explanation": "解：原式 = \\(\\sqrt{18 \\times \\frac{4}{3} \\times \\frac{4}{3}} = \\sqrt{\\frac{18 \\times 16}{9}} = \\sqrt{32} = \\sqrt{16 \\times 2} = 4\\sqrt{2}\\)。故選：4\\sqrt{2}。本題考查二次根式的乘除法運算。",
+      "explanation": "解：原式 = \\(\\sqrt{18 \\times \\frac{4}{3} \\times \\frac{4}{3}} = \\sqrt{\\frac{18 \\times 16}{9}} = \\sqrt{32} = \\sqrt{16 \\times 2} = 4\\sqrt{2}\\)。本題考查二次根式的乘除法運算。",
       "image": null,
       "answerimage": null,
       "comment": "第13題，題目無圖，答案無圖"
@@ -122,7 +122,7 @@
       "question": "已知 \\(a < b\\)，則化簡二次根式 \\(\\sqrt{-a^3 b}\\) 的正確結果是",
       "options": ["-a\\sqrt{-ab}", "-a\\sqrt{ab}", "a\\sqrt{ab}", "a\\sqrt{-ab}"],
       "answer": "-a\\sqrt{-ab}",
-      "explanation": "解：因 \\(a < b\\)，\\(-a^3 b > 0\\)，則 \\(a < 0\\)，\\(b > 0\\)。故 \\(\\sqrt{-a^3 b} = \\sqrt{(-a)^3 \\cdot b} = (-a) \\sqrt{-ab}\\)。故選：-a\\sqrt{-ab}。本題考查二次根式的化簡。",
+      "explanation": "解：因 \\(a < b\\)，\\(-a^3 b > 0\\)，則 \\(a < 0\\)，\\(b > 0\\)。故 \\(\\sqrt{-a^3 b} = \\sqrt{(-a)^3 \\cdot b} = (-a) \\sqrt{-ab}\\)。本題考查二次根式的化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第14題，題目無圖，答案無圖"
@@ -131,7 +131,7 @@
       "question": "把式子 \\((a-1) \\sqrt{\\frac{-1}{a-1}}\\) 中根號外的 \\(a-1\\) 移到根號內，結果是",
       "options": ["\\(\\sqrt{a-1}\\)", "\\(\\sqrt{1-a}\\)", "-\\sqrt{1-a}", "-\\sqrt{a-1}"],
       "answer": "-\\sqrt{1-a}",
-      "explanation": "解：由題意，\\(\\frac{-1}{a-1} \\geq 0\\)，得 \\(a-1 < 0\\)。故 \\((a-1) \\sqrt{\\frac{-1}{a-1}} = -\\sqrt{(a-1)^2 \\cdot \\frac{-1}{a-1}} = -\\sqrt{-(a-1)} = -\\sqrt{1-a}\\)。故選：-\\sqrt{1-a}。本題考查二次根式的化簡。",
+      "explanation": "解：由題意，\\(\\frac{-1}{a-1} \\geq 0\\)，得 \\(a-1 < 0\\)。故 \\((a-1) \\sqrt{\\frac{-1}{a-1}} = -\\sqrt{(a-1)^2 \\cdot \\frac{-1}{a-1}} = -\\sqrt{-(a-1)} = -\\sqrt{1-a}\\)。本題考查二次根式的化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第15題，題目無圖，答案無圖"
@@ -140,7 +140,7 @@
       "question": "下列所給的二次根式中，是最簡二次根式的是",
       "options": ["\\(\\sqrt{8x}\\)", "\\(\\sqrt{x^2+4}\\)", "\\(\\sqrt{\\frac{m}{2}}\\)", "\\(\\frac{4}{\\sqrt{a}}\\)"],
       "answer": "\\(\\sqrt{x^2+4}\\)",
-      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數的因式指數不大於 1。A：\\(\\sqrt{8x} = 2\\sqrt{2x}\\)，可化簡，錯誤；B：\\(\\sqrt{x^2+4}\\)，不可化簡，正確；C：\\(\\sqrt{\\frac{m}{2}} = \\frac{\\sqrt{2m}}{2}\\)，含分母，錯誤；D：\\(\\frac{4}{\\sqrt{a}} = \\frac{4\\sqrt{a}}{a}\\)，非根式，錯誤。故選：\\(\\sqrt{x^2+4}\\)。本題考查最簡二次根式的定義。",
+      "explanation": "解：最簡二次根式要求：(1) 被開方數不含分母；(2) 被開方數的因式指數不大於 1。\\(\\sqrt{8x} = 2\\sqrt{2x}\\)，可化簡，不正確；\\(\\sqrt{x^2+4}\\)，不可化簡，正確；\\(\\sqrt{\\frac{m}{2}} = \\frac{\\sqrt{2m}}{2}\\)，含分母，不正確；\\(\\frac{4}{\\sqrt{a}} = \\frac{4\\sqrt{a}}{a}\\)，非根式，不正確。本題考查最簡二次根式的定義。",
       "image": null,
       "answerimage": null,
       "comment": "第16題，題目無圖，答案無圖"
@@ -149,7 +149,7 @@
       "question": "下列運算正確的是",
       "options": ["2m + 3n = 5mn", "\\((m-n)^2 = m^2 - n^2\\)", "2\\sqrt{3} \\times 3\\sqrt{3} = 6\\sqrt{3}", "\\(\\sqrt{12} \\div 2 = \\sqrt{3}\\)"],
       "answer": "\\(\\sqrt{12} \\div 2 = \\sqrt{3}\\)",
-      "explanation": "解：A：2m 與 3n 非同類項，錯誤；B：\\((m-n)^2 = m^2 - 2mn + n^2\\)，錯誤；C：\\(2\\sqrt{3} \\times 3\\sqrt{3} = 6 \\times 3 = 18\\)，錯誤；D：\\(\\sqrt{12} \\div 2 = \\frac{\\sqrt{12}}{2} = \\sqrt{3}\\)，正確。故選：\\(\\sqrt{12} \\div 2 = \\sqrt{3}\\)。本題考查二次根式的化簡與運算。",
+      "explanation": "解：2m 與 3n 非同類項，不正確；\\((m-n)^2 = m^2 - 2mn + n^2\\)，不正確；\\(2\\sqrt{3} \\times 3\\sqrt{3} = 6 \\times 3 = 18\\)，不正確；\\(\\sqrt{12} \\div 2 = \\frac{\\sqrt{12}}{2} = \\sqrt{3}\\)，正確。本題考查二次根式的化簡與運算。",
       "image": null,
       "answerimage": null,
       "comment": "第17題，題目無圖，答案無圖"
@@ -158,7 +158,7 @@
       "question": "下列運算正確的是",
       "options": ["-3 - 2 = -1", "3 \\times \\left(-\\frac{1}{3}\\right)^2 = -\\frac{1}{3}", "x^3 \\cdot x^5 = x^{15}", "\\(\\sqrt{a} \\cdot \\sqrt{ab} = a\\sqrt{b}\\)"],
       "answer": "\\(\\sqrt{a} \\cdot \\sqrt{ab} = a\\sqrt{b}\\)",
-      "explanation": "解：A：\\(-3 - 2 = -5\\)，錯誤；B：\\(3 \\times \\left(-\\frac{1}{3}\\right)^2 = 3 \\times \\frac{1}{9} = \\frac{1}{3}\\)，錯誤；C：\\(x^3 \\cdot x^5 = x^8\\)，錯誤；D：\\(\\sqrt{a} \\cdot \\sqrt{ab} = \\sqrt{a \\cdot ab} = \\sqrt{a^2 b} = a\\sqrt{b}\\) (\\(a \\geq 0\\))，正確。故選：\\(\\sqrt{a} \\cdot \\sqrt{ab} = a\\sqrt{b}\\)。本題考查二次根式的乘法。",
+      "explanation": "解：\\(-3 - 2 = -5\\)，不正確；\\(3 \\times \\left(-\\frac{1}{3}\\right)^2 = 3 \\times \\frac{1}{9} = \\frac{1}{3}\\)，不正確；\\(x^3 \\cdot x^5 = x^8\\)，不正確；\\(\\sqrt{a} \\cdot \\sqrt{ab} = \\sqrt{a \\cdot ab} = \\sqrt{a^2 b} = a\\sqrt{b}\\) (\\(a \\geq 0\\))，正確。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第18題，題目無圖，答案無圖"
@@ -167,7 +167,7 @@
       "question": "計算 \\(6\\sqrt{7} \\times \\frac{1}{3}\\sqrt{21} \\div 2\\sqrt{3}\\) 的結果是",
       "options": ["-4", "-2\\sqrt{3}", "40", "7"],
       "answer": "7",
-      "explanation": "解：原式 = \\(6 \\times \\frac{1}{3} \\times \\frac{1}{2} \\times \\sqrt{7 \\times 21 \\times \\frac{1}{3}} = 1 \\times \\sqrt{49} = 7\\)。故選：7。本題考查二次根式的乘除法運算。",
+      "explanation": "解：原式 = \\(6 \\times \\frac{1}{3} \\times \\frac{1}{2} \\times \\sqrt{7 \\times 21 \\times \\frac{1}{3}} = 1 \\times \\sqrt{49} = 7\\)。本題考查二次根式的乘除法運算。",
       "image": null,
       "answerimage": null,
       "comment": "第19題，題目無圖，答案無圖"
@@ -176,7 +176,7 @@
       "question": "已知 \\(-2 < m < 3\\)，化簡 \\(\\sqrt{(m-3)^2} + |m+2|\\) 的結果是",
       "options": ["5", "1", "2m-1", "2m-5"],
       "answer": "5",
-      "explanation": "解：因 \\(-2 < m < 3\\)，得 \\(m-3 < 0\\)，\\(m+2 > 0\\)。故 \\(\\sqrt{(m-3)^2} = |m-3| = 3-m\\)，\\(|m+2| = m+2\\)。原式 = \\(3-m + m+2 = 5\\)。故選：5。本題考查二次根式與絕對值的化簡。",
+      "explanation": "解：因 \\(-2 < m < 3\\)，得 \\(m-3 < 0\\)，\\(m+2 > 0\\)。故 \\(\\sqrt{(m-3)^2} = |m-3| = 3-m\\)，\\(|m+2| = m+2\\)。原式 = \\(3-m + m+2 = 5\\)。本題考查二次根式與絕對值的化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第24題，題目無圖，答案無圖"
@@ -185,7 +185,7 @@
       "question": "下列運算中，正確的是",
       "options": ["x^3 + x^4 = x^7", "2x^2 \\cdot 3x^4 = 6x^8", "(-3x^2 y)^2 = -9x^4 y^2", "\\(\\sqrt{5} \\times \\sqrt{6} = \\sqrt{30}\\)"],
       "answer": "\\(\\sqrt{5} \\times \\sqrt{6} = \\sqrt{30}\\)",
-      "explanation": "解：A：\\(x^3 + x^4\\) 不可合併，錯誤；B：\\(2x^2 \\cdot 3x^4 = 6x^6\\)，錯誤；C：\\((-3x^2 y)^2 = 9x^4 y^2\\)，錯誤；D：\\(\\sqrt{5} \\times \\sqrt{6} = \\sqrt{30}\\)，正確。故選：\\(\\sqrt{5} \\times \\sqrt{6} = \\sqrt{30}\\)。本題考查二次根式的乘法。",
+      "explanation": "解：\\(x^3 + x^4\\) 不可合併，不正確；\\(2x^2 \\cdot 3x^4 = 6x^6\\)，不正確；\\((-3x^2 y)^2 = 9x^4 y^2\\)，不正確；\\(\\sqrt{5} \\times \\sqrt{6} = \\sqrt{30}\\)，正確。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第25題，題目無圖，答案無圖"
@@ -194,7 +194,7 @@
       "question": "下列各式中，從左到右的變形正確的是",
       "options": ["2\\sqrt{a} \\times 7\\sqrt{a} = 14\\sqrt{a}", "5\\sqrt{\\frac{a}{5}} = \\sqrt{5 \\times \\frac{a}{5}} = \\sqrt{a}", "a\\sqrt{ab} = \\sqrt{a^3 b}", "\\((a+b) \\sqrt{a+b} = \\sqrt{(a+b)^3}\\)"],
       "answer": "\\((a+b) \\sqrt{a+b} = \\sqrt{(a+b)^3}\\)",
-      "explanation": "本題解析由 AI 生成。解：A：\\(2\\sqrt{a} \\times 7\\sqrt{a} = 14a\\)，非 \\(14\\sqrt{a}\\)，錯誤；B：\\(5\\sqrt{\\frac{a}{5}} = \\sqrt{5a}\\)，非 \\(\\sqrt{a}\\)，錯誤；C：\\(a\\sqrt{ab} = \\sqrt{a^3 b}\\)，錯誤；D：\\((a+b) \\sqrt{a+b} = \\sqrt{(a+b)^3}\\)，當 \\(a+b \\geq 0\\) 時正確。故選：\\((a+b) \\sqrt{a+b} = \\sqrt{(a+b)^3}\\)。本題考查二次根式的化簡。",
+      "explanation": "解：\\(2\\sqrt{a} \\times 7\\sqrt{a} = 14a\\)，非 \\(14\\sqrt{a}\\)，不正確；\\(5\\sqrt{\\frac{a}{5}} = \\sqrt{5a}\\)，非 \\(\\sqrt{a}\\)，不正確；\\(a\\sqrt{ab} = \\sqrt{a^3 b}\\)，不正確；\\((a+b) \\sqrt{a+b} = \\sqrt{(a+b)^3}\\)，當 \\(a+b \\geq 0\\) 時正確。本題考查二次根式的化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第22題，題目無圖，答案無圖"
@@ -203,7 +203,7 @@
       "question": "計算 \\(\\frac{-3\\sqrt{2}}{\\sqrt{27}}\\) 的結果是",
       "options": ["-\\frac{\\sqrt{2}}{3}", "-\\frac{2}{\\sqrt{3}}", "-\\frac{\\sqrt{6}}{3}", "-\\sqrt{2}"],
       "answer": "-\\frac{\\sqrt{6}}{3}",
-      "explanation": "本題解析由 AI 生成。解：原式 = \\(\\frac{-3\\sqrt{2}}{\\sqrt{27}} = \\frac{-3\\sqrt{2}}{3\\sqrt{3}} = -\\frac{\\sqrt{2}}{\\sqrt{3}} = -\\frac{\\sqrt{6}}{3}\\)。故選：-\\frac{\\sqrt{6}}{3}。本題考查二次根式的除法與化簡。",
+      "explanation": "解：原式 = \\(\\frac{-3\\sqrt{2}}{\\sqrt{27}} = \\frac{-3\\sqrt{2}}{3\\sqrt{3}} = -\\frac{\\sqrt{2}}{\\sqrt{3}} = -\\frac{\\sqrt{6}}{3}\\)。本題考查二次根式的除法與化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第31題，題目無圖，答案無圖"
@@ -212,7 +212,7 @@
       "question": "計算 \\(4\\sqrt{6x^3} \\div 2\\sqrt{\\frac{x}{3}}\\) 的結果是",
       "options": ["2\\sqrt{2} x", "\\(\\frac{3}{2} x\\)", "6\\sqrt{2} x", "\\(\\frac{2}{3}\\sqrt{2} x\\)"],
       "answer": "6\\sqrt{2} x",
-      "explanation": "本題解析由 AI 生成。解：原式 = \\(\\frac{4\\sqrt{6x^3}}{2\\sqrt{\\frac{x}{3}}} = 2 \\sqrt{\\frac{6x^3}{\\frac{x}{3}}} = 2 \\sqrt{18x^2} = 2 \\cdot 3x \\sqrt{2} = 6x\\sqrt{2}\\)。假設 \\(x \\geq 0\\)。故選：6\\sqrt{2} x。本題考查二次根式的除法與化簡。",
+      "explanation": "解：原式 = \\(\\frac{4\\sqrt{6x^3}}{2\\sqrt{\\frac{x}{3}}} = 2 \\sqrt{\\frac{6x^3}{\\frac{x}{3}}} = 2 \\sqrt{18x^2} = 2 \\cdot 3x \\sqrt{2} = 6x\\sqrt{2}\\)。假設 \\(x \\geq 0\\)。本題考查二次根式的除法與化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第32題，題目無圖，答案無圖"
@@ -221,7 +221,7 @@
       "question": "計算 \\(\\sqrt{1\\frac{1}{3}} \\div \\sqrt{2\\frac{1}{3}}\\) 的結果是",
       "options": ["\\(\\frac{2}{7}\\sqrt{7}\\)", "\\(\\frac{2}{7}\\)", "\\(\\sqrt{2}\\)", "\\(\\frac{\\sqrt{2}}{7}\\)"],
       "answer": "\\(\\frac{2}{7}\\sqrt{7}\\)",
-      "explanation": "本題解析由 AI 生成。解：\\(1\\frac{1}{3} = \\frac{4}{3}\\)，\\(2\\frac{1}{3} = \\frac{7}{3}\\)。原式 = \\(\\sqrt{\\frac{4}{3}} \\div \\sqrt{\\frac{7}{3}} = \\sqrt{\\frac{4}{3} \\div \\frac{7}{3}} = \\sqrt{\\frac{4}{7}} = \\frac{2}{\\sqrt{7}} = \\frac{2\\sqrt{7}}{7}\\)。故選：\\(\\frac{2}{7}\\sqrt{7}\\)。本題考查二次根式的除法與化簡。",
+      "explanation": "解：\\(1\\frac{1}{3} = \\frac{4}{3}\\)，\\(2\\frac{1}{3} = \\frac{7}{3}\\)。原式 = \\(\\sqrt{\\frac{4}{3}} \\div \\sqrt{\\frac{7}{3}} = \\sqrt{\\frac{4}{3} \\div \\frac{7}{3}} = \\sqrt{\\frac{4}{7}} = \\frac{2}{\\sqrt{7}} = \\frac{2\\sqrt{7}}{7}\\)。本題考查二次根式的除法與化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第33題，題目無圖，答案無圖"
@@ -230,7 +230,7 @@
       "question": "化簡 \\(\\sqrt{18} \\div \\sqrt{2}\\) 的結果是",
       "options": ["9", "3", "3\\sqrt{2}", "2\\sqrt{3}"],
       "answer": "3",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{18} \\div \\sqrt{2} = \\sqrt{\\frac{18}{2}} = \\sqrt{9} = 3\\)。故選：3。本題考查二次根式的除法。",
+      "explanation": "解：\\(\\sqrt{18} \\div \\sqrt{2} = \\sqrt{\\frac{18}{2}} = \\sqrt{9} = 3\\)。本題考查二次根式的除法。",
       "image": null,
       "answerimage": null,
       "comment": "第34題，題目無圖，答案無圖"
@@ -239,7 +239,7 @@
       "question": "下列各式計算正確的是",
       "options": ["\\(\\sqrt{25} = \\pm 5\\)", "\\(\\sqrt{18} \\times \\sqrt{2} = 9\\)", "\\(\\sqrt{24} \\times \\sqrt{\\frac{3}{2}} = 6\\)", "3\\sqrt{3} - \\sqrt{27} = -1"],
       "answer": "\\(\\sqrt{24} \\times \\sqrt{\\frac{3}{2}} = 6\\)",
-      "explanation": "本題解析由 AI 生成。解：A：\\(\\sqrt{25} = 5\\)，錯誤；B：\\(\\sqrt{18} \\times \\sqrt{2} = \\sqrt{36} = 6\\)，錯誤；C：\\(\\sqrt{24} \\times \\sqrt{\\frac{3}{2}} = \\sqrt{24 \\times \\frac{3}{2}} = \\sqrt{36} = 6\\)，正確；D：\\(3\\sqrt{3} - \\sqrt{27} = 3\\sqrt{3} - 3\\sqrt{3} = 0\\)，錯誤。故選：\\(\\sqrt{24} \\times \\sqrt{\\frac{3}{2}} = 6\\)。本題考查二次根式的乘法。",
+      "explanation": "解：\\(\\sqrt{25} = 5\\)，不正確；\\(\\sqrt{18} \\times \\sqrt{2} = \\sqrt{36} = 6\\)，不正確；\\(\\sqrt{24} \\times \\sqrt{\\frac{3}{2}} = \\sqrt{24 \\times \\frac{3}{2}} = \\sqrt{36} = 6\\)，正確；\\(3\\sqrt{3} - \\sqrt{27} = 3\\sqrt{3} - 3\\sqrt{3} = 0\\)，不正確。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第35題，題目無圖，答案無圖"
@@ -248,7 +248,7 @@
       "question": "下列二次根式中，與 \\(\\sqrt{2}\\) 的積為無理數的是",
       "options": ["\\(\\sqrt{\\frac{1}{2}}\\)", "\\(\\sqrt{12}\\)", "\\(\\sqrt{18}\\)", "\\(\\sqrt{32}\\)"],
       "answer": "\\(\\sqrt{12}\\)",
-      "explanation": "本題解析由 AI 生成。解：計算各選項與 \\(\\sqrt{2}\\) 的積：A：\\(\\sqrt{2} \\times \\sqrt{\\frac{1}{2}} = \\sqrt{1} = 1\\)，有理；B：\\(\\sqrt{2} \\times \\sqrt{12} = \\sqrt{24} = 2\\sqrt{6}\\)，無理；C：\\(\\sqrt{2} \\times \\sqrt{18} = \\sqrt{36} = 6\\)，有理；D：\\(\\sqrt{2} \\times \\sqrt{32} = \\sqrt{64} = 8\\)，有理。僅 B 為無理數。故選：\\(\\sqrt{12}\\)。本題考查二次根式的乘法與有理數性質。",
+      "explanation": "解：計算各選項與 \\(\\sqrt{2}\\) 的積：\\(\\sqrt{2} \\times \\sqrt{\\frac{1}{2}} = \\sqrt{1} = 1\\)，有理；\\(\\sqrt{2} \\times \\sqrt{12} = \\sqrt{24} = 2\\sqrt{6}\\)，無理；\\(\\sqrt{2} \\times \\sqrt{18} = \\sqrt{36} = 6\\)，有理；\\(\\sqrt{2} \\times \\sqrt{32} = \\sqrt{64} = 8\\)，有理。僅 \\(\\sqrt{12}\\) 為無理數。本題考查二次根式的乘法與有理數性質。",
       "image": null,
       "answerimage": null,
       "comment": "第36題，題目無圖，答案無圖"
@@ -257,7 +257,7 @@
       "question": "下列運算正確的是",
       "options": ["\\(\\sqrt{32} \\times \\sqrt{\\frac{3}{2}} = 4\\)", "\\(\\sqrt{7} \\times \\sqrt{3} = 21\\)", "\\(\\sqrt{2} \\times \\sqrt{3} = \\sqrt{5}\\)", "9\\sqrt{3} \\times \\sqrt{\\frac{1}{27}} = 3"],
       "answer": "9\\sqrt{3} \\times \\sqrt{\\frac{1}{27}} = 3",
-      "explanation": "本題解析由 AI 生成。解：A：\\(\\sqrt{32} \\times \\sqrt{\\frac{3}{2}} = \\sqrt{48} = 4\\sqrt{3}\\)，錯誤；B：\\(\\sqrt{7} \\times \\sqrt{3} = \\sqrt{21}\\)，錯誤；C：\\(\\sqrt{2} \\times \\sqrt{3} = \\sqrt{6}\\)，錯誤；D：\\(9\\sqrt{3} \\times \\sqrt{\\frac{1}{27}} = 9 \\times \\frac{\\sqrt{3}}{3\\sqrt{3}} = 3\\)，正確。故選：9\\sqrt{3} \\times \\sqrt{\\frac{1}{27}} = 3。本題考查二次根式的乘法。",
+      "explanation": "解：\\(\\sqrt{32} \\times \\sqrt{\\frac{3}{2}} = \\sqrt{48} = 4\\sqrt{3}\\)，不正確；\\(\\sqrt{7} \\times \\sqrt{3} = \\sqrt{21}\\)，不正確；\\(\\sqrt{2} \\times \\sqrt{3} = \\sqrt{6}\\)，不正確；\\(9\\sqrt{3} \\times \\sqrt{\\frac{1}{27}} = 9 \\times \\frac{\\sqrt{3}}{3\\sqrt{3}} = 3\\)，正確。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第37題，題目無圖，答案無圖"
@@ -266,7 +266,7 @@
       "question": "下列計算結果正確的是",
       "options": ["4\\sqrt{5} \\times 2\\sqrt{5} = 8\\sqrt{5}", "5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{5}", "4\\sqrt{3} \\times 3\\sqrt{2} = 7\\sqrt{5}", "5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{6}"],
       "answer": "5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{6}",
-      "explanation": "本題解析由 AI 生成。解：A：\\(4\\sqrt{5} \\times 2\\sqrt{5} = 8 \\times 5 = 40\\)，錯誤；B：\\(5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{6}\\)，非 \\(\\sqrt{5}\\)，錯誤；C：\\(4\\sqrt{3} \\times 3\\sqrt{2} = 12\\sqrt{6}\\)，錯誤；D：\\(5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{6}\\)，正確。故選：5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{6}。本題考查二次根式的乘法。",
+      "explanation": "解：\\(4\\sqrt{5} \\times 2\\sqrt{5} = 8 \\times 5 = 40\\)，不正確；\\(5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{6}\\)，非 \\(\\sqrt{5}\\)，不正確；\\(4\\sqrt{3} \\times 3\\sqrt{2} = 12\\sqrt{6}\\)，不正確；\\(5\\sqrt{3} \\times 4\\sqrt{2} = 20\\sqrt{6}\\)，正確。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第38題，題目無圖，答案無圖"
@@ -275,7 +275,7 @@
       "question": "計算 \\(\\sqrt{8} \\times \\sqrt{2}\\) 的結果是",
       "options": ["\\(\\sqrt{10}\\)", "4", "\\(\\sqrt{6}\\)", "2"],
       "answer": "4",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{8} \\times \\sqrt{2} = \\sqrt{8 \\times 2} = \\sqrt{16} = 4\\)。故選：4。本題考查二次根式的乘法。",
+      "explanation": "解：\\(\\sqrt{8} \\times \\sqrt{2} = \\sqrt{8 \\times 2} = \\sqrt{16} = 4\\)。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第39題，題目無圖，答案無圖"
@@ -284,7 +284,7 @@
       "question": "計算 \\(\\sqrt{27} \\times \\sqrt{\\frac{1}{3}}\\) 的結果是",
       "options": ["9", "3", "3\\sqrt{3}", "\\(\\sqrt{3}\\)"],
       "answer": "3",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{27} \\times \\sqrt{\\frac{1}{3}} = \\sqrt{27 \\times \\frac{1}{3}} = \\sqrt{9} = 3\\)。故選：3。本題考查二次根式的乘法。",
+      "explanation": "解：\\(\\sqrt{27} \\times \\sqrt{\\frac{1}{3}} = \\sqrt{27 \\times \\frac{1}{3}} = \\sqrt{9} = 3\\)。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第40題，題目無圖，答案無圖"
@@ -293,7 +293,7 @@
       "question": "下列各數中，與 \\(\\sqrt{3}\\) 的積為有理數的是",
       "options": ["\\(\\sqrt{2}\\)", "3\\sqrt{2}", "2\\sqrt{3}", "2-\\sqrt{3}"],
       "answer": "2\\sqrt{3}",
-      "explanation": "本題解析由 AI 生成。解：A：\\(\\sqrt{3} \\times \\sqrt{2} = \\sqrt{6}\\)，無理；B：\\(\\sqrt{3} \\times 3\\sqrt{2} = 3\\sqrt{6}\\)，無理；C：\\(\\sqrt{3} \\times 2\\sqrt{3} = 2 \\times 3 = 6\\)，有理；D：\\(\\sqrt{3} \\times (2-\\sqrt{3}) = 2\\sqrt{3} - 3\\)，無理。故選：2\\sqrt{3}。本題考查二次根式的乘法與有理數性質。",
+      "explanation": "解：\\(\\sqrt{3} \\times \\sqrt{2} = \\sqrt{6}\\)，無理；\\(\\sqrt{3} \\times 3\\sqrt{2} = 3\\sqrt{6}\\)，無理；\\(\\sqrt{3} \\times 2\\sqrt{3} = 2 \\times 3 = 6\\)，有理；\\(\\sqrt{3} \\times (2-\\sqrt{3}) = 2\\sqrt{3} - 3\\)，無理。本題考查二次根式的乘法與有理數性質。",
       "image": null,
       "answerimage": null,
       "comment": "第41題，題目無圖，答案無圖"
@@ -302,7 +302,7 @@
       "question": "下列各式成立的是",
       "options": ["3\\sqrt{3} \\times 2\\sqrt{3} = 6\\sqrt{3}", "3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{5}", "3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}", "3\\sqrt{3} \\times 2\\sqrt{2} = 36"],
       "answer": "3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}",
-      "explanation": "本題解析由 AI 生成。解：A：\\(3\\sqrt{3} \\times 2\\sqrt{3} = 6 \\times 3 = 18\\)，錯誤；B：\\(3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}\\)，非 \\(\\sqrt{5}\\)，錯誤；C：\\(3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}\\)，正確；D：\\(3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}\\)，非 36，錯誤。故選：3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}。本題考查二次根式的乘法。",
+      "explanation": "解：\\(3\\sqrt{3} \\times 2\\sqrt{3} = 6 \\times 3 = 18\\)，不正確；\\(3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}\\)，非 \\(\\sqrt{5}\\)，不正確；\\(3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}\\)，正確；\\(3\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}\\)，非 36，不正確。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第42題，題目無圖，答案無圖"
@@ -311,7 +311,7 @@
       "question": "等式 \\(\\sqrt{x+1} \\cdot \\sqrt{x-1} = \\sqrt{x^2-1}\\) 成立的條件是",
       "options": ["\\(x \\geq 1\\)", "\\(-1 \\leq x \\leq 1\\)", "\\(x \\leq -1\\)", "\\(x \\leq -1\\) 或 \\(x \\geq 1\\)"],
       "answer": "\\(x \\geq 1\\)",
-      "explanation": "本題解析由 AI 生成。解：等式要求 \\(x+1 \\geq 0\\)，\\(x-1 \\geq 0\\)，\\(x^2-1 \\geq 0\\)。得 \\(x \\geq 1\\)。驗證：左邊 = \\(\\sqrt{(x+1)(x-1)} = \\sqrt{x^2-1}\\)，當 \\(x \\geq 1\\) 時等式成立。故選：\\(x \\geq 1\\)。本題考查二次根式乘法的條件。",
+      "explanation": "解：等式要求 \\(x+1 \\geq 0\\)，\\(x-1 \\geq 0\\)，\\(x^2-1 \\geq 0\\)。得 \\(x \\geq 1\\)。驗證：左邊 = \\(\\sqrt{(x+1)(x-1)} = \\sqrt{x^2-1}\\)，當 \\(x \\geq 1\\) 時等式成立。本題考查二次根式乘法的條件。",
       "image": null,
       "answerimage": null,
       "comment": "第43題，題目無圖，答案無圖"
@@ -320,7 +320,7 @@
       "question": "化簡：\\(\\sqrt{12} =\\)",
       "options": ["2\\sqrt{3}", "3", "2\\sqrt{2}", "2"],
       "answer": "2\\sqrt{3}",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{12} = \\sqrt{4 \\times 3} = 2\\sqrt{3}\\)。故選：2\\sqrt{3}。本題考查二次根式的化簡。",
+      "explanation": "解：\\(\\sqrt{12} = \\sqrt{4 \\times 3} = 2\\sqrt{3}\\)。本題考查二次根式的化簡。",
       "image": null,
       "answerimage": null,
       "comment": "第44題，題目無圖，答案無圖"
@@ -329,7 +329,7 @@
       "question": "計算 \\(\\sqrt{12} \\div \\sqrt{3}\\) 的結果是",
       "options": ["4", "\\(\\frac{2\\sqrt{3}}{3}\\)", "2", "\\(\\frac{3\\sqrt{3}}{2}\\)"],
       "answer": "2",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{12} \\div \\sqrt{3} = \\sqrt{\\frac{12}{3}} = \\sqrt{4} = 2\\)。故選：2。本題考查二次根式的除法。",
+      "explanation": "解：\\(\\sqrt{12} \\div \\sqrt{3} = \\sqrt{\\frac{12}{3}} = \\sqrt{4} = 2\\)。本題考查二次根式的除法。",
       "image": null,
       "answerimage": null,
       "comment": "第46題，題目無圖，答案無圖"
@@ -338,7 +338,7 @@
       "question": "下列各式不成立的是",
       "options": ["\\(\\sqrt{\\frac{-3}{-5}} = \\sqrt{\\frac{3}{5}} = \\frac{\\sqrt{3}}{\\sqrt{5}}\\)", "\\(\\sqrt{\\frac{27}{64}} = \\frac{3}{8}\\sqrt{3}\\)", "\\(\\sqrt{9\\frac{1}{4}} = \\sqrt{9} \\times \\sqrt{\\frac{1}{4}}\\)", "\\(\\sqrt{\\frac{4 \\times 2}{9}} = \\frac{2}{3}\\sqrt{2}\\)"],
       "answer": "\\(\\sqrt{9\\frac{1}{4}} = \\sqrt{9} \\times \\sqrt{\\frac{1}{4}}\\)",
-      "explanation": "本題解析由 AI 生成。解：A：\\(\\sqrt{\\frac{-3}{-5}} = \\sqrt{\\frac{3}{5}} = \\frac{\\sqrt{3}}{\\sqrt{5}}\\)，正確；B：\\(\\sqrt{\\frac{27}{64}} = \\frac{\\sqrt{27}}{\\sqrt{64}} = \\frac{3\\sqrt{3}}{8}\\)，正確；C：\\(9\\frac{1}{4} = \\frac{37}{4}\\)，\\(\\sqrt{\\frac{37}{4}} \\neq 3 \\times \\frac{1}{2}\\)，錯誤；D：\\(\\sqrt{\\frac{8}{9}} = \\frac{2\\sqrt{2}}{3}\\)，正確。故選：\\(\\sqrt{9\\frac{1}{4}} = \\sqrt{9} \\times \\sqrt{\\frac{1}{4}}\\)。本題考查二次根式的性質。",
+      "explanation": "解：\\(\\sqrt{\\frac{-3}{-5}} = \\sqrt{\\frac{3}{5}} = \\frac{\\sqrt{3}}{\\sqrt{5}}\\)，正確；\\(\\sqrt{\\frac{27}{64}} = \\frac{\\sqrt{27}}{\\sqrt{64}} = \\frac{3\\sqrt{3}}{8}\\)，正確；\\(9\\frac{1}{4} = \\frac{37}{4}\\)，\\(\\sqrt{\\frac{37}{4}} \\neq 3 \\times \\frac{1}{2}\\)，不正確；\\(\\sqrt{\\frac{8}{9}} = \\frac{2\\sqrt{2}}{3}\\)，正確。本題考查二次根式的性質。",
       "image": null,
       "answerimage": null,
       "comment": "第47題，題目無圖，答案無圖"
@@ -347,7 +347,7 @@
       "question": "已知 \\(a = \\frac{\\sqrt{2}}{2}\\), \\(b = \\frac{\\sqrt{3}}{3}\\), \\(c = \\frac{\\sqrt{5}}{5}\\)，則下列大小關係正確的是",
       "options": ["a > b > c", "c > b > a", "b > a > c", "a > c > b"],
       "answer": "a > b > c",
-      "explanation": "本題解析由 AI 生成。解：計算：\\(a = \\frac{\\sqrt{2}}{2} \\approx 0.707\\)，\\(b = \\frac{\\sqrt{3}}{3} \\approx 0.577\\)，\\(c = \\frac{\\sqrt{5}}{5} \\approx 0.447\\)。比較得 \\(a > b > c\\)。故選：a > b > c。本題考查二次根式的數值比較。",
+      "explanation": "解：計算：\\(a = \\frac{\\sqrt{2}}{2} \\approx 0.707\\)，\\(b = \\frac{\\sqrt{3}}{3} \\approx 0.577\\)，\\(c = \\frac{\\sqrt{5}}{5} \\approx 0.447\\)。比較得 \\(a > b > c\\)。本題考查二次根式的數值比較。",
       "image": null,
       "answerimage": null,
       "comment": "第48題，題目無圖，答案無圖"
@@ -356,7 +356,7 @@
       "question": "下列各式計算正確的是",
       "options": ["\\(\\sqrt{24} \\div \\sqrt{6} = 4\\)", "\\(\\sqrt{54} \\div \\sqrt{9} = \\sqrt{6}\\)", "\\(\\sqrt{32} \\div \\sqrt{8} = 4\\)", "\\(\\sqrt{\\frac{4}{7}} \\div \\sqrt{\\frac{1}{49}} = 7\\sqrt{2}\\)"],
       "answer": "\\(\\sqrt{54} \\div \\sqrt{9} = \\sqrt{6}\\)",
-      "explanation": "本題解析由 AI 生成。解：A：\\(\\sqrt{24} \\div \\sqrt{6} = \\sqrt{4} = 2\\)，錯誤；B：\\(\\sqrt{54} \\div \\sqrt{9} = \\sqrt{6}\\)，正確；C：\\(\\sqrt{32} \\div \\sqrt{8} = \\sqrt{4} = 2\\)，錯誤；D：\\(\\sqrt{\\frac{4}{7}} \\div \\sqrt{\\frac{1}{49}} = \\sqrt{28} = 2\\sqrt{7}\\)，錯誤。故選：\\(\\sqrt{54} \\div \\sqrt{9} = \\sqrt{6}\\)。本題考查二次根式的除法。",
+      "explanation": "解：\\(\\sqrt{24} \\div \\sqrt{6} = \\sqrt{4} = 2\\)，不正確；\\(\\sqrt{54} \\div \\sqrt{9} = \\sqrt{6}\\)，正確；\\(\\sqrt{32} \\div \\sqrt{8} = \\sqrt{4} = 2\\)，不正確；\\(\\sqrt{\\frac{4}{7}} \\div \\sqrt{\\frac{1}{49}} = \\sqrt{28} = 2\\sqrt{7}\\)，不正確。本題考查二次根式的除法。",
       "image": null,
       "answerimage": null,
       "comment": "第49題，題目無圖，答案無圖"
@@ -365,7 +365,7 @@
       "question": "計算：\\(\\sqrt{10} \\div \\sqrt{2} =\\)",
       "options": ["\\(\\sqrt{5}\\)", "5", "\\(\\frac{\\sqrt{5}}{2}\\)", "\\(\\frac{\\sqrt{10}}{2}\\)"],
       "answer": "\\(\\sqrt{5}\\)",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{10} \\div \\sqrt{2} = \\sqrt{\\frac{10}{2}} = \\sqrt{5}\\)。故選：\\(\\sqrt{5}\\)。本題考查二次根式的除法。",
+      "explanation": "解：\\(\\sqrt{10} \\div \\sqrt{2} = \\sqrt{\\frac{10}{2}} = \\sqrt{5}\\)。本題考查二次根式的除法。",
       "image": null,
       "answerimage": null,
       "comment": "第50題，題目無圖，答案無圖"
@@ -374,7 +374,7 @@
       "question": "\\(\\sqrt{3}\\) 的倒數是",
       "options": ["-\\sqrt{3}", "\\(\\sqrt{3}\\)", "\\(-\\frac{\\sqrt{3}}{3}\\)", "\\(\\frac{\\sqrt{3}}{3}\\)"],
       "answer": "\\(\\frac{\\sqrt{3}}{3}\\)",
-      "explanation": "本題解析由 AI 生成。解：\\(\\sqrt{3}\\) 的倒數為 \\(\\frac{1}{\\sqrt{3}} = \\frac{\\sqrt{3}}{3}\\)。故選：\\(\\frac{\\sqrt{3}}{3}\\)。本題考查二次根式的倒數性質。",
+      "explanation": "解：\\(\\sqrt{3}\\) 的倒數為 \\(\\frac{1}{\\sqrt{3}} = \\frac{\\sqrt{3}}{3}\\)。本題考查二次根式的倒數性質。",
       "image": null,
       "answerimage": null,
       "comment": "第52題，題目無圖，答案無圖"
@@ -383,7 +383,7 @@
       "question": "下列計算正確的是",
       "options": ["8\\sqrt{3} \\times 2\\sqrt{3} = 16\\sqrt{3}", "5\\sqrt{3} \\times 5\\sqrt{2} = 5\\sqrt{6}", "4\\sqrt{3} \\times 2\\sqrt{2} = 6\\sqrt{6}", "7\\sqrt{2} \\times \\sqrt{8} = 28"],
       "answer": "7\\sqrt{2} \\times \\sqrt{8} = 28",
-      "explanation": "本題解析由 AI 生成。解：A：\\(8\\sqrt{3} \\times 2\\sqrt{3} = 16 \\times 3 = 48\\)，錯誤；B：\\(5\\sqrt{3} \\times 5\\sqrt{2} = 25\\sqrt{6}\\)，錯誤；C：\\(4\\sqrt{3} \\times 2\\sqrt{2} = 8\\sqrt{6}\\)，錯誤；D：\\(7\\sqrt{2} \\times \\sqrt{8} = 7\\sqrt{2} \\times 2\\sqrt{2} = 14 \\times 2 = 28\\)，正確。故選：7\\sqrt{2} \\times \\sqrt{8} = 28。本題考查二次根式的乘法。",
+      "explanation": "解：\\(8\\sqrt{3} \\times 2\\sqrt{3} = 16 \\times 3 = 48\\)，不正確；\\(5\\sqrt{3} \\times 5\\sqrt{2} = 25\\sqrt{6}\\)，不正確；\\(4\\sqrt{3} \\times 2\\sqrt{2} = 8\\sqrt{6}\\)，不正確；\\(7\\sqrt{2} \\times \\sqrt{8} = 7\\sqrt{2} \\times 2\\sqrt{2} = 14 \\times 2 = 28\\)，正確。本題考查二次根式的乘法。",
       "image": null,
       "answerimage": null,
       "comment": "第53題，題目無圖，答案無圖"
