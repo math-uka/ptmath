@@ -1,0 +1,149 @@
+{
+  "title": "相交線與角度計算",
+  "questions": [
+    {
+      "question": "光線在不同介質中的傳播速度不同，因此當光線從空氣射向水中時，會發生折射。如圖，若入射角 \\(\\angle 1 = 50^\\circ\\)，折射角 \\(\\angle 2 = 36^\\circ\\)，則 \\(\\angle EDF\\) 的度數為",
+      "options": ["\\(14^\\circ\\)", "\\(16^\\circ\\)", "\\(18^\\circ\\)", "\\(25^\\circ\\)"],
+      "answer": "\\(14^\\circ\\)",
+      "explanation": "解：由對頂角相等，得 \\(\\angle BDF = \\angle 1 = 50^\\circ\\)。因 \\(\\angle 2 = 36^\\circ\\)，故 \\(\\angle EDF = 50^\\circ - 36^\\circ = 14^\\circ\\)。故選：\\(14^\\circ\\)。本題考查對頂角相等的性質，關鍵是由對頂角相等得出 \\(\\angle BDF = \\angle 1\\)。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第1題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，\\(\\angle 1\\) 與 \\(\\angle 2\\) 是對頂角的是",
+      "options": ["圖A", "圖B", "圖C", "圖D"],
+      "answer": "圖C",
+      "explanation": "略",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第2題，題目有圖，答案無圖"
+    },
+    {
+      "question": "下列圖形中 \\(\\angle 1\\) 與 \\(\\angle 2\\) 是對頂角的是",
+      "options": ["圖A", "圖B", "圖C", "圖D"],
+      "answer": "圖B",
+      "explanation": "略。",
+      "image": "images/003.png",
+      "answerimage": null,
+      "comment": "第3題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖所示，直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，已知 \\(\\angle AOD = 160^\\circ\\)，則 \\(\\angle BOC\\) 的大小為",
+      "options": ["\\(20^\\circ\\)", "\\(60^\\circ\\)", "\\(70^\\circ\\)", "\\(160^\\circ\\)"],
+      "answer": "\\(160^\\circ\\)",
+      "explanation": "解：因直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，即 \\(AB \\parallel CD\\)（AB 平行 CD），則 \\(\\angle BOC = \\angle AOD\\)。因 \\(\\angle AOD = 160^\\circ\\)，故 \\(\\angle BOC = 160^\\circ\\)。故選：\\(160^\\circ\\)。本題考查對頂角相等的性質。",
+      "image": "images/004.png",
+      "answerimage": null,
+      "comment": "第4題，題目有圖，答案無圖"
+    },
+    {
+      "question": "已知 \\(\\angle \\alpha\\) 與 \\(\\angle \\beta\\) 是對頂角，若 \\(\\angle \\alpha = 30^\\circ\\)，則 \\(\\angle \\beta\\) 的度數為",
+      "options": ["\\(30^\\circ\\)", "\\(60^\\circ\\)", "\\(70^\\circ\\)", "\\(150^\\circ\\)"],
+      "answer": "\\(30^\\circ\\)",
+      "explanation": "解：因 \\(\\angle \\alpha\\) 與 \\(\\angle \\beta\\) 是對頂角，且 \\(\\angle \\alpha = 30^\\circ\\)，根據對頂角相等的性質，得 \\(\\angle \\beta = \\angle \\alpha = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查對頂角相等的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，\\(\\angle 1\\) 的對頂角是",
+      "options": ["\\(\\angle BOF\\)", "\\(\\angle BOC\\)", "\\(\\angle BOD\\)", "\\(\\angle EOC\\)"],
+      "answer": "\\(\\angle BOC\\)",
+      "explanation": "本題解析由AI生成：解：根據對頂角的定義，兩條直線相交後，僅有一個公共頂點且兩角的兩邊互為反向延長線的兩個角為對頂角。\\(\\angle BOF\\) 與 \\(\\angle 1\\) 無公共頂點，此選項錯誤；\\(\\angle BOC\\) 與 \\(\\angle 1\\) 的兩邊互為反向延長線，此選項正確；\\(\\angle BOD\\) 與 \\(\\angle 1\\) 有一邊在同一直線上，此選項錯誤；\\(\\angle EOC\\) 與 \\(\\angle 1\\) 無公共頂點，此選項錯誤。故選：\\(\\angle BOC\\)。本題考查對頂角的定義。",
+      "image": "images/006.png",
+      "answerimage": null,
+      "comment": "第6題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)。若 \\(\\angle AOD = 140^\\circ\\)，則 \\(\\angle AOC\\) 的度數為",
+      "options": ["\\(40^\\circ\\)", "\\(50^\\circ\\)", "\\(60^\\circ\\)", "\\(70^\\circ\\)"],
+      "answer": "\\(40^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：因直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，即 \\(AB \\parallel CD\\)（AB 平行 CD），則 \\(\\angle AOC\\) 與 \\(\\angle AOD\\) 互為鄰補角。已知 \\(\\angle AOD = 140^\\circ\\)，根據鄰補角性質，\\(\\angle AOC + \\angle AOD = 180^\\circ\\)，故 \\(\\angle AOC = 180^\\circ - 140^\\circ = 40^\\circ\\)。故選：\\(40^\\circ\\)。本題考查鄰補角的性質。",
+      "image": "images/007.png",
+      "answerimage": null,
+      "comment": "第7題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)。若 \\(\\angle 1 = 80^\\circ\\)，\\(\\angle 2 = 30^\\circ\\)，則 \\(\\angle AOE\\) 的度數為",
+      "options": ["\\(30^\\circ\\)", "\\(50^\\circ\\)", "\\(60^\\circ\\)", "\\(80^\\circ\\)"],
+      "answer": "\\(50^\\circ\\)",
+      "explanation": "解：由對頂角相等，得 \\(\\angle AOD = \\angle 1 = 80^\\circ\\)。因 \\(\\angle 2 = 30^\\circ\\)，則 \\(\\angle AOE = \\angle AOD - \\angle 2 = 80^\\circ - 30^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查對頂角相等的性質，關鍵是掌握對頂角的性質。",
+      "image": "images/008.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\) 與 \\(CD\\) 交於點 \\(O\\)，射線 \\(OM\\) 平分 \\(\\angle AOC\\)。若 \\(\\angle AOD = 104^\\circ\\)，則 \\(\\angle BOM\\) 等於",
+      "options": ["\\(38^\\circ\\)", "\\(104^\\circ\\)", "\\(140^\\circ\\)", "\\(142^\\circ\\)"],
+      "answer": "\\(142^\\circ\\)",
+      "explanation": "解：因 \\(\\angle AOD = 104^\\circ\\)，則 \\(\\angle AOC = 180^\\circ - \\angle AOD = 180^\\circ - 104^\\circ = 76^\\circ\\)（鄰補角性質）。因射線 \\(OM\\) 平分 \\(\\angle AOC\\)，故 \\(\\angle AOM = \\frac{1}{2} \\angle AOC = \\frac{1}{2} \\cdot 76^\\circ = 38^\\circ\\)。則 \\(\\angle BOM = 180^\\circ - \\angle AOM = 180^\\circ - 38^\\circ = 142^\\circ\\)。故選：\\(142^\\circ\\)。本題考查鄰補角與角平分線的性質，準確識圖是關鍵。",
+      "image": "images/009.png",
+      "answerimage": null,
+      "comment": "第9題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，取兩根木條 \\(a\\) 與 \\(b\\)，將其釘在一起形成相交線模型，固定木條 \\(a\\)，轉動木條 \\(b\\)，當 \\(\\angle 1\\) 增大 \\(4^\\circ\\) 時，下列說法正確的是",
+      "options": ["\\(\\angle 2\\) 增大 \\(4^\\circ\\)", "\\(\\angle 3\\) 增大 \\(4^\\circ\\)", "\\(\\angle 4\\) 增大 \\(4^\\circ\\)", "\\(\\angle 4\\) 減小 \\(2^\\circ\\)"],
+      "answer": "\\(\\angle 3\\) 增大 \\(4^\\circ\\)",
+      "explanation": "解：由題意，\\(\\angle 1\\) 與 \\(\\angle 3\\) 是對頂角，\\(\\angle 1\\) 與 \\(\\angle 2\\)、\\(\\angle 4\\) 是鄰補角。當 \\(\\angle 1\\) 增大 \\(4^\\circ\\) 時，根據對頂角相等，\\(\\angle 3\\) 亦增大 \\(4^\\circ\\)。根據鄰補角性質，\\(\\angle 1 + \\angle 2 = 180^\\circ\\)，\\(\\angle 1 + \\angle 4 = 180^\\circ\\)，故 \\(\\angle 2\\) 增大 \\(4^\\circ\\) 錯誤，\\(\\angle 3\\) 增大 \\(4^\\circ\\) 正確，\\(\\angle 4\\) 增大 \\(4^\\circ\\) 錯誤，\\(\\angle 4\\) 減小 \\(2^\\circ\\) 錯誤。\\(\\angle 2\\)、\\(\\angle 4\\) 應減小 \\(4^\\circ\\)。故選：\\(\\angle 3\\) 增大 \\(4^\\circ\\)。本題考查對頂角與鄰補角的性質。",
+      "image": "images/010.png",
+      "answerimage": null,
+      "comment": "第10題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\)、\\(CD\\) 相交於點 \\(O\\)，\\(OD\\) 平分 \\(\\angle BOE\\)，則 \\(\\angle AOD\\) 的補角個數為",
+      "options": ["1個", "2個", "3個", "4個"],
+      "answer": "3個",
+      "explanation": "解：因 \\(OD\\) 平分 \\(\\angle BOE\\)，故 \\(\\angle EOD = \\angle DOB\\)。因 \\(\\angle AOC\\) 與 \\(\\angle DOB\\) 是對頂角，故 \\(\\angle AOC = \\angle DOB\\)。因 \\(\\angle AOD + \\angle DOB = 180^\\circ\\)（鄰補角），故 \\(\\angle AOC\\)、\\(\\angle EOD\\)、\\(\\angle DOB\\) 均與 \\(\\angle AOD\\) 互為補角，總計3個補角。1個錯誤，2個錯誤，4個錯誤，3個正確。故選：3個。本題考查補角的定義與對頂角性質。",
+      "image": "images/011.png",
+      "answerimage": null,
+      "comment": "第11題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\)、\\(CD\\) 相交於點 \\(O\\)，射線 \\(OM\\) 平分 \\(\\angle BOD\\)，若 \\(\\angle AOC = 42^\\circ\\)，則 \\(\\angle AOM\\) 等於",
+      "options": ["\\(159^\\circ\\)", "\\(161^\\circ\\)", "\\(169^\\circ\\)", "\\(138^\\circ\\)"],
+      "answer": "\\(159^\\circ\\)",
+      "explanation": "解：因 \\(\\angle AOC\\) 與 \\(\\angle BOD\\) 是對頂角，故 \\(\\angle BOD = \\angle AOC = 42^\\circ\\)。則 \\(\\angle AOD = 180^\\circ - \\angle AOC = 180^\\circ - 42^\\circ = 138^\\circ\\)（鄰補角）。因射線 \\(OM\\) 平分 \\(\\angle BOD\\)，故 \\(\\angle BOM = \\angle DOM = \\frac{1}{2} \\cdot 42^\\circ = 21^\\circ\\)。則 \\(\\angle AOM = \\angle AOD + \\angle BOM = 138^\\circ + 21^\\circ = 159^\\circ\\)。故選：\\(159^\\circ\\)。本題考查對頂角與角平分線的性質。",
+      "image": "images/012.png",
+      "answerimage": null,
+      "comment": "第12題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\)、\\(CD\\)、\\(EF\\) 相交於點 \\(O\\)，則 \\(\\angle 1 + \\angle 2 + \\angle 3\\) 的度數等於",
+      "options": ["\\(90^\\circ\\)", "\\(150^\\circ\\)", "\\(180^\\circ\\)", "\\(210^\\circ\\)"],
+      "answer": "\\(180^\\circ\\)",
+      "explanation": "解：因 \\(\\angle 4\\) 與 \\(\\angle 1\\) 是對頂角，故 \\(\\angle 4 = \\angle 1\\)。根據平角定義，\\(\\angle 2 + \\angle 3 + \\angle 4 = 180^\\circ\\)。代入 \\(\\angle 4 = \\angle 1\\)，得 \\(\\angle 1 + \\angle 2 + \\angle 3 = 180^\\circ\\)。故選：\\(180^\\circ\\)。本題考查對頂角相等與平角的定義，準確識圖是關鍵。",
+      "image": "images/013.png",
+      "answerimage": null,
+      "comment": "第13題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\)、\\(CD\\) 相交於點 \\(O\\)，若 \\(\\angle BOC = 2 \\angle 1\\)，則 \\(\\angle 2\\) 等於",
+      "options": ["\\(40^\\circ\\)", "\\(45^\\circ\\)", "\\(50^\\circ\\)", "\\(60^\\circ\\)"],
+      "answer": "\\(60^\\circ\\)",
+      "explanation": "解：因 \\(\\angle BOC\\) 與 \\(\\angle 1\\) 是鄰補角，則 \\(\\angle BOC + \\angle 1 = 180^\\circ\\)。由題意 \\(\\angle BOC = 2 \\angle 1\\)，代入得 \\(2 \\angle 1 + \\angle 1 = 180^\\circ\\)，即 \\(3 \\angle 1 = 180^\\circ\\)，故 \\(\\angle 1 = 60^\\circ\\)。因 \\(\\angle 2\\) 與 \\(\\angle 1\\) 是對頂角，故 \\(\\angle 2 = \\angle 1 = 60^\\circ\\)。故選：\\(60^\\circ\\)。本題考查對頂角與鄰補角的性質。",
+      "image": "images/014.png",
+      "answerimage": null,
+      "comment": "第14題，題目有圖，答案無圖"
+    },
+    {
+      "question": "將一副三角板按圖中方式疊放，則 \\(\\angle \\alpha\\) 的度數為",
+      "options": ["\\(30^\\circ\\)", "\\(45^\\circ\\)", "\\(60^\\circ\\)", "\\(75^\\circ\\)"],
+      "answer": "\\(75^\\circ\\)",
+      "explanation": "解：由題意，\\(\\angle DBA = 90^\\circ - 45^\\circ = 45^\\circ\\)，\\(\\angle A = 60^\\circ\\)。根據三角形內角和為 \\(180^\\circ\\)，得 \\(\\angle \\alpha = 180^\\circ - \\angle A - \\angle DBA = 180^\\circ - 60^\\circ - 45^\\circ = 75^\\circ\\)。故選：\\(75^\\circ\\)。本題考查三角形內角和的性質，掌握三角板內角度數是關鍵。",
+      "image": "images/015.png",
+      "answerimage": null,
+      "comment": "第15題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，直線 \\(AB\\)、\\(CD\\) 相交於點 \\(O\\)，已知 \\(\\angle AOC = 40^\\circ\\)，則 \\(\\angle BOC\\) 的度數為",
+      "options": ["\\(40^\\circ\\)", "\\(120^\\circ\\)", "\\(140^\\circ\\)", "\\(150^\\circ\\)"],
+      "answer": "\\(140^\\circ\\)",
+      "explanation": "解：因 \\(\\angle AOC\\) 與 \\(\\angle BOC\\) 是鄰補角，且 \\(\\angle AOC = 40^\\circ\\)，根據鄰補角性質，\\(\\angle BOC + \\angle AOC = 180^\\circ\\)，故 \\(\\angle BOC = 180^\\circ - \\angle AOC = 180^\\circ - 40^\\circ = 140^\\circ\\)。故選：\\(140^\\circ\\)。本題考查鄰補角的性質。",
+      "image": "images/016.png",
+      "answerimage": null,
+      "comment": "第16題，題目有圖，答案無圖"
+    }
+  ]
+}
