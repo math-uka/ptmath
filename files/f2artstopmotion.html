@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圖片循環播放器</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        #imageUpload {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            cursor: pointer;
+        }
+        #controls {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #fpsContainer {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 15px;
+        }
+        #fpsLabel {
+            display: block;
+            font-size: 1em;
+            margin-bottom: 5px;
+            color: #555;
+            text-align: center;
+        }
+        #fps {
+            width: 100%;
+            accent-color: #007bff;
+        }
+        #imageCount {
+            font-size: 0.9em;
+            color: #666;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+        #clearAll {
+            padding: 10px 20px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.2s;
+            width: 100%;
+            max-width: 200px;
+        }
+        #clearAll:hover {
+            background: #cc0000;
+        }
+        #preview {
+            width: 100%;
+            max-width: 600px;
+            height: 40vh;
+            min-height: 200px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        #preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+        }
+        #preview img.active {
+            display: block;
+        }
+        #imageList {
+            width: 100%;
+            max-width: 600px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .image-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            cursor: move;
+            touch-action: none;
+        }
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            user-drag: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+        .image-item.dragging {
+            opacity: 0.7;
+            transform: scale(0.95);
+        }
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            line-height: 20px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            #preview {
+                height: 30vh;
+            }
+            #imageList {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+            .image-item {
+                border-radius: 6px;
+            }
+            .remove-btn {
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+                line-height: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>圖片循環播放器</h1>
+    <input type="file" id="imageUpload" accept="image/*" multiple>
+    <div id="controls">
+        <div id="fpsContainer">
+            <label id="fpsLabel" for="fps">每秒張數: <span id="fpsValue">8</span></label>
+            <input type="range" id="fps" min="4" max="48" value="8">
+        </div>
+        <p id="imageCount">已上傳 0 張圖片</p>
+        <button id="clearAll">清除所有圖片</button>
+    </div>
+    <div id="preview"></div>
+    <div id="imageList"></div>
+
+    <script>
+        const uploadInput = document.getElementById('imageUpload');
+        const preview = document.getElementById('preview');
+        const imageList = document.getElementById('imageList');
+        const fpsInput = document.getElementById('fps');
+        const fpsValue = document.getElementById('fpsValue');
+        const clearAllBtn = document.getElementById('clearAll');
+        let images = [];
+        let currentIndex = 0;
+        let intervalId = null;
+
+        // 處理圖片上傳
+        uploadInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    images.push(img);
+                    preview.appendChild(img);
+
+                    // 添加到圖片列表
+                    const imageItem = createImageItem(img);
+                    imageList.appendChild(imageItem);
+
+                    updateImageCount();
+                    if (images.length === 1) {
+                        img.classList.add('active');
+                        startSlideshow();
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // 創建圖片列表項
+        function createImageItem(img) {
+            const imageItem = document.createElement('div');
+            imageItem.classList.add('image-item');
+            imageItem.draggable = true;
+
+            const listImg = new Image();
+            listImg.src = img.src;
+            const removeBtn = document.createElement('button');
+            removeBtn.classList.add('remove-btn');
+            removeBtn.textContent = 'X';
+            removeBtn.onclick = () => removeImage(img, imageItem);
+
+            imageItem.appendChild(listImg);
+            imageItem.appendChild(removeBtn);
+
+            // 拖動事件（PC 和手機）
+            let touchStartX, touchStartY, touchMoved;
+            imageItem.addEventListener('dragstart', (e) => {
+                imageItem.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', img.src);
+            });
+            imageItem.addEventListener('dragend', () => {
+                imageItem.classList.remove('dragging');
+            });
+            imageItem.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+            imageItem.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const draggedSrc = e.dataTransfer.getData('text/plain');
+                const draggedIndex = images.findIndex(img => img.src === draggedSrc);
+                const targetIndex = Array.from(imageList.children).indexOf(imageItem);
+                if (draggedIndex !== targetIndex) {
+                    reorderImages(draggedIndex, targetIndex);
+                }
+            });
+
+            // 手機觸控拖動
+            imageItem.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                touchMoved = false;
+                imageItem.classList.add('dragging');
+            });
+            imageItem.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                touchMoved = true;
+                const touchX = e.touches[0].clientX;
+                const touchY = e.touches[0].clientY;
+                const element = document.elementFromPoint(touchX, touchY);
+                const targetItem = element?.closest('.image-item');
+                if (targetItem && targetItem !== imageItem) {
+                    const targetIndex = Array.from(imageList.children).indexOf(targetItem);
+                    const currentIndex = Array.from(imageList.children).indexOf(imageItem);
+                    if (targetIndex !== currentIndex) {
+                        reorderImages(currentIndex, targetIndex);
+                    }
+                }
+            });
+            imageItem.addEventListener('touchend', () => {
+                imageItem.classList.remove('dragging');
+            });
+
+            return imageItem;
+        }
+
+        // 移除單張圖片
+        function removeImage(img, imageItem) {
+            const index = images.indexOf(img);
+            images.splice(index, 1);
+            preview.removeChild(img);
+            imageList.removeChild(imageItem);
+            updateImageCount();
+
+            if (images.length === 0) {
+                currentIndex = 0;
+                stopSlideshow();
+            } else {
+                if (index <= currentIndex) {
+                    currentIndex = Math.max(0, currentIndex - 1);
+                }
+                updateActiveImage();
+                startSlideshow();
+            }
+        }
+
+        // 清除所有圖片
+        clearAllBtn.addEventListener('click', () => {
+            images.forEach(img => preview.removeChild(img));
+            images = [];
+            imageList.innerHTML = '';
+            currentIndex = 0;
+            updateImageCount();
+            stopSlideshow();
+        });
+
+        // 拖動重新排序
+        function reorderImages(fromIndex, toIndex) {
+            const [movedImage] = images.splice(fromIndex, 1);
+            images.splice(toIndex, 0, movedImage);
+
+            imageList.innerHTML = '';
+            images.forEach(img => {
+                const imageItem = createImageItem(img);
+                imageList.appendChild(imageItem);
+            });
+
+            if (fromIndex === currentIndex) {
+                currentIndex = toIndex;
+            } else if (fromIndex < currentIndex && toIndex >= currentIndex) {
+                currentIndex--;
+            } else if (fromIndex > currentIndex && toIndex <= currentIndex) {
+                currentIndex++;
+            }
+            updateActiveImage();
+            startSlideshow();
+        }
+
+        // 更新播放速度
+        fpsInput.addEventListener('input', () => {
+            const fps = fpsInput.value;
+            fpsValue.textContent = fps;
+            startSlideshow();
+        });
+
+        // 更新圖片數量顯示
+        function updateImageCount() {
+            document.getElementById('imageCount').textContent = `已上傳 ${images.length} 張圖片`;
+        }
+
+        // 更新當前活躍圖片
+        function updateActiveImage() {
+            images.forEach(img => img.classList.remove('active'));
+            if (images.length > 0 && currentIndex < images.length) {
+                images[currentIndex].classList.add('active');
+            }
+        }
+
+        // 開始循環播放
+        function startSlideshow() {
+            if (intervalId) clearInterval(intervalId);
+            if (images.length === 0) return;
+
+            const fps = parseInt(fpsInput.value);
+            const interval = 1000 / fps;
+
+            intervalId = setInterval(() => {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('active');
+            }, interval);
+        }
+
+        // 停止播放
+        function stopSlideshow() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+    </script>
+    <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+</body>
+</html>
