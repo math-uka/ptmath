@@ -1,0 +1,77 @@
+{
+  "title": "7.2 平行線",
+  "questions": [
+    {
+      "question": "如圖，已知直線 AB、CD 被直線 AC 所截，AB//CD，E 是平面內任意一點（點 E 不在直線 AB、CD、AC 上），設 \\(\\angle BAE = \\alpha\\)，\\(\\angle DCE = \\beta\\)。下列各式：① \\(\\alpha + \\beta\\)，② \\(\\alpha - \\beta\\)，③ \\(\\beta - \\alpha\\)，④ \\(360^\\circ - \\alpha - \\beta\\)，\\(\\angle AEC\\) 的度數可能是",
+      "options": ["①②③", "①②④", "①③④", "①②③④"],
+      "answer": "①②③④",
+      "explanation": "解：(1) 如圖1，由 AB//CD，可得 \\(\\angle AOC = \\angle DCE = \\beta\\)。因 \\(\\angle AOC = 180^\\circ - \\angle AOE = \\angle BAE + \\angle AE_1 C\\)，故 \\(\\angle AE_1 C = \\beta - \\alpha\\)。(2) 如圖2，過 E 作 AB 平行線，由 AB//CD，得 \\(\\angle 1 = \\angle BAE = \\alpha\\)，\\(\\angle 2 = \\angle DCE = \\beta\\)，故 \\(\\angle AE_2 C = \\alpha + \\beta\\)。(3) 如圖3，由 AB//CD，得 \\(\\angle BOE = \\angle DCE = \\beta\\)，因 \\(\\angle BAE = 180^\\circ - \\angle OAE = \\angle BOE + \\angle AE_3 C\\)，故 \\(\\angle AE_3 C = \\alpha - \\beta\\)。(4) 如圖4，由 AB//CD，得 \\(\\angle BAE + \\angle AE_4 C + \\angle DCE = 360^\\circ\\)，故 \\(\\angle AE_4 C = 360^\\circ - \\alpha - \\beta\\)。(5)(6) 當點 E 在 CD 下方時，同理可得 \\(\\angle AEC = \\alpha - \\beta\\) 或 \\(\\beta - \\alpha\\)。綜上，\\(\\angle AEC\\) 的度數可能為 \\(\\alpha + \\beta\\)、\\(\\alpha - \\beta\\)、\\(\\beta - \\alpha\\)、\\(360^\\circ - \\alpha - \\beta\\)。故選：①②③④。本題考查平行線的性質及三角形外角性質。",
+      "image": "images/h001.png",
+      "answerimage": "images/qh001.png",
+      "comment": "第1題，題目有圖，解析有圖"
+    },
+    {
+      "question": "下列說法正確的有：① 兩點之間的所有連線中，線段最短；② 相等的角叫對頂角；③ 過一點有且只有一條直線與已知直線平行；④ 過一點有且只有一條直線與已知直線垂直；⑤ 兩點之間的距離是兩點間的線段；⑥ 在同一平面內的兩條直線位置關係只有兩種：平行或相交。",
+      "options": ["1個", "2個", "3個", "4個"],
+      "answer": "2個",
+      "explanation": "解：① 兩點之間的所有連線中，線段最短，選項 兩點之間的所有連線中，線段最短 正確。② 相等的角不一定為對頂角，對頂角需滿足公共頂點及反向延長線關係，選項 相等的角叫對頂角 錯誤。③ 根據平行公理，過直線外一點有且只有一條直線與已知直線平行，選項 過一點有且只有一條直線與已知直線平行 錯誤。④ 根據垂線性質，過一點有且只有一條直線與已知直線垂直，選項 過一點有且只有一條直線與已知直線垂直 錯誤。⑤ 兩點之間的距離是兩點間線段的長度，而非線段本身，選項 兩點之間的距離是兩點間的線段 錯誤。⑥ 在同一平面內，兩直線的位置關係只有相交或平行，選項 在同一平面內的兩條直線位置關係只有兩種：平行或相交 正確。綜上，正確說法有 2 個（①⑥）。故選：2個。本題考查平行線、對頂角及兩點間距離的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，某同學用一個等邊三角形 ABC 和一個正五邊形 BCDEF 設計了一個寶石徽章，其中 BC 為兩個圖形的公共邊，連接 AE，CF 交於點 G，則下列說法錯誤的是",
+      "options": ["AC ⊥ CF", "DE // CF", "△EFG 是等腰三角形", "AE 垂直平分 BC"],
+      "answer": "AC ⊥ CF",
+      "explanation": "解：因正五邊形 BCDEF 的內角和為 \\((5-2) \\cdot 180^\\circ = 540^\\circ\\)，邊長 EF = BF = CD = DE = BC，△ABC 為等邊三角形，故 AB = AC = BC，\\(\\angle ACB = 60^\\circ\\)。正五邊形各內角為 \\(540^\\circ \\div 5 = 108^\\circ\\)，即 \\(\\angle BFE = \\angle FED = \\angle CDE = \\angle CBF = 108^\\circ\\)。在 △BCF 中，\\(\\angle BFC + \\angle BCF + \\angle CBF = 180^\\circ\\)，\\(\\angle BFC = \\angle BCF = \\frac{180^\\circ - 108^\\circ}{2} = 36^\\circ\\)，故 \\(\\angle ACF = \\angle ACB + \\angle BCF = 60^\\circ + 36^\\circ = 96^\\circ \\neq 90^\\circ\\)，選項 AC ⊥ CF 錯誤。連接 BE、CE，因 BF = CD = EF = ED，\\(\\angle BFE = \\angle CDE = 108^\\circ\\)，由 SAS 得 △BFE ≅ △CDE，故 CE = BE，\\(\\angle FEB = \\angle DEC\\)。又因 AB = AC，AE = AE，由 SSS 得 △ABE ≅ △ACE，故 \\(\\angle BEA = \\angle CEA\\)，\\(\\angle FEA = \\angle DEA = \\frac{108^\\circ}{2} = 54^\\circ\\)。在 △EFG 中，\\(\\angle FGE = 180^\\circ - \\angle CFE - \\angle FEA = 180^\\circ - 72^\\circ - 54^\\circ = 54^\\circ\\)，故 \\(\\angle FEA = \\angle FGE\\)，FG = FE，選項 △EFG 是等腰三角形 正確。因 AB = AC，BE = CE，AE 垂直平分 BC，選項 AE 垂直平分 BC 正確。在 △CFE 中，\\(\\angle CFE = \\angle BFE - \\angle BFC = 108^\\circ - 36^\\circ = 72^\\circ\\)，\\(\\angle CFE + \\angle FED = 72^\\circ + 108^\\circ = 180^\\circ\\)，故 DE // CF，選項 DE // CF 正確。綜上，選項 AC ⊥ CF 錯誤。故選：AC ⊥ CF。本題考查等邊三角形、正五邊形及平行線性質。",
+      "image": "images/h003.png",
+      "answerimage": null,
+      "comment": "第3題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，\\(\\angle AOB = 60^\\circ\\)，OA = OB，動點 C 從點 O 出發，沿射線 OB 方向移動，以 AC 為邊在右側作等邊 △ACD，連接 BD，則 BD 所在直線與 OA 所在直線的位置關係是",
+      "options": ["平行", "相交", "垂直", "平行、相交或垂直"],
+      "answer": "平行",
+      "explanation": "解：因 \\(\\angle AOB = 60^\\circ\\)，OA = OB，△OAB 為等邊三角形，故 OA = AB，\\(\\angle OAB = \\angle ABO = 60^\\circ\\)。(1) 當點 C 在線段 OB 上時，如圖，△ACD 為等邊三角形，AC = AD，\\(\\angle CAD = 60^\\circ\\)，故 \\(\\angle OAC = \\angle BAD\\)。在 △AOC 和 △ABD 中，AO = AB，\\(\\angle OAC = \\angle BAD\\)，AC = AD，由 SAS 得 △AOC ≅ △ABD，故 \\(\\angle ABD = \\angle AOC = 60^\\circ\\)。則 \\(\\angle DBE = 180^\\circ - \\angle ABO - \\angle ABD = 60^\\circ = \\angle AOB\\)，故 BD // OA。(2) 當點 C 在 OB 延長線上時，△ACD 仍為等邊三角形，AC = AD，\\(\\angle CAD = 60^\\circ\\)，\\(\\angle OAC = \\angle BAD\\)。同理，△AOC ≅ △ABD，\\(\\angle ABD = \\angle AOC = 60^\\circ\\)，\\(\\angle DBE = 60^\\circ = \\angle AOB\\)，故 BD // OA。綜上，選項 平行 正確。故選：平行。本題考查等邊三角形及平行線性質。",
+      "image": "images/h004.png",
+      "answerimage": "images/qh004.png",
+      "comment": "第4題，題目有圖，解析有圖"
+    },
+    {
+      "question": "如圖所示，在等邊三角形 ABC 中，D 是邊 AC 上一點，連接 BD，將 △BCD 繞點 B 逆時針旋轉 60^\\circ 得到 △BAE，連接 ED，若 BC = 5，BD = 4，則以下四個結論中：① △BDE 是等邊三角形；② AE // BC；③ △ADE 的周長是 9；④ \\(\\angle ADE = \\angle BDC\\)。其中正確的序號是",
+      "options": ["②③④", "①③④", "①②④", "①②③"],
+      "answer": "①②③",
+      "explanation": "解：因 △BCD 繞點 B 逆時針旋轉 60^\\circ 得到 △BAE，BD = BE，\\(\\angle DBE = 60^\\circ\\)，故 △BDE 為等邊三角形，選項 △BDE 是等邊三角形 正確。△ABC 為等邊三角形，BA = BC，\\(\\angle ABC = \\angle BAC = 60^\\circ\\)。因旋轉，\\(\\angle BAE = \\angle BCD = 60^\\circ\\)，\\(\\angle BAE = \\angle ABC = 60^\\circ\\)，故 AE // BC，選項 AE // BC 正確。因 △BDE 為等邊三角形，DE = BD = 4，AE = CD，△ADE 周長 = AE + AD + DE = CD + AD + DE = AC + 4 = 5 + 4 = 9，選項 △ADE 的周長是 9 正確。設 AB 與 DE 交於點 F，因 \\(\\angle DAF = \\angle BEF = 60^\\circ\\)，\\(\\angle DFA = \\angle EFB\\)，\\(\\angle DAF + \\angle DFA + \\angle ADE = \\angle BEF + \\angle EFB + \\angle EBF = 180^\\circ\\)，故 \\(\\angle ADE = \\angle EBF\\)。因旋轉，\\(\\angle DBC = \\angle EBF\\)，故 \\(\\angle ADE = \\angle DBC\\)。但 \\(\\angle BDC = \\angle BAD + \\angle ABD > 60^\\circ\\)，\\(\\angle DBC < 60^\\circ\\)，故 \\(\\angle ADE \\neq \\angle BDC\\)，選項 \\(\\angle ADE = \\angle BDC\\) 錯誤。綜上，正確結論為 ①②③。故選：①②③。本題考查等邊三角形、旋轉及平行線性質。",
+      "image": "images/h005.png",
+      "answerimage": "images/qh005.png",
+      "comment": "第5題，題目有圖，解析有圖"
+    },
+    {
+      "question": "已知點 P 是等邊三角形 ABC 的邊 BC 上一點，若 \\(\\angle APC = 104^\\circ\\)，則在以線段 AP、BP、CP 為邊的三角形中，最小內角的大小為",
+      "options": ["\\(14^\\circ\\)", "\\(16^\\circ\\)", "\\(24^\\circ\\)", "\\(26^\\circ\\)"],
+      "answer": "\\(16^\\circ\\)",
+      "explanation": "本題解析由 AI 生成：過點 P 作 PD // AB 交 AC 於點 D。因 △ABC 為等邊三角形，\\(\\angle B = \\angle C = \\angle BAC = 60^\\circ\\)，AC = BC。因 PD // AB，\\(\\angle CPD = \\angle B = 60^\\circ\\)，\\(\\angle CDP = \\angle BAC = 60^\\circ\\)，故 △CDP 為等邊三角形，CP = DP = CD，AD = BP。△ADP 以 AP、BP、CP 為邊。因 \\(\\angle APC = 104^\\circ\\)，\\(\\angle APD = \\angle APC - \\angle CPD = 104^\\circ - 60^\\circ = 44^\\circ\\)，\\(\\angle CAP = 180^\\circ - \\angle APC - \\angle C = 180^\\circ - 104^\\circ - 60^\\circ = 16^\\circ\\)。△ADP 三內角為 \\(\\angle CAP = 16^\\circ\\)，\\(\\angle APD = 44^\\circ\\)，\\(\\angle ADP = 180^\\circ - \\angle CAP - \\angle APD = 120^\\circ\\)。故最小內角為 \\(16^\\circ\\)。選項 \\(16^\\circ\\) 正確。故選：\\(16^\\circ\\)。本題考查等邊三角形及平行線性質。",
+      "image": null,
+      "answerimage": "images/qh006.png",
+      "comment": "第6題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，△ABC 中，\\(\\angle B = 90^\\circ\\)，\\(\\angle A = 30^\\circ\\)，E、F 分別是邊 AB、AC 上的點，連接 EF，將 △AEF 沿 EF 折疊，得到 △A'EF，當 △A'EF 的三邊與 △ABC 的三邊有一組邊平行時，\\(\\angle AEF\\) 的度數不可能是",
+      "options": ["\\(120^\\circ\\)", "\\(105^\\circ\\)", "\\(75^\\circ\\)", "\\(45^\\circ\\)"],
+      "answer": "\\(105^\\circ\\)",
+      "explanation": "解：(1) 若 A'E // BC，則 \\(\\angle AEA' = \\angle CBA = 90^\\circ\\)。因 △AEF 沿 EF 折疊，\\(\\angle AEF = \\angle A'EF = 45^\\circ\\)，選項 \\(45^\\circ\\) 可行。(2) 若 A'F // BC，設 A'F 與 AB 交於 H，\\(\\angle CBA = \\angle FHA = 90^\\circ\\)，\\(\\angle AFH = 180^\\circ - \\angle AHF - \\angle A = 180^\\circ - 90^\\circ - 30^\\circ = 60^\\circ\\)。因折疊，\\(\\angle AFE = \\angle A'FE = 30^\\circ\\)，\\(\\angle AEF = 180^\\circ - \\angle A - \\angle AFE = 120^\\circ\\)，選項 \\(120^\\circ\\) 可行。(3) 若 A'E // AF，\\(\\angle A'EB = \\angle A = 30^\\circ\\)，\\(\\angle A'EA = 150^\\circ\\)。因折疊，\\(\\angle AEF = \\angle A'EF = 75^\\circ\\)，選項 \\(75^\\circ\\) 可行。選項 \\(105^\\circ\\) 不可行。故選：\\(105^\\circ\\)。本題考查翻折變換及平行線性質。",
+      "image": "images/h007.png",
+      "answerimage": "images/qh007.png",
+      "comment": "第7題，題目有圖，解析有圖"
+    },
+    {
+      "question": "如圖，AB // CD，點 P 在 AB、CD 之間，\\(\\angle ACP = 2 \\angle PCD = 40^\\circ\\)，連接 AP，若 \\(\\angle BAP = \\alpha\\)，\\(\\angle CAP = \\alpha + \\beta\\)。下列說法正確的是",
+      "options": ["當 \\(\\angle P = 60^\\circ\\) 時，\\(\\alpha = 30^\\circ\\)", "當 \\(\\angle P = 60^\\circ\\) 時，\\(\\beta = 40^\\circ\\)", "當 \\(\\beta = 20^\\circ\\) 時，\\(\\angle P = 90^\\circ\\)", "當 \\(\\beta = 0^\\circ\\) 時，\\(\\angle P = 90^\\circ\\)"],
+      "answer": "當 \\(\\angle P = 60^\\circ\\) 時，\\(\\beta = 40^\\circ\\)",
+      "explanation": "解：因 \\(\\angle ACP = 2 \\angle PCD = 40^\\circ\\)，\\(\\angle PCD = 20^\\circ\\)，\\(\\angle ACD = \\angle ACP + \\angle PCD = 60^\\circ\\)。因 AB // CD，\\(\\angle CAB + \\angle ACD = 180^\\circ\\)，故 \\(\\angle CAB = 120^\\circ\\)。因 \\(\\angle BAP = \\alpha\\)，\\(\\angle CAP = \\alpha + \\beta\\)，\\(\\angle CAB = \\alpha + \\beta + \\alpha = 2\\alpha + \\beta = 120^\\circ\\)。在 △ACP 中，\\(\\angle P = 180^\\circ - \\angle ACP - \\angle CAP = 140^\\circ - (\\alpha + \\beta)\\)。(1) 當 \\(\\angle P = 60^\\circ\\)，則 \\(\\alpha + \\beta = 80^\\circ\\)，\\(2\\alpha + \\beta = 120^\\circ\\)，故 \\(\\alpha = 40^\\circ\\)，\\(\\beta = 40^\\circ\\)。選項 當 \\(\\angle P = 60^\\circ\\) 時，\\(\\alpha = 30^\\circ\\) 錯誤，當 \\(\\angle P = 60^\\circ\\) 時，\\(\\beta = 40^\\circ\\) 正確。(2) 當 \\(\\beta = 20^\\circ\\)，\\(2\\alpha + 20^\\circ = 120^\\circ\\)，\\(\\alpha = 50^\\circ\\)，\\(\\angle P = 140^\\circ - 50^\\circ - 20^\\circ = 70^\\circ\\)，選項 當 \\(\\beta = 20^\\circ\\) 時，\\(\\angle P = 90^\\circ\\) 錯誤。(3) 當 \\(\\beta = 0^\\circ\\)，\\(2\\alpha + 0^\\circ = 120^\\circ\\)，\\(\\alpha = 60^\\circ\\)，\\(\\angle P = 140^\\circ - 60^\\circ - 0^\\circ = 80^\\circ\\)，選項 當 \\(\\beta = 0^\\circ\\) 時，\\(\\angle P = 90^\\circ\\) 錯誤。故選：當 \\(\\angle P = 60^\\circ\\) 時，\\(\\beta = 40^\\circ\\)。本題考查平行線及三角形內角和性質。",
+      "image": "images/h008.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，解析無圖"
+    }
+  ]
+}
