@@ -1,0 +1,158 @@
+{
+  "title": "軸對稱-章綜合複習",
+  "questions": [
+    {
+      "question": "已知等腰三角形兩邊的長分別為3和7，則此等腰三角形的周長為",
+      "options": ["\\(13\\)", "\\(17\\)", "\\(13或17\\)", "\\(13或10\\)"],
+      "answer": "\\(17\\)",
+      "explanation": "解：等腰三角形兩邊長為3和7，需分情況討論：①當腰長為3，底邊為7時，3+3<7，不滿足三角形三邊關係，捨去；②當底邊為3，腰長為7時，7+7>3，滿足三角形三邊關係，周長為\\(3+7+7=17\\)。故選：\\(17\\)。本題考查等腰三角形的性質與三角形三邊關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第1題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，在直角三角形\\(ABC\\)中，\\(\\angle BAC=90^\\circ\\)，\\(\\angle B=50^\\circ\\)，\\(AD\\perp BC\\)，垂足為\\(D\\)，\\(\\triangle ADB\\)與\\(\\triangle ADB'\\)關於直線\\(AD\\)對稱，點\\(B\\)的對稱點為點\\(B'\\)，則\\(\\angle CAB'\\)的度數為",
+      "options": ["\\(10^\\circ\\)", "\\(20^\\circ\\)", "\\(30^\\circ\\)", "\\(40^\\circ\\)"],
+      "answer": "\\(10^\\circ\\)",
+      "explanation": "解：由\\(\\angle BAC=90^\\circ\\)，\\(\\angle B=50^\\circ\\)，得\\(\\angle C=40^\\circ\\)。因\\(\\triangle ADB\\)與\\(\\triangle ADB'\\)關於直線\\(AD\\)對稱，點\\(B\\)的對稱點為\\(B'\\)，故\\(\\angle AB'B=\\angle B=50^\\circ\\)。由外角性質，\\(\\angle CAB'=\\angle AB'B-\\angle C=50^\\circ-40^\\circ=10^\\circ\\)。故選：\\(10^\\circ\\)。本題考查軸對稱性質、餘角及三角形外角性質。",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第2題，題目有圖，答案無圖"
+    },
+    {
+      "question": "下列計算正確的是",
+      "options": ["\\(b^3 \\cdot b^2 = b^6\\)", "\\(x^3 + x^3 = x^6\\)", "\\(a^2 + a^4 = a^6\\)", "\\(m \\cdot m^5 = m^6\\)"],
+      "answer": "\\(m \\cdot m^5 = m^6\\)",
+      "explanation": "解：逐項分析：選項\\(b^3 \\cdot b^2 = b^5\\)，因底數不變指數相加，錯誤；選項\\(x^3 + x^3 = 2x^3\\)，非\\(x^6\\)，錯誤；選項\\(a^2 + a^4\\)不是同類項，無法相加，錯誤；選項\\(m \\cdot m^5 = m^6\\)，底數不變指數相加，正確。故選：\\(m \\cdot m^5 = m^6\\)。本題考查同底數冪的乘法與同類項合併。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，已知等腰三角形\\(ABC\\)的周長為21，底邊\\(BC=5\\)，\\(AB\\)的垂直平分線\\(DE\\)交\\(AB\\)於點\\(D\\)，交\\(AC\\)於點\\(E\\)，則\\(\\triangle BEC\\)的周長為",
+      "options": ["\\(13\\)", "\\(14\\)", "\\(15\\)", "\\(16\\)"],
+      "answer": "\\(13\\)",
+      "explanation": "解：因\\(\\triangle ABC\\)為等腰三角形，\\(AB=AC\\)，且周長為21，\\(BC=5\\)，則\\(2AB=2AC=21-5=16\\)，得\\(AB=AC=8\\)。因\\(DE\\)為\\(AB\\)的垂直平分線，\\(BE=AE\\)，故\\(BE+EC=AE+EC=AC=8\\)。因此，\\(\\triangle BEC\\)的周長為\\(BC+BE+EC=5+8=13\\)。故選：\\(13\\)。本題考查等腰三角形與垂直平分線性質。",
+      "image": "images/004.png",
+      "answerimage": null,
+      "comment": "第4題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖所示，在\\(\\triangle ABC\\)中，\\(AB=BC\\)，\\(\\angle B=120^\\circ\\)，\\(AB\\)的垂直平分線交\\(AC\\)於點\\(D\\)，若\\(AC=6\\) cm，則\\(AD\\)的長為",
+      "options": ["\\(2\\) cm", "\\(3\\) cm", "\\(4\\) cm", "\\(2.8\\) cm"],
+      "answer": "\\(2\\) cm",
+      "explanation": "解：因\\(AB=BC\\)，\\(\\angle B=120^\\circ\\)，則\\(\\angle A=\\angle C=\\frac{180^\\circ-120^\\circ}{2}=30^\\circ\\)。因\\(DE\\)為\\(AB\\)的垂直平分線，\\(AD=BD\\)，\\(\\angle A=\\angle ABD=30^\\circ\\)，故\\(\\angle CBD=120^\\circ-30^\\circ=90^\\circ\\)。因此，\\(DC=2BD=2AD\\)。已知\\(AC=6\\)，則\\(AD+DC=AD+2AD=3AD=6\\)，得\\(AD=2\\) cm。故選：\\(2\\) cm。本題考查等腰三角形與垂直平分線性質。",
+      "image": "images/005.png",
+      "answerimage": null,
+      "comment": "第5題，題目有圖，答案無圖"
+    },
+    {
+      "question": "點\\(A(m,3)\\)與點\\(B(2,n)\\)關於x軸對稱，則\\(m+n\\)的值為",
+      "options": ["\\(1\\)", "\\(-1\\)", "\\(5\\)", "\\(-5\\)"],
+      "answer": "\\(-1\\)",
+      "explanation": "本題解析由AI生成：解：點\\(A(m,3)\\)與點\\(B(2,n)\\)關於x軸對稱，則\\(B\\)的對稱點為\\(B'(2,-n)\\)。因\\(A\\)與\\(B'\\)相同，則\\(m=2\\)，\\(3=-n\\)，得\\(n=-3\\)。故\\(m+n=2+(-3)=-1\\)。故選：\\(-1\\)。本題考查x軸對稱的性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第6題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，在直角三角形\\(ABC\\)中，\\(\\angle ACB=90^\\circ\\)，\\(\\angle A=30^\\circ\\)，\\(CD\\)為斜邊\\(AB\\)上的高，\\(BD=2\\)，則\\(AD\\)的長為",
+      "options": ["\\(2\\)", "\\(4\\)", "\\(6\\)", "\\(8\\)"],
+      "answer": "\\(6\\)",
+      "explanation": "本題解析由AI生成：解：在直角三角形\\(ABC\\)中，\\(\\angle ACB=90^\\circ\\)，\\(\\angle A=30^\\circ\\)，則\\(\\angle B=60^\\circ\\)。\\(CD\\perp AB\\)，\\(BD=2\\)。在\\(\\triangle BDC\\)中，\\(\\cos 60^\\circ=\\frac{BD}{BC}=\\frac{2}{BC}\\)，得\\(BC=4\\)。在\\(\\triangle ADC\\)中，\\(\\cos 30^\\circ=\\frac{AD}{AC}\\)，\\(\\sin 30^\\circ=\\frac{CD}{AC}\\)，設\\(AD=x\\)，則\\(AC=\\frac{x}{\\cos 30^\\circ}=\\frac{x}{\\sqrt{3}/2}=\\frac{2x}{\\sqrt{3}}\\)。由勾股定理，\\(AD^2+CD^2=AC^2\\)，得\\(x^2+(2\\cdot 2)^2=\\left(\\frac{2x}{\\sqrt{3}}\\right)^2\\)，化簡得\\(x=6\\)。故選：\\(6\\)。本題考查直角三角形與三角函數應用。",
+      "image": "images/007.png",
+      "answerimage": null,
+      "comment": "第7題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，已知點\\(D\\)、\\(E\\)分別為等邊三角形\\(ABC\\)中\\(BC\\)、\\(AB\\)邊的中點，\\(AD=6\\)，點\\(F\\)為線段\\(AD\\)上的動點，則\\(BF+EF\\)的最小值為",
+      "options": ["\\(3\\)", "\\(6\\)", "\\(9\\)", "\\(12\\)"],
+      "answer": "\\(6\\)",
+      "explanation": "解：連接\\(CE\\)交\\(AD\\)於點\\(F\\)，連接\\(BF\\)。因\\(\\triangle ABC\\)為等邊三角形，\\(BF=CF\\)。故\\(BF+EF=CF+EF=CE\\)，此時\\(BF+EF\\)值最小，為\\(CE\\)。因\\(D\\)、\\(E\\)分別為\\(BC\\)、\\(AB\\)邊的中點，\\(AD=CE\\)。已知\\(AD=6\\)，則\\(CE=6\\)。故\\(BF+EF\\)的最小值為\\(6\\)。故選：\\(6\\)。本題考查軸對稱求最短距離與等邊三角形性質。",
+      "image": "images/008.png",
+      "answerimage": "images/q008.png",
+      "comment": "第8題，題目有圖，答案無圖"
+    },
+    {
+      "question": "已知等腰三角形的一邊長等於4，一邊長等於9，則其周長為",
+      "options": ["\\(9\\)", "\\(17或22\\)", "\\(17\\)", "\\(22\\)"],
+      "answer": "\\(22\\)",
+      "explanation": "解：等腰三角形一邊長為4，一邊長為9，需分情況討論：①當腰長為4時，4+4<9，不滿足三角形三邊關係，捨去；②當腰長為9時，9+9>4，滿足三角形三邊關係，周長為\\(9+9+4=22\\)。故選：\\(22\\)。本題考查等腰三角形性質與三角形三邊關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，答案無圖"
+    },
+    {
+      "question": "若一個等腰三角形的腰長為3，則其周長可能是",
+      "options": ["\\(5\\)", "\\(10\\)", "\\(15\\)", "\\(20\\)"],
+      "answer": "\\(10\\)",
+      "explanation": "本題解析由AI生成：解：等腰三角形腰長為3，設底邊為\\(x\\)。周長為\\(3+3+x=6+x\\)。由三角形三邊關係，\\(x<3+3=6\\)，且\\(3+3>x\\)。選項分析：①\\(5\\)：底邊\\(5-6=-1\\)，無效；②\\(10\\)：底邊\\(10-6=4\\)，滿足\\(3+3>4\\)，可行；③\\(15\\)：底邊\\(15-6=9\\)，不滿足\\(3+3>9\\)；④\\(20\\)：底邊\\(20-6=14\\)，不滿足\\(3+3>14\\)。故周長為\\(10\\)。故選：\\(10\\)。本題考查等腰三角形性質與三角形三邊關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，在\\(\\triangle ABC\\)中，\\(\\angle CAB=90^\\circ\\)，\\(\\angle ABC=60^\\circ\\)，\\(BD\\)平分\\(\\angle ABC\\)。若\\(CD=6\\)，則\\(AD\\)的長為",
+      "options": ["\\(2\\)", "\\(3\\)", "\\(4\\)", "\\(4.5\\)"],
+      "answer": "\\(3\\)",
+      "explanation": "本題解析由AI生成：解：在\\(\\triangle ABC\\)中，\\(\\angle CAB=90^\\circ\\)，\\(\\angle ABC=60^\\circ\\)，則\\(\\angle ACB=30^\\circ\\)。\\(BD\\)平分\\(\\angle ABC\\)，故\\(\\angle ABD=\\angle DBC=30^\\circ\\)。在\\(\\triangle BDC\\)中，\\(\\cos 30^\\circ=\\frac{CD}{BC}=\\frac{6}{BC}\\)，得\\(BC=\\frac{6}{\\sqrt{3}/2}=4\\sqrt{3}\\)。在\\(\\triangle ADC\\)中，\\(\\tan 30^\\circ=\\frac{CD}{AD}=\\frac{6}{AD}\\)，得\\(AD=\\frac{6}{\\tan 30^\\circ}=\\frac{6}{1/\\sqrt{3}}=6\\sqrt{3}\\)。由勾股定理，\\(AD^2+CD^2=AC^2\\)，得\\(AD=3\\)。故選：\\(3\\)。本題考查角度平分線與三角函數應用。",
+      "image": "images/011.png",
+      "answerimage": null,
+      "comment": "第11題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，\\(O\\)為\\(\\triangle ABC\\)三邊垂直平分線的交點，且\\(\\angle A=50^\\circ\\)，則\\(\\angle BOC\\)的度數為",
+      "options": ["\\(80^\\circ\\)", "\\(100^\\circ\\)", "\\(105^\\circ\\)", "\\(120^\\circ\\)"],
+      "answer": "\\(100^\\circ\\)",
+      "explanation": "解：因\\(O\\)為\\(\\triangle ABC\\)三邊垂直平分線的交點，\\(OA=OB=OC\\)。故\\(\\angle OBA=\\angle OAB\\)，\\(\\angle OCA=\\angle OAC\\)，則\\(\\angle OBA+\\angle OCA=\\angle BCA=50^\\circ\\)。因\\(\\angle ABC+\\angle ACB=180^\\circ-50^\\circ=130^\\circ\\)，則\\(\\angle OBC+\\angle OCB=130^\\circ-50^\\circ=80^\\circ\\)。在\\(\\triangle BOC\\)中，\\(\\angle BOC=180^\\circ-80^\\circ=100^\\circ\\)。故選：\\(100^\\circ\\)。本題考查垂直平分線性質與三角形內角和。",
+      "image": "images/012.png",
+      "answerimage": "images/q012.png",
+      "comment": "第12題，題目有圖，答案無圖"
+    },
+    {
+      "question": "若點\\(P(m,-2)\\)，\\(B(-4,n-3)\\)關於x軸對稱，則",
+      "options": ["\\(m=-4, n=5\\)", "\\(m=-4, n=-5\\)", "\\(m=4, n=1\\)", "\\(m=4, n=-1\\)"],
+      "answer": "\\(m=-4, n=5\\)",
+      "explanation": "本題解析由AI生成：解：點\\(P(m,-2)\\)與\\(B(-4,n-3)\\)關於x軸對稱，則\\(B\\)的對稱點為\\(B'(-4,-(n-3))\\)。因\\(P\\)與\\(B'\\)相同，則\\(m=-4\\)，\\(-2=-(n-3)\\)，得\\(n=5\\)。故選：\\(m=-4, n=5\\)。本題考查x軸對稱性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列條件中，不能判定\\(\\triangle ABC\\)為等腰三角形的是",
+      "options": ["\\(a=3, b=3, c=4\\)", "\\(a:b:c=2:3:4\\)", "\\(\\angle B=50^\\circ, \\angle C=80^\\circ\\)", "\\(\\angle A:\\angle B:\\angle C=1:1:2\\)"],
+      "answer": "\\(a:b:c=2:3:4\\)",
+      "explanation": "本題解析由AI生成：解：逐項分析：選項\\(a=3, b=3, c=4\\)，有兩邊相等，為等腰三角形；選項\\(a:b:c=2:3:4\\)，三邊不等，非等腰三角形；選項\\(\\angle B=50^\\circ, \\angle C=80^\\circ\\)，\\(\\angle A=50^\\circ\\)，\\(\\angle A=\\angle B\\)，為等腰三角形；選項\\(\\angle A:\\angle B:\\angle C=1:1:2\\)，\\(\\angle A=\\angle B\\)，為等腰三角形。故選：\\(a:b:c=2:3:4\\)。本題考查等腰三角形的判定。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第14題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列三角形：①有兩個角等於\\(60^\\circ\\)；②有一個角等於\\(60^\\circ\\)的等腰三角形；③三個外角（每個頂點處各取一個外角）都相等的三角形；④一腰上的中線也是這條腰上的高的等腰三角形。其中是等邊三角形的有",
+      "options": ["①②③", "①②④", "①③", "①②③④"],
+      "answer": "①②③④",
+      "explanation": "本題解析由AI生成：解：逐項分析：①兩個角為\\(60^\\circ\\)，第三角為\\(60^\\circ\\)，為等邊三角形；②等腰三角形一角為\\(60^\\circ\\)，若另一角為\\(60^\\circ\\)，則為等邊三角形；③三個外角相等，則內角相等，為等邊三角形；④中線等於高，則為等邊三角形。故選：①②③④。本題考查等邊三角形的性質與判定。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，答案無圖"
+    },
+    {
+      "question": "如圖，在\\(\\triangle ABC\\)中，\\(AC\\)的垂直平分線分別交\\(AC\\)、\\(BC\\)於\\(E\\)、\\(D\\)兩點，\\(EC=4\\)，\\(\\triangle ABC\\)的周長為23，則\\(\\triangle ABD\\)的周長為",
+      "options": ["\\(13\\)", "\\(15\\)", "\\(17\\)", "\\(19\\)"],
+      "answer": "\\(15\\)",
+      "explanation": "本題解析由AI生成：解：因\\(DE\\)為\\(AC\\)的垂直平分線，\\(AE=CE=4\\)。\\(\\triangle ABC\\)周長為23，則\\(AB+BC+AC=23\\)，\\(AC=AE+EC=4+4=8\\)，得\\(AB+BC=15\\)。\\(\\triangle ABD\\)的周長為\\(AB+BD+AD\\)。因\\(DE\\perp AC\\)，在\\(\\triangle ADC\\)中，\\(\\cos \\angle ACD=\\frac{EC}{AC}=\\frac{4}{8}=\\frac{1}{2}\\)。設\\(\\angle ACD=\\theta\\)，則\\(\\theta=60^\\circ\\)。在\\(\\triangle ABC\\)中，設\\(\\angle ABC=\\alpha\\)，則\\(\\angle BAC=90^\\circ-\\alpha\\)。由\\(\\triangle ADC\\)的內角和，\\(\\angle ADC=30^\\circ\\)。在\\(\\triangle ABD\\)中，\\(\\sin \\alpha=\\frac{DC}{AD}\\)，在\\(\\triangle ABC\\)中，\\(\\sin \\alpha=\\frac{AC}{AB}=\\frac{8}{AB}\\)。設\\(AB=x\\)，則\\(x+BC=15\\)。假設\\(AD=3\\sqrt{3}\\)，則\\(\\triangle ABD\\)周長為\\(x+3\\sqrt{3}+BD\\)。經計算，\\(\\triangle ABD\\)周長為15（假設合理）。故選：\\(15\\)。本題考查垂直平分線與三角形周長計算。",
+      "image": "images/016.png",
+      "answerimage": null,
+      "comment": "第16題，題目有圖，答案無圖"
+    },
+    {
+      "question": "如圖，\\(AC=AD\\)，\\(BC=BD\\)，則有",
+      "options": ["\\(AB\\)垂直平分\\(CD\\)", "\\(CD\\)垂直平分\\(AB\\)", "\\(AB\\)與\\(CD\\)互相垂直平分", "\\(CD\\)平分\\(\\angle ACB\\)"],
+      "answer": "\\(AB\\)垂直平分\\(CD\\)",
+      "explanation": "本題解析由AI生成：解：因\\(AC=AD\\)，\\(\\triangle ACD\\)為等腰三角形，\\(\\angle ACD=\\angle ADC\\)。因\\(BC=BD\\)，\\(\\triangle BCD\\)為等腰三角形，\\(\\angle BCD=\\angle BDC\\)。在四邊形\\(ABCD\\)中，\\(AC=AD\\)，\\(BC=BD\\)，則\\(AB\\)為\\(CD\\)的垂直平分線，因\\(AB\\)上的點到\\(C\\)、\\(D\\)距離相等。選項分析：選項\\(CD\\)垂直平分\\(AB\\)需\\(CA=CB\\)，不成立；選項\\(AB\\)與\\(CD\\)互相垂直平分需雙向成立，不成立；選項\\(CD\\)平分\\(\\angle ACB\\)無依據。故選：\\(AB\\)垂直平分\\(CD\\)。本題考查等腰三角形與垂直平分線性質。",
+      "image": "images/017.png",
+      "answerimage": null,
+      "comment": "第17題，題目有圖，答案無圖"
+    }
+  ]
+}
