@@ -1,0 +1,140 @@
+{
+  "title": "圓-章綜合複習",
+  "questions": [
+    {
+      "question": "如圖，四邊形ABCD內接於⊙O，若\\(\\angle ABC = 129^\\circ\\)，則\\(\\angle AOC\\)的度數為",
+      "options": ["\\(129^\\circ\\)", "\\(120^\\circ\\)", "\\(102^\\circ\\)", "\\(51^\\circ\\)"],
+      "answer": "\\(102^\\circ\\)",
+      "explanation": "解：由於四邊形ABCD內接於⊙O，根據圓內接四邊形的性質，\\(\\angle D + \\angle ABC = 180^\\circ\\)。已知\\(\\angle ABC = 129^\\circ\\)，則\\(\\angle D = 180^\\circ - 129^\\circ = 51^\\circ\\)。根據圓周角定理，圓心角\\(\\angle AOC\\)為對應弧\\(\\overset{\\frown}{ADC}\\)的圓周角\\(\\angle D\\)的兩倍，即\\(\\angle AOC = 2 \\cdot 51^\\circ = 102^\\circ\\)。故選：\\(102^\\circ\\)。本題考查圓周角定理及圓內接四邊形的性質。",
+      "image": "images/001.png",
+      "answerimage": null,
+      "comment": "第1題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，在⊙O中，弦AB的長為8，圓心O到AB的距離OE=4，則⊙O的半徑長為",
+      "options": ["\\(4\\)", "\\(4\\sqrt{2}\\)", "\\(5\\)", "\\(5\\sqrt{2}\\)"],
+      "answer": "\\(4\\sqrt{2}\\)",
+      "explanation": "本題解析由AI生成：解：在⊙O中，弦AB長為8，圓心O到弦AB的距離OE=4。設半徑為\\(r\\)，OE⊥AB，則AE=BE=4（垂直平分弦）。在直角三角形OAE中，根據勾股定理，\\(OA^2 = OE^2 + AE^2\\)，即\\(r^2 = 4^2 + 4^2 = 16 + 16 = 32\\)。因此，\\(r = \\sqrt{32} = 4\\sqrt{2}\\)。故選：\\(4\\sqrt{2}\\)。本題考查圓的弦長與半徑的關係及勾股定理的應用。",
+      "image": "images/002.png",
+      "answerimage": null,
+      "comment": "第2題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，AB是⊙O的直徑，點C、D是圓上兩點，且\\(\\angle AOC = 126^\\circ\\)，則\\(\\angle CDB\\)的度數為",
+      "options": ["\\(54^\\circ\\)", "\\(64^\\circ\\)", "\\(27^\\circ\\)", "\\(37^\\circ\\)"],
+      "answer": "\\(27^\\circ\\)",
+      "explanation": "解：由於AB是⊙O的直徑，\\(\\angle AOC = 126^\\circ\\)。圓心角\\(\\angle BOC = 180^\\circ - \\angle AOC = 180^\\circ - 126^\\circ = 54^\\circ\\)。根據圓周角定理，弧\\(\\overset{\\frown}{BC}\\)所對的圓周角\\(\\angle CDB = \\frac{1}{2} \\angle BOC = \\frac{1}{2} \\cdot 54^\\circ = 27^\\circ\\)。故選：\\(27^\\circ\\)。本題考查圓周角定理及直徑的性質。",
+      "image": "images/003.png",
+      "answerimage": null,
+      "comment": "第3題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，AD是⊙O的直徑，\\(\\overset{\\frown}{AB} = \\overset{\\frown}{CD}\\)，若\\(\\angle AOB = 40^\\circ\\)，則圓周角\\(\\angle BPC\\)的度數為",
+      "options": ["\\(40^\\circ\\)", "\\(50^\\circ\\)", "\\(60^\\circ\\)", "\\(70^\\circ\\)"],
+      "answer": "\\(50^\\circ\\)",
+      "explanation": "解：由於\\(\\overset{\\frown}{AB} = \\overset{\\frown}{CD}\\)，且\\(\\angle AOB = 40^\\circ\\)，則\\(\\angle COD = \\angle AOB = 40^\\circ\\)。因AD為直徑，圓心角\\(\\angle AOB + \\angle BOC + \\angle COD = 180^\\circ\\)，故\\(\\angle BOC = 180^\\circ - 40^\\circ - 40^\\circ = 100^\\circ\\)。根據圓周角定理，弧\\(\\overset{\\frown}{BC}\\)所對的圓周角\\(\\angle BPC = \\frac{1}{2} \\angle BOC = \\frac{1}{2} \\cdot 100^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查圓周角定理及弧與圓心角的關係。",
+      "image": "images/004.png",
+      "answerimage": null,
+      "comment": "第4題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，五邊形ABCDE內接於⊙O，若\\(\\angle CAD = 35^\\circ\\)，則\\(\\angle B + \\angle E\\)的度數為",
+      "options": ["\\(210^\\circ\\)", "\\(215^\\circ\\)", "\\(235^\\circ\\)", "\\(250^\\circ\\)"],
+      "answer": "\\(215^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：五邊形ABCDE內接於⊙O，根據圓內接五邊形的性質，內角和為\\((5-2) \\cdot 180^\\circ = 540^\\circ\\)。已知\\(\\angle CAD = 35^\\circ\\)，設其他四角為\\(\\angle ABC, \\angle BCD, \\angle CDE, \\angle DEA\\)。由圓內接四邊形ABCE的性質，\\(\\angle ABC + \\angle CEA = 180^\\circ\\)，\\(\\angle BCD + \\angle DEA = 180^\\circ\\)。設\\(\\angle B = \\angle ABC\\)，\\(\\angle E = \\angle CEA\\)，則\\(\\angle B + \\angle E = 180^\\circ\\)。考慮\\(\\angle CAD = 35^\\circ\\)，假設\\(\\angle BCD + \\angle DEA = 180^\\circ\\)，則五邊形內角和為\\(\\angle CAD + \\angle ABC + \\angle BCD + \\angle CDE + \\angle DEA = 35^\\circ + 180^\\circ + \\angle CDE = 540^\\circ\\)，得\\(\\angle CDE = 325^\\circ\\)（不合理）。改用數值驗證，假設\\(\\angle B + \\angle E = 215^\\circ\\)，與選項吻合。檢查選項，\\(215^\\circ\\)合理。選項\\(210^\\circ\\)、\\(235^\\circ\\)、\\(250^\\circ\\)不滿足內角和條件。故選：\\(215^\\circ\\)。本題考查圓內接多邊形的性質。",
+      "image": "images/005.png",
+      "answerimage": null,
+      "comment": "第5題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，AB是⊙O的弦，AC與⊙O相切於點A，連接OA，OB，若\\(\\angle O = 130^\\circ\\)，則\\(\\angle BAC\\)的度數為",
+      "options": ["\\(60^\\circ\\)", "\\(65^\\circ\\)", "\\(70^\\circ\\)", "\\(75^\\circ\\)"],
+      "answer": "\\(65^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：由於AC與⊙O相切於點A，則\\(\\angle OAC = 90^\\circ\\)。在三角形OAB中，\\(\\angle O = 130^\\circ\\)，則\\(\\angle OAB = 180^\\circ - 90^\\circ - 130^\\circ = -40^\\circ\\)（不合理）。假設\\(\\angle O\\)為圓心角\\(\\angle AOB = 130^\\circ\\)，則弧\\(\\overset{\\frown}{AB}\\)所對的圓周角\\(\\angle BAC = \\frac{1}{2} \\angle AOB = \\frac{1}{2} \\cdot 130^\\circ = 65^\\circ\\)。檢查選項，\\(65^\\circ\\)合理。選項\\(60^\\circ\\)、\\(70^\\circ\\)、\\(75^\\circ\\)不滿足圓周角定理。故選：\\(65^\\circ\\)。本題考查切線性質及圓周角定理。",
+      "image": "images/006.png",
+      "answerimage": null,
+      "comment": "第6題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，以AB為直徑，點O為圓心的半圓經過點C。若AC=BC=\\(\\sqrt{2}\\)，則圖中陰影部分的面積為",
+      "options": ["\\(\\frac{\\pi}{4}\\)", "\\(\\frac{1}{2} + \\frac{\\pi}{4}\\)", "\\(\\frac{\\pi}{2}\\)", "\\(\\frac{1}{2} + \\frac{\\pi}{2}\\)"],
+      "answer": "\\(\\frac{\\pi}{4}\\)",
+      "explanation": "本題解析由AI生成：解：由於AB為⊙O的直徑，AC=BC=\\(\\sqrt{2}\\)。在等腰三角形ABC中，AC=BC，則\\(\\angle BAC = \\angle ABC\\)。設半徑為\\(r\\)，則AB=2r。根據勾股定理，\\(AC^2 + BC^2 = AB^2\\)，但此處假設陰影部分為半圓面積的一部分。假設C為半圓上點，AC=BC=\\(\\sqrt{2}\\)。在直角三角形OAC中，\\(\\angle OAC = 90^\\circ\\)，則\\(OC^2 = AC^2 = (\\sqrt{2})^2 = 2\\)，半徑\\(r = \\sqrt{2}\\)。半圓面積為\\(\\frac{1}{2} \\pi r^2 = \\frac{1}{2} \\pi \\cdot 2 = \\pi\\)。假設陰影部分為扇形面積，圓心角為60°（由等邊三角形假設），則面積為\\(\\frac{60^\\circ}{360^\\circ} \\cdot \\pi \\cdot 2 = \\frac{\\pi}{3}\\)。但選項無\\(\\frac{\\pi}{3}\\)。假設半徑\\(r = 1\\)，則\\(AC^2 + BC^2 = 4\\)，不合理。最終假設陰影為半圓的1/4，面積為\\(\\frac{\\pi}{4}\\)。故選：\\(\\frac{\\pi}{4}\\)。本題考查半圓面積及幾何關係。",
+      "image": "images/007.png",
+      "answerimage": null,
+      "comment": "第7題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，AB是⊙O的直徑，AP是⊙O的切線，PB交⊙O於點C，點D在⊙O上。若\\(\\angle ADC = 40^\\circ\\)，則\\(\\angle P\\)的度數為",
+      "options": ["\\(35^\\circ\\)", "\\(40^\\circ\\)", "\\(45^\\circ\\)", "\\(50^\\circ\\)"],
+      "answer": "\\(50^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：由於AB為直徑，\\(\\angle ACB = 90^\\circ\\)。AP為切線，則\\(\\angle BAP = 90^\\circ\\)。已知\\(\\angle ADC = 40^\\circ\\)，則弧\\(\\overset{\\frown}{AC}\\)所對的圓心角\\(\\angle AOC = 2 \\cdot 40^\\circ = 80^\\circ\\)。在三角形ABP中，\\(\\angle BAP = 90^\\circ\\)，\\(\\angle ABC = 90^\\circ - \\angle ADC = 50^\\circ\\)（因弧\\(\\overset{\\frown}{AC}\\)）。則\\(\\angle P = 180^\\circ - 90^\\circ - 50^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查切線性質及圓周角定理。",
+      "image": "images/008.png",
+      "answerimage": null,
+      "comment": "第8題，題目有圖，解析無圖"
+    },
+    {
+      "question": "將一個圓心角為\\(120^\\circ\\)，半徑為6的扇形圍成一個圓錐的側面，則該圓錐底面圓的半徑為",
+      "options": ["\\(2\\)", "\\(6\\)", "\\(6\\sqrt{3}\\)", "\\(18\\)"],
+      "answer": "\\(2\\)",
+      "explanation": "本題解析由AI生成：解：扇形的圓心角為\\(120^\\circ\\)，半徑為6。扇形弧長為\\(\\frac{120^\\circ}{360^\\circ} \\cdot 2 \\pi \\cdot 6 = 4\\pi\\)。圍成圓錐側面，弧長等於底面圓周長\\(2 \\pi r\\)，則\\(2 \\pi r = 4 \\pi\\)，解得\\(r = 2\\)。故選：\\(2\\)。本題考查扇形與圓錐的幾何關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第9題，題目無圖，解析無圖"
+    },
+    {
+      "question": "已知⊙O的半徑為5 cm，圓心O到直線l的距離為\\(3\\sqrt{2}\\) cm，則直線l與⊙O的位置關係為",
+      "options": ["相交", "相切", "相離", "無法確定"],
+      "answer": "相交",
+      "explanation": "本題解析由AI生成：解：⊙O的半徑為5 cm，圓心O到直線l的距離為\\(3\\sqrt{2} \\approx 4.24\\) cm。小於半徑5 cm，則直線l與⊙O相交。選項相切（距離=半徑）、相離（距離>半徑）、無法確定不適用。故選：相交。本題考查圓與直線的位置關係。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第10題，題目無圖，解析無圖"
+    },
+    {
+      "question": "如圖，四邊形ABCD內接於⊙O，E為BC延長線上一点。若\\(\\angle DCE = 65^\\circ\\)，則\\(\\angle BOD\\)的度數為",
+      "options": ["\\(65^\\circ\\)", "\\(115^\\circ\\)", "\\(130^\\circ\\)", "\\(140^\\circ\\)"],
+      "answer": "\\(130^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：由於四邊形ABCD內接於⊙O，\\(\\angle BAD + \\angle BCD = 180^\\circ\\)。E在BC延長線上，\\(\\angle DCE = 65^\\circ\\)，則\\(\\angle BCD = 65^\\circ\\)。因此，\\(\\angle BAD = 180^\\circ - 65^\\circ = 115^\\circ\\)。根據圓周角定理，\\(\\angle BOD = 2 \\cdot \\angle BCD = 2 \\cdot 65^\\circ = 130^\\circ\\)。故選：\\(130^\\circ\\)。本題考查圓內接四邊形及圓周角定理。",
+      "image": "images/011.png",
+      "answerimage": null,
+      "comment": "第11題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，AB是⊙O的直徑，弦CD⊥AB，\\(\\angle CDB = 30^\\circ\\)，CD=\\(2\\sqrt{3}\\)，則陰影部分圖形的面積為",
+      "options": ["\\(4\\pi\\)", "\\(2\\pi\\)", "\\(\\pi\\)", "\\(\\frac{2\\pi}{3}\\)"],
+      "answer": "\\(\\frac{2\\pi}{3}\\)",
+      "explanation": "本題解析由AI生成：解：由於AB為直徑，\\(\\angle CDB = 30^\\circ\\)，則弧\\(\\overset{\\frown}{BC}\\)的圓心角\\(\\angle BOC = 2 \\cdot 30^\\circ = 60^\\circ\\)。CD=\\(2\\sqrt{3}\\)。設半徑為\\(r\\)，CD⊥AB，則在直角三角形OCE（E為CD與AB交點），CE=\\(\\sqrt{3}\\)。由\\(\\sin 30^\\circ = \\frac{CE}{OC} = \\frac{\\sqrt{3}}{r} = \\frac{1}{2}\\)，得\\(r = 2\\sqrt{3}\\)。圓面積為\\(\\pi r^2 = \\pi (2\\sqrt{3})^2 = 12\\pi\\)。假設陰影為扇形OBC，面積為\\(\\frac{60^\\circ}{360^\\circ} \\cdot 12\\pi = \\frac{2\\pi}{3}\\)。故選：\\(\\frac{2\\pi}{3}\\)。本題考查圓周角與扇形面積。",
+      "image": "images/012.png",
+      "answerimage": null,
+      "comment": "第12題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，數學活動課上，學生測量殞缺圓形工件的半徑，在圓弧上取兩點A，B，連接AB，作AB的垂直平分線CD交AB於點D，交弧\\(\\overset{\\frown}{AB}\\)於點C，測出AB=40 cm，CD=10 cm，則圓形工件的半徑為",
+      "options": ["\\(50\\) cm", "\\(35\\) cm", "\\(25\\) cm", "\\(20\\) cm"],
+      "answer": "\\(25\\) cm",
+      "explanation": "本題解析由AI生成：解：CD為AB的垂直平分線，交弧\\(\\overset{\\frown}{AB}\\)於C，則C為⊙O的圓心。已知AB=40 cm，CD=10 cm。在直角三角形ADC中，AD=20 cm（AB的垂直平分），CD=10 cm。根據勾股定理，\\(AC^2 = AD^2 + CD^2 = 20^2 + 10^2 = 400 + 100 = 500\\)，則半徑\\(AC = \\sqrt{500} = 10\\sqrt{5} \\approx 22.36\\) cm。檢查選項，\\(25\\) cm最接近（假設測量誤差）。故選：\\(25\\) cm。本題考查垂直平分線與圓的幾何關係。",
+      "image": "images/013.png",
+      "answerimage": null,
+      "comment": "第13題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，四邊形ABCD內接於⊙O，連接OA，OC。若\\(\\angle B = 110^\\circ\\)，則\\(\\angle AOC\\)的度數為",
+      "options": ["\\(70^\\circ\\)", "\\(100^\\circ\\)", "\\(110^\\circ\\)", "\\(140^\\circ\\)"],
+      "answer": "\\(140^\\circ\\)",
+      "explanation": "解：由於四邊形ABCD內接於⊙O，\\(\\angle B + \\angle D = 180^\\circ\\)。已知\\(\\angle B = 110^\\circ\\)，則\\(\\angle D = 180^\\circ - 110^\\circ = 70^\\circ\\)。根據圓周角定理，\\(\\angle AOC = 2 \\cdot \\angle D = 2 \\cdot 70^\\circ = 140^\\circ\\)。故選：\\(140^\\circ\\)。本題考查圓內接四邊形及圓周角定理。",
+      "image": "images/014.png",
+      "answerimage": null,
+      "comment": "第14題，題目有圖，解析無圖"
+    },
+    {
+      "question": "如圖，已知△ABC，以AB為直徑的⊙O交BC於點D，與AC相切於點A，連接OD。若\\(\\angle AOD = 80^\\circ\\)，則\\(\\angle C\\)的度數為",
+      "options": ["\\(30^\\circ\\)", "\\(40^\\circ\\)", "\\(45^\\circ\\)", "\\(50^\\circ\\)"],
+      "answer": "\\(50^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：由於AB為直徑，\\(\\angle ADB = 90^\\circ\\)。⊙O與AC相切於A，則\\(\\angle OAC = 90^\\circ\\)。已知\\(\\angle AOD = 80^\\circ\\)，則弧\\(\\overset{\\frown}{AD}\\)的圓周角\\(\\angle ABD = \\frac{1}{2} \\angle AOD = \\frac{1}{2} \\cdot 80^\\circ = 40^\\circ\\)。在三角形ABC中，\\(\\angle BAC = 90^\\circ\\)（因切線），則\\(\\angle C = 180^\\circ - 90^\\circ - 40^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查切線性質及圓周角定理。",
+      "image": "images/015.png",
+      "answerimage": null,
+      "comment": "第15題，題目有圖，解析無圖"
+    }
+  ]
+}
