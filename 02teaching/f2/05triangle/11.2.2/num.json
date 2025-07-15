@@ -5,7 +5,7 @@
       "question": "如圖，將三角尺的直角頂點放在直尺的一邊上，\\(\\angle 1 = 30^\\circ\\)，\\(\\angle 2 = 50^\\circ\\)，則 \\(\\angle 3\\) 的度數為",
       "options": ["\\(20^\\circ\\)", "\\(30^\\circ\\)", "\\(50^\\circ\\)", "\\(80^\\circ\\)"],
       "answer": "\\(20^\\circ\\)",
-      "explanation": "解：由於 \\(AB \\parallel CD\\)，\\(\\angle 2 = 50^\\circ\\)，根據平行線的內錯角相等性質，得 \\(\\angle 4 = \\angle 2 = 50^\\circ\\)。由三角形外角性質，\\(\\angle 3 = \\angle 4 - \\angle 1 = 50^\\circ - 30^\\circ = 20^\\circ\\)。故選：\\(20^\\circ\\)。本題考查平行線的內錯角性質與三角形外角性質。",
+      "explanation": "解：由於 AB//CD，\\(\\angle 2 = 50^\\circ\\)，根據平行線的內錯角相等性質，得 \\(\\angle 4 = \\angle 2 = 50^\\circ\\)。由三角形外角性質，\\(\\angle 3 = \\angle 4 - \\angle 1 = 50^\\circ - 30^\\circ = 20^\\circ\\)。故選：\\(20^\\circ\\)。本題考查平行線的內錯角性質與三角形外角性質。",
       "image": "images/001.png",
       "answerimage": null,
       "comment": "第1題，題目有圖，解析無圖"
@@ -56,18 +56,18 @@
       "comment": "第6題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖所示，\\(l_1 \\parallel l_2\\)，則下列式子中值為 \\(180^\\circ\\) 的是",
+      "question": "如圖所示，\\(l_1\\)//\\(l_2\\)，則下列式子中值為 \\(180^\\circ\\) 的是",
       "options": ["\\(\\alpha + \\beta + \\gamma\\)", "\\(\\alpha + \\beta - \\gamma\\)", "\\(\\beta + \\gamma - \\alpha\\)", "\\(\\alpha - \\beta + \\gamma\\)"],
       "answer": "\\(\\alpha + \\beta - \\gamma\\)",
-      "explanation": "本題解析由AI生成：解：因 \\(l_1 \\parallel l_2\\)，設 \\(\\angle \\gamma\\) 為三角形內角，\\(\\angle \\alpha\\) 和 \\(\\angle \\beta\\) 為外角或相關角。由三角形外角性質，假設 \\(\\angle \\gamma = \\angle \\alpha + \\angle \\beta\\)，則 \\(\\alpha + \\beta - \\gamma = \\alpha + \\beta - (\\alpha + \\beta) = 0\\)，但需考慮平行線性質。假設 \\(\\angle \\alpha\\) 和 \\(\\angle \\beta\\) 為同位角或內錯角，與 \\(\\angle \\gamma\\) 形成平角關係，則 \\(\\alpha + \\beta - \\gamma = 180^\\circ\\)。故選：\\(\\alpha + \\beta - \\gamma\\)。本題考查平行線性質與三角形外角關係。",
+      "explanation": "本題解析由AI生成：解：因 \\(l_1\\)//\\(l_2\\)，設 \\(\\angle \\gamma\\) 為三角形內角，\\(\\angle \\alpha\\) 和 \\(\\angle \\beta\\) 為外角或相關角。由三角形外角性質，假設 \\(\\angle \\gamma = \\angle \\alpha + \\angle \\beta\\)，則 \\(\\alpha + \\beta - \\gamma = \\alpha + \\beta - (\\alpha + \\beta) = 0\\)，但需考慮平行線性質。假設 \\(\\angle \\alpha\\) 和 \\(\\angle \\beta\\) 為同位角或內錯角，與 \\(\\angle \\gamma\\) 形成平角關係，則 \\(\\alpha + \\beta - \\gamma = 180^\\circ\\)。故選：\\(\\alpha + \\beta - \\gamma\\)。本題考查平行線性質與三角形外角關係。",
       "image": "images/007.png",
       "answerimage": null,
       "comment": "第7題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，在 \\(\\triangle ABC\\) 中，\\(AD\\) 平分 \\(\\angle BAC\\)，\\(\\angle B = 65^\\circ\\)，\\(\\angle C = 35^\\circ\\)，則 \\(\\angle ADB\\) 的度數為",
-      "options": ["\\(55^\\circ\\)", "\\(65^\\circ\\)", "\\(75^\\circ\\)", "\\(85^\\circ\\)"],
-      "answer": "\\(75^\\circ\\)",
+      "question": "如圖，在 \\(\\triangle ABC\\) 中，\\(AD\\) 平分 \\(\\approx 2025 10:37 AM CST\\)，則 \\(\\angle ACB\\) 等於",
+      "options": ["\\(25^\\circ\\)", "\\(60^\\circ\\)", "\\(85^\\circ\\)", "\\(95^\\circ\\)"],
+      "answer": "\\(85^\\circ\\)",
       "explanation": "解：在 \\(\\triangle ABC\\) 中，\\(\\angle B = 65^\\circ\\)，\\(\\angle C = 35^\\circ\\)，由三角形內角和定理，\\(\\angle BAC = 180^\\circ - 65^\\circ - 35^\\circ = 80^\\circ\\)。因 \\(AD\\) 平分 \\(\\angle BAC\\)，得 \\(\\angle CAD = \\frac{1}{2} \\angle BAC = 40^\\circ\\)。由三角形外角性質，\\(\\angle ADB = \\angle C + \\angle CAD = 35^\\circ + 40^\\circ = 75^\\circ\\)。故選：\\(75^\\circ\\)。本題考查角平分線與三角形外角性質。",
       "image": "images/008.png",
       "answerimage": null,
@@ -92,7 +92,7 @@
       "comment": "第10題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，\\(AD\\) 是 \\(\\angle CAE\\) 的平分線，\\(\\angle commended to avoid the following keywords: B = 35^\\circ\\)，\\(\\angle DAE = 60^\\circJul 01, 2025 10:37 AM CST\\)，則 \\(\\angle ACB\\) 等於",
+      "question": "如圖，\\(AD\\) 是 \\(\\angle CAE\\) 的平分線，\\(\\angle B = 35^\\circ\\)，\\(\\angle DAE = 60^\\circ\\)，則 \\(\\angle ACB\\) 等於",
       "options": ["\\(25^\\circ\\)", "\\(60^\\circ\\)", "\\(85^\\circ\\)", "\\(95^\\circ\\)"],
       "answer": "\\(85^\\circ\\)",
       "explanation": "解：因 \\(AD\\) 是 \\(\\angle CAE\\) 的平分線，\\(\\angle DAE = 60^\\circ\\)，得 \\(\\angle EAC = 2 \\angle DAE = 120^\\circ\\)。由平角定義，\\(\\angle BAC = 180^\\circ - \\angle EAC = 60^\\circ\\)。在 \\(\\triangle ABC\\) 中，\\(\\angle ACB = 180^\\circ - \\angle BAC - \\angle B = 180^\\circ - 60^\\circ - 35^\\circ = 85^\\circ\\)。故選：\\(85^\\circ\\)。本題考查角平分線與三角形內角和定理。",
@@ -101,19 +101,19 @@
       "comment": "第11題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，已知 \\(AB \\parallel CD\\)，\\(\\angle 1 = 113^\\circ\\)，\\(\\angle 2 = 63^\\circ\\)，則 \\(\\angle C\\) 的度數為",
+      "question": "如圖，已知 AB//CD，\\(\\angle 1 = 113^\\circ\\)，\\(\\angle 2 = 63^\\circ\\)，則 \\(\\angle C\\) 的度數為",
       "options": ["\\(40^\\circ\\)", "\\(45^\\circ\\)", "\\(50^\\circ\\)", "\\(60^\\circ\\)"],
       "answer": "\\(50^\\circ\\)",
-      "explanation": "解：因 \\(AB \\parallel CD\\)，由同位角相等，\\(\\angle FGD = \\angle 1 = 113^\\circ\\)。由平角定義，\\(\\angle FGC = 180^\\circ - 113^\\circ = 67^\\circ\\)。在 \\(\\triangle FGC\\) 中，\\(\\angle C = 180^\\circ - \\angle FGC - \\angle 2 = 180^\\circ - 67^\\circ - 63^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查平行線同位角與三角形內角和。",
+      "explanation": "解：因 AB//CD，由同位角相等，\\(\\angle FGD = \\angle 1 = 113^\\circ\\)。由平角定義，\\(\\angle FGC = 180^\\circ - 113^\\circ = 67^\\circ\\)。在 \\(\\triangle FGC\\) 中，\\(\\angle C = 180^\\circ - \\angle FGC - \\angle 2 = 180^\\circ - 67^\\circ - 63^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查平行線同位角與三角形內角和。",
       "image": "images/012.png",
       "answerimage": null,
       "comment": "第12題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，直線 \\(AB \\parallel CD\\)，直線 \\(EF\\) 分別與直線 \\(AB\\)、\\(CD\\) 交於點 \\(E\\)、\\(F\\)，點 \\(G\\) 在直線 \\(CD\\) 上，\\(GE \\perp EF\\)。若 \\(\\angle 1 = 55^\\circ\\)，則 \\(\\angle 2\\) 的大小為",
+      "question": "如圖，直線 AB//CD，直線 \\(EF\\) 分別與直線 \\(AB\\)、\\(CD\\) 交於點 \\(E\\)、\\(F\\)，點 \\(G\\) 在直線 \\(CD\\) 上，\\(GE \\perp EF\\)。若 \\(\\angle 1 = 55^\\circ\\)，則 \\(\\angle 2\\) 的大小為",
       "options": ["\\(145^\\circ\\)", "\\(135^\\circ\\)", "\\(125^\\circ\\)", "\\(120^\\circ\\)"],
       "answer": "\\(145^\\circ\\)",
-      "explanation": "解：因 \\(AB \\parallel CD\\)，由同位角相等，\\(\\angle EFG = \\angle 1 = 55^\\circ\\)。因 \\(GE \\perp EF\\)，得 \\(\\angle FEG = 90^\\circ\\)。由三角形外角性質，\\(\\angle 2 = \\angle EFG + \\angle FEG = 55^\\circ + 90^\\circ = 145^\\circ\\)。故選：\\(145^\\circ\\)。本題考查平行線同位角與三角形外角性質。",
+      "explanation": "解：因 AB//CD，由同位角相等，\\(\\angle EFG = \\angle 1 = 55^\\circ\\)。因 \\(GE \\perp EF\\)，得 \\(\\angle FEG = 90^\\circ\\)。由三角形外角性質，\\(\\angle 2 = \\angle EFG + \\angle FEG = 55^\\circ + 90^\\circ = 145^\\circ\\)。故選：\\(145^\\circ\\)。本題考查平行線同位角與三角形外角性質。",
       "image": "images/013.png",
       "answerimage": null,
       "comment": "第13題，題目有圖，解析無圖"
@@ -128,10 +128,10 @@
       "comment": "第14題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，\\(AD\\) 是 \\(\\triangle ABC\\) 的外角 \\(\\angle EAC\\) 的平分線，\\(AD \\parallel BC\\)，\\(\\angle B = 32^\\circ\\)，則 \\(\\angle C\\) 的度數為",
+      "question": "如圖，\\(AD\\) 是 \\(\\triangle ABC\\) 的外角 \\(\\angle EAC\\) 的平分線，AD//BC，\\(\\angle B = 32^\\circ\\)，則 \\(\\angle C\\) 的度數為",
       "options": ["\\(64^\\circ\\)", "\\(32^\\circ\\)", "\\(30^\\circ\\)", "\\(40^\\circ\\)"],
       "answer": "\\(32^\\circ\\)",
-      "explanation": "解：因 \\(AD \\parallel BC\\)，由同位角相等，\\(\\angle EAD = \\angle B = 32^\\circ\\)。因 \\(AD\\) 平分 \\(\\angle EAC\\)，得 \\(\\angle EAC = 2 \\angle EAD = 64^\\circ\\)。由三角形外角性質，\\(\\angle EAC = \\angle B + \\angle C\\)，則 \\(\\angle C = \\angle EAC - \\angle B = 64^\\circ - 32^\\circ = 32^\\circ\\)。故選：\\(32^\\circ\\)。本題考查平行線同位角與三角形外角性質。",
+      "explanation": "解：因 AD//BC，由同位角相等，\\(\\angle EAD = \\angle B = 32^\\circ\\)。因 \\(AD\\) 平分 \\(\\angle EAC\\)，得 \\(\\angle EAC = 2 \\angle EAD = 64^\\circ\\)。由三角形外角性質，\\(\\angle EAC = \\angle B + \\angle C\\)，則 \\(\\angle C = \\angle EAC - \\angle B = 64^\\circ - 32^\\circ = 32^\\circ\\)。故選：\\(32^\\circ\\)。本題考查平行線同位角與三角形外角性質。",
       "image": "images/015.png",
       "answerimage": null,
       "comment": "第15題，題目有圖，解析無圖"
@@ -164,10 +164,10 @@
       "comment": "第18題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，直線 \\(AB \\parallel CD\\)，\\(\\angle A = 70^\\circ\\)，\\(\\angle C = 40^\\circ\\)，則 \\(\\angle E\\) 的度數為",
+      "question": "如圖，直線 AB//CD，\\(\\angle A = 70^\\circ\\)，\\(\\angle C = 40^\\circ\\)，則 \\(\\angle E\\) 的度數為",
       "options": ["\\(50^\\circ\\)", "\\(40^\\circ\\)", "\\(30^\\circ\\)", "\\(20^\\circ\\)"],
       "answer": "\\(30^\\circ\\)",
-      "explanation": "本題解析由AI生成：解：因 \\(AB \\parallel CD\\)，在 \\(\\triangle ABC\\) 中，\\(\\angle A = 70^\\circ\\)，\\(\\angle C = 40^\\circ\\)。由三角形內角和定理，\\(\\angle ABC = 180^\\circ - 70^\\circ - 40^\\circ = 70^\\circ\\)。假設 \\(\\angle E\\) 為 \\(\\triangle ABE\\) 的內角，由平行線性質或三角形內角和，\\(\\angle E = 180^\\circ - \\angle A - \\angle ABC = 180^\\circ - 70^\\circ - 80^\\circ = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查平行線性質與三角形內角和。",
+      "explanation": "本題解析由AI生成：解：因 AB//CD，在 \\(\\triangle ABC\\) 中，\\(\\angle A = 70^\\circ\\)，\\(\\angle C = 40^\\circ\\)。由三角形內角和定理，\\(\\angle ABC = 180^\\circ - 70^\\circ - 40^\\circ = 70^\\circ\\)。假設 \\(\\angle E\\) 為 \\(\\triangle ABE\\) 的內角，由平行線性質或三角形內角和，\\(\\angle E = 180^\\circ - \\angle A - \\angle ABC = 180^\\circ - 70^\\circ - 80^\\circ = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查平行線性質與三角形內角和。",
       "image": "images/019.png",
       "answerimage": null,
       "comment": "第19題，題目有圖，解析無圖"
