@@ -32,7 +32,7 @@
       "question": "如圖所示，直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，已知 \\(\\angle AOD = 160^\\circ\\)，則 \\(\\angle BOC\\) 的大小為",
       "options": ["\\(20^\\circ\\)", "\\(60^\\circ\\)", "\\(70^\\circ\\)", "\\(160^\\circ\\)"],
       "answer": "\\(160^\\circ\\)",
-      "explanation": "解：因直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，即 \\(AB \\parallel CD\\)（AB 平行 CD），則 \\(\\angle BOC = \\angle AOD\\)。因 \\(\\angle AOD = 160^\\circ\\)，故 \\(\\angle BOC = 160^\\circ\\)。故選：\\(160^\\circ\\)。本題考查對頂角相等的性質。",
+      "explanation": "解：因直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，即 AB//CD，則 \\(\\angle BOC = \\angle AOD\\)。因 \\(\\angle AOD = 160^\\circ\\)，故 \\(\\angle BOC = 160^\\circ\\)。故選：\\(160^\\circ\\)。本題考查對頂角相等的性質。",
       "image": "images/004.png",
       "answerimage": null,
       "comment": "第4題，題目有圖，答案無圖"
@@ -59,7 +59,7 @@
       "question": "如圖，直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)。若 \\(\\angle AOD = 140^\\circ\\)，則 \\(\\angle AOC\\) 的度數為",
       "options": ["\\(40^\\circ\\)", "\\(50^\\circ\\)", "\\(60^\\circ\\)", "\\(70^\\circ\\)"],
       "answer": "\\(40^\\circ\\)",
-      "explanation": "本題解析由AI生成：解：因直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，即 \\(AB \\parallel CD\\)（AB 平行 CD），則 \\(\\angle AOC\\) 與 \\(\\angle AOD\\) 互為鄰補角。已知 \\(\\angle AOD = 140^\\circ\\)，根據鄰補角性質，\\(\\angle AOC + \\angle AOD = 180^\\circ\\)，故 \\(\\angle AOC = 180^\\circ - 140^\\circ = 40^\\circ\\)。故選：\\(40^\\circ\\)。本題考查鄰補角的性質。",
+      "explanation": "本題解析由AI生成：解：因直線 \\(AB\\) 與 \\(CD\\) 相交於點 \\(O\\)，即 AB//CD，則 \\(\\angle AOC\\) 與 \\(\\angle AOD\\) 互為鄰補角。已知 \\(\\angle AOD = 140^\\circ\\)，根據鄰補角性質，\\(\\angle AOC + \\angle AOD = 180^\\circ\\)，故 \\(\\angle AOC = 180^\\circ - 140^\\circ = 40^\\circ\\)。故選：\\(40^\\circ\\)。本題考查鄰補角的性質。",
       "image": "images/007.png",
       "answerimage": null,
       "comment": "第7題，題目有圖，答案無圖"

@@ -2,10 +2,10 @@
   "title": "相交線與平行線章綜合複習",
   "questions": [
     {
-      "question": "如圖，下列能判定 \\(AB \\parallel CD\\) 的條件有（    ）個．(1) \\(\\angle B + \\angle BCD = 180^\\circ\\)；(2) \\(\\angle 1 = \\angle 2\\)；(3) \\(\\angle 3 = \\angle 4\\)；(4) \\(\\angle B = \\angle 5\\)。",
+      "question": "如圖，下列能判定 AB//CD 的條件有（    ）個．(1) \\(\\angle B + \\angle BCD = 180^\\circ\\)；(2) \\(\\angle 1 = \\angle 2\\)；(3) \\(\\angle 3 = \\angle 4\\)；(4) \\(\\angle B = \\angle 5\\)。",
       "options": ["\\(1\\)", "\\(2\\)", "\\(3\\)", "\\(4\\)"],
       "answer": "\\(3\\)",
-      "explanation": "解：(1) \\(\\angle B + \\angle BCD = 180^\\circ\\)，即 \\(\\angle B\\) 與 \\(\\angle BCD\\) 為同旁內角互補，可判定 \\(AB \\parallel CD\\)（即 AB 平行 CD），故此項正確；(2) \\(\\angle 1 = \\angle 2\\)，為內錯角相等，可判定 \\(AD \\parallel BC\\)，但無法判定 \\(AB \\parallel CD\\)，故此項錯誤；(3) \\(\\angle 3 = \\angle 4\\)，為內錯角相等，可判定 \\(AB \\parallel CD\\)（即 AB 平行 CD），故此項正確；(4) \\(\\angle B = \\angle 5\\)，為同位角相等，可判定 \\(AB \\parallel CD\\)（即 AB 平行 CD），故此項正確。共 (1)、(3)、(4) 三項正確，故選：\\(3\\)。本題考查平行線的判定定理，需正確識別同位角、內錯角及同旁內角。",
+      "explanation": "解：(1) \\(\\angle B + \\angle BCD = 180^\\circ\\)，即 \\(\\angle B\\) 與 \\(\\angle BCD\\) 為同旁內角互補，可判定 AB//CD，故此項正確；(2) \\(\\angle 1 = \\angle 2\\)，為內錯角相等，可判定 AD//BC，但無法判定 AB//CD，故此項錯誤；(3) \\(\\angle 3 = \\angle 4\\)，為內錯角相等，可判定 AB//CD，故此項正確；(4) \\(\\angle B = \\angle 5\\)，為同位角相等，可判定 AB//CD，故此項正確。共 (1)、(3)、(4) 三項正確，故選：\\(3\\)。本題考查平行線的判定定理，需正確識別同位角、內錯角及同旁內角。",
       "image": "images/001.png",
       "answerimage": null,
       "comment": "第1題，題目有圖，解析無圖"
@@ -20,10 +20,10 @@
       "comment": "第2題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，點 \\(E\\) 在 \\(AD\\) 的延長線上，下列四個條件：① \\(\\angle 1 = \\angle 2\\)；② \\(\\angle 3 = \\angle 4\\)；③ \\(\\angle A = \\angle CDE\\)；④ \\(\\angle C + \\angle ABC = 180^\\circ\\)。其中能判定 \\(AB \\parallel CD\\) 的是",
+      "question": "如圖，點 \\(E\\) 在 \\(AD\\) 的延長線上，下列四個條件：① \\(\\angle 1 = \\angle 2\\)；② \\(\\angle 3 = \\angle 4\\)；③ \\(\\angle A = \\angle CDE\\)；④ \\(\\angle C + \\angle ABC = 180^\\circ\\)。其中能判定 AB//CD 的是",
       "options": ["\\(①③④\\)", "\\(①②③\\)", "\\(①②④\\)", "\\(②③④\\)"],
       "answer": "\\(①③④\\)",
-      "explanation": "解：① \\(\\angle 1 = \\angle 2\\)，為內錯角相等，可判定 \\(AB \\parallel CD\\)（即 AB 平行 CD），故此項正確；② \\(\\angle 3 = \\angle 4\\)，為內錯角相等，可判定 \\(BC \\parallel AD\\)，無法判定 \\(AB \\parallel CD\\)，故此項錯誤；③ \\(\\angle A = \\angle CDE\\)，為同位角相等，可判定 \\(AB \\parallel CD\\)（即 AB 平行 CD），故此項正確；④ \\(\\angle C + \\angle ABC = 180^\\circ\\)，為同旁內角互補，可判定 \\(AB \\parallel CD\\)（即 AB 平行 CD），故此項正確。故選：\\(①③④\\)。本題考查平行線的判定定理。",
+      "explanation": "解：① \\(\\angle 1 = \\angle 2\\)，為內錯角相等，可判定 AB//CD，故此項正確；② \\(\\angle 3 = \\angle 4\\)，為內錯角相等，可判定 BC//AD，無法判定 AB//CD，故此項錯誤；③ \\(\\angle A = \\angle CDE\\)，為同位角相等，可判定 AB//CD，故此項正確；④ \\(\\angle C + \\angle ABC = 180^\\circ\\)，為同旁內角互補，可判定 AB//CD，故此項正確。故選：\\(①③④\\)。本題考查平行線的判定定理。",
       "image": "images/003.png",
       "answerimage": null,
       "comment": "第3題，題目有圖，解析無圖"
@@ -32,7 +32,7 @@
       "question": "如圖，\\(\\angle 1 + \\angle 2 = 180^\\circ\\)，\\(\\angle 3 = 108^\\circ\\)，則 \\(\\angle 4\\) 的度數為",
       "options": ["\\(72^\\circ\\)", "\\(80^\\circ\\)", "\\(82^\\circ\\)", "\\(108^\\circ\\)"],
       "answer": "\\(72^\\circ\\)",
-      "explanation": "解：由 \\(\\angle 1 + \\angle 2 = 180^\\circ\\) 及 \\(\\angle 2 + \\angle 5 = 180^\\circ\\)，得 \\(\\angle 1 = \\angle 5\\)（同角的補角相等）。因 \\(\\angle 1 = \\angle 5\\) 為同位角相等，故 \\(a \\parallel b\\)（即 a 平行 b）。由平行線性質，\\(\\angle 4 + \\angle 6 = 180^\\circ\\)（同旁內角互補）。因 \\(\\angle 3 = \\angle 6 = 108^\\circ\\)（對頂角相等），故 \\(\\angle 4 = 180^\\circ - \\angle 6 = 180^\\circ - 108^\\circ = 72^\\circ\\)。故選：\\(72^\\circ\\)。本題考查平行線的判定與性質。",
+      "explanation": "解：由 \\(\\angle 1 + \\angle 2 = 180^\\circ\\) 及 \\(\\angle 2 + \\angle 5 = 180^\\circ\\)，得 \\(\\angle 1 = \\angle 5\\)（同角的補角相等）。因 \\(\\angle 1 = \\angle 5\\) 為同位角相等，故 a//b。由平行線性質，\\(\\angle 4 + \\angle 6 = 180^\\circ\\)（同旁內角互補）。因 \\(\\angle 3 = \\angle 6 = 108^\\circ\\)（對頂角相等），故 \\(\\angle 4 = 180^\\circ - \\angle 6 = 180^\\circ - 108^\\circ = 72^\\circ\\)。故選：\\(72^\\circ\\)。本題考查平行線的判定與性質。",
       "image": "images/004.png",
       "answerimage": null,
       "comment": "第4題，題目有圖，解析無圖"
@@ -41,7 +41,7 @@
       "question": "如圖所示，直線 \\(AB\\)、\\(CD\\) 相交於點 \\(O\\)，\\(OE \\perp AB\\) 於點 \\(O\\)，\\(OF\\) 平分 \\(\\angle AOE\\)，\\(\\angle 1 = 15^\\circ 30^\\prime\\)，則下列結論中不正確的是",
       "options": ["\\(\\angle 2 = 45^\\circ\\)", "\\(\\angle 1 = \\angle 3\\)", "\\(\\angle AOD\\) 與 \\(\\angle 1\\) 互為補角", "\\(\\angle 1\\) 的餘角等於 \\(75^\\circ \\, 30^\\prime\\)"],
       "answer": "\\(\\angle 1\\) 的餘角等於 \\(75^\\circ \\, 30^\\prime\\)",
-      "explanation": "解：選項 \\(\\angle 2 = 45^\\circ\\)：由 \\(OE \\perp AB\\)，得 \\(\\angle AOE = 90^\\circ\\)。因 \\(OF\\) 平分 \\(\\angle AOE\\)，故 \\(\\angle 2 = \\frac{90^\\circ}{2} = 45^\\circ\\)，此項正確；選項 \\(\\angle 1 = \\angle 3\\)：\\(\\angle 1\\) 與 \\(\\angle 3\\) 為對頂角，相等，故此項正確；選項 \\(\\angle AOD\\) 與 \\(\\angle 1\\) 互為補角：\\(\\angle AOD\\) 與 \\(\\angle 1\\) 為鄰補角，相加為 \\(180^\\circ\\)，故此項正確；選項 \\(\\angle 1\\) 的餘角等於 \\(75^\\circ \\, 30^\\prime\\)：因 \\(\\angle 1 = 15^\\circ 30^\\prime\\)，其餘角為 \\(90^\\circ - 15^\\circ 30^\\prime = 74^\\circ 30^\\prime\\)，不等於 \\(75^\\circ \\, 30^\\prime\\)，故此項錯誤。故選：\\(\\angle 1\\) 的餘角等於 \\(75^\\circ \\, 30^\\prime\\)。本題考查角平分線、對頂角及互補角的性質。",
+      "explanation": "解：選項 \\(\\angle 2 = 45^\\circ\\)：由 \\(OE \\perp AB\\)，得 \\(\\angle AOE = 90^\\circ\\)。因 \\(OF\\) 平分 \\(\\angle AOE\\)，故 \\(\\ viviendo 2 = \\frac{90^\\circ}{2} = 45^\\circ\\)，此項正確；選項 \\(\\angle 1 = \\angle 3\\)：\\(\\angle 1\\) 與 \\(\\angle 3\\) 為對頂角，相等，故此項正確；選項 \\(\\angle AOD\\) 與 \\(\\angle 1\\) 互為補角：\\(\\angle AOD\\) 與 \\(\\angle 1\\) 為鄰補角，相加為 \\(180^\\circ\\)，故此項正確；選項 \\(\\angle 1\\) 的餘角等於 \\(75^\\circ \\, 30^\\prime\\)：因 \\(\\angle 1 = 15^\\circ 30^\\prime\\)，其餘角為 \\(90^\\circ - 15^\\circ 30^\\prime = 74^\\circ 30^\\prime\\)，不等於 \\(75^\\circ \\, 30^\\prime\\)，故此項錯誤。故選：\\(\\angle 1\\) 的餘角等於 \\(75^\\circ \\, 30^\\prime\\)。本題考查角平分線、對頂角及互補角的性質。",
       "image": "images/005.png",
       "answerimage": null,
       "comment": "第5題，題目有圖，解析無圖"
@@ -50,16 +50,16 @@
       "question": "如圖所示，直尺與三角板 \\(ABC\\)（其中 \\(\\angle B = 30^\\circ\\)，\\(\\angle C = 90^\\circ\\)）擺放位置如圖，直尺一邊與三角板兩直角邊分別交於點 \\(D\\)、\\(E\\)，另一邊與三角板兩直角邊分別交於點 \\(F\\)、\\(A\\)，且 \\(\\angle CDE = 50^\\circ\\)，則 \\(\\angle BAF\\) 的大小為",
       "options": ["\\(20^\\circ\\)", "\\(40^\\circ\\)", "\\(45^\\circ\\)", "\\(50^\\circ\\)"],
       "answer": "\\(20^\\circ\\)",
-      "explanation": "解：由圖可知，\\(\\angle CDE = 50^\\circ\\)，\\(\\angle C = 90^\\circ\\)，在三角形 \\(CDE\\) 中，\\(\\angle CED = 180^\\circ - 90^\\circ - 50^\\circ = 40^\\circ\\)。因 \\(DE \\parallel AF\\)（即 DE 平行 AF），由平行線性質，\\(\\angle CAF = \\angle CED = 40^\\circ\\)（同位角相等）。在三角形 \\(ABC\\) 中，\\(\\angle BAC = 180^\\circ - 90^\\circ - 30^\\circ = 60^\\circ\\)。故 \\(\\angle BAF = \\angle BAC - \\angle CAF = 60^\\circ - 40^\\circ = 20^\\circ\\)。故選：\\(20^\\circ\\)。本題考查平行線性質及三角形內角和。",
+      "explanation": "解：由圖可知，\\(\\angle CDE = 50^\\circ\\)，\\(\\angle C = 90^\\circ\\)，在三角形 \\(CDE\\) 中，\\(\\angle CED = 180^\\circ - 90^\\circ - 50^\\circ = 40^\\circ\\)。因 DE//AF，由平行線性質，\\(\\angle CAF = \\angle CED = 40^\\circ\\)（同位角相等）。在三角形 \\(ABC\\) 中，\\(\\angle BAC = 180^\\circ - 90^\\circ - 30^\\circ = 60^\\circ\\)。故 \\(\\angle BAF = \\angle BAC - \\angle CAF = 60^\\circ - 40^\\circ = 20^\\circ\\)。故選：\\(20^\\circ\\)。本題考查平行線性質及三角形內角和。",
       "image": "images/006.png",
       "answerimage": null,
       "comment": "第6題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，已知直線 \\(AB \\parallel CD\\)，\\(BC\\) 平分 \\(\\angle ABD\\)，若 \\(\\angle 1 = 80^\\circ\\)，則 \\(\\angle 2\\) 等於",
+      "question": "如圖，已知直線 AB//CD，\\(BC\\) 平分 \\(\\angle ABD\\)，若 \\(\\angle 1 = 80^\\circ\\)，則 \\(\\angle 2\\) 等於",
       "options": ["\\(140^\\circ\\)", "\\(160^\\circ\\)", "\\(120^\\circ\\)", "\\(150^\\circ\\)"],
       "answer": "\\(140^\\circ\\)",
-      "explanation": "解：因 \\(AB \\parallel CD\\)（即 AB 平行 CD），\\(\\angle 1 = 80^\\circ\\)，由同位角相等，得 \\(\\angle ABD = \\angle 1 = 80^\\circ\\)。因 \\(BC\\) 平分 \\(\\angle ABD\\)，故 \\(\\angle ABC = \\frac{1}{2} \\angle ABD = 40^\\circ\\)。由 \\(AB \\parallel CD\\)，\\(\\angle 2 + \\angle ABC = 180^\\circ\\)（同旁內角互補），故 \\(\\angle 2 = 180^\\circ - 40^\\circ = 140^\\circ\\)。故選：\\(140^\\circ\\)。本題考查平行線性質及角平分線定義。",
+      "explanation": "解：因 AB//CD，\\(\\angle 1 = 80^\\circ\\)，由同位角相等，得 \\(\\angle ABD = \\angle 1 = 80^\\circ\\)。因 \\(BC\\) 平分 \\(\\angle ABD\\)，故 \\(\\angle ABC = \\frac{1}{2} \\angle ABD = 40^\\circ\\)。由 AB//CD，\\(\\angle 2 + \\angle ABC = 180^\\circ\\)（同旁內角互補），故 \\(\\angle 2 = 180^\\circ - 40^\\circ = 140^\\circ\\)。故選：\\(140^\\circ\\)。本題考查平行線性質及角平分線定義。",
       "image": "images/007.png",
       "answerimage": null,
       "comment": "第7題，題目有圖，解析無圖"
@@ -74,28 +74,28 @@
       "comment": "第8題，題目無圖，解析無圖"
     },
     {
-      "question": "如圖，\\(AB \\perp BC\\)，\\(AD \\parallel BE\\)，若 \\(\\angle BAD = 28^\\circ\\)，則 \\(\\angle CBE\\) 的大小為",
+      "question": "如圖，\\(AB \\perp BC\\)，AD//BE，若 \\(\\angle BAD = 28^\\circ\\)，則 \\(\\angle CBE\\) 的大小為",
       "options": ["\\(66^\\circ\\)", "\\(64^\\circ\\)", "\\(62^\\circ\\)", "\\(60^\\circ\\)"],
       "answer": "\\(62^\\circ\\)",
-      "explanation": "解：因 \\(AD \\parallel BE\\)（即 AD 平行 BE），由同位角相等，得 \\(\\angle ABE = \\angle BAD = 28^\\circ\\)。因 \\(AB \\perp BC\\)，得 \\(\\angle ABC = 90^\\circ\\)。故 \\(\\angle CBE = \\angle ABC - \\angle ABE = 90^\\circ - 28^\\circ = 62^\\circ\\)。故選：\\(62^\\circ\\)。本題考查平行線性質及垂直定義。",
+      "explanation": "解：因 AD//BE，由同位角相等，得 \\(\\angle ABE = \\angle BAD = 28^\\circ\\)。因 \\(AB \\perp BC\\)，得 \\(\\angle ABC = 90^\\circ\\)。故 \\(\\angle CBE = \\angle ABC - \\angle ABE = 90^\\circ - 28^\\circ = 62^\\circ\\)。故選：\\(62^\\circ\\)。本題考查平行線性質及垂直定義。",
       "image": "images/009.png",
       "answerimage": null,
       "comment": "第9題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，直線 \\(AC \\parallel BD\\)，\\(AO\\)、\\(BO\\) 分別是 \\(\\angle BAC\\)、\\(\\angle ABD\\) 的平分線，則 \\(\\angle BAO\\) 與 \\(\\angle ABO\\) 之間的數量關係一定是",
+      "question": "如圖，直線 AC//BD，\\(AO\\)、\\(BO\\) 分別是 \\(\\angle BAC\\)、\\(\\angle ABD\\) 的平分線，則 \\(\\angle BAO\\) 與 \\(\\angle ABO\\) 之間的數量關係一定是",
       "options": ["互餘", "相等", "互補", "不等"],
       "answer": "互餘",
-      "explanation": "本題解析由AI生成：解：在三角形 \\(ABO\\) 中，\\(AO\\) 平分 \\(\\angle BAC\\)，\\(BO\\) 平分 \\(\\angle ABD\\)。由 \\(AC \\parallel BD\\)（即 AC 平行 BD），得 \\(\\angle BAC + \\angle ABD = 180^\\circ\\)（同旁內角互補）。設 \\(\\angle BAC = 2a\\)，\\(\\angle ABD = 2b\\)，則 \\(a + b = 90^\\circ\\)。因 \\(AO\\)、\\(BO\\) 為角平分線，\\(\\angle BAO = a\\)，\\(\\angle ABO = b\\)。在三角形 \\(ABO\\) 中，\\(\\angle BAO + \\angle ABO + \\angle AOB = 180^\\circ\\)，即 \\(a + b + \\angle AOB = 180^\\circ\\)，得 \\(\\angle AOB = 180^\\circ - (a + b) = 90^\\circ\\)。故 \\(\\angle BAO + \\angle ABO = 90^\\circ\\)，即互餘。故選：互餘。本題考查平行線性質及角平分線。",
+      "explanation": "解：在三角形 \\(ABO\\) 中，\\(AO\\) 平分 \\(\\angle BAC\\)，\\(BO\\) 平分 \\(\\angle ABD\\)。由 AC//BD，得 \\(\\angle BAC + \\angle ABD = 180^\\circ\\)（同旁內角互補）。設 \\(\\angle BAC = 2a\\)，\\(\\angle ABD = 2b\\)，則 \\(a + b = 90^\\circ\\)。因 \\(AO\\)、\\(BO\\) 為角平分線，\\(\\angle BAO = a\\)，\\(\\angle ABO = b\\)。在三角形 \\(ABO\\) 中，\\(\\angle BAO + \\angle ABO + \\angle AOB = 180^\\circ\\)，即 \\(a + b + \\angle AOB = 180^\\circ\\)，得 \\(\\angle AOB = 180^\\circ - (a + b) = 90^\\circ\\)。故 \\(\\angle BAO + \\angle ABO = 90^\\circ\\)，即互餘。故選：互餘。本題考查平行線性質及角平分線。",
       "image": "images/010.png",
       "answerimage": null,
       "comment": "第10題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，直線 \\(AB \\parallel CD\\)，直線 \\(EF\\) 與 \\(AB\\)、\\(CD\\) 分別交於點 \\(E\\)、\\(F\\)，\\(EG \\perp EF\\)，垂足為 \\(E\\)，若 \\(\\angle 1 = 60^\\circ\\)，則 \\(\\angle 2\\) 等於",
+      "question": "如圖，直線 AB//CD，直線 \\(EF\\) 與 \\(AB\\)、\\(CD\\) 分別交於點 \\(E\\)、\\(F\\)，\\(EG \\perp EF\\)，垂足為 \\(E\\)，若 \\(\\angle 1 = 60^\\circ\\)，則 \\(\\angle 2\\) 等於",
       "options": ["\\(15^\\circ\\)", "\\(30^\\circ\\)", "\\(45^\\circ\\)", "\\(60^\\circ\\)"],
       "answer": "\\(30^\\circ\\)",
-      "explanation": "本題解析由AI生成：解：因 \\(AB \\parallel CD\\)（即 AB 平行 CD），\\(\\angle 1 = 60^\\circ\\)，由同位角相等，得 \\(\\angle AEF = \\angle 1 = 60^\\circ\\)。因 \\(EG \\perp EF\\)，得 \\(\\angle GEF = 90^\\circ\\)。在三角形 \\(GEF\\) 中，\\(\\angle 2 + \\angle AEF + \\angle GEF = 180^\\circ\\)，即 \\(\\angle 2 + 60^\\circ + 90^\\circ = 180^\\circ\\)，解得 \\(\\angle 2 = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查平行線性質及三角形內角和。",
+      "explanation": "解：因 AB//CD，\\(\\angle 1 = 60^\\circ\\)，由同位角相等，得 \\(\\angle AEF = \\angle 1 = 60^\\circ\\)。因 \\(EG \\perp EF\\)，得 \\(\\angle GEF = 90^\\circ\\)。在三角形 \\(GEF\\) 中，\\(\\angle 2 + \\angle AEF + \\angle GEF = 180^\\circ\\)，即 \\(\\angle 2 + 60^\\circ + 90^\\circ = 180^\\circ\\)，解得 \\(\\angle 2 = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查平行線性質及三角形內角和。",
       "image": "images/011.png",
       "answerimage": null,
       "comment": "第11題，題目有圖，解析無圖"
@@ -131,7 +131,7 @@
       "question": "下列命題：① 同旁內角互補；② 相等的角是對頂角；③ 等角的補角相等；④ 兩直線平行，同位角相等。其中，假命題的個數為",
       "options": ["\\(1\\)", "\\(2\\)", "\\(3\\)", "\\(4\\)"],
       "answer": "\\(2\\)",
-      "explanation": "本題解析由AI生成：解：① 同旁內角互補：應為兩直線平行時同旁內角互補，描述反向，故此項錯誤；② 相等的角是對頂角：相等的角不一定為對頂角（如同位角），故此項錯誤；③ 等角的補角相等：正確；④ 兩直線平行，同位角相等：正確。故假命題為①②，共2個。故選：\\(2\\)。本題考查平行線性質及對頂角的理解。",
+      "explanation": "解：① 同旁內角互補：應為兩直線平行時同旁內角互補，描述反向，故此項錯誤；② 相等的角是對頂角：相等的角不一定為對頂角（如同位角），故此項錯誤；③ 等角的補角相等：正確；④ 兩直線平行，同位角相等：正確。故假命題為①②，共2個。故選：\\(2\\)。本題考查平行線性質及對頂角的理解。",
       "image": null,
       "answerimage": null,
       "comment": "第15題，題目無圖，解析無圖"
@@ -140,7 +140,7 @@
       "question": "如圖，點 \\(P\\) 在直線 \\(l\\) 外，點 \\(A\\)、\\(B\\) 在直線 \\(l\\) 上。若 \\(PA = 4\\)，\\(PB = 7\\)，則點 \\(P\\) 到直線 \\(l\\) 的距離可能是",
       "options": ["\\(3\\)", "\\(4\\)", "\\(5\\)", "\\(7\\)"],
       "answer": "\\(3\\)",
-      "explanation": "本題解析由AI生成：解：點 \\(P\\) 到直線 \\(l\\) 的距離為 \\(P\\) 到 \\(l\\) 的垂線段長度（垂線段最短）。已知 \\(PA = 4\\)，\\(PB = 7\\)，垂線段長度小於等於 \\(PA\\) 或 \\(PB\\)。假設垂足為 \\(H\\)，\\(PH\\) 為距離，可能小於 \\(4\\)，選項中 \\(3\\) 為可能值（假設 \\(PH = 3\\) 符合幾何條件）。故選：\\(3\\)。本題考查垂線段最短的性質。",
+      "explanation": "解：點 \\(P\\) 到直線 \\(l\\) 的距離為 \\(P\\) 到 \\(l\\) 的垂線段長度（垂線段最短）。已知 \\(PA = 4\\)，\\(PB = 7\\)，垂線段長度小於等於 \\(PA\\) 或 \\(PB\\)。假設垂足為 \\(H\\)，\\(PH\\) 為距離，可能小於 \\(4\\)，選項中 \\(3\\) 為可能值（假設 \\(PH = 3\\) 符合幾何條件）。故選：\\(3\\)。本題考查垂線段最短的性質。",
       "image": "images/016.png",
       "answerimage": null,
       "comment": "第16題，題目有圖，解析無圖"
@@ -155,28 +155,28 @@
       "comment": "第17題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，已知直線 \\(a \\parallel b\\)，直線 \\(c\\) 分別交直線 \\(a\\)、\\(b\\) 於點 \\(A\\)、\\(B\\)，在直線 \\(b\\) 上取點 \\(C\\)，連接 \\(AC\\)。若 \\(\\angle 1 = 130^\\circ\\)，\\(\\angle 2 = 100^\\circ\\)，則 \\(\\angle 3\\) 的度數為",
+      "question": "如圖，已知直線 a//b，直線 \\(c\\) 分別交直線 \\(a\\)、\\(b\\) 於點 \\(A\\)、\\(B\\)，在直線 \\(b\\) 上取點 \\(C\\)，連接 \\(AC\\)。若 \\(\\angle 1 = 130^\\circ\\)，\\(\\angle 2 = 100^\\circ\\)，則 \\(\\angle 3\\) 的度數為",
       "options": ["\\(50^\\circ\\)", "\\(40^\\circ\\)", "\\(30^\\circ\\)", "\\(20^\\circ\\)"],
       "answer": "\\(30^\\circ\\)",
-      "explanation": "解：因 \\(a \\parallel b\\)（即 a 平行 b），由同位角相等及角的加減關係，得 \\(\\angle 1 = \\angle 2 + \\angle 3\\)。已知 \\(\\angle 1 = 130^\\circ\\)，\\(\\angle 2 = 100^\\circ\\)，故 \\(\\angle 3 = \\angle 1 - \\angle 2 = 130^\\circ - 100^\\circ = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查平行線性質及角的加減。",
+      "explanation": "解：因 a//b，由同位角相等及角的加減關係，得 \\(\\angle 1 = \\angle 2 + \\angle 3\\)。已知 \\(\\angle 1 = 130^\\circ\\)，\\(\\angle 2 = 100^\\circ\\)，故 \\(\\angle 3 = \\angle 1 - \\angle 2 = 130^\\circ - 100^\\circ = 30^\\circ\\)。故選：\\(30^\\circ\\)。本題考查平行線性質及角的加減。",
       "image": "images/018.png",
       "answerimage": null,
       "comment": "第18題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，能判斷直線 \\(AB \\parallel CD\\) 的條件是",
+      "question": "如圖，能判斷直線 AB//CD 的條件是",
       "options": ["\\(\\angle 1 = \\angle 2\\)", "\\(\\angle 3 = \\angle 4\\)", "\\(\\angle 1 + \\angle 3 = 180^\\circ\\)", "\\(\\angle 3 + \\angle 4 = 180^\\circ\\)"],
       "answer": "\\(\\angle 3 + \\angle 4 = 180^\\circ\\)",
-      "explanation": "解：選項 \\(\\angle 1 = \\angle 2\\)：非同位角或內錯角，無法判定 \\(AB \\parallel CD\\)，故錯誤；選項 \\(\\angle 3 = \\angle 4\\)：非同位角或內錯角，無法判定 \\(AB \\parallel CD\\)，故錯誤；選項 \\(\\angle 1 + \\angle 3 = 180^\\circ\\)：非同旁內角，無法判定 \\(AB \\parallel CD\\)，故錯誤；選項 \\(\\angle 3 + \\angle 4 = 180^\\circ\\)：若 \\(\\angle 3 + \\angle 4 = 180^\\circ\\)，則 \\(\\angle 4 = \\angle 5\\)（因 \\(\\angle 3 + \\angle 5 = 180^\\circ\\)），為同位角相等，可判定 \\(AB \\parallel CD\\)（即 AB 平行 CD），故正確。故選：\\(\\angle 3 + \\angle 4 = 180^\\circ\\)。本題考查平行線的判定。",
+      "explanation": "解：選項 \\(\\angle 1 = \\angle 2\\)：非同位角或內錯角，無法判定 AB//CD，故錯誤；選項 \\(\\angle 3 = \\angle 4\\)：非同位角或內錯角，無法判定 AB//CD，故錯誤；選項 \\(\\angle 1 + \\angle 3 = 180^\\circ\\)：非同旁內角，無法判定 AB//CD，故錯誤；選項 \\(\\angle 3 + \\angle 4 = 180^\\circ\\)：若 \\(\\angle 3 + \\angle 4 = 180^\\circ\\)，則 \\(\\angle 4 = \\angle 5\\)（因 \\(\\angle 3 + \\angle 5 = 180^\\circ\\)），為同位角相等，可判定 AB//CD，故正確。故選：\\(\\angle 3 + \\angle 4 = 180^\\circ\\)。本題考查平行線的判定。",
       "image": "images/019.png",
       "answerimage": "images/q019.png",
       "comment": "第19題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，\\(AB \\parallel CD\\)，若 \\(\\angle 1 = 140^\\circ\\)，則 \\(\\angle C\\) 的度數是",
+      "question": "如圖，AB//CD，若 \\(\\angle 1 = 140^\\circ\\)，則 \\(\\angle C\\) 的度數是",
       "options": ["\\(20^\\circ\\)", "\\(30^\\circ\\)", "\\(40^\\circ\\)", "\\(50^\\circ\\)"],
       "answer": "\\(40^\\circ\\)",
-      "explanation": "解：由 \\(\\angle 1 = 140^\\circ\\)，\\(\\angle 2 = 180^\\circ - \\angle 1 = 180^\\circ - 140^\\circ = 40^\\circ\\)（鄰補角）。因 \\(AB \\parallel CD\\)（即 AB 平行 CD），\\(\\angle C = \\angle 2 = 40^\\circ\\)（同位角相等）。故選：\\(40^\\circ\\)。本題考查平行線性質及鄰補角。",
+      "explanation": "解：由 \\(\\angle 1 = 140^\\circ\\)，\\(\\angle 2 = 180^\\circ - \\angle 1 = 180^\\circ - 140^\\circ = 40^\\circ\\)（鄰補角）。因 AB//CD，\\(\\angle C = \\angle 2 = 40^\\circ\\)（同位角相等）。故選：\\(40^\\circ\\)。本題考查平行線性質及鄰補角。",
       "image": "images/020.png",
       "answerimage": null,
       "comment": "第20題，題目有圖，解析無圖"
@@ -194,7 +194,7 @@
       "question": "如圖，\\(\\angle 1 = 20^\\circ\\)，\\(AO \\perp CO\\)，點 \\(B\\)、\\(O\\)、\\(D\\) 在同一直線上，則 \\(\\angle 2\\) 的度數為",
       "options": ["\\(20^\\circ\\)", "\\(70^\\circ\\)", "\\(110^\\circ\\)", "\\(160^\\circ\\)"],
       "answer": "\\(110^\\circ\\)",
-      "explanation": "本題解析由AI生成：解：因 \\(AO \\perp CO\\)，得 \\(\\angle AOC = 90^\\circ\\)。由 \\(\\angle 1 = 20^\\circ\\)，在三角形 \\(AOC\\) 中，\\(\\angle 2 = 180^\\circ - \\angle AOC - \\angle 1 = 180^\\circ - 90^\\circ - 20^\\circ = 110^\\circ\\)。故選：\\(110^\\circ\\)。本題考查垂直定義及三角形內角和。",
+      "explanation": "解：因 \\(AO \\perp CO\\)，得 \\(\\angle AOC = 90^\\circ\\)。由 \\(\\angle 1 = 20^\\circ\\)，在三角形 \\(AOC\\) 中，\\(\\angle 2 = 180^\\circ - \\angle AOC - \\angle 1 = 180^\\circ - 90^\\circ - 20^\\circ = 110^\\circ\\)。故選：\\(110^\\circ\\)。本題考查垂直定義及三角形內角和。",
       "image": "images/022.png",
       "answerimage": null,
       "comment": "第22題，題目有圖，解析無圖"
@@ -203,25 +203,25 @@
       "question": "如圖，超市裡的購物車扶手 \\(AB\\) 與車底 \\(CD\\) 平行，\\(\\angle 2\\) 比 \\(\\angle 3\\) 大 \\(10^\\circ\\)，\\(\\angle 1\\) 是 \\(\\angle 2\\) 的 \\(\\frac{19}{11}\\)-倍，則 \\(\\angle 2\\) 的度數是",
       "options": ["\\(55^\\circ\\)", "\\(45^\\circ\\)", "\\(44^\\circ\\)", "\\(54^\\circ\\)"],
       "answer": "\\(55^\\circ\\)",
-      "explanation": "解：設 \\(\\angle 2 = x^\\circ\\)，則 \\(\\angle 3 = (x - 10)^\\circ\\)，\\(\\angle 1 = \\frac{19}{11} x^\\circ\\)。因 \\(AB \\parallel CD\\)（即 AB 平行 CD），得 \\(\\angle 1 = \\angle 2 + \\angle 3\\)（同位角相等），即 \\(\\frac{19}{11} x = x + (x - 10)\\)。解得 \\(\\frac{19}{11} x = 2x - 10\\)，\\(\\frac{8}{11} x = 10\\)，\\(x = 55\\)。故 \\(\\angle 2 = 55^\\circ\\)。故選：\\(55^\\circ\\)。本題考查平行線性質及角的計算。",
+      "explanation": "解：設 \\(\\angle 2 = x^\\circ\\)，則 \\(\\angle 3 = (x - 10)^\\circ\\)，\\(\\angle 1 = \\frac{19}{11} x^\\circ\\)。因 AB//CD，得 \\(\\angle 1 = \\angle 2 + \\angle 3\\)（同位角相等），即 \\(\\frac{19}{11} x = x + (x - 10)\\)。解得 \\(\\frac{19}{11} x = 2x - 10\\)，\\(\\frac{8}{11} x = 10\\)，\\(x = 55\\)。故 \\(\\angle 2 = 55^\\circ\\)。故選：\\(55^\\circ\\)。本題考查平行線性質及角的計算。",
       "image": "images/023.png",
       "answerimage": null,
       "comment": "第23題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，\\(AB \\parallel CD\\)，\\(EC \\perp CD\\) 於點 \\(C\\)，\\(CF\\) 交 \\(AB\\) 於點 \\(B\\)，已知 \\(\\angle 2 = 29^\\circ\\)，則 \\(\\angle 1\\) 的度數是",
+      "question": "如圖，AB//CD，\\(EC \\perp CD\\) 於點 \\(C\\)，\\(CF\\) 交 \\(AB\\) 於點 \\(B\\)，已知 \\(\\angle 2 = 29^\\circ\\)，則 \\(\\angle 1\\) 的度數是",
       "options": ["\\(58^\\circ\\)", "\\(59^\\circ\\)", "\\(61^\\circ\\)", "\\(62^\\circ\\)"],
       "answer": "\\(61^\\circ\\)",
-      "explanation": "解：延長 \\(DC\\) 至點 \\(G\\)。因 \\(EC \\perp CD\\)，得 \\(\\angle ECG = 90^\\circ\\)。由 \\(\\angle 2 = 29^\\circ\\)，在三角形 \\(ECG\\) 中，\\(\\angle 3 = 180^\\circ - 90^\\circ - 29^\\circ = 61^\\circ\\)。因 \\(AB \\parallel CD\\)（即 AB 平行 CD），\\(\\angle 1 = \\angle 3 = 61^\\circ\\)（同位角相等）。故選：\\(61^\\circ\\)。本題考查平行線性質及三角形內角和。",
+      "explanation": "解：延長 \\(DC\\) 至點 \\(G\\)。因 \\(EC \\perp CD\\)，得 \\(\\angle ECG = 90^\\circ\\)。由 \\(\\angle 2 = 29^\\circ\\)，在三角形 \\(ECG\\) 中，\\(\\angle 3 = 180^\\circ - 90^\\circ - 29^\\circ = 61^\\circ\\)。因 AB//CD，\\(\\angle 1 = \\angle 3 = 61^\\circ\\)（同位角相等）。故選：\\(61^\\circ\\)。本題考查平行線性質及三角形內角和。",
       "image": "images/024.png",
       "answerimage": null,
       "comment": "第24題，題目有圖，解析無圖"
     },
     {
-      "question": "如圖，已知 \\(AB \\parallel CD\\)，\\(\\angle B = 100^\\circ\\)，\\(EF\\) 平分 \\(\\angle BEC\\)，\\(EG \\perp EF\\)，則 \\(\\angle DEG\\) 等於",
+      "question": "如圖，已知 AB//CD，\\(\\angle B = 100^\\circ\\)，\\(EF\\) 平分 \\(\\angle BEC\\)，\\(EG \\perp EF\\)，則 \\(\\angle DEG\\) 等於",
       "options": ["\\(50^\\circ\\)", "\\(40^\\circ\\)", "\\(60^\\circ\\)", "\\(70^\\circ\\)"],
       "answer": "\\(50^\\circ\\)",
-      "explanation": "解：因 \\(AB \\parallel CD\\)（即 AB 平行 CD），\\(\\angle B = 100^\\circ\\)，得 \\(\\angle CEB = 180^\\circ - 100^\\circ = 80^\\circ\\)（同旁內角互補）。因 \\(EF\\) 平分 \\(\\angle BEC\\)，得 \\(\\angle CEF = \\angle BEF = \\frac{80^\\circ}{2} = 40^\\circ\\)。因 \\(EG \\perp EF\\)，得 \\(\\angle BEG = 90^\\circ - 40^\\circ = 50^\\circ\\)。在三角形 \\(DEG\\) 中，\\(\\angle DEG = 180^\\circ - \\angle CEB - \\angle BEG = 180^\\circ - 80^\\circ - 50^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查平行線性質及角平分線。",
+      "explanation": "解：因 AB//CD，\\(\\angle B = 100^\\circ\\)，得 \\(\\angle CEB = 180^\\circ - 100^\\circ = 80^\\circ\\)（同旁內角互補）。因 \\(EF\\) 平分 \\(\\angle BEC\\)，得 \\(\\angle CEF = \\angle BEF = \\frac{80^\\circ}{2} = 40^\\circ\\)。因 \\(EG \\perp EF\\)，得 \\(\\angle BEG = 90^\\circ - 40^\\circ = 50^\\circ\\)。在三角形 \\(DEG\\) 中，\\(\\angle DEG = 180^\\circ - \\angle CEB - \\angle BEG = 180^\\circ - 80^\\circ - 50^\\circ = 50^\\circ\\)。故選：\\(50^\\circ\\)。本題考查平行線性質及角平分線。",
       "image": "images/025.png",
       "answerimage": null,
       "comment": "第25題，題目有圖，解析無圖"
@@ -230,7 +230,7 @@
       "question": "如圖，直線 \\(AD\\)、\\(BE\\) 被 \\(BF\\) 和 \\(AC\\) 所截，則 \\(\\angle 1\\) 的同位角和 \\(\\angle 5\\) 的內錯角分別是",
       "options": ["\\(\\angle 4\\)、\\(\\angle 2\\)", "\\(\\angle 2\\)、\\(\\angle 4\\)", "\\(\\angle 5\\)、\\(\\angle 4\\)", "\\(\\angle 2\\)、\\(\\angle 6\\)"],
       "answer": "\\(\\angle 2\\)、\\(\\angle 6\\)",
-      "explanation": "本題解析由AI生成：解：在三線八角圖形中，\\(\\angle 1\\) 的同位角為與 \\(AD\\)、\\(BE\\) 及橫截線 \\(BF\\) 或 \\(AC\\) 形成的相同位置的角，經分析，\\(\\angle 2\\) 為 \\(\\angle 1\\) 的同位角（相對於 \\(BF\\)）。\\(\\angle 5\\) 的內錯角為與 \\(BE\\) 和橫截線 \\(AC\\) 形成的交叉角，經分析，\\(\\angle 6\\) 為 \\(\\angle 5\\) 的內錯角。故選：\\(\\angle 2\\)、\\(\\angle 6\\)。本題考查三線八角中同位角與內錯角的識別。",
+      "explanation": "解：在三線八角圖形中，\\(\\angle 1\\) 的同位角為與 \\(AD\\)、\\(BE\\) 及橫截線 \\(BF\\) 或 \\(AC\\) 形成的相同位置的角，經分析，\\(\\angle 2\\) 為 \\(\\angle 1\\) 的同位角（相對於 \\(BF\\)）。\\(\\angle 5\\) 的內錯角為與 \\(BE\\) 和橫截線 \\(AC\\) 形成的交叉角，經分析，\\(\\angle 6\\) 為 \\(\\angle 5\\) 的內錯角。故選：\\(\\angle 2\\)、\\(\\angle 6\\)。本題考查三線八角中同位角與內錯角的識別。",
       "image": "images/026.png",
       "answerimage": null,
       "comment": "第26題，題目有圖，解析無圖"

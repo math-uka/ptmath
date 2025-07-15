@@ -2,127 +2,127 @@
   "title": "平行線與垂線",
   "questions": [
     {
-      "question": "如圖，下列條件中不能判定 \\(AB \\parallel CD\\) 的是",
+      "question": "如圖，下列條件中不能判定 AB//CD 的是",
       "options": ["\\(\\angle 3 = \\angle 4\\)", "\\(\\angle 1 = \\angle 5\\)", "\\(\\angle 1 + \\angle 4 = 180^\\circ\\)", "\\(\\angle 3 = \\angle 5\\)"],
       "answer": "\\(\\angle 3 = \\angle 5\\)",
-      "explanation": "解：本題考查平行線的判定，需正確識別「三線八角」中的同位角、內錯角、同旁內角。選項 \\(\\angle 3 = \\angle 4\\) 為內錯角相等（即 \\(\\angle 3\\) 與 \\(\\angle 4\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 1 = \\angle 5\\) 為同位角相等（即 \\(\\angle 1\\) 與 \\(\\angle 5\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 1 + \\angle 4 = 180^\\circ\\) 為同旁內角互補（即 \\(\\angle 1\\) 與 \\(\\angle 4\\) 平行），可得出 \\(\\angle 1 = \\angle 5\\)，從而判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 3 = \\angle 5\\) 為同旁內角相等，但不一定互補，故此項無法判定 \\(AB \\parallel CD\\)。故選：\\(\\angle 3 = \\angle 5\\)。",
+      "explanation": "解：本題考查平行線的判定，需正確識別「三線八角」中的同位角、內錯角、同旁內角。選項 \\(\\angle 3 = \\angle 4\\) 為內錯角相等，可判定 AB//CD。選項 \\(\\angle 1 = \\angle 5\\) 為同位角相等，可判定 AB//CD。選項 \\(\\angle 1 + \\angle 4 = 180^\\circ\\) 為同旁內角互補，可得出 \\(\\angle 1 = \\angle 5\\)，從而判定 AB//CD。選項 \\(\\angle 3 = \\angle 5\\) 為同旁內角相等，但不一定互補，故此項無法判定 AB//CD。故選：\\(\\angle 3 = \\angle 5\\)。",
       "image": "images/001.png",
       "answerimage": null,
       "comment": "第1題，題目有圖，答案無圖"
     },
     {
       "question": "如圖，\\(\\angle 1 = \\angle 2\\)，則圖中相互平行的線段是",
-      "options": ["\\(AB \\parallel CD\\)", "\\(AD \\parallel BC\\)", "\\(AB \\parallel CA\\)", "無法確定"],
-      "answer": "\\(AD \\parallel BC\\)",
-      "explanation": "解：因 \\(\\angle 1 = \\angle 2\\)，\\(\\angle 1\\) 與 \\(\\angle 2\\) 為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle 2\\) 平行），可判定 \\(AD \\parallel BC\\)。選項 \\(AB \\parallel CD\\)、\\(AB \\parallel CA\\) 及「無法確定」均不滿足條件。故選：\\(AD \\parallel BC\\)。本題考查平行線的判定，熟記內錯角相等定理是關鍵。",
+      "options": ["AB//CD", "AD//BC", "AB//CA", "無法確定"],
+      "answer": "AD//BC",
+      "explanation": "解：因 \\(\\angle 1 = \\angle 2\\)，\\(\\angle 1\\) 與 \\(\\angle 2\\) 為內錯角相等，可判定 AD//BC。選項 AB//CD、AB//CA 及「無法確定」均不滿足條件。故選：AD//BC。本題考查平行線的判定，熟記內錯角相等定理是關鍵。",
       "image": "images/002.png",
       "answerimage": null,
       "comment": "第2題，題目有圖，答案無圖"
     },
     {
-      "question": "如圖，點 \\(E\\) 在 \\(CD\\) 延長線上，下列條件中不能判定 \\(AB \\parallel CD\\) 的是",
+      "question": "如圖，點 \\(E\\) 在 \\(CD\\) 延長線上，下列條件中不能判定 AB//CD 的是",
       "options": ["\\(\\angle 1 = \\angle 2\\)", "\\(\\angle 3 = \\angle 4\\)", "\\(\\angle 5 = \\angle B\\)", "\\(\\angle B + \\angle BDC = 180^\\circ\\)"],
       "answer": "\\(\\angle 1 = \\angle 2\\)",
-      "explanation": "解：選項 \\(\\angle 1 = \\angle 2\\) 表示 \\(\\angle 1\\) 與 \\(\\angle 2\\) 為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle 2\\) 平行），可判定 \\(AC \\parallel BD\\)，而非 \\(AB \\parallel CD\\)，故此項無法判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 3 = \\angle 4\\) 為內錯角相等（即 \\(\\angle 3\\) 與 \\(\\angle 4\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 5 = \\angle B\\) 為內錯角相等（即 \\(\\angle 5\\) 與 \\(\\angle B\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle B + \\angle BDC = 180^\\circ\\) 為同旁內角互補（即 \\(\\angle B\\) 與 \\(\\angle BDC\\) 平行），可判定 \\(AB \\parallel CD\\)。故選：\\(\\angle 1 = \\angle 2\\)。",
+      "explanation": "解：選項 \\(\\angle 1 = \\angle 2\\) 表示 \\(\\angle 1\\) 與 \\(\\angle 2\\) 為內錯角相等，可判定 AC//BD，而非 AB//CD，故此項無法判定 AB//CD。選項 \\(\\angle 3 = \\angle 4\\) 為內錯角相等，可判定 AB//CD。選項 \\(\\angle 5 = \\angle B\\) 為內錯角相等，可判定 AB//CD。選項 \\(\\angle B + \\angle BDC = 180^\\circ\\) 為同旁內角互補，可判定 AB//CD。故選：\\(\\angle 1 = \\angle 2\\)。",
       "image": "images/003.png",
       "answerimage": null,
       "comment": "第3題，題目有圖，答案無圖"
     },
     {
-      "question": "在下列圖形中，由 \\(\\angle 1 = \\angle 2\\) 能得到 \\(AB \\parallel CD\\) 的是",
+      "question": "在下列圖形中，由 \\(\\angle 1 = \\angle 2\\) 能得到 AB//CD 的是",
       "options": ["圖形A", "圖形B", "圖形C", "圖形D"],
       "answer": "圖形A",
-      "explanation": "解：選項「圖形A」中，\\(\\angle 1 = \\angle 2\\) 為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle 2\\) 平行），可判定 \\(AB \\parallel CD\\)。選項「圖形B」、「圖形C」、「圖形D」中，\\(\\angle 1 = \\angle 2\\) 無法直接推導出 \\(AB \\parallel CD\\)。故選：圖形A。本題考查平行線的判定，需正確識別角的關係。",
+      "explanation": "解：選項「圖形A」中，\\(\\angle 1 = \\angle 2\\) 為內錯角相等，可判定 AB//CD。選項「圖形B」、「圖形C」、「圖形D」中，\\(\\angle 1 = \\angle 2\\) 無法直接推導出 AB//CD。故選：圖形A。本題考查平行線的判定，需正確識別角的關係。",
       "image": "images/004.png",
       "answerimage": null,
       "comment": "第4題，題目有圖，答案無圖"
     },
     {
       "question": "在同一平面內，\\(a\\)、\\(b\\)、\\(c\\) 是直線，下列說法正確的是",
-      "options": ["若 \\(a \\parallel b\\)，\\(b \\parallel c\\)，則 \\(a \\parallel c\\)", "若 \\(a \\perp b\\)，\\(b \\perp c\\)，則 \\(a \\perp c\\)", "若 \\(a \\parallel b\\)，\\(b \\perp c\\)，則 \\(a \\parallel c\\)", "若 \\(a \\parallel b\\)，\\(b \\parallel c\\)，則 \\(a \\perp c\\)"],
-      "answer": "若 \\(a \\parallel b\\)，\\(b \\parallel c\\)，則 \\(a \\parallel c\\)",
-      "explanation": "解：選項「若 \\(a \\parallel b\\)，\\(b \\parallel c\\)，則 \\(a \\parallel c\\)」符合平行線的傳遞性（即 \\(a\\) 平行 \\(b\\)，\\(b\\) 平行 \\(c\\)，則 \\(a\\) 平行 \\(c\\)）。選項「若 \\(a \\perp b\\)，\\(b \\perp c\\)，則 \\(a \\perp c\\)」錯誤，因 \\(a \\parallel c\\)。選項「若 \\(a \\parallel b\\)，\\(b \\perp c\\)，則 \\(a \\parallel c\\)」錯誤，因 \\(a \\perp c\\)。選項「若 \\(a \\parallel b\\)，\\(b \\parallel c\\)，則 \\(a \\perp c\\)」錯誤，因 \\(a \\parallel c\\)。故選：若 \\(a \\parallel b\\)，\\(b \\parallel c\\)，則 \\(a \\parallel c\\)。",
+      "options": ["若 a//b，b//c，則 a//c", "若 \\(a \\perp b\\)，\\(b \\perp c\\)，則 \\(a \\perp c\\)", "若 a//b，\\(b \\perp c\\)，則 a//c", "若 a//b，b//c，則 \\(a \\perp c\\)"],
+      "answer": "若 a//b，b//c，則 a//c",
+      "explanation": "解：選項「若 a//b，b//c，則 a//c」符合平行線的傳遞性。選項「若 \\(a \\perp b\\)，\\(b \\perp c\\)，則 \\(a \\perp c\\)」錯誤，因 a//c。選項「若 a//b，\\(b \\perp c\\)，則 a//c」錯誤，因 \\(a \\perp c\\)。選項「若 a//b，b//c，則 \\(a \\perp c\\)」錯誤，因 a//c。故選：若 a//b，b//c，則 a//c。",
       "image": null,
       "answerimage": null,
       "comment": "第5題，題目無圖，答案無圖"
     },
     {
-      "question": "如圖，點 \\(E\\) 在 \\(CD\\) 的延長線上，下列條件中不能判定 \\(AB \\parallel CD\\) 的是",
+      "question": "如圖，點 \\(E\\) 在 \\(CD\\) 的延長線上，下列條件中不能判定 AB//CD 的是",
       "options": ["\\(\\angle B + \\angle BDC = 180^\\circ\\)", "\\(\\angle 3 = \\angle 4\\)", "\\(\\angle 5 = \\angle B\\)", "\\(\\angle 1 = \\angle 2\\)"],
       "answer": "\\(\\angle 1 = \\angle 2\\)",
-      "explanation": "解：選項 \\(\\angle B + \\angle BDC = 180^\\circ\\) 為同旁內角互補（即 \\(\\angle B\\) 與 \\(\\angle BDC\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 3 = \\angle 4\\) 為內錯角相等（即 \\(\\angle 3\\) 與 \\(\\angle 4\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 5 = \\angle B\\) 為內錯角相等（即 \\(\\angle 5\\) 與 \\(\\angle B\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 1 = \\angle 2\\) 為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle 2\\) 平行），可判定 \\(AC \\parallel BD\\)，無法判定 \\(AB \\parallel CD\\)。故選：\\(\\angle 1 = \\angle 2\\)。",
+      "explanation": "解：選項 \\(\\angle B + \\angle BDC = 180^\\circ\\) 為同旁內角互補，可判定 AB//CD。選項 \\(\\angle 3 = \\angle 4\\) 為內錯角相等，可判定 AB//CD。選項 \\(\\angle 5 = \\angle B\\) 為內錯角相等，可判定 AB//CD。選項 \\(\\angle 1 = \\angle 2\\) 為內錯角相等，可判定 AC//BD，無法判定 AB//CD。故選：\\(\\angle 1 = \\angle 2\\)。",
       "image": "images/006.png",
       "answerimage": null,
       "comment": "第6題，題目有圖，答案無圖"
     },
     {
-      "question": "如圖，能判定 \\(AD \\parallel BC\\) 的條件是",
+      "question": "如圖，能判定 AD//BC 的條件是",
       "options": ["\\(\\angle 1 = \\angle 2\\)", "\\(\\angle 2 = \\angle 3\\)", "\\(\\angle 1 = \\angle 4\\)", "\\(\\angle 3 = \\angle 4\\)"],
       "answer": "\\(\\angle 2 = \\angle 3\\)",
-      "explanation": "解：選項 \\(\\angle 2 = \\angle 3\\) 為內錯角相等（即 \\(\\angle 2\\) 與 \\(\\angle 3\\) 平行），可判定 \\(AD \\parallel BC\\)。選項 \\(\\angle 1 = \\angle 2\\)、\\(\\angle 1 = \\angle 4\\)、\\(\\angle 3 = \\angle 4\\) 均無法直接推導出 \\(AD \\parallel BC\\)。故選：\\(\\angle 2 = \\angle 3\\)。本題考查平行線的判定，需正確識別內錯角。",
+      "explanation": "解：選項 \\(\\angle 2 = \\angle 3\\) 為內錯角相等，可判定 AD//BC。選項 \\(\\angle 1 = \\angle 2\\)、\\(\\angle 1 = \\angle 4\\)、\\(\\angle 3 = \\angle 4\\) 均無法直接推導出 AD//BC。故選：\\(\\angle 2 = \\angle 3\\)。本題考查平行線的判定，需正確識別內錯角。",
       "image": "images/007.png",
       "answerimage": null,
       "comment": "第7題，題目有圖，答案無圖"
     },
     {
       "question": "如圖，\\(\\angle 1 = \\angle 2\\)，則下列結論一定成立的是",
-      "options": ["\\(AB \\parallel CD\\)", "\\(AD \\parallel BC\\)", "\\(\\angle B = \\angle D\\)", "\\(\\angle 3 = \\angle 4\\)"],
-      "answer": "\\(AD \\parallel BC\\)",
-      "explanation": "解：因 \\(\\angle 1 = \\angle 2\\)，\\(\\angle 1\\) 與 \\(\\angle 2\\) 為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle 2\\) 平行），可判定 \\(AD \\parallel BC\\)。選項 \\(AB \\parallel CD\\)、\\(\\angle B = \\angle D\\)、\\(\\angle 3 = \\angle 4\\) 均無法由 \\(\\angle 1 = \\angle 2\\) 直接推導。故選：\\(AD \\parallel BC\\)。",
+      "options": ["AB//CD", "AD//BC", "\\(\\angle B = \\angle D\\)", "\\(\\angle 3 = \\angle 4\\)"],
+      "answer": "AD//BC",
+      "explanation": "解：因 \\(\\angle 1 = \\angle 2\\)，\\(\\angle 1\\) 與 \\(\\angle 2\\) 為內錯角相等，可判定 AD//BC。選項 AB//CD、\\(\\angle B = \\angle D\\)、\\(\\angle 3 = \\angle 4\\) 均無法由 \\(\\angle 1 = \\angle 2\\) 直接推導。故選：AD//BC。",
       "image": "images/008.png",
       "answerimage": null,
       "comment": "第8題，題目有圖，答案無圖"
     },
     {
-      "question": "如圖，給出下列條件：① \\(\\angle 1 = \\angle 2\\)；② \\(\\angle 3 = \\angle 4\\)；③ \\(\\angle B = \\angle DCE\\)；④ \\(\\angle B + \\angle BAD = 180^\\circ\\)，其中能推出 \\(AB \\parallel DC\\) 的是",
+      "question": "如圖，給出下列條件：① \\(\\angle 1 = \\angle 2\\)；② \\(\\angle 3 = \\angle 4\\)；③ \\(\\angle B = \\angle DCE\\)；④ \\(\\angle B + \\angle BAD = 180^\\circ\\)，其中能推出 AB//DC 的是",
       "options": ["①②", "①③", "②③", "②④"],
       "answer": "①③",
-      "explanation": "解：條件① \\(\\angle 1 = \\angle 2\\) 為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle 2\\) 平行），可判定 \\(AB \\parallel DC\\)。條件② \\(\\angle 3 = \\angle 4\\) 為內錯角相等（即 \\(\\angle 3\\) 與 \\(\\angle 4\\) 平行），可判定 \\(AD \\parallel CB\\)。條件③ \\(\\angle B = \\angle DCE\\) 為內錯角相等（即 \\(\\angle B\\) 與 \\(\\angle DCE\\) 平行），可判定 \\(AB \\parallel CD\\)。條件④ \\(\\angle B + \\angle BAD = 180^\\circ\\) 為同旁內角互補（即 \\(\\angle B\\) 與 \\(\\angle BAD\\) 平行），可判定 \\(AD \\parallel CB\\)。故能推出 \\(AB \\parallel DC\\) 的是①③。選項：①③。",
+      "explanation": "解：條件① \\(\\angle 1 = \\angle 2\\) 為內錯角相等，可判定 AB//DC。條件② \\(\\angle 3 = \\angle 4\\) 為內錯角相等，可判定 AD//CB。條件③ \\(\\angle B = \\angle DCE\\) 為內錯角相等，可判定 AB//CD。條件④ \\(\\angle B + \\angle BAD = 180^\\circ\\) 為同旁內角互補，可判定 AD//CB。故能推出 AB//DC 的是①③。選項：①③。",
       "image": "images/009.png",
       "answerimage": null,
       "comment": "第9題，題目有圖，答案無圖"
     },
     {
       "question": "如圖所示，下列推理不正確的是",
-      "options": ["若 \\(\\angle 1 = \\angle B\\)，則 \\(BC \\parallel DE\\)", "若 \\(\\angle 2 = \\angle ADE\\)，則 \\(AD \\parallel CE\\)", "若 \\(\\angle A + \\angle ADC = 180^\\circ\\)，則 \\(AB \\parallel CD\\)", "若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 \\(BC \\parallel DE\\)"],
-      "answer": "若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 \\(BC \\parallel DE\\)",
-      "explanation": "解：選項「若 \\(\\angle 1 = \\angle B\\)，則 \\(BC \\parallel DE\\)」為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle B\\) 平行），正確。選項「若 \\(\\angle 2 = \\angle ADE\\)，則 \\(AD \\parallel CE\\)」為內錯角相等（即 \\(\\angle 2\\) 與 \\(\\angle ADE\\) 平行），正確。選項「若 \\(\\angle A + \\angle ADC = 180^\\circ\\)，則 \\(AB \\parallel CD\\)」為同旁內角互補（即 \\(\\angle A\\) 與 \\(\\angle ADC\\) 平行），正確。選項「若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 \\(BC \\parallel DE\\)」錯誤，因其為同旁內角互補（即 \\(\\angle B\\) 與 \\(\\angle BCD\\) 平行），應得出 \\(AB \\parallel CD\\)，而非 \\(BC \\parallel DE\\)。故選：若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 \\(BC \\parallel DE\\)。",
+      "options": ["若 \\(\\angle 1 = \\angle B\\)，則 BC//DE", "若 \\(\\angle 2 = \\angle ADE\\)，則 AD//CE", "若 \\(\\angle A + \\angle ADC = 180^\\circ\\)，則 AB//CD", "若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 BC//DE"],
+      "answer": "若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 BC//DE",
+      "explanation": "解：選項「若 \\(\\angle 1 = \\angle B\\)，則 BC//DE」為內錯角相等，正確。選項「若 \\(\\angle 2 = \\angle ADE\\)，則 AD//CE」為內錯角相等，正確。選項「若 \\(\\angle A + \\angle ADC = 180^\\circ\\)，則 AB//CD」為同旁內角互補，正確。選項「若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 BC//DE」錯誤，因其為同旁內角互補，應得出 AB//CD，而非 BC//DE。故選：若 \\(\\angle B + \\angle BCD = 180^\\circ\\)，則 BC//DE。",
       "image": "images/010.png",
       "answerimage": null,
       "comment": "第10題，題目有圖，答案無圖"
     },
     {
-      "question": "下列語句：① 不相交的兩條直線叫平行線；② 在同一平面內，兩條直線的位置關係只有兩種：相交和平行；③ 如果線段 \\(AB\\) 和線段 \\(CD\\) 不相交，那麼直線 \\(AB\\) 和直線 \\(CD\\) 平行；④ 如果兩條直線都和第三條直線平行，那麼這兩條直線平行；⑤ 過一點有且只有一條直線與已知直線平行；正確的個數是",
+      "question": "下列語句：① 不相交的兩條直線叫平行線；② 在同一平面內，兩條直線的位置關係只有兩種：相交和平行；③ 如果線段 \\(AB\\) 和線段 \\(CD\\) 不相交，那麼直線 AB//CD；④ 如果兩條直線都和第三條直線平行，那麼這兩條直線平行；⑤ 過一點有且只有一條直線與已知直線平行；正確的個數是",
       "options": ["1", "2", "3", "4"],
       "answer": "2",
-      "explanation": "解：語句①「不相交的兩條直線叫平行線」錯誤，需在同一平面內。語句②「在同一平面內，兩條直線的位置關係只有兩種：相交和平行」正確。語句③「如果線段 \\(AB\\) 和線段 \\(CD\\) 不相交，那麼直線 \\(AB\\) 和直線 \\(CD\\) 平行」錯誤，線段不相交不保證直線平行。語句④「如果兩條直線都和第三條直線平行，那麼這兩條直線平行」正確，符合平行線傳遞性。語句⑤「過一點有且只有一條直線與已知直線平行」錯誤，應為「過直線外一點」。正確語句為②④，個數為 2。故選：2。",
+      "explanation": "解：語句①「不相交的兩條直線叫平行線」錯誤，需在同一平面內。語句②「在同一平面內，兩條直線的位置關係只有兩種：相交和平行」正確。語句③「如果線段 \\(AB\\) 和線段 \\(CD\\) 不相交，那麼直線 AB//CD」錯誤，線段不相交不保證直線平行。語句④「如果兩條直線都和第三條直線平行，那麼這兩條直線平行」正確，符合平行線傳遞性。語句⑤「過一點有且只有一條直線與已知直線平行」錯誤，應為「過直線外一點」。正確語句為②④，個數為 2。故選：2。",
       "image": null,
       "answerimage": null,
       "comment": "第11題，題目無圖，答案無圖"
     },
     {
-      "question": "如圖，在下列條件中，能判斷 \\(AD \\parallel BC\\) 的是",
+      "question": "如圖，在下列條件中，能判斷 AD//BC 的是",
       "options": ["\\(\\angle DAC = \\angle BCA\\)", "\\(\\angle DCB + \\angle ABC = 180^\\circ\\)", "\\(\\angle ABD = \\angle BDC\\)", "\\(\\angle BAC = \\angle ACD\\)"],
       "answer": "\\(\\angle DAC = \\angle BCA\\)",
-      "explanation": "解：選項 \\(\\angle DAC = \\angle BCA\\) 為內錯角相等（即 \\(\\angle DAC\\) 與 \\(\\angle BCA\\) 平行），可判定 \\(AD \\parallel BC\\)。選項 \\(\\angle DCB + \\angle ABC = 180^\\circ\\) 為同旁內角互補（即 \\(\\angle DCB\\) 與 \\(\\angle ABC\\) 平行），可判定 \\(DC \\parallel AB\\)。選項 \\(\\angle ABD = \\angle BDC\\) 為內錯角相等（即 \\(\\angle ABD\\) 與 \\(\\angle BDC\\) 平行），可判定 \\(DC \\parallel AB\\)。選項 \\(\\angle BAC = \\angle ACD\\) 為同位角相等（即 \\(\\angle BAC\\) 與 \\(\\angle ACD\\) 平行），可判定 \\(DC \\parallel AB\\)。故選：\\(\\angle DAC = \\angle BCA\\)。",
+      "explanation": "解：選項 \\(\\angle DAC = \\angle BCA\\) 為內錯角相等，可判定 AD//BC。選項 \\(\\angle DCB + \\angle ABC = 180^\\circ\\) 為同旁內角互補，可判定 DC//AB。選項 \\(\\angle ABD = \\angle BDC\\) 為內錯角相等，可判定 DC//AB。選項 \\(\\angle BAC = \\angle ACD\\) 為同位角相等，可判定 DC//AB。故選：\\(\\angle DAC = \\angle BCA\\)。",
       "image": "images/012.png",
       "answerimage": null,
       "comment": "第12題，題目有圖，答案無圖"
     },
-{
-  "question": "如圖，直線 \\(c\\) 與直線 \\(a\\) 相交於點 \\(A\\)，與直線 \\(b\\) 相交於點 \\(B\\)，\\(\\angle 1 = 130^\\circ\\)，\\(\\angle 2 = 60^\\circ\\)，若要使直線 \\(a \\parallel b\\)，則將直線 \\(a\\) 繞點 \\(A\\) 按如圖所示的方向至少旋轉",
-  "options": ["\\(10^\\circ\\)", "\\(20^\\circ\\)", "\\(60^\\circ\\)", "\\(130^\\circ\\)"],
-  "answer": "\\(10^\\circ\\)",
-  "explanation": "本題解析由AI生成：解：欲使 \\(a \\parallel b\\)，需 \\(\\angle 3 = \\angle 2 = 60^\\circ\\)（即 \\(\\angle 3\\) 與 \\(\\angle 2\\) 同位角相等，兩直線平行）。已知 \\(\\angle 1 = 130^\\circ\\)，則 \\(\\angle 3 = 180^\\circ - 130^\\circ = 50^\\circ\\)（鄰角互補）。故直線 \\(a\\) 需順時針旋轉 \\(60^\\circ - 50^\\circ = 10^\\circ\\)。選項 \\(20^\\circ\\)、\\(60^\\circ\\)、\\(130^\\circ\\) 均不正確。故選：\\(10^\\circ\\)。",
-  "image": "images/013.png",
-  "answerimage": null,
-  "comment": "第13題，題目有圖，答案無圖"
-},
+    {
+      "question": "如圖，直線 \\(c\\) 與直線 \\(a\\) 相交於點 \\(A\\)，與直線 \\(b\\) 相交於點 \\(B\\)，\\(\\angle 1 = 130^\\circ\\)，\\(\\angle 2 = 60^\\circ\\)，若要使直線 a//b，則將直線 \\(a\\) 繞點 \\(A\\) 按如圖所示的方向至少旋轉",
+      "options": ["\\(10^\\circ\\)", "\\(20^\\circ\\)", "\\(60^\\circ\\)", "\\(130^\\circ\\)"],
+      "answer": "\\(10^\\circ\\)",
+      "explanation": "本題解析由AI生成：解：欲使 a//b，需 \\(\\angle 3 = \\angle 2 = 60^\\circ\\)（同位角相等，兩直線平行）。已知 \\(\\angle 1 = 130^\\circ\\)，則 \\(\\angle 3 = 180^\\circ - 130^\\circ = 50^\\circ\\)（鄰角互補）。故直線 \\(a\\) 需順時針旋轉 \\(60^\\circ - 50^\\circ = 10^\\circ\\)。選項 \\(20^\\circ\\)、\\(60^\\circ\\)、\\(130^\\circ\\) 均不正確。故選：\\(10^\\circ\\)。",
+      "image": "images/013.png",
+      "answerimage": null,
+      "comment": "第13題，題目有圖，答案無圖"
+    },
     {
       "question": "如圖，已知 \\(\\angle 1 = 90^\\circ\\)，為保證兩條鐵軌平行，添加的下列條件中，正確的是",
       "options": ["\\(\\angle 2 = 90^\\circ\\)", "\\(\\angle 3 = 90^\\circ\\)", "\\(\\angle 4 = 90^\\circ\\)", "\\(\\angle 5 = 90^\\circ\\)"],
       "answer": "\\(\\angle 4 = 90^\\circ\\)",
-      "explanation": "本題解析由AI生成：解：欲保證兩條鐵軌平行，需兩直線與第三直線垂直，則兩直線平行。已知 \\(\\angle 1 = 90^\\circ\\)，表示一條鐵軌與橫線垂直。選項 \\(\\angle 4 = 90^\\circ\\) 表示另一條鐵軌與同一橫線垂直（即 \\(\\angle 4\\) 與橫線垂直），可判定兩鐵軌平行。選項 \\(\\angle 2 = 90^\\circ\\)、\\(\\angle 3 = 90^\\circ\\)、\\(\\angle 5 = 90^\\circ\\) 無法保證兩鐵軌與同一橫線垂直，故不正確。故選：\\(\\angle 4 = 90^\\circ\\)。",
+      "explanation": "本題解析由AI生成：解：欲保證兩條鐵軌平行，需兩直線與第三直線垂直，則兩直線平行。已知 \\(\\angle 1 = 90^\\circ\\)，表示一條鐵軌與橫線垂直。選項 \\(\\angle 4 = 90^\\circ\\) 表示另一條鐵軌與同一橫線垂直，可判定兩鐵軌平行。選項 \\(\\angle 2 = 90^\\circ\\)、\\(\\angle 3 = 90^\\circ\\)、\\(\\angle 5 = 90^\\circ\\) 無法保證兩鐵軌與同一橫線垂直，故不正確。故選：\\(\\angle 4 = 90^\\circ\\)。",
       "image": "images/014.png",
       "answerimage": null,
       "comment": "第14題，題目有圖，答案無圖"
@@ -137,10 +137,10 @@
       "comment": "第15題，題目無圖，答案無圖"
     },
     {
-      "question": "如圖，點 \\(F\\)、\\(E\\) 分別在線段 \\(AB\\) 和 \\(CD\\) 上，下列條件不能判定 \\(AB \\parallel CD\\) 的是",
+      "question": "如圖，點 \\(F\\)、\\(E\\) 分別在線段 \\(AB\\) 和 \\(CD\\) 上，下列條件不能判定 AB//CD 的是",
       "options": ["\\(\\angle A + \\angle ADC = 180^\\circ\\)", "\\(\\angle 2 = \\angle 3\\)", "\\(\\angle 1 = \\angle 4\\)", "\\(\\angle 3 = \\angle 4\\)"],
       "answer": "\\(\\angle 3 = \\angle 4\\)",
-      "explanation": "解：選項 \\(\\angle A + \\angle ADC = 180^\\circ\\) 為同旁內角互補（即 \\(\\angle A\\) 與 \\(\\angle ADC\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 2 = \\angle 3\\) 為內錯角相等（即 \\(\\angle 2\\) 與 \\(\\angle 3\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 1 = \\angle 4\\) 為內錯角相等（即 \\(\\angle 1\\) 與 \\(\\angle 4\\) 平行），可判定 \\(AB \\parallel CD\\)。選項 \\(\\angle 3 = \\angle 4\\) 為同位角相等（即 \\(\\angle 3\\) 與 \\(\\angle 4\\) 平行），可判定 \\(DF \\parallel BE\\)，無法判定 \\(AB \\parallel CD\\)。故選：\\(\\angle 3 = \\angle 4\\)。",
+      "explanation": "解：選項 \\(\\angle A + \\angle ADC = 180^\\circ\\) 為同旁內角互補，可判定 AB//CD。選項 \\(\\angle 2 = \\angle 3\\) 為內錯角相等，可判定 AB//CD。選項 \\(\\angle 1 = \\angle 4\\) 為內錯角相等，可判定 AB//CD。選項 \\(\\angle 3 = \\angle 4\\) 為同位角相等，可判定 DF//BE，無法判定 AB//CD。故選：\\(\\angle 3 = \\angle 4\\)。",
       "image": "images/016.png",
       "answerimage": null,
       "comment": "第16題，題目有圖，答案無圖"
