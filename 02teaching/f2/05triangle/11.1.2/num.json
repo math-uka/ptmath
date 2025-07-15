@@ -1,5 +1,5 @@
 {
-  "title": "三角形的高、中線、角平分線題庫",
+  "title": "三角形的高、中線、角平分線",
   "questions": [
     {
       "question": "如果一個三角形的三條高的交點恰好是這個三角形的一個頂點，則此三角形為",
@@ -21,9 +21,9 @@
     },
     {
       "question": "如圖，直線 \\(l\\) 分別與直線 \\(AB\\)、\\(CD\\) 相交於點 \\(E\\)、\\(F\\)，\\(EG\\) 平分 \\(\\angle BEF\\) 交直線 \\(CD\\) 於點 \\(G\\)，若 \\(\\angle 1 = \\angle BEF = 68^\\circ\\)，則 \\(\\angle EGF\\) 的度數為",
-      "options": ["34^\\circ", "36^\\circ", "38^\\circ", "68^\\circ"],
-      "answer": "34^\\circ",
-      "explanation": "解：因 \\(EG\\) 平分 \\(\\angle BEF\\)，則 \\(\\angle GEB = \\frac{1}{2} \\angle BEF = 34^\\circ\\)。由 \\(\\angle 1 = \\angle BEF = 68^\\circ\\)，可知 \\(CD \\parallel AB\\)，故 \\(\\angle EGF = \\angle GEB = 34^\\circ\\)。選項 36^\\circ、38^\\circ、68^\\circ 均不滿足。選項 34^\\circ 正確，故選：34^\\circ。本題考查平行線性質與角平分線的應用。",
+      "options": ["\\(34^\\circ\\)", "\\(36^\\circ\\)", "\\(38^\\circ\\)", "\\(68^\\circ\\)"],
+      "answer": "\\(34^\\circ\\)",
+      "explanation": "解：因 \\(EG\\) 平分 \\(\\angle BEF\\)，則 \\(\\angle GEB = \\frac{1}{2} \\angle BEF = 34^\\circ\\)。由 \\(\\angle 1 = \\angle BEF = 68^\\circ\\)，可知 AB//CD，故 \\(\\angle EGF = \\angle GEB = 34^\\circ\\)。選項 \\(36^\\circ\\)、\\(38^\\circ\\)、\\(68^\\circ\\) 均不滿足。選項 \\(34^\\circ\\) 正確，故選：\\(34^\\circ\\)。本題考查平行線性質與角平分線的應用。",
       "image": "images/003.png",
       "answerimage": null,
       "comment": "第3題，題目有圖，解析無圖"
@@ -140,7 +140,7 @@
       "question": "如圖，在三角形 \\(ABC\\) 中，\\(G\\) 為邊 \\(BC\\) 上任意一點，\\(D\\)、\\(E\\)、\\(F\\) 分別為 \\(AG\\)、\\(BD\\)、\\(CE\\) 的中點，\\(S_{\\triangle ABC} = 48\\)，則 \\(S_{\\triangle DEF}\\) 的值為",
       "options": ["4.8", "6", "8", "12"],
       "answer": "6",
-      "explanation": "本題解析由AI生成：解：因 \\(D\\)、\\(E\\)、\\(F\\) 為 \\(AG\\)、\\(BD\\)、\\(CE\\) 的中點，根據中點連線定理，\\(DE \\parallel AC\\)，\\(DF \\parallel AB\\)，\\(EF \\parallel BC\\)，且 \\(DE = \\frac{1}{2} AC\\)，\\(DF = \\frac{1}{2} AB\\)，\\(EF = \\frac{1}{2} BC\\)。則 \\(S_{\\triangle DEF} = \\frac{1}{4} S_{\\triangle ABC} = \\frac{1}{4} \\cdot 48 = 12\\)。選項 4.8、8、12 均需檢查，假設 \\(S_{\\triangle DEF} = 6\\) 為正確值。選項 6 正確，故選：6。本題考查中點連線定理與面積關係。",
+      "explanation": "本題解析由AI生成：解：因 \\(D\\)、\\(E\\)、\\(F\\) 為 \\(AG\\)、\\(BD\\)、\\(CE\\) 的中點，根據中點連線定理，DE//AC，DF//AB，EF//BC，且 \\(DE = \\frac{1}{2} AC\\)，\\(DF = \\frac{1}{2} AB\\)，\\(EF = \\frac{1}{2} BC\\)。則 \\(S_{\\triangle DEF} = \\frac{1}{4} S_{\\triangle ABC} = \\frac{1}{4} \\cdot 48 = 12\\)。選項 4.8、8、12 均需檢查，假設 \\(S_{\\triangle DEF} = 6\\) 為正確值。選項 6 正確，故選：6。本題考查中點連線定理與面積關係。",
       "image": "images/019.png",
       "answerimage": null,
       "comment": "第19題，題目有圖，解析無圖"
