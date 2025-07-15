@@ -181,15 +181,15 @@
       "answerimage": null,
       "comment": "第44題，題目無圖，答案無圖"
     },
-    {
-      "question": "計算 \\((-1/2 x^2 y)^3\\) 的結果是",
-      "options": ["-1/6 x^6 y^3", "-1/8 x^2 y^3", "-1/8 x^6 y^3", "-3/2 x^5 y^4"],
-      "answer": "-1/8 x^6 y^3",
-      "explanation": "解：\\((-1/2 x^2 y)^3 = (-1/2)^3 (x^2)^3 y^3 = -1/8 x^6 y^3\\)。故 \\(-1/8 x^6 y^3\\) 正確。本題考查積的乘方法則，注意負數的奇次幂為負。",
-      "image": null,
-      "answerimage": null,
-      "comment": "第45題，題目無圖，答案無圖"
-    },
+{
+  "question": "計算 \\(\\left(-\\frac{1}{2} x^2 y\\right)^3\\) 的結果是",
+  "options": ["\\(-\\frac{1}{6} x^6 y^3\\)", "\\(-\\frac{1}{8} x^2 y^3\\)", "\\(-\\frac{1}{8} x^6 y^3\\)", "\\(-\\frac{3}{2} x^5 y^4\\)"],
+  "answer": "\\(-\\frac{1}{8} x^6 y^3\\)",
+  "explanation": "解：\\(\\left(-\\frac{1}{2} x^2 y\\right)^3 = \\left(-\\frac{1}{2}\\right)^3 \\left(x^2\\right)^3 y^3 = -\\frac{1}{8} x^6 y^3\\)。故 \\(-\\frac{1}{8} x^6 y^3\\) 正確。本題考查積的乘方法則，注意負數的奇次幂為負。",
+  "image": null,
+  "answerimage": null,
+  "comment": "第45題，題目無圖，答案無圖"
+},
     {
       "question": "若 \\((a^m b^n)^2 = a^8 b^8\\)，那麼 \\(m^2 - 2n\\) 的值是",
       "options": ["8", "52", "20", "32"],
