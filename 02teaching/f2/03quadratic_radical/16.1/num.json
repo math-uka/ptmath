@@ -32,7 +32,7 @@
       "question": "下列運算正確的是",
       "options": ["\\frac{3a+b}{6} = \\frac{a+b}{2}", "2 \\times \\frac{a+b}{3} = \\frac{2a+b}{3}", "\\sqrt{a^2} = a", "\\left| a \\right| = a \\quad (a \\geq 0)"],
       "answer": "\\left| a \\right| = a \\quad (a \\geq 0)",
-      "explanation": "解：逐一分析選項：\\(\\frac{3a+b}{6}\\) 無法化簡為 \\(\\frac{a+b}{2}\\)，錯誤；2 \\times \\frac{a+b}{3} = \\frac{2a+2b}{3}\\)，錯誤；\\(\\sqrt{a^2} = \\left| a \\right|\\)，錯誤；\\(\\left| a \\right| = a\\) 當 \\(a \\geq 0\\) 成立，正確。故選：\\(\\left| a \\right| = a \\quad (a \\geq 0)\\)。本題考查二次根式、絕對值及分數運算的性質。",
+      "explanation": "解：逐一分析選項：\\(\\frac{3a+b}{6}\\) 無法化簡為 \\(\\frac{a+b}{2}\\)，錯誤；\\(2 \\times \\frac{a+b}{3} = \\frac{2a+b}{3}\\)，錯誤；\\(\\sqrt{a^2} = \\left| a \\right|\\)，錯誤；\\(\\left| a \\right| = a\\) 當 \\(a \\geq 0\\) 成立，正確。故選：\\(\\left| a \\right| = a \\quad (a \\geq 0)\\)。本題考查二次根式、絕對值及分數運算的性質。",
       "image": null,
       "answerimage": null,
       "comment": "第4題，題目無圖，答案無圖"

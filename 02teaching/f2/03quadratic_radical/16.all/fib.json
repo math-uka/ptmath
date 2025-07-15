@@ -56,7 +56,7 @@
       "comment": "第7題，題目無圖，答案無圖"
     },
     {
-      "question": "計算：\\(\\sqrt{\\frac{1}{3}} \\cdot \\sqrt{27} = ______．",
+      "question": "計算：\\(\\sqrt{\\frac{1}{3}} \\cdot \\sqrt{27} \\) = ______．",
       "answer": "\\(3\\)",
       "explanation": "解：原式 = \\(\\sqrt{\\frac{1}{3} \\cdot 27} = \\sqrt{9} = 3\\)。本題考查二次根式的乘法性質。",
       "image": null,
@@ -96,7 +96,7 @@
       "comment": "第12題，題目無圖，答案無圖"
     },
     {
-      "question": "計算：\\((\\sqrt{5})^2 = ______．",
+      "question": "計算：\\((\\sqrt{5})^2\\) = ______．",
       "answer": "\\(5\\)",
       "explanation": "本題解析由AI生成。解：\\((\\sqrt{5})^2 = 5\\)。本題考查二次根式的平方性質。",
       "image": null,
