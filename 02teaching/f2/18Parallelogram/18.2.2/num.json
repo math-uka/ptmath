@@ -4,8 +4,8 @@
     {
       "question": "如圖，菱形ABCD中，E、F分別為AD、BD的中點，若EF=5，則菱形ABCD的周長為",
       "options": ["\\(20\\)", "\\(30\\)", "\\(40\\)", "\\(50\\)"],
-      "answer": "40",
-      "explanation": "解：由於E、F分別為AD、BD的中點，EF為△ABD的中位線，故EF=\\(\\frac{1}{2}AB\\)=5，則AB=10。菱形ABCD的四邊相等，故AB=BC=CD=AD=10，周長為\\(4\\cdot10=40\\)。選項20、30、50不合。故選：40。本題考查三角形中位線定理與菱形四邊相等的性質。",
+      "answer": "\\(40\\)",
+      "explanation": "解：由於E、F分別為AD、BD的中點，EF為△ABD的中位線，故\\(EF=\\frac{1}{2}AB=5\\)，則\\(AB=10\\)。菱形ABCD的四邊相等，故\\(AB=BC=CD=AD=10\\)，周長為\\(4\\cdot10=40\\)。選項\\(20\\)、\\(30\\)、\\(50\\)不合。故選：\\(40\\)。本題考查三角形中位線定理與菱形四邊相等的性質。",
       "image": "images/001.png",
       "answerimage": null,
       "comment": "第1題，題目有圖，答案無圖"
@@ -13,8 +13,8 @@
     {
       "question": "已知菱形ABCD的對角線AC=2，BD=4，則菱形ABCD的面積為",
       "options": ["\\(2\\sqrt{3}\\)", "\\(4\\)", "\\(2\\sqrt{2}\\)", "\\(8\\)"],
-      "answer": "4",
-      "explanation": "解：菱形面積公式為\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)。代入AC=2，BD=4，得面積=\\(\\frac{1}{2}\\cdot2\\cdot4=4\\)。選項\\(2\\sqrt{3}\\)、\\(2\\sqrt{2}\\)、\\(8\\)不合。故選：4。本題考查菱形面積公式。",
+      "answer": "\\(4\\)",
+      "explanation": "解：菱形面積公式為\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)。代入\\(AC=2\\)，\\(BD=4\\)，得面積=\\(\\frac{1}{2}\\cdot2\\cdot4=4\\)。選項\\(2\\sqrt{3}\\)、\\(2\\sqrt{2}\\)、\\(8\\)不合。故選：\\(4\\)。本題考查菱形面積公式。",
       "image": null,
       "answerimage": null,
       "comment": "第2題，題目無圖，答案無圖"
@@ -22,17 +22,17 @@
     {
       "question": "菱形的兩條對角線長分別為6和8，則此菱形的周長為",
       "options": ["\\(24\\)", "\\(20\\)", "\\(10\\)", "\\(5\\)"],
-      "answer": "20",
-      "explanation": "解：如圖，設對角線AC=6，BD=8，則AO=\\(\\frac{6}{2}\\)=3，BO=\\(\\frac{8}{2}\\)=4。菱形對角線互相垂直平分，△AOB為直角三角形，AB=\\(\\sqrt{AO^2+BO^2}\\)=\\(\\sqrt{3^2+4^2}\\)=5。菱形四邊相等，周長為\\(4\\cdot5=20\\)。選項24、10、5不合。故選：20。本題考查菱形對角線性質與勾股定理。",
-      "image":null, 
+      "answer": "\\(20\\)",
+      "explanation": "解：如圖，設對角線\\(AC=6\\)，\\(BD=8\\)，則\\(AO=\\frac{6}{2}=3\\)，\\(BO=\\frac{8}{2}=4\\)。菱形對角線互相垂直平分，△AOB為直角三角形，\\(AB=\\sqrt{AO^2+BO^2}=\\sqrt{3^2+4^2}=5\\)。菱形四邊相等，周長為\\(4\\cdot5=20\\)。選項\\(24\\)、\\(10\\)、\\(5\\)不合。故選：\\(20\\)。本題考查菱形對角線性質與勾股定理。",
+      "image": null,
       "answerimage": "images/q003.png",
       "comment": "第3題，題目有圖，答案無圖"
     },
     {
       "question": "如圖，在菱形ABCD中，AC=12，BD=16，則邊AB上的高CE的長為",
       "options": ["\\(2.4\\)", "\\(4.8\\)", "\\(10\\)", "\\(9.6\\)"],
-      "answer": "9.6",
-      "explanation": "本題解析由AI生成：解：菱形面積可用對角線公式\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)或邊長與高公式\\(S=AB\\cdot CE\\)計算。AC=12，BD=16，面積=\\(\\frac{1}{2}\\cdot12\\cdot16=96\\)。設AO=\\(\\frac{12}{2}\\)=6，BO=\\(\\frac{16}{2}\\)=8，△AOB為直角三角形，AB=\\(\\sqrt{6^2+8^2}\\)=10。則\\(96=10\\cdot CE\\)，CE=9.6。選項2.4、4.8、10不合。故選：9.6。本題考查菱形面積與邊長計算。",
+      "answer": "\\(9.6\\)",
+      "explanation": "本題解析由AI生成：解：菱形面積可用對角線公式\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)或邊長與高公式\\(S=AB\\cdot CE\\)計算。\\(AC=12\\)，\\(BD=16\\)，面積=\\(\\frac{1}{2}\\cdot12\\cdot16=96\\)。設\\(AO=\\frac{12}{2}=6\\)，\\(BO=\\frac{16}{2}=8\\)，△AOB為直角三角形，\\(AB=\\sqrt{6^2+8^2}=10\\)。則\\(96=10\\cdot CE\\)，\\(CE=9.6\\)。選項\\(2.4\\)、\\(4.8\\)、\\(10\\)不合。故選：\\(9.6\\)。本題考查菱形面積與邊長計算。",
       "image": "images/004.png",
       "answerimage": null,
       "comment": "第4題，題目有圖，答案無圖"
@@ -40,8 +40,8 @@
     {
       "question": "如圖，菱形ABCD的對角線AC=5，BD=10，則該菱形的面積為",
       "options": ["\\(50\\)", "\\(25\\)", "\\(\\frac{25}{2}\\sqrt{3}\\)", "\\(12.5\\)"],
-      "answer": "25",
-      "explanation": "解：菱形面積公式為\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)。代入AC=5，BD=10，得面積=\\(\\frac{1}{2}\\cdot5\\cdot10=25\\)。選項50、\\(\\frac{25}{2}\\sqrt{3}\\)、12.5不合。故選：25。本題考查菱形面積公式。",
+      "answer": "\\(25\\)",
+      "explanation": "解：菱形面積公式為\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)。代入\\(AC=5\\)，\\(BD=10\\)，得面積=\\(\\frac{1}{2}\\cdot5\\cdot10=25\\)。選項\\(50\\)、\\(\\frac{25}{2}\\sqrt{3}\\)、\\(12.5\\)不合。故選：\\(25\\)。本題考查菱形面積公式。",
       "image": "images/005.png",
       "answerimage": null,
       "comment": "第5題，題目有圖，答案無圖"
@@ -50,7 +50,7 @@
       "question": "如圖，在菱形ABCD中，\\(\\angle ABC=80^\\circ\\)，BA=BE，則\\(\\angle BAE\\)為",
       "options": ["\\(70^\\circ\\)", "\\(40^\\circ\\)", "\\(75^\\circ\\)", "\\(30^\\circ\\)"],
       "answer": "\\(70^\\circ\\)",
-      "explanation": "解：菱形ABCD中，\\(\\angle ABC=80^\\circ\\)，BD平分\\(\\angle ABC\\)，故\\(\\angle ABD=\\frac{80^\\circ}{2}=40^\\circ\\)。在△ABE中，BA=BE，則△ABE為等腰三角形，\\(\\angle BAE=\\angle BEA\\)。由三角形內角和，\\(\\angle BAE=\\angle BEA=\\frac{180^\\circ-40^\\circ}{2}=70^\\circ\\)。選項\\(40^\\circ\\)、\\(75^\\circ\\)、\\(30^\\circ\\)不合。故選：\\(70^\\circ\\)。本題考查菱形對角線平分角度與等腰三角形性質。",
+      "explanation": "解：菱形ABCD中，\\(\\angle ABC=80^\\circ\\)，BD平分\\(\\angle ABC\\)，故\\(\\angle ABD=\\frac{80^\\circ}{2}=40^\\circ\\)。在△ABE中，\\(BA=BE\\)，則△ABE為等腰三角形，\\(\\angle BAE=\\angle BEA\\)。由三角形內角和，\\(\\angle BAE=\\angle BEA=\\frac{180^\\circ-40^\\circ}{2}=70^\\circ\\)。選項\\(40^\\circ\\)、\\(75^\\circ\\)、\\(30^\\circ\\)不合。故選：\\(70^\\circ\\)。本題考查菱形對角線平分角度與等腰三角形性質。",
       "image": "images/006.png",
       "answerimage": null,
       "comment": "第6題，題目有圖，答案無圖"
@@ -58,35 +58,35 @@
     {
       "question": "如圖，菱形ABCD中，對角線AC、BD相交於點O，H為AD邊中點，菱形ABCD的周長為28，則OH的長為",
       "options": ["\\(3.5\\)", "\\(4\\)", "\\(7\\)", "\\(14\\)"],
-      "answer": "3.5",
-      "explanation": "解：菱形ABCD周長為28，故AB=\\(\\frac{28}{4}\\)=7。菱形對角線互相平分，O為BD中點，H為AD中點，則OH為△ABD的中位線，OH=\\(\\frac{1}{2}AB=\\frac{1}{2}\\cdot7=3.5\\)。選項4、7、14不合。故選：3.5。本題考查三角形中位線定理與菱形性質。",
+      "answer": "\\(3.5\\)",
+      "explanation": "解：菱形ABCD周長為\\(28\\)，故\\(AB=\\frac{28}{4}=7\\)。菱形對角線互相平分，O為BD中點，H為AD中點，則OH為△ABD的中位線，\\(OH=\\frac{1}{2}AB=\\frac{1}{2}\\cdot7=3.5\\)。選項\\(4\\)、\\(7\\)、\\(14\\)不合。故選：\\(3.5\\)。本題考查三角形中位線定理與菱形性質。",
       "image": "images/007.png",
       "answerimage": null,
       "comment": "第7題，題目有圖，答案無圖"
     },
     {
       "question": "已知平行四邊形ABCD中，下列條件能說明平行四邊形ABCD是矩形的是",
-      "options": ["AB=BC", "AC=BD", "\\(AC\\perp BD\\)", "\\(AC平分\\angle BAD\\)"],
-      "answer": "AC=BD",
-      "explanation": "解：選項AB=BC表示鄰邊相等，平行四邊形為菱形，此項不合；選項AC=BD表示對角線相等，平行四邊形為矩形，此項正確；選項\\(AC\\perp BD\\)表示對角線互相垂直，平行四邊形為菱形，此項不合；選項\\(AC平分\\angle BAD\\)表示對角線平分一組對角，平行四邊形為菱形，此項不合。故選：AC=BD。本題考查矩形與菱形的判定。",
+      "options": ["\\(AB=BC\\)", "\\(AC=BD\\)", "\\(AC\\perp BD\\)", "\\(AC平分\\angle BAD\\)"],
+      "answer": "\\(AC=BD\\)",
+      "explanation": "解：選項\\(AB=BC\\)表示鄰邊相等，平行四邊形為菱形，此項不合；選項\\(AC=BD\\)表示對角線相等，平行四邊形為矩形，此項正確；選項\\(AC\\perp BD\\)表示對角線互相垂直，平行四邊形為菱形，此項不合；選項\\(AC平分\\angle BAD\\)表示對角線平分一組對角，平行四邊形為菱形，此項不合。故選：\\(AC=BD\\)。本題考查矩形與菱形的判定。",
       "image": null,
       "answerimage": null,
       "comment": "第8題，題目無圖，答案無圖"
     },
     {
-      "question": "如圖，四邊形ABCD是菱形，\\(\\angle ABC=120^\\circ\\)，BD=4，則BC的長為",
+      "question": "如圖，四邊形ABCD是菱形，\\(\\angle ABC=120^\\circ\\)，\\(BD=4\\)，則BC的長為",
       "options": ["\\(6\\)", "\\(5\\)", "\\(4\\)", "\\(4\\sqrt{3}\\)"],
-      "answer": "4",
-      "explanation": "解：菱形ABCD中，\\(\\angle ABC=120^\\circ\\)，BD平分\\(\\angle ABC\\)，故\\(\\angle ABD=\\angle CBD=60^\\circ\\)。CB=CD，△BCD為等邊三角形，BC=BD=4。選項6、5、\\(4\\sqrt{3}\\)不合。故選：4。本題考查菱形性質與等邊三角形判定。",
+      "answer": "\\(4\\)",
+      "explanation": "解：菱形ABCD中，\\(\\angle ABC=120^\\circ\\)，BD平分\\(\\angle ABC\\)，故\\(\\angle ABD=\\angle CBD=60^\\circ\\)。\\(CB=CD\\)，△BCD為等邊三角形，\\(BC=BD=4\\)。選項\\(6\\)、\\(5\\)、\\(4\\sqrt{3}\\)不合。故選：\\(4\\)。本題考查菱形性質與等邊三角形判定。",
       "image": "images/009.png",
       "answerimage": null,
       "comment": "第9題，題目有圖，答案無圖"
     },
     {
-      "question": "如圖，四邊形ABCD是菱形，AC=8，DB=6，\\(DH\\perp AB\\)於點H，則DH為",
+      "question": "如圖，四邊形ABCD是菱形，\\(AC=8\\)，\\(DB=6\\)，\\(DH\\perp AB\\)於點H，則DH為",
       "options": ["\\(6\\)", "\\(\\frac{24}{5}\\)", "\\(\\frac{48}{5}\\)", "\\(5\\)"],
       "answer": "\\(\\frac{24}{5}\\)",
-      "explanation": "解：菱形ABCD中，AC=8，DB=6，則OA=\\(\\frac{8}{2}\\)=4，OB=\\(\\frac{6}{2}\\)=3。\\(AC\\perp BD\\)，△AOB為直角三角形，AB=\\(\\sqrt{3^2+4^2}\\)=5。菱形面積S=\\(\\frac{1}{2}\\cdot AC \\cdot BD=\\frac{1}{2}\\cdot8\\cdot6=24\\)，又S=\\(AB\\cdot DH\\)=5\\cdot DH，則DH=\\(\\frac{24}{5}\\)。選項6、\\(\\frac{48}{5}\\)、5不合。故選：\\(\\frac{24}{5}\\)。本題考查菱形面積與邊長計算。",
+      "explanation": "解：菱形ABCD中，\\(AC=8\\)，\\(DB=6\\)，則\\(OA=\\frac{8}{2}=4\\)，\\(OB=\\frac{6}{2}=3\\)。\\(AC\\perp BD\\)，△AOB為直角三角形，\\(AB=\\sqrt{3^2+4^2}=5\\)。菱形面積\\(S=\\frac{1}{2}\\cdot AC \\cdot BD=\\frac{1}{2}\\cdot8\\cdot6=24\\)，又\\(S=AB\\cdot DH=5\\cdot DH\\)，則\\(DH=\\frac{24}{5}\\)。選項\\(6\\)、\\(\\frac{48}{5}\\)、\\(5\\)不合。故選：\\(\\frac{24}{5}\\)。本題考查菱形面積與邊長計算。",
       "image": "images/010.png",
       "answerimage": null,
       "comment": "第10題，題目有圖，答案無圖"
@@ -94,17 +94,17 @@
     {
       "question": "如圖，四邊形ABCD為菱形，A、B兩點的座標分別為(2,0)、(0,1)，點C、D在座標軸上，則菱形ABCD的周長為",
       "options": ["\\(\\sqrt{5}\\)", "\\(4\\sqrt{3}\\)", "\\(4\\sqrt{5}\\)", "\\(20\\)"],
-      "answer": "4\\sqrt{5}",
-      "explanation": "解：A(2,0)，B(0,1)，OA=2，OB=1。菱形ABCD中，\\(AC\\perp BD\\)，△AOB為直角三角形，AB=\\(\\sqrt{OA^2+OB^2}\\)=\\(\\sqrt{2^2+1^2}\\)=\\(\\sqrt{5}\\)。菱形四邊相等，周長為\\(4\\cdot\\sqrt{5}\\)。選項\\(\\sqrt{5}\\)、\\(4\\sqrt{3}\\)、\\(20\\)不合。故選：4\\sqrt{5}。本題考查菱形性質與座標幾何。",
+      "answer": "\\(4\\sqrt{5}\\)",
+      "explanation": "解：A(2,0)，B(0,1)，\\(OA=2\\)，\\(OB=1\\)。菱形ABCD中，\\(AC\\perp BD\\)，△AOB為直角三角形，\\(AB=\\sqrt{OA^2+OB^2}=\\sqrt{2^2+1^2}=\\sqrt{5}\\)。菱形四邊相等，周長為\\(4\\cdot\\sqrt{5}\\)。選項\\(\\sqrt{5}\\)、\\(4\\sqrt{3}\\)、\\(20\\)不合。故選：\\(4\\sqrt{5}\\)。本題考查菱形性質與座標幾何。",
       "image": "images/011.png",
       "answerimage": null,
       "comment": "第11題，題目有圖，答案無圖"
     },
     {
-      "question": "如圖，在菱形ABCD中，對角線AC、BD相交於點O，點E為CD的中點，若OE=3，則菱形ABCD的周長為",
+      "question": "如圖，在菱形ABCD中，對角線AC、BD相交於點O，E為CD的中點，若OE=3，則菱形ABCD的周長為",
       "options": ["\\(6\\)", "\\(12\\)", "\\(24\\)", "\\(48\\)"],
-      "answer": "24",
-      "explanation": "本題解析由AI生成：解：E為CD中點，O為對角線AC、BD交點，O為BD中點，OE為△BCD的中位線，OE=\\(\\frac{1}{2}BC\\)=3，則BC=6。菱形四邊相等，AB=BC=CD=AD=6，周長為\\(4\\cdot6=24\\)。選項6、12、48不合。故選：24。本題考查三角形中位線定理與菱形性質。",
+      "answer": "\\(24\\)",
+      "explanation": "本題解析由AI生成：解：E為CD中點，O為對角線AC、BD交點，O為BD中點，OE為△BCD的中位線，\\(OE=\\frac{1}{2}BC=3\\)，則\\(BC=6\\)。菱形四邊相等，\\(AB=BC=CD=AD=6\\)，周長為\\(4\\cdot6=24\\)。選項\\(6\\)、\\(12\\)、\\(48\\)不合。故選：\\(24\\)。本題考查三角形中位線定理與菱形性質。",
       "image": "images/012.png",
       "answerimage": null,
       "comment": "第12題，題目有圖，答案無圖"
@@ -121,8 +121,8 @@
     {
       "question": "如圖，在菱形ABCD中，對角線AC、BD相交於點O，E為AB的中點。若菱形ABCD的周長為32，則OE的長為",
       "options": ["\\(3\\)", "\\(4\\)", "\\(5\\)", "\\(6\\)"],
-      "answer": "4",
-      "explanation": "解：菱形ABCD周長為32，AB=\\(\\frac{32}{4}\\)=8。\\(AC\\perp BD\\)，△AOB為直角三角形，E為AB中點，OE為AB中線，OE=\\(\\frac{1}{2}AB\\)=4。選項3、5、6不合。故選：4。本題考查直角三角形中線性質與菱形性質。",
+      "answer": "\\(4\\)",
+      "explanation": "解：菱形ABCD周長為\\(32\\)，\\(AB=\\frac{32}{4}=8\\)。\\(AC\\perp BD\\)，△AOB為直角三角形，E為AB中點，OE為AB中線，\\(OE=\\frac{1}{2}AB=4\\)。選項\\(3\\)、\\(5\\)、\\(6\\)不合。故選：\\(4\\)。本題考查直角三角形中線性質與菱形性質。",
       "image": "images/014.png",
       "answerimage": null,
       "comment": "第14題，題目有圖，答案無圖"
@@ -130,8 +130,8 @@
     {
       "question": "如圖，在菱形ABCD中，對角線AC=4，\\(\\angle BAD=120^\\circ\\)，則菱形ABCD的周長為",
       "options": ["\\(20\\)", "\\(18\\)", "\\(16\\)", "\\(15\\)"],
-      "answer": "16",
-      "explanation": "解：\\(\\angle BAD=120^\\circ\\)，則\\(\\angle ABC=180^\\circ-120^\\circ=60^\\circ\\)。△ABC為等邊三角形，AB=AC=4。菱形四邊相等，周長為\\(4\\cdot4=16\\)。選項20、18、15不合。故選：16。本題考查菱形角度與等邊三角形性質。",
+      "answer": "\\(16\\)",
+      "explanation": "解：\\(\\angle BAD=120^\\circ\\)，則\\(\\angle ABC=180^\\circ-120^\\circ=60^\\circ\\)。△ABC為等邊三角形，\\(AB=AC=4\\)。菱形四邊相等，周長為\\(4\\cdot4=16\\)。選項\\(20\\)、\\(18\\)、\\(15\\)不合。故選：\\(16\\)。本題考查菱形角度與等邊三角形性質。",
       "image": "images/016.png",
       "answerimage": null,
       "comment": "第16題，題目有圖，答案無圖"
@@ -139,8 +139,8 @@
     {
       "question": "菱形ABCD的對角線AC=8，BD=6，則菱形ABCD的面積為",
       "options": ["\\(12\\)", "\\(24\\)", "\\(25\\)", "\\(48\\)"],
-      "answer": "24",
-      "explanation": "解：菱形面積公式為\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)。代入AC=8，BD=6，得面積=\\(\\frac{1}{2}\\cdot8\\cdot6=24\\)。選項12、25、48不合。故選：24。本題考查菱形面積公式。",
+      "answer": "\\(24\\)",
+      "explanation": "解：菱形面積公式為\\(\\frac{1}{2}\\cdot AC \\cdot BD\\)。代入\\(AC=8\\)，\\(BD=6\\)，得面積=\\(\\frac{1}{2}\\cdot8\\cdot6=24\\)。選項\\(12\\)、\\(25\\)、\\(48\\)不合。故選：\\(24\\)。本題考查菱形面積公式。",
       "image": null,
       "answerimage": null,
       "comment": "第17題，題目無圖，答案無圖"
@@ -148,17 +148,17 @@
     {
       "question": "如圖，O是座標原點，菱形ABOC的頂點B在x軸負半軸上，頂點C的座標為(3,4)，則頂點A的座標為",
       "options": ["\\(-4,2\\)", "\\(-\\sqrt{3},4\\)", "\\(-2,4\\)", "\\(-4,\\sqrt{3}\\)"],
-      "answer": "(-2,4)",
-      "explanation": "本題解析由AI生成：解：O(0,0)，B(-b,0)（b>0），C(3,4)。菱形ABOC中，AB=BC，\\(AC\\perp BO\\)。設A(x,y)，則AB=\\(\\sqrt{(x+b)^2+y^2}\\)=BC=\\(\\sqrt{(3+b)^2+4^2}\\)。\\(AC\\perp BO\\)，向量AC(x,y)和BO(-b,0)內積為0，則x\\cdot(-b)=0，x=0。則AB=\\(\\sqrt{b^2+y^2}\\)=BC=\\(\\sqrt{(3+b)^2+16}\\)。平方得b^2+y^2=(3+b)^2+16，化簡為y^2=9+6b+16=25+6b。菱形對角線AC、BO互相平分，O為AC中點，A(x,y)=A(0,y)，C(3,4)，則A+C=(0+3,y+4)=(3,y+4)=(0,0)，y=-4（不合，y>0）。再考慮AB=OC=\\(\\sqrt{3^2+4^2}\\)=5，AB=\\(\\sqrt{b^2+y^2}\\)=5，則b^2+y^2=25。試選項(-2,4)，AB=\\(\\sqrt{(2+b)^2+4^2}\\)=5，b=1，BC=\\(\\sqrt{(3+1)^2+4^2}\\)=\\(\\sqrt{32}\\neq5，改試(-2,4)，向量AC(-2,4)、BO(-b,0)，內積為0，滿足。BC計算後滿足，A(-2,4)。選項(-4,2)、\\(-\\sqrt{3},4\\)、\\(-4,\\sqrt{3}\\)不合。故選：(-2,4)。本題考查菱形性質與座標幾何。",
+      "answer": "\\(-2,4\\)",
+      "explanation": "本題解析由AI生成：解：O(0,0)，B(-b,0)（\\(b>0\\)），C(3,4)。菱形ABOC中，\\(AB=BC\\)，\\(AC\\perp BO\\)。設A(x,y)，則\\(AB=\\sqrt{(x+b)^2+y^2}=BC=\\sqrt{(3+b)^2+4^2}\\)。\\(AC\\perp BO\\)，向量AC(x,y)和BO(-b,0)內積為0，則\\(x\\cdot(-b)=0\\)，\\(x=0\\)。則\\(AB=\\sqrt{b^2+y^2}=BC=\\sqrt{(3+b)^2+16}\\)。平方得\\(b^2+y^2=(3+b)^2+16\\)，化簡為\\(y^2=9+6b+16=25+6b\\)。菱形對角線AC、BO互相平分，O為AC中點，A(x,y)=A(0,y)，C(3,4)，則A+C=(0+3,y+4)=(3,y+4)=(0,0)，\\(y=-4\\)（不合，\\(y>0\\)）。再考慮\\(AB=OC=\\sqrt{3^2+4^2}=5\\)，\\(AB=\\sqrt{b^2+y^2}=5\\)，則\\(b^2+y^2=25\\)。試選項(-2,4)，\\(AB=\\sqrt{(2+b)^2+4^2}=5\\)，\\(b=1\\)，\\(BC=\\sqrt{(3+1)^2+4^2}=\\sqrt{32}\\neq5\\)，改試(-2,4)，向量AC(-2,4)、BO(-b,0)，內積為0，滿足。BC計算後滿足，\\(A(-2,4)\\)。選項(-4,2)、\\(-\\sqrt{3},4\\)、\\(-4,\\sqrt{3}\\)不合。故選：\\(-2,4\\)。本題考查菱形性質與座標幾何。",
       "image": "images/018.png",
       "answerimage": null,
       "comment": "第18題，題目有圖，答案無圖"
     },
     {
       "question": "已知四邊形ABCD的兩條對角線相交於點O且互相平分，添加下列條件仍不能判定四邊形ABCD為菱形的是",
-      "options": ["AC=BD", "AB=AD", "\\(AC\\perp BD\\)", "\\(\\angle ABD=\\angle CBD\\)"],
-      "answer": "AC=BD",
-      "explanation": "解：四邊形ABCD的對角線相交於O且互相平分，則ABCD為平行四邊形。選項AC=BD表示對角線相等，平行四邊形為 repe，矩形，此項不合；選項AB=AD表示鄰邊相等，平行四邊形為菱形，此項正確；選項\\(AC\\perp BD\\)表示對角線垂直，平行四邊形為菱形，此項正確；選項\\(\\angle ABD=\\angle CBD\\)，由AD//BC，得\\(\\angle CBD=\\angle ADB\\)，則\\(\\angle ABD=\\angle ADB\\)，AB=AD，平行四邊形為菱形，此項正確。故選：AC=BD。本題考查平行四邊形與菱形的判定。",
+      "options": ["\\(AC=BD\\)", "\\(AB=AD\\)", "\\(AC\\perp BD\\)", "\\(\\angle ABD=\\angle CBD\\)"],
+      "answer": "\\(AC=BD\\)",
+      "explanation": "解：四邊形ABCD的對角線相交於O且互相平分，則ABCD為平行四邊形。選項\\(AC=BD\\)表示對角線相等，平行四邊形為矩形，此項不合；選項\\(AB=AD\\)表示鄰邊相等，平行四邊形為菱形，此項正確；選項\\(AC\\perp BD\\)表示對角線垂直，平行四邊形為菱形，此項正確；選項\\(\\angle ABD=\\angle CBD\\)，由\\(AD//BC\\)，得\\(\\angle CBD=\\angle ADB\\)，則\\(\\angle ABD=\\angle ADB\\)，\\(AB=AD\\)，平行四邊形為菱形，此項正確。故選：\\(AC=BD\\)。本題考查平行四邊形與菱形的判定。",
       "image": null,
       "answerimage": null,
       "comment": "第19題，題目無圖，答案無圖"
