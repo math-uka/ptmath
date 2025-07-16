@@ -1,6 +1,6 @@
 // 標準模式的預設題目數量和允許錯誤數
     let STANDARD_MODE_QUESTION_COUNT = 10;
-    let STANDARD_MODE_MAX_WRONG = 1;
+    let STANDARD_MODE_MAX_WRONG = 2;
 
     let quizData = {};
     let questionBank = [];
