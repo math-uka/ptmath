@@ -16,19 +16,19 @@
       text-align: center;
       position: relative;
       overflow: hidden;
-      background: #ffffff; /* 純白色背景 */
+      background: #ffffff; 
     }
     .background-text {
       position: absolute;
       font-size: 1.5rem;
-      color: rgba(0, 0, 0, 0.015); /* 非常淺的灰色，幾乎不可見，但可被OCR或曲線調整檢測 */
+      color: rgba(0, 0, 0, 0.015);
       user-select: none;
       z-index: 0;
       white-space: nowrap;
     }
     .mode-selection, .question-container, .remaining-questions, .wrong-questions, .password-input, .fib-mode-container {
       margin-bottom: 20px;
-      z-index: 1; /* 確保內容在背景文字之上 */
+      z-index: 1; 
       position: relative;
     }
     .mode-selection button {
