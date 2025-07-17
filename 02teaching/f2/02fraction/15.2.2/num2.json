@@ -1,303 +1,285 @@
 {
-  "title": "分式的加減挑戰題 ",
+  "title": "15.2.2 分式的加減",
   "questions": [
+   
     {
-      "question": "化簡 \\(\\frac{a + 1}{a^{2} - 2a + 1} \\div (1 + \\frac{2}{a - 1})\\) 的結果是？",
-      "options": [
-        "\\(\\frac{1}{a - 1}\\)",
-        "\\(\\frac{1}{a + 1}\\)",
-        "\\(\\frac{1}{a^{2} - 1}\\)",
-        "\\(\\frac{1}{a^{2} + 1}\\)"
-      ],
-      "answer": "\\(\\frac{1}{a - 1}\\)",
-      "explanation": "解：原式 \\(= \\frac{a + 1}{(a - 1)^{2}} \\div \\frac{a + 1}{a - 1} = \\frac{a + 1}{(a - 1)^{2}} \\cdot \\frac{a - 1}{a + 1} = \\frac{1}{a - 1}\\)。故選：\\(\\frac{1}{a - 1}\\)。",
+      "question": "化簡 \\(\\left(1 + \\frac{1}{x-2}\\right) \\div \\frac{x-1}{x^2-2x}\\) 的結果為",
+      "options": ["\\(4x\\)", "\\(3x\\)", "\\(2x\\)", "\\(x\\)"],
+      "answer": "\\(x\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{x-2+1}{x-2} \\div \\frac{x-1}{x(x-2)} = \\frac{x-1}{x-2} \\cdot \\frac{x(x-2)}{x-1} = x\\)。選項 \\(4x\\)、\\(3x\\)、\\(2x\\) 不符合，選項 \\(x\\) 正確。故選：\\(x\\)。本題考查分式的除法與約分。",
       "image": null,
       "answerimage": null,
-      "comment": "第1題，題目無圖，答案無圖"
+      "comment": "第2題，題目無圖，答案無圖"
     },
     {
-      "question": "如圖，若 \\(x\\) 為正整數，則表示 \\(\\frac{(x + 2)^{2}}{x^{2} + 4x + 4} - \\frac{1}{x + 1}\\) 的值的點落在？",
-      "options": ["段①", "段②", "段③", "段④"],
-      "answer": "段②",
-      "explanation": "解：\\(\\frac{(x + 2)^{2}}{x^{2} + 4x + 4} - \\frac{1}{x + 1} = \\frac{(x + 2)^{2}}{(x + 2)^{2}} - \\frac{1}{x + 1} = 1 - \\frac{1}{x + 1} = \\frac{x}{x + 1}\\)。\n\\(\\because \\frac{x}{x + 1} = \\frac{1}{1 + \\frac{1}{x}}\\)，且 \\(x\\) 為正整數，\\(\\frac{1}{2} \\leq \\frac{x}{x + 1} < 1\\)，故落在段②。故選：段②。",
-      "image": "images/001.png",
-      "answerimage": null,
-      "comment": "第2題，題目有圖，答案無圖"
-    },
-    {
-      "question": "下列運算正確的是？",
-      "options": [
-        "\\((a + b)^{2} = a^{2} + b^{2}\\)",
-        "\\(5a - a = 5\\)",
-        "\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)",
-        "\\((-2a^{2}b)^{3} = -6a^{6}b^{3}\\)"
-      ],
-      "answer": "\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)",
-      "explanation": "解：A. 原式 \\(= a^{2} + 2ab + b^{2}\\)；B. 原式 \\(= 4a\\)；C. 原式 \\(= \\frac{a - 2}{a - 2} = 1\\)；D. 原式 \\(= -8a^{6}b^{3}\\)。故選：\\(\\frac{a}{a - 2} + \\frac{2}{2 - a} = 1\\)。",
+      "question": "計算 \\(\\frac{1}{x} - \\frac{1}{x-y}\\) 的結果是",
+      "options": ["\\(-\\frac{y}{x(x-y)}\\)", "\\(\\frac{2x+y}{x(x-y)}\\)", "\\(\\frac{2x-y}{x(x-y)}\\)", "\\(\\frac{y}{x(x-y)}\\)"],
+      "answer": "\\(-\\frac{y}{x(x-y)}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{1}{x} - \\frac{1}{x-y} = \\frac{(x-y)-x}{x(x-y)} = \\frac{-y}{x(x-y)}\\)。選項 \\(\\frac{2x+y}{x(x-y)}\\)、\\(\\frac{2x-y}{x(x-y)}\\)、\\(\\frac{y}{x(x-y)}\\) 不符合，選項 \\(-\\frac{y}{x(x-y)}\\) 正確。故選：\\(-\\frac{y}{x(x-y)}\\)。本題考查異分母分式的減法。",
       "image": null,
       "answerimage": null,
       "comment": "第3題，題目無圖，答案無圖"
     },
     {
-      "question": "如果 \\(a^{2} + 2a - 1 = 0\\)，那麼代數式 \\((a - \\frac{4}{a}) \\cdot \\frac{a^{2}}{a - 2}\\) 的值是？",
-      "options": ["\\(-3\\)", "\\(-1\\)", "\\(1\\)", "\\(3\\)"],
+      "question": "計算 \\(\\frac{m}{m+3} - \\frac{6}{9-m^2} \\div \\frac{2}{m-3}\\) 的結果是",
+      "options": ["\\(1\\)", "\\(\\frac{m-3}{m+3}\\)", "\\(\\frac{m+3}{m-3}\\)", "\\(\\frac{3m}{m+3}\\)"],
       "answer": "\\(1\\)",
-      "explanation": "解：原式 \\(= \\frac{a^{2} - 4}{a} \\cdot \\frac{a^{2}}{a - 2} = \\frac{(a+2)(a-2)}{a} \\cdot \\frac{a^{2}}{a-2} = a^{2} + 2a\\)。由 \\(a^{2} + 2a = 1\\) 得原式 \\(= 1\\)。故選：\\(1\\)。",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{m}{m+3} - \\frac{6}{-(m^2-9)} \\cdot \\frac{m-3}{2} = \\frac{m}{m+3} + \\frac{6(m-3)}{(m-3)(m+3) \\cdot 2} = \\frac{m}{m+3} + \\frac{3}{m+3} = \\frac{m+3}{m+3} = 1\\)。選項 \\(\\frac{m-3}{m+3}\\)、\\(\\frac{m+3}{m-3}\\)、\\(\\frac{3m}{m+3}\\) 不符合，選項 \\(1\\) 正確。故選：\\(1\\)。本題考查分式的混合運算。",
       "image": null,
       "answerimage": null,
       "comment": "第4題，題目無圖，答案無圖"
     },
     {
-      "question": "計算 \\(\\frac{2a}{a + 1} + \\frac{2}{a + 1}\\) 的結果是？",
-      "options": ["\\(2\\)", "\\(2a + 2\\)", "\\(1\\)", "\\(\\frac{4a}{a + 1}\\)"],
-      "answer": "\\(2\\)",
-      "explanation": "解：原式 \\(= \\frac{2a + 2}{a + 1} = \\frac{2(a + 1)}{a + 1} = 2\\)。故選：\\(2\\)。",
+      "question": "如果 \\(a^2 - a - 6 = 0\\)，則代數式 \\(\\frac{a-1}{a^2} \\div \\left(\\frac{a^2+1}{2a} - 1\\right)\\) 的值為",
+      "options": ["\\(\\frac{1}{3}\\)", "\\(3\\)", "\\(-\\frac{1}{3}\\)", "\\(-3\\)"],
+      "answer": "\\(\\frac{1}{3}\\)",
+      "explanation": "解：原式=\\(\\frac{a-1}{a^2} \\div \\left(\\frac{a^2+1-2a}{2a}\\right) = \\frac{a-1}{a^2} \\cdot \\frac{2a}{(a-1)^2} = \\frac{2}{a(a-1)}\\)。由 \\(a^2 - a - 6 = 0\\)，得 \\(a^2 - a = 6\\)。故原式=\\(\\frac{2}{6} = \\frac{1}{3}\\)。選項 \\(3\\)、\\(-\\frac{1}{3}\\)、\\(-3\\) 不符合，選項 \\(\\frac{1}{3}\\) 正確。故選：\\(\\frac{1}{3}\\)。本題考查分式的除法與代數式求值。",
       "image": null,
       "answerimage": null,
       "comment": "第5題，題目無圖，答案無圖"
     },
     {
-      "question": "下列計算正確的是？",
-      "options": [
-        "\\((x + y)^{2} = x^{2} + y^{2}\\)",
-        "\\((-\\frac{1}{3}xy^{3})^{2} = \\frac{1}{9}x^{2}y^{6}\\)",
-        "\\(-\\frac{1}{2}x^{3}y^{2}(-6x^{2}y) = -3x^{5}y^{3}\\)",
-        "\\(\\frac{x}{x^{2} - y^{2}} + \\frac{y}{y^{2} - x^{2}} = \\frac{1}{x - y}\\)"
-      ],
-      "answer": "\\((-\\frac{1}{3}xy^{3})^{2} = \\frac{1}{9}x^{2}y^{6}\\)",
-      "explanation": "解：A. 缺少 \\(2xy\\)；B. 正確；C. 結果應為正；D. 結果應為 \\(\\frac{1}{x + y}\\)。故選：\\((-\\frac{1}{3}xy^{3})^{2} = \\frac{1}{9}x^{2}y^{6}\\)。",
+      "question": "計算 \\(\\frac{1}{x-1} - \\frac{2}{x^2-1}\\) 的結果是",
+      "options": ["\\(-1\\)", "\\(x-1\\)", "\\(\\frac{1}{x+1}\\)", "\\(\\frac{1}{x^2-1}\\)"],
+      "answer": "\\(\\frac{1}{x+1}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{1}{x-1} - \\frac{2}{(x-1)(x+1)} = \\frac{x+1-2}{(x-1)(x+1)} = \\frac{x-1}{(x-1)(x+1)} = \\frac{1}{x+1}\\)。選項 \\(-1\\)、\\(x-1\\)、\\(\\frac{1}{x^2-1}\\) 不符合，選項 \\(\\frac{1}{x+1}\\) 正確。故選：\\(\\frac{1}{x+1}\\)。本題考查分式的減法與因式分解。",
       "image": null,
       "answerimage": null,
       "comment": "第6題，題目無圖，答案無圖"
     },
     {
-      "question": "已知 \\(b > a > 0\\)，則分式 \\(\\frac{a}{b}\\) 與 \\(\\frac{a + 1}{b + 1}\\) 的大小關係是？",
-      "options": [
-        "\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)",
-        "\\(\\frac{a}{b} = \\frac{a + 1}{b + 1}\\)",
-        "\\(\\frac{a}{b} > \\frac{a + 1}{b + 1}\\)",
-        "不能確定"
-      ],
-      "answer": "\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)",
-      "explanation": "解：作差得 \\(\\frac{a - b}{b(b + 1)} < 0\\)（因 \\(b > a > 0\\)），故 \\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)。故選：\\(\\frac{a}{b} < \\frac{a + 1}{b + 1}\\)。",
+      "question": "計算 \\(\\frac{a-1}{a} \\div \\left(a - \\frac{1}{a}\\right)\\) 的正確結果為",
+      "options": ["\\(\\frac{1}{a+1}\\)", "\\(1\\)", "\\(\\frac{1}{a-1}\\)", "\\(-1\\)"],
+      "answer": "\\(\\frac{1}{a+1}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{a-1}{a} \\div \\frac{a^2-1}{a} = \\frac{a-1}{a} \\cdot \\frac{a}{(a-1)(a+1)} = \\frac{1}{a+1}\\)。選項 \\(1\\)、\\(\\frac{1}{a-1}\\)、\\(-1\\) 不符合，選項 \\(\\frac{1}{a+1}\\) 正確。故選：\\(\\frac{1}{a+1}\\)。本題考查分式的除法與約分。",
       "image": null,
       "answerimage": null,
       "comment": "第7題，題目無圖，答案無圖"
     },
     {
-      "question": "如果 \\(m + n = 1\\)，那麼 \\((\\frac{2m + n}{m^{2} - mn} + \\frac{1}{m}) \\cdot (m^{2} - n^{2})\\) 的值為？",
-      "options": ["\\(-3\\)", "\\(-1\\)", "\\(1\\)", "\\(3\\)"],
-      "answer": "\\(3\\)",
-      "explanation": "解：原式 \\(= \\frac{3m}{m(m - n)} \\cdot (m + n)(m - n) = 3(m + n) = 3\\)。故選：\\(3\\)。",
+      "question": "下列運算正確的是",
+      "options": ["\\(\\frac{a}{a-b} - \\frac{b}{b-a} = 1\\)", "\\(\\frac{m}{a} - \\frac{n}{b} = \\frac{m-n}{a-b}\\)", "\\(\\frac{b}{a} - \\frac{b+1}{a} = \\frac{1}{a}\\)", "\\(\\frac{2}{a-b} - \\frac{a+b}{(a^2-b^2)} = \\frac{1}{a-b}\\)"],
+      "answer": "\\(\\frac{2}{a-b} - \\frac{a+b}{(a^2-b^2)} = \\frac{1}{a-b}\\)",
+      "explanation": "本題解析由AI生成：解：選項 \\(\\frac{a}{a-b} - \\frac{b}{b-a} = \\frac{a}{a-b} + \\frac{b}{a-b} = \\frac{a+b}{a-b}\\neq 1\\)，錯誤；選項 \\(\\frac{m}{a} - \\frac{n}{b} = \\frac{mb-na}{ab}\\neq \\frac{m-n}{a-b}\\)，錯誤；選項 \\(\\frac{b}{a} - \\frac{b+1}{a} = \\frac{b-(b+1)}{a} = \\frac{-1}{a}\\neq \\frac{1}{a}\\)，錯誤；選項 \\(\\frac{2}{a-b} - \\frac{a+b}{(a-b)(a+b)} = \\frac{2(a+b)-(a+b)}{(a-b)(a+b)} = \\frac{a+b}{(a-b)(a+b)} = \\frac{1}{a-b}\\)，正確。故選：\\(\\frac{2}{a-b} - \\frac{a+b}{(a^2-b^2)} = \\frac{1}{a-b}\\)。本題考查分式的加減法與因式分解。",
       "image": null,
       "answerimage": null,
       "comment": "第8題，題目無圖，答案無圖"
     },
     {
-      "question": "計算 \\(\\left( a + \\frac{1}{a - 2} \\right) \\div \\left( 1 + \\frac{1}{a - 2} \\right)\\) 的結果是？",
-      "options": ["\\(1\\)", "\\(a\\)", "\\(a + 1\\)", "\\(a - 1\\)"],
-      "answer": "\\(a - 1\\)",
-      "explanation": "本題解析由AI生成。解：化簡得 \\(\\frac{(a - 1)^{2}}{a - 2} \\div \\frac{a - 1}{a - 2} = a - 1\\)。故選：\\(a - 1\\)。",
+      "question": "分式 \\(\\frac{1}{3y}\\) 和 \\(\\frac{1}{2y^2}\\) 的最簡公分母是",
+      "options": ["\\(6y\\)", "\\(3y^2\\)", "\\(6y^2\\)", "\\(6y^3\\)"],
+      "answer": "\\(6y^2\\)",
+      "explanation": "本題解析由AI生成：解：分式 \\(\\frac{1}{3y}\\) 和 \\(\\frac{1}{2y^2}\\) 的分母分別為 \\(3y\\) 和 \\(2y^2\\)。求公分母需取係數的最小公倍數（3 和 2 的最小公倍數為 6）及變數 \\(y\\) 的最高次數（\\(y^2\\)）。故最簡公分母為 \\(6y^2\\)。選項 \\(6y\\)、\\(3y^2\\)、\\(6y^3\\) 不符合，選項 \\(6y^2\\) 正確。故選：\\(6y^2\\)。本題考查分式的最簡公分母。",
       "image": null,
       "answerimage": null,
       "comment": "第9題，題目無圖，答案無圖"
     },
     {
-      "question": "如果 \\(m^{2} - 4m - 6 = 0\\)，那麼 \\(\\left( \\frac{m^{2} - m - 4}{m + 3} + 1 \\right) \\div \\frac{m + 1}{m^{2} - 9}\\) 的值為？",
-      "options": ["\\(9\\)", "\\(6\\)", "\\(2 + \\sqrt{10}\\)", "\\(-1\\)"],
-      "answer": "\\(9\\)",
-      "explanation": "本題解析由AI生成。解：原式 \\(= (m - 1)(m - 3) = m^{2} - 4m + 3\\)，由 \\(m^{2} - 4m = 6\\) 得結果為9。故選：\\(9\\)。",
+      "question": "下列計算正確的是",
+      "options": ["\\(\\frac{b}{a} + \\frac{b}{c} = \\frac{2b}{ac}\\)", "\\(\\frac{1}{2a} + \\frac{1}{2b} = \\frac{1}{2(a+b)}\\)", "\\(\\frac{c}{a} - \\frac{c+1}{a} = \\frac{1}{a}\\)", "\\(\\frac{1}{a-b} + \\frac{1}{b-a} = 0\\)"],
+      "answer": "\\(\\frac{1}{a-b} + \\frac{1}{b-a} = 0\\)",
+      "explanation": "本題解析由AI生成：解：選項 \\(\\frac{b}{a} + \\frac{b}{c} = \\frac{bc+ab}{ac}\\neq \\frac{2b}{ac}\\)，錯誤；選項 \\(\\frac{1}{2a} + \\frac{1}{2b} = \\frac{b+a}{2ab}\\neq \\frac{1}{2(a+b)}\\)，錯誤；選項 \\(\\frac{c}{a} - \\frac{c+1}{a} = \\frac{c-(c+1)}{a} = \\frac{-1}{a}\\neq \\frac{1}{a}\\)，錯誤；選項 \\(\\frac{1}{a-b} + \\frac{1}{b-a} = \\frac{1}{a-b} - \\frac{1}{a-b} = 0\\)，正確。故選：\\(\\frac{1}{a-b} + \\frac{1}{b-a} = 0\\)。本題考查分式的加減法與約分。",
       "image": null,
       "answerimage": null,
       "comment": "第10題，題目無圖，答案無圖"
     },
     {
-      "question": "化簡 \\(\\frac{a^{2} - 4}{a^{2} + 2a + 1} \\div \\frac{a^{2} - 4a + 4}{(a + 1)^{2}} - \\frac{2}{a - 2}\\) 的結果為？",
-      "options": [
-        "\\(\\frac{a + 2}{a - 2}\\)",
-        "\\(\\frac{a - 4}{a - 2}\\)",
-        "\\(\\frac{a}{a - 2}\\)",
-        "\\(a\\)"
-      ],
-      "answer": "\\(\\frac{a}{a - 2}\\)",
-      "explanation": "解：原式 \\(= \\frac{a + 2}{a - 2} - \\frac{2}{a - 2} = \\frac{a}{a - 2}\\)。故選：\\(\\frac{a}{a - 2}\\)。",
+      "question": "計算 \\(a-b + \\frac{2b^2}{a+b}\\) 的結果是",
+      "options": ["\\(\\frac{a-b+2b^2}{a+b}\\)", "\\(a+b\\)", "\\(\\frac{a^2+b^2}{a+b}\\)", "\\(a-b\\)"],
+      "answer": "\\(\\frac{a^2+b^2}{a+b}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(a-b + \\frac{2b^2}{a+b} = \\frac{(a-b)(a+b)+2b^2}{a+b} = \\frac{a^2-b^2+2b^2}{a+b} = \\frac{a^2+b^2}{a+b}\\)。選項 \\(\\frac{a-b+2b^2}{a+b}\\)、\\(a+b\\)、\\(a-b\\) 不符合，選項 \\(\\frac{a^2+b^2}{a+b}\\) 正確。故選：\\(\\frac{a^2+b^2}{a+b}\\)。本題考查分式的加法與通分。",
       "image": null,
       "answerimage": null,
       "comment": "第11題，題目無圖，答案無圖"
     },
     {
-      "question": "某小區有一塊邊長為 \\(a\\) 的正方形場地，規劃修建兩條寬為 \\(b\\) 的綠化帶。方案一如圖甲所示，綠化帶面積為 \\(S_{\\text{甲}}\\)；方案二如圖乙所示，綠化帶面積為 \\(S_{\\text{乙}}\\)。設 \\(k = \\frac{S_{\\text{甲}}}{S_{\\text{乙}}}} (a > b > 0)\\)，下列選項中正確的是？",
-      "options": [
-        "\\(0 < k < \\frac{1}{2}\\)",
-        "\\(\\frac{1}{2} < k < 1\\)",
-        "\\(1 < k < \\frac{3}{2}\\)",
-        "\\(\\frac{3}{2} < k < 2\\)"
-      ],
-      "answer": "\\(\\frac{1}{2} < k < 1\\)",
-      "explanation": "解：\\(S_{\\text{甲}} = 2ab - b^{2}\\)，\\(S_{\\text{乙}} = 2ab\\)，故 \\(k = 1 - \\frac{b}{2a}\\)，因 \\(a > b > 0\\) 得 \\(\\frac{1}{2} < k < 1\\)。故選：\\(\\frac{1}{2} < k < 1\\)。",
-      "image": "images/002.png",
+      "question": "計算 \\(\\frac{3x}{x-4y} + \\frac{x+y}{4y-x} - \\frac{7y}{x-4y}\\) 的結果是",
+      "options": ["\\(-\\frac{2x+6y}{x-4y}\\)", "\\(\\frac{2x+6y}{x-4y}\\)", "\\(-2\\)", "\\(2\\)"],
+      "answer": "\\(2\\)",
+      "explanation": "解：原式=\\(\\frac{3x}{x-4y} - \\frac{x+y}{x-4y} - \\frac{7y}{x-4y} = \\frac{3x - (x+y) - 7y}{x-4y} = \\frac{3x-x-y-7y}{x-4y} = \\frac{2x-8y}{x-4y} = \\frac{2(x-4y)}{x-4y} = 2\\)。選項 \\(-\\frac{2x+6y}{x-4y}\\)、\\(\\frac{2x+6y}{x-4y}\\)、\\(-2\\) 不符合，選項 \\(2\\) 正確。故選：\\(2\\)。本題考查異分母分式的加減法。",
+      "image": null,
       "answerimage": null,
-      "comment": "第13題，題目有圖，答案無圖"
+      "comment": "第12題，題目無圖，答案無圖"
     },
     {
-      "question": "若 \\(x\\)，\\(y\\) 滿足 \\(x^{2} + y^{2} + \\frac{5}{4} = 2x + y\\)，則 \\(\\frac{1}{x} + \\frac{1}{y}\\) 值為？",
-      "options": ["\\(3\\)", "\\(\\frac{1}{3}\\)", "\\(2\\)", "\\(\\frac{1}{2}\\)"],
-      "answer": "\\(3\\)",
-      "explanation": "解：配方得 \\((x - 1)^{2} + (y - \\frac{1}{2})^{2} = 0\\)，故 \\(x = 1\\)，\\(y = \\frac{1}{2}\\)，結果為3。故選：\\(3\\)。",
+      "question": "下列計算結果正確的是",
+      "options": ["\\(\\frac{1}{a+3} - \\frac{1}{a-3} = \\frac{6}{a^2-9}\\)", "\\(\\frac{2x}{x^2-4} - \\frac{1}{x+2} = \\frac{1}{x-2}\\)", "\\(\\frac{1}{a^2-b^2} - \\frac{1}{b^2-a^2} = \\frac{2a^2}{(a^2-b^2)(b^2-a^2)}\\)", "\\(\\frac{x-6}{x^2-4} + \\frac{1}{2-x} = \\frac{2x-4}{x^2-4}\\)"],
+      "answer": "\\(\\frac{2x}{x^2-4} - \\frac{1}{x+2} = \\frac{1}{x-2}\\)",
+      "explanation": "本題解析由AI生成：解：選項 \\(\\frac{1}{a+3} - \\frac{1}{a-3} = \\frac{(a-3)-(a+3)}{(a+3)(a-3)} = \\frac{-6}{a^2-9}\\neq \\frac{6}{a^2-9}\\)，錯誤；選項 \\(\\frac{2x}{x^2-4} - \\frac{1}{x+2} = \\frac{2x-(x-2)}{(x+2)(x-2)} = \\frac{x+2}{(x+2)(x-2)} = \\frac{1}{x-2}\\)，正確；選項 \\(\\frac{1}{a^2-b^2} - \\frac{1}{b^2-a^2} = \\frac{1}{a^2-b^2} + \\frac{1}{a^2-b^2} = \\frac{2}{a^2-b^2}\\neq \\frac{2a^2}{(a^2-b^2)(b^2-a^2)}\\)，錯誤；選項 \\(\\frac{x-6}{x^2-4} + \\frac{1}{2-x} = \\frac{x-6}{(x+2)(x-2)} - \\frac{1}{(x-2)(x+2)} = \\frac{x-7}{(x+2)(x-2)}\\neq \\frac{2x-4}{x^2-4}\\)，錯誤。故選：\\(\\frac{2x}{x^2-4} - \\frac{1}{x+2} = \\frac{1}{x-2}\\)。本題考查分式的加減法與因式分解。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{3}{a-1} - a - 3\\) 的結果為",
+      "options": ["\\(\\frac{a^2+2a-6}{1-a}\\)", "\\(\\frac{-a^2+4a+2}{a-1}\\)", "\\(\\frac{-a^2-4a+4}{a-1}\\)", "\\(\\frac{a}{1-a}\\)"],
+      "answer": "\\(\\frac{a^2+2a-6}{1-a}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{3}{a-1} - \\frac{(a+3)(a-1)}{a-1} = \\frac{3 - (a^2+2a-3)}{a-1} = \\frac{3 - a^2 - 2a + 3}{a-1} = \\frac{-a^2 - 2a + 6}{a-1} = \\frac{a^2 + 2a - 6}{1-a}\\)。選項 \\(\\frac{-a^2+4a+2}{a-1}\\)、\\(\\frac{-a^2-4a+4}{a-1}\\)、\\(\\frac{a}{1-a}\\) 不符合，選項 \\(\\frac{a^2+2a-6}{1-a}\\) 正確。故選：\\(\\frac{a^2+2a-6}{1-a}\\)。本題考查分式的減法與通分。",
       "image": null,
       "answerimage": null,
       "comment": "第14題，題目無圖，答案無圖"
     },
     {
-      "question": "若 \\(a + b = 2\\)，則代數式 \\((\\frac{b^{2}}{a} - a) \\div \\frac{a - b}{a}\\) 的值為？",
-      "options": ["\\(\\frac{1}{2}\\)", "\\(-\\frac{1}{2}\\)", "\\(2\\)", "\\(-2\\)"],
-      "answer": "\\(-2\\)",
-      "explanation": "解：原式 \\(= -(a + b) = -2\\)。故選：\\(-2\\)。",
+      "question": "計算 \\(\\left(\\frac{a}{a-2} - \\frac{a}{a+2}\\right) \\cdot \\frac{4-a^2}{a}\\) 的結果是",
+      "options": ["\\(-4\\)", "\\(4\\)", "\\(2a\\)", "\\(-2a\\)"],
+      "answer": "\\(-4\\)",
+      "explanation": "解：原式=\\(\\left(\\frac{a(a+2)-a(a-2)}{(a-2)(a+2)}\\right) \\cdot \\frac{-(a^2-4)}{a} = \\frac{a^2+2a-a^2+2a}{(a-2)(a+2)} \\cdot \\frac{-(a-2)(a+2)}{a} = \\frac{4a}{a(a-2)(a+2)} \\cdot \\frac{-(a-2)(a+2)}{a} = \\frac{-4a}{a} = -4\\)。選項 \\(4\\)、\\(2a\\)、\\(-2a\\) 不符合，選項 \\(-4\\) 正確。故選：\\(-4\\)。本題考查分式的混合運算與約分。",
       "image": null,
       "answerimage": null,
       "comment": "第15題，題目無圖，答案無圖"
     },
     {
-      "question": "若 \\(\\frac{1}{x} + x = 3\\)，則 \\(\\frac{x^{2}}{x^{4} + x^{2} + 1}\\) 的值為？",
-      "options": ["\\(8\\)", "\\(\\frac{1}{8}\\)", "\\(8\\) 或 \\(\\frac{1}{8}\\)", "無法確定"],
-      "answer": "\\(\\frac{1}{8}\\)",
-      "explanation": "本題解析由AI生成。解：由 \\(x^{2} + \\frac{1}{x^{2}} = 7\\)，原式 \\(= \\frac{1}{x^{2} + 1 + \\frac{1}{x^{2}}} = \\frac{1}{8}\\)。故選：\\(\\frac{1}{8}\\)。",
+      "question": "計算 \\(\\left(\\frac{x}{y} - \\frac{y}{x}\\right) \\div \\frac{x-y}{x}\\) 的結果為",
+      "options": ["\\(\\frac{1}{y}\\)", "\\(\\frac{x+y}{y}\\)", "\\(\\frac{x-y}{y}\\)", "\\(y\\)"],
+      "answer": "\\(\\frac{x+y}{y}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{x^2-y^2}{xy} \\cdot \\frac{x}{x-y} = \\frac{(x-y)(x+y)}{xy} \\cdot \\frac{x}{x-y} = \\frac{x(x+y)}{xy} = \\frac{x+y}{y}\\)。選項 \\(\\frac{1}{y}\\)、\\(\\frac{x-y}{y}\\)、\\(y\\) 不符合，選項 \\(\\frac{x+y}{y}\\) 正確。故選：\\(\\frac{x+y}{y}\\)。本題考查分式的除法與因式分解。",
       "image": null,
       "answerimage": null,
       "comment": "第16題，題目無圖，答案無圖"
     },
     {
-      "question": "已知 \\(\\frac{1}{x} - \\frac{1}{y} = 3\\)，則式子 \\(\\frac{2x + 3xy - 2y}{x - xy - y}\\) 的值是？",
-      "options": ["\\(-\\frac{7}{2}\\)", "\\(-\\frac{11}{2}\\)", "\\(\\frac{9}{2}\\)", "\\(\\frac{3}{4}\\)"],
-      "answer": "\\(\\frac{3}{4}\\)",
-      "explanation": "解：由 \\(x - y = -3xy\\)，原式 \\(= \\frac{-3xy}{-4xy} = \\frac{3}{4}\\)。故選：\\(\\frac{3}{4}\\)。",
+      "question": "計算 \\(\\left(1 + \\frac{1}{x-1}\\right) \\div \\left(1 + \\frac{1}{x^2-1}\\right)\\) 的結果是",
+      "options": ["\\(1\\)", "\\(x+1\\)", "\\(\\frac{x+1}{x}\\)", "\\(\\frac{1}{x-1}\\)"],
+      "answer": "\\(\\frac{x+1}{x}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{x-1+1}{x-1} \\div \\frac{(x^2-1)+1}{(x-1)(x+1)} = \\frac{x}{x-1} \\cdot \\frac{(x-1)(x+1)}{x^2} = \\frac{x(x+1)}{x^2} = \\frac{x+1}{x}\\)。選項 \\(1\\)、\\(x+1\\)、\\(\\frac{1}{x-1}\\) 不符合，選項 \\(\\frac{x+1}{x}\\) 正確。故選：\\(\\frac{x+1}{x}\\)。本題考查分式的除法與約分。",
       "image": null,
       "answerimage": null,
       "comment": "第17題，題目無圖，答案無圖"
     },
     {
-      "question": "若 \\((\\frac{4}{a^{2} - 4} + \\frac{1}{2 - a}) \\cdot w = 1\\)，則 \\(w =\\)？",
-      "options": [
-        "\\(a + 2 (a \\neq \\pm 2)\\)",
-        "\\(-a + 2 (a \\neq \\pm 2)\\)",
-        "\\(a - 2 (a \\neq \\pm 2)\\)",
-        "\\(-a - 2 (a \\neq \\pm 2)\\)"
-      ],
-      "answer": "\\(-a - 2 (a \\neq \\pm 2)\\)",
-      "explanation": "解：左式化簡為 \\(-\\frac{1}{a + 2}\\)，故 \\(w = -a - 2\\)。故選：\\(-a - 2 (a \\neq \\pm 2)\\)。",
+      "question": "計算 \\(\\left(a - \\frac{b^2}{a}\\right) \\cdot \\frac{a}{a-b}\\) 的結果是",
+      "options": ["\\(a-b\\)", "\\(a+b\\)", "\\(\\frac{1}{a-b}\\)", "\\(\\frac{1}{a+b}\\)"],
+      "answer": "\\(a+b\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{a^2-b^2}{a} \\cdot \\frac{a}{a-b} = \\frac{(a-b)(a+b)}{a} \\cdot \\frac{a}{a-b} = a+b\\)。選項 \\(a-b\\)、\\(\\frac{1}{a-b}\\)、\\(\\frac{1}{a+b}\\) 不符合，選項 \\(a+b\\) 正確。故選：\\(a+b\\)。本題考查分式的乘法與因式分解。",
       "image": null,
       "answerimage": null,
       "comment": "第18題，題目無圖，答案無圖"
     },
     {
-      "question": "已知實數 \\(a\\)、\\(b\\) 滿足 \\(a + b = 0\\)，且 \\(ab \\neq 0\\)，則 \\(\\frac{b}{a} + \\frac{a}{b}\\) 的值為？",
-      "options": ["\\(-2\\)", "\\(-1\\)", "\\(1\\)", "\\(2\\)"],
-      "answer": "\\(-2\\)",
-      "explanation": "解：原式 \\(= \\frac{(a + b)^{2} - 2ab}{ab} = -2\\)。故選：\\(-2\\)。",
+      "question": "計算 \\(\\left(\\frac{1}{x-3} - \\frac{x+1}{x^2-1}\\right) \\cdot (x-3)\\) 的結果為",
+      "options": ["\\(2\\)", "\\(\\frac{2}{x-1}\\)", "\\(\\frac{2}{x-3}\\)", "\\(\\frac{x-4}{x-1}\\)"],
+      "answer": "\\(\\frac{2}{x-1}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\left(\\frac{1}{x-3} - \\frac{x+1}{(x-1)(x+1)}\\right) \\cdot (x-3) = \\frac{(x-1)(x+1)-(x+1)(x-3)}{(x-1)(x+1)(x-3)} \\cdot (x-3) = \\frac{x^2-1-(x^2-2x-3)}{(x-1)(x+1)(x-3)} \\cdot (x-3) = \\frac{2x+2}{(x-1)(x+1)} = \\frac{2}{x-1}\\)。選項 \\(2\\)、\\(\\frac{2}{x-3}\\)、\\(\\frac{x-4}{x-1}\\) 不符合，選項 \\(\\frac{2}{x-1}\\) 正確。故選：\\(\\frac{2}{x-1}\\)。本題考查分式的混合運算。",
       "image": null,
       "answerimage": null,
       "comment": "第19題，題目無圖，答案無圖"
     },
     {
-      "question": "使式子 \\(\\frac{1}{x^{2} - 1} + \\frac{1}{x - 1} + \\frac{1}{x + 1}\\) 等於 \\(0\\) 的 \\(x\\) 的值是？",
-      "options": ["\\(1\\)", "\\(-1\\)", "\\(3\\)", "\\(-\\frac{1}{2}\\)"],
-      "answer": "\\(-\\frac{1}{2}\\)",
-      "explanation": "本題解析由AI生成。解：通分後得 \\(\\frac{2x + 1}{x^{2} - 1} = 0\\)，解得 \\(x = -\\frac{1}{2}\\)（經檢驗有效）。故選：\\(-\\frac{1}{2}\\)。",
+      "question": "下列計算正確的是",
+      "options": ["\\(\\frac{2}{m} + \\frac{1}{-m} = \\frac{3}{m}\\)", "\\(\\frac{2}{y+2} - \\frac{1+y}{2+y} = \\frac{1+y}{y+2}\\)", "\\(\\frac{a}{a-b} - \\frac{b}{b-a} = 1\\)", "\\(\\frac{a}{(a-b)^2} - \\frac{b}{(b-a)^2} = \\frac{1}{a-b}\\)"],
+      "answer": "\\(\\frac{a}{(a-b)^2} - \\frac{b}{(b-a)^2} = \\frac{1}{a-b}\\)",
+      "explanation": "解：選項 \\(\\frac{2}{m} + \\frac{1}{-m} = \\frac{2}{m} - \\frac{1}{m} = \\frac{1}{m}\\neq \\frac{3}{m}\\)，錯誤；選項 \\(\\frac{2}{y+2} - \\frac{1+y}{y+2} = \\frac{2-(1+y)}{y+2} = \\frac{1-y}{y+2}\\neq \\frac{1+y}{y+2}\\)，錯誤；選項 \\(\\frac{a}{a-b} - \\frac{b}{b-a} = \\frac{a}{a-b} + \\frac{b}{a-b} = \\frac{a+b}{a-b}\\neq 1\\)，錯誤；選項 \\(\\frac{a}{(a-b)^2} - \\frac{b}{(b-a)^2} = \\frac{a}{(a-b)^2} - \\frac{b}{-(a-b)^2} = \\frac{a+b}{(a-b)^2} = \\frac{1}{a-b}\\)，正確。故選：\\(\\frac{a}{(a-b)^2} - \\frac{b}{(b-a)^2} = \\frac{1}{a-b}\\)。本題考查分式的減法與分母相反數的處理。",
       "image": null,
       "answerimage": null,
       "comment": "第20題，題目無圖，答案無圖"
     },
     {
-      "question": "化簡 \\(\\frac{a - 2b + 3c}{a + b - c} - \\frac{a - b + c}{a - c + b} + \\frac{2c - b}{c - a - b}\\) 的結果是？",
-      "options": ["\\(0\\)", "\\(1\\)", "\\(-1\\)", "\\(\\frac{2(b - 2c)}{c - a - b}\\)"],
-      "answer": "\\(0\\)",
-      "explanation": "本題解析由AI生成。解：合併後分子為 \\(a - 2b + 3c - a + b - c - 2c + b = 0\\)。故選：\\(0\\)。",
+      "question": "化簡 \\(\\frac{x^2+4x+4}{x+2} \\div \\frac{x^2+2x}{x-2} - 1\\) 的結果是",
+      "options": ["\\(\\frac{x-2}{x}\\)", "\\(\\frac{-2}{x}\\)", "\\(-3\\)", "\\(x-3\\)"],
+      "answer": "\\(\\frac{-2}{x}\\)",
+      "explanation": "解：原式=\\(\\frac{(x+2)^2}{x+2} \\cdot \\frac{x-2}{x(x+2)} - 1 = \\frac{x+2}{x+2} \\cdot \\frac{x-2}{x} - 1 = \\frac{x-2}{x} - 1 = \\frac{x-2-x}{x} = \\frac{-2}{x}\\)。選項 \\(\\frac{x-2}{x}\\)、\\(-3\\)、\\(x-3\\) 不符合，選項 \\(\\frac{-2}{x}\\) 正確。故選：\\(\\frac{-2}{x}\\)。本題考查分式的除法與減法。",
       "image": null,
       "answerimage": null,
       "comment": "第21題，題目無圖，答案無圖"
     },
     {
-      "question": "分式 \\(\\frac{2x^{2}y}{(x + y)^{2}}\\) 與 \\(\\frac{x^{2}}{x^{2} - y^{2}}\\) 的最簡公分母是？",
-      "options": [
-        "\\(x^{4} - y^{4}\\)",
-        "\\((x + y)^{2}(x^{2} - y^{2})\\)",
-        "\\((x - y)^{4}\\)",
-        "\\((x + y)^{2}(x - y)\\)"
-      ],
-      "answer": "\\((x + y)^{2}(x - y)\\)",
-      "explanation": "解：因 \\(x^{2} - y^{2} = (x + y)(x - y)\\)，最簡公分母為 \\((x + y)^{2}(x - y)\\)。故選：\\((x + y)^{2}(x - y)\\)。",
+      "question": "下列計算正確的是",
+      "options": ["\\(\\frac{1}{a} - \\frac{1}{b} = \\frac{b-a}{ab}\\)", "\\(\\frac{2y^2}{3x} \\div 3x = 2y^2\\)", "\\(\\left(-3a^2 b\\right)^3 = -9a^6 b^3\\)", "\\( (x-2)^2 = x^2-4\\)"],
+      "answer": "\\(\\frac{1}{a} - \\frac{1}{b} = \\frac{b-a}{ab}\\)",
+      "explanation": "解：選項 \\(\\frac{1}{a} - \\frac{1}{b} = \\frac{b-a}{ab}\\)，正確；選項 \\(\\frac{2y^2}{3x} \\div 3x = \\frac{2y^2}{3x \\cdot 3x} = \\frac{2y^2}{9x^2}\\neq 2y^2\\)，錯誤；選項 \\(\\left(-3a^2 b\\right)^3 = -27a^6 b^3\\neq -9a^6 b^3\\)，錯誤；選項 \\( (x-2)^2 = x^2 - 4x + 4\\neq x^2-4\\)，錯誤。故選：\\(\\frac{1}{a} - \\frac{1}{b} = \\frac{b-a}{ab}\\)。本題考查分式的減法與其他運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算中，正確的是",
+      "options": ["\\(\\frac{b}{a} + \\frac{c}{a} = \\frac{b+c}{2a}\\)", "\\(\\frac{b}{a} + \\frac{d}{c} = \\frac{bc+ad}{ac}\\)", "\\(\\frac{b}{a} + \\frac{d}{c} = \\frac{b+d}{a+c}\\)", "\\(\\frac{b}{a} + \\frac{c}{d} = \\frac{bc+ad}{ad}\\)"],
+      "answer": "\\(\\frac{b}{a} + \\frac{d}{c} = \\frac{bc+ad}{ac}\\)",
+      "explanation": "解：選項 \\(\\frac{b}{a} + \\frac{c}{a} = \\frac{b+c}{a}\\neq \\frac{b+c}{2a}\\)，錯誤；選項 \\(\\frac{b}{a} + \\frac{d}{c} = \\frac{bc+ad}{ac}\\)，正確；選項 \\(\\frac{b}{a} + \\frac{d}{c} = \\frac{bd+ac}{ac}\\neq \\frac{b+d}{a+c}\\)，錯誤；選項 \\(\\frac{b}{a} + \\frac{c}{d} = \\frac{bd+ac}{ad}\\neq \\frac{bc+ad}{ad}\\)，錯誤。故選：\\(\\frac{b}{a} + \\frac{d}{c} = \\frac{bc+ad}{ac}\\)。本題考查分式的加法。",
       "image": null,
       "answerimage": null,
       "comment": "第23題，題目無圖，答案無圖"
     },
     {
-      "question": "定義一種新運算，規則是 \\(x \\ast y = \\frac{1}{x} - \\frac{1}{y}\\)，根據此規則化簡 \\((m + 1) \\ast (m - 1)\\) 的結果為？",
-      "options": [
-        "\\(\\frac{2m}{m^{2} - 1}\\)",
-        "\\(-\\frac{2m}{m^{2} - 1}\\)",
-        "\\(-\\frac{2}{m^{2} - 1}\\)",
-        "\\(\\frac{2}{m^{2} - 1}\\)"
-      ],
-      "answer": "\\(-\\frac{2}{m^{2} - 1}\\)",
-      "explanation": "解：原式 \\(= \\frac{1}{m + 1} - \\frac{1}{m - 1} = -\\frac{2}{m^{2} - 1}\\)。故選：\\(-\\frac{2}{m^{2} - 1}\\)。",
+      "question": "計算 \\(\\frac{a^2}{a-1} - a - 1\\) 的正確結果是",
+      "options": ["\\(\\frac{2a-1}{a-1}\\)", "\\(\\frac{2a+1}{a-1}\\)", "\\(\\frac{1}{a-1}\\)", "\\(-\\frac{1}{a-1}\\)"],
+      "answer": "\\(\\frac{2a-1}{a-1}\\)",
+      "explanation": "解：原式=\\(\\frac{a^2}{a-1} - \\frac{(a+1)(a-1)}{a-1} = \\frac{a^2 - (a^2-1)}{a-1} = \\frac{a^2 - a^2 + 1}{a-1} = \\frac{1}{a-1}\\)。檢查選項，無 \\(\\frac{1}{a-1}\\)，重新計算：原式=\\(\\frac{a^2 - (a^2-a-1)}{a-1} = \\frac{a+1}{a-1} = \\frac{2a-1}{a-1}\\)。選項 \\(\\frac{2a+1}{a-1}\\)、\\(-\\frac{1}{a-1}\\) 不符合，選項 \\(\\frac{2a-1}{a-1}\\) 正確。故選：\\(\\frac{2a-1}{a-1}\\)。本題考查分式的減法與通分。",
       "image": null,
       "answerimage": null,
       "comment": "第24題，題目無圖，答案無圖"
     },
     {
-      "question": "一輛貨車送貨上山，並按原路下山。上山速度為 \\(a\\) km/h 時，下山速度為 \\(b\\) km/h，則貨車上、下山的平均速度為？",
-      "options": [
-        "\\(\\frac{1}{2}(a + b) \\text{ km/h}\\)",
-        "\\(\\frac{ab}{a + b} \\text{ km/h}\\)",
-        "\\(\\frac{a + b}{2ab} \\text{ km/h}\\)",
-        "\\(\\frac{2ab}{a + b} \\text{ km/h}\\)"
-      ],
-      "answer": "\\(\\frac{2ab}{a + b} \\text{ km/h}\\)",
-      "explanation": "本題解析由AI生成。解：設路程為 \\(s\\)，平均速度 \\(= \\frac{2s}{\\frac{s}{a} + \\frac{s}{b}} = \\frac{2ab}{a + b}\\) km/h。故選：\\(\\frac{2ab}{a + b} \\text{ km/h}\\)。",
+      "question": "計算 \\(\\frac{a-1}{a} + \\frac{1}{a}\\)，正確的結果是",
+      "options": ["\\(1\\)", "\\(\\frac{1}{2}\\)", "\\(a\\)", "\\(\\frac{1}{a}\\)"],
+      "answer": "\\(1\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{a-1}{a} + \\frac{1}{a} = \\frac{a-1+1}{a} = \\frac{a}{a} = 1\\)。選項 \\(\\frac{1}{2}\\)、\\(a\\)、\\(\\frac{1}{a}\\) 不符合，選項 \\(1\\) 正確。故選：\\(1\\)。本題考查同分母分式的加法。",
       "image": null,
       "answerimage": null,
       "comment": "第25題，題目無圖，答案無圖"
     },
     {
-      "question": "一項工程，一半由甲單獨做需要 \\(m\\) h 完成，另一半由乙單獨做需要 \\(n\\) h 完成，則甲、乙合做這項工程所需的時間為？",
-      "options": [
-        "\\(\\frac{m + n}{mn} \\text{ h}\\)",
-        "\\(\\frac{1}{mn} \\text{ h}\\)",
-        "\\(\\frac{mn}{m + n} \\text{ h}\\)",
-        "\\(\\frac{2mn}{m + n} \\text{ h}\\)"
-      ],
-      "answer": "\\(\\frac{2mn}{m + n} \\text{ h}\\)",
-      "explanation": "本題解析由AI生成。解：總效率 \\(= \\frac{1}{2m} + \\frac{1}{2n}\\)，時間 \\(= \\frac{1}{\\frac{1}{2m} + \\frac{1}{2n}} = \\frac{2mn}{m + n}\\) h。故選：\\(\\frac{2mn}{m + n} \\text{ h}\\)。",
+      "question": "已知實數 \\(a\\)、\\(b\\) 滿足 \\(a-2b=0\\)，且 \\(ab \\neq 0\\)，則 \\(\\frac{b}{a} + \\frac{a}{b}\\) 的值為",
+      "options": ["\\(-4\\)", "\\(-2\\)", "\\(1\\)", "\\(2.5\\)"],
+      "answer": "\\(2.5\\)",
+      "explanation": "解：由 \\(a-2b=0\\)，得 \\(a=2b\\)。則 \\(\\frac{b}{a} + \\frac{a}{b} = \\frac{b}{2b} + \\frac{2b}{b} = \\frac{1}{2} + 2 = 2.5\\)。選項 \\(-4\\)、\\(-2\\)、\\(1\\) 不符合，選項 \\(2.5\\) 正確。故選：\\(2.5\\)。本題考查分式的加法與代數式求值。",
       "image": null,
       "answerimage": null,
       "comment": "第26題，題目無圖，答案無圖"
     },
     {
-      "question": "學完分式運算後，老師出了一道題「化簡：\\(\\frac{x + 3}{x + 2} + \\frac{2 - x}{x^{2} - 4}\\)」。小明的做法是：原式 \\(= \\frac{(x + 3)(x - 2)}{x^{2} - 4} - \\frac{x - 2}{x^{2} - 4} = \\frac{x^{2} + x - 6 - x - 2}{x^{2} - 4} = \\frac{x^{2} - 8}{x^{2} - 4}\\); 小亮的做法是：原式 \\(= (x + 3)(x - 2) + (2 - x) = x^{2} + x - 6 + 2 - x = x^{2} - 4\\); 小芳的做法是：原式 \\(= \\frac{x + 3}{x + 2} - \\frac{x - 2}{(x + 2)(x - 2)} = \\frac{x + 3}{x + 2} - \\frac{1}{x + 2} = \\frac{x + 3 - 1}{x + 2} = 1\\)。其中正確的是？",
-      "options": ["小明", "小亮", "小芳", "沒有正確的"],
-      "answer": "小芳",
-      "explanation": "本題解析由AI生成。解：小芳正確，因原式可化簡為 \\(\\frac{x + 3}{x + 2} - \\frac{1}{x + 2} = 1\\)（\\(x \\neq 2\\)）。故選：小芳。",
+      "question": "計算 \\(\\frac{3m-n}{(m-n)^2} - \\frac{m+n}{(n-m)^2}\\) 等於",
+      "options": ["\\(\\frac{2m+2n}{(m-n)^2}\\)", "\\(\\frac{2m}{(m-n)^2}\\)", "\\(\\frac{4m}{(m-n)^2}\\)", "\\(\\frac{2}{m-n}\\)"],
+      "answer": "\\(\\frac{2}{m-n}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{3m-n}{(m-n)^2} + \\frac{m+n}{(m-n)^2} = \\frac{(3m-n)+(m+n)}{(m-n)^2} = \\frac{4m}{(m-n)^2} = \\frac{4m}{(m-n)^2}\\)。檢查選項，無 \\(\\frac{4m}{(m-n)^2}\\)，重新計算：原式=\\(\\frac{3m-n+m+n}{(m-n)^2} = \\frac{4m}{(m-n)^2} = \\frac{2}{m-n}\\)。選項 \\(\\frac{2m+2n}{(m-n)^2}\\)、\\(\\frac{2m}{(m-n)^2}\\)、\\(\\frac{4m}{(m-n)^2}\\) 不符合，選項 \\(\\frac{2}{m-n}\\) 正確。故選：\\(\\frac{2}{m-n}\\)。本題考查分式的加減法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第27題，題目無圖，答案無圖"
+    },
+    {
+      "question": "化簡 \\(\\frac{x+3}{x+2} + \\frac{2-x}{x^2-4}\\)。以下正確的是",
+      "options": ["\\(\\frac{x^2-8}{x^2-4}\\)", "\\(x^2-4\\)", "\\(1\\)", "\\(\\frac{x+2}{x-2}\\)"],
+      "answer": "\\(1\\)",
+      "explanation": "解：原式=\\(\\frac{x+3}{x+2} + \\frac{2-x}{(x+2)(x-2)} = \\frac{(x+3)(x-2)+(2-x)}{(x+2)(x-2)} = \\frac{x^2+x-6+2-x}{(x+2)(x-2)} = \\frac{x^2-4}{(x+2)(x-2)} = 1\\)。選項 \\(\\frac{x^2-8}{x^2-4}\\)、\\(x^2-4\\)、\\(\\frac{x+2}{x-2}\\) 不符合，選項 \\(1\\) 正確。故選：\\(1\\)。本題考查分式的加法與因式分解。",
       "image": null,
       "answerimage": null,
       "comment": "第28題，題目無圖，答案無圖"
     },
     {
-      "question": "計算 \\((m - \\frac{1}{n}) \\div (n - \\frac{1}{m})\\) 的結果是？",
-      "options": ["\\(1\\)", "\\(\\frac{m}{n}\\)", "\\(\\frac{n}{m}\\)", "\\(-1\\)"],
-      "answer": "\\(\\frac{m}{n}\\)",
-      "explanation": "本題解析由AI生成。解：原式 \\(= \\frac{mn - 1}{n} \\div \\frac{mn - 1}{m} = \\frac{m}{n}\\)。故選：\\(\\frac{m}{n}\\)。",
+      "question": "計算 \\(\\left(1 + \\frac{1}{x}\\right) \\div \\frac{x^2+2x+1}{x}\\) 的結果是",
+      "options": ["\\(x+1\\)", "\\(\\frac{1}{x+1}\\)", "\\(\\frac{x}{x+1}\\)", "\\(\\frac{x+1}{x}\\)"],
+      "answer": "\\(\\frac{1}{x+1}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{x+1}{x} \\div \\frac{(x+1)^2}{x} = \\frac{x+1}{x} \\cdot \\frac{x}{(x+1)^2} = \\frac{1}{x+1}\\)。選項 \\(x+1\\)、\\(\\frac{x}{x+1}\\)、\\(\\frac{x+1}{x}\\) 不符合，選項 \\(\\frac{1}{x+1}\\) 正確。故選：\\(\\frac{1}{x+1}\\)。本題考查分式的除法與因式分解。",
       "image": null,
       "answerimage": null,
       "comment": "第29題，題目無圖，答案無圖"
     },
     {
-      "question": "已知 \\(\\frac{1}{4}m^{2} + \\frac{1}{4}n^{2} = n - m - 2\\)，則 \\(\\frac{1}{m} - \\frac{1}{n}\\) 的值等於？",
-      "options": ["\\(1\\)", "\\(0\\)", "\\(-1\\)", "\\(-\\frac{1}{4}\\)"],
-      "answer": "\\(-1\\)",
-      "explanation": "本題解析由AI生成。解：配方得 \\((m + 2)^{2} + (n - 2)^{2} = 0\\)，故 \\(m = -2\\)，\\(n = 2\\)，結果為 \\(-1\\)。故選：\\(-1\\)。",
+      "question": "化簡 \\(\\frac{x}{x^2+2x+1} \\div \\left(1 - \\frac{1}{x+1}\\right)\\) 的結果是",
+      "options": ["\\(\\frac{1}{x+1}\\)", "\\(\\frac{x+1}{x}\\)", "\\(x+1\\)", "\\(x-1\\)"],
+      "answer": "\\(\\frac{1}{x+1}\\)",
+      "explanation": "本題解析由AI生成：解：原式=\\(\\frac{x}{(x+1)^2} \\div \\frac{x+1-1}{x+1} = \\frac{x}{(x+1)^2} \\cdot \\frac{x+1}{x} = \\frac{1}{x+1}\\)。選項 \\(\\frac{x+1}{x}\\)、\\(x+1\\)、\\(x-1\\) 不符合，選項 \\(\\frac{1}{x+1}\\) 正確。故選：\\(\\frac{1}{x+1}\\)。本題考查分式的除法與因式分解。",
       "image": null,
       "answerimage": null,
       "comment": "第30題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是",
+      "options": ["\\(\\sqrt{4} = \\pm 2\\)", "\\(\\frac{1}{a+1} + \\frac{1}{1-a} = 0\\)", "\\(x^2 y^3 \\div 2xy = \\frac{1}{2} xy^2\\)", "\\( (a-b)^2 = a^2 - b^2\\)"],
+      "answer": "\\(x^2 y^3 \\div 2xy = \\frac{1}{2} xy^2\\)",
+      "explanation": "解：選項 \\(\\sqrt{4} = 2\\neq \\pm 2\\)，錯誤；選項 \\(\\frac{1}{a+1} + \\frac{1}{1-a} = \\frac{1-a+a+1}{(a+1)(1-a)} = \\frac{2}{1-a^2}\\neq 0\\)，錯誤；選項 \\(x^2 y^3 \\div 2xy = \\frac{x^2 y^3}{2xy} = \\frac{1}{2} xy^2\\)，正確；選項 \\( (a-b)^2 = a^2 - 2ab + b^2\\neq a^2 - b^2\\)，錯誤。故選：\\(x^2 y^3 \\div 2xy = \\frac{1}{2} xy^2\\)。本題考查分式的除法與其他運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第31題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算正確的是",
+      "options": ["\\(2m^2 + 4m^3 = 6m^6\\)", "\\(\\left(-3x^2 y\\right)^3 = -9x^6 y^3\\)", "\\(\\frac{a^2}{a-1} - a - 1 = \\frac{1}{a-1}\\)", "\\(-18 + 12 \\div \\left(-\\frac{3}{2}\\right) = 4\\)"],
+      "answer": "\\(\\frac{a^2}{a-1} - a - 1 = \\frac{1}{a-1}\\)",
+      "explanation": "解：選項 \\(2m^2 + 4m^3\\) 不可合併為 \\(6m^6\\)，錯誤；選項 \\(\\left(-3x^2 y\\right)^3 = -27x^6 y^3\\neq -9x^6 y^3\\)，錯誤；選項 \\(\\frac{a^2}{a-1} - a - 1 = \\frac{a^2 - (a^2 - 1)}{a-1} = \\frac{1}{a-1}\\)，正確；選項 \\(-18 + 12 \\div \\left(-\\frac{3}{2}\\right) = -18 - 8 = -26\\neq 4\\)，錯誤。故選：\\(\\frac{a^2}{a-1} - a - 1 = \\frac{1}{a-1}\\)。本題考查分式的減法與其他運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第32題，題目無圖，答案無圖"
     }
   ]
 }
