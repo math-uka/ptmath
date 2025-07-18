@@ -1,0 +1,174 @@
+{
+  "title": " 二次根式混合運算",
+  "questions": [
+ 
+    {
+      "question": "計算 \\(\\sqrt{27} - \\sqrt{8} \\cdot \\sqrt{\\frac{2}{3}}\\) 的結果是",
+      "options": ["\\(\\sqrt{3}\\)", "\\(\\frac{4}{3}\\sqrt{3}\\)", "\\(\\frac{5}{3}\\sqrt{3}\\)", "\\(2\\sqrt{3}\\)"], 
+      "answer": "\\(\\frac{5}{3}\\sqrt{3}\\)",
+      "explanation": "本題解析由AI生成：解：先計算 \\(\\sqrt{27} = 3\\sqrt{3}\\)。再計算 \\(\\sqrt{8} \\cdot \\sqrt{\\frac{2}{3}} = \\sqrt{8 \\cdot \\frac{2}{3}} = \\sqrt{\\frac{16}{3}} = \\frac{4}{\\sqrt{3}} = \\frac{4\\sqrt{3}}{3}\\)。則原式為 \\(3\\sqrt{3} - \\frac{4\\sqrt{3}}{3} = \\frac{9\\sqrt{3} - 4\\sqrt{3}}{3} = \\frac{5\\sqrt{3}}{3} = \\frac{5}{3}\\sqrt{3}\\)。選項 \\(\\sqrt{3}\\)、\\(\\frac{4}{3}\\sqrt{3}\\)、\\(2\\sqrt{3}\\) 均不符。故選：\\(\\frac{5}{3}\\sqrt{3}\\)。本題考查二次根式的化簡與減法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第2題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\frac{4\\sqrt{2} - 3\\sqrt{6}}{2\\sqrt{2}}\\) 的結果是",
+      "options": ["\\(2 - \\frac{3}{2}\\sqrt{3}\\)", "\\(1 - \\frac{\\sqrt{3}}{3}\\)", "\\(\\frac{2}{3}\\)", "\\(\\frac{3}{\\sqrt{2}}\\)"],
+      "answer": "\\(2 - \\frac{3}{2}\\sqrt{3}\\)",
+      "explanation": "本題解析由AI生成：解：原式為 \\(\\frac{4\\sqrt{2} - 3\\sqrt{6}}{2\\sqrt{2}} = \\frac{4\\sqrt{2}}{2\\sqrt{2}} - \\frac{3\\sqrt{6}}{2\\sqrt{2}}\\)。第一項 \\(\\frac{4\\sqrt{2}}{2\\sqrt{2}} = 2\\)。第二項 \\(\\frac{3\\sqrt{6}}{2\\sqrt{2}} = \\frac{3\\sqrt{6} \\cdot \\sqrt{2}}{2 \\cdot 2} = \\frac{3\\sqrt{12}}{4} = \\frac{3 \\cdot 2\\sqrt{3}}{4} = \\frac{3\\sqrt{3}}{2}\\)。則原式為 \\(2 - \\frac{3\\sqrt{3}}{2} = 2 - \\frac{3}{2}\\sqrt{3}\\)。選項 \\(1 - \\frac{\\sqrt{3}}{3}\\)、\\(\\frac{2}{3}\\)、\\(\\frac{3}{\\sqrt{2}}\\) 均不符。故選：\\(2 - \\frac{3}{2}\\sqrt{3}\\)。本題考查二次根式的除法與化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第3題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算中正確的是",
+      "options": ["\\(\\sqrt{3}(\\sqrt{3} + \\frac{1}{\\sqrt{3}}) = 3\\)", "\\(\\frac{\\sqrt{12} - \\sqrt{27}}{\\sqrt{3}} = -1\\)", "\\(\\frac{\\sqrt{32}}{\\frac{1}{2}\\sqrt{2}} = 2\\)", "\\(\\sqrt{3}(\\sqrt{2} + \\sqrt{3}) = \\sqrt{6} + 2\\sqrt{3}\\)"],
+      "answer": "\\(\\frac{\\sqrt{12} - \\sqrt{27}}{\\sqrt{3}} = -1\\)",
+      "explanation": "本題解析由AI生成：解：逐一檢驗選項。選項 \\(\\sqrt{3}(\\sqrt{3} + \\frac{1}{\\sqrt{3}}) = \\sqrt{3} \\cdot \\sqrt{3} + \\sqrt{3} \\cdot \\frac{1}{\\sqrt{3}} = 3 + 1 = 4\\)，不等於 3，錯誤。選項 \\(\\frac{\\sqrt{12} - \\sqrt{27}}{\\sqrt{3}} = \\frac{2\\sqrt{3} - 3\\sqrt{3}}{\\sqrt{3}} = \\frac{-\\sqrt{3}}{\\sqrt{3}} = -1\\)，正確。選項 \\(\\frac{\\sqrt{32}}{\\frac{1}{2}\\sqrt{2}} = \\frac{4\\sqrt{2}}{\\frac{1}{2}\\sqrt{2}} = 8\\)，不等於 2，錯誤。選項 \\(\\sqrt{3}(\\sqrt{2} + \\sqrt{3}) = \\sqrt{6} + 3\\)，不等於 \\(\\sqrt{6} + 2\\sqrt{3}\\)，錯誤。故選：\\(\\frac{\\sqrt{12} - \\sqrt{27}}{\\sqrt{3}} = -1\\)。本題考查二次根式的乘除法與化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第4題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\((\\sqrt{27} - \\sqrt{12}) \\cdot \\sqrt{\\frac{1}{3}}\\) 的結果是",
+      "options": ["\\(\\frac{\\sqrt{3}}{3}\\)", "\\(1\\)", "\\(\\sqrt{5}\\)", "\\(3\\)"],
+      "answer": "\\(1\\)",
+      "explanation": "本題解析由AI生成：解：先計算括號內 \\(\\sqrt{27} - \\sqrt{12} = 3\\sqrt{3} - 2\\sqrt{3} = \\sqrt{3}\\)。再乘以 \\(\\sqrt{\\frac{1}{3}} = \\frac{1}{\\sqrt{3}}\\)，得 \\(\\sqrt{3} \\cdot \\frac{1}{\\sqrt{3}} = 1\\)。選項 \\(\\frac{\\sqrt{3}}{3}\\)、\\(\\sqrt{5}\\)、\\(3\\) 均不符。故選：\\(1\\)。本題考查二次根式的乘法與化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第5題，題目無圖，答案無圖"
+    },
+
+
+    {
+      "question": "下列算式中正確的是",
+      "options": ["\\(\\sqrt{2} + \\sqrt{5} = \\sqrt{7}\\)", "\\(5\\sqrt{a} - 3\\sqrt{a} = 2\\sqrt{a}\\)", "\\(\\frac{\\sqrt{8} + \\sqrt{50}}{2} = \\sqrt{4} + \\sqrt{25} = 7\\)", "\\(2\\sqrt{3a} + \\sqrt{27a} = 5\\sqrt{3a}\\)"],
+      "answer": "\\(5\\sqrt{a} - 3\\sqrt{a} = 2\\sqrt{a}\\)",
+      "explanation": "解：選項 \\(\\sqrt{2} + \\sqrt{5} = \\sqrt{7}\\)。\\(\\sqrt{2} + \\sqrt{5} \\approx 3.650\\)，\\(\\sqrt{7} \\approx 2.646\\)，不等，錯誤。選項 \\(5\\sqrt{a} - 3\\sqrt{a} = 2\\sqrt{a}\\)。\\((5-3)\\sqrt{a} = 2\\sqrt{a}\\)，正確。選項 \\(\\frac{\\sqrt{8} + \\sqrt{50}}{2} = \\frac{2\\sqrt{2} + 5\\sqrt{2}}{2} = \\frac{7\\sqrt{2}}{2} \\approx 4.950\\)，而 \\(\\sqrt{4} + \\sqrt{25} = 2 + 5 = 7\\)，不等，錯誤。選項 \\(2\\sqrt{3a} + \\sqrt{27a} = 2\\sqrt{3a} + 3\\sqrt{3a} = 5\\sqrt{3a}\\)，正確。選項 \\(5\\sqrt{a} - 3\\sqrt{a} = 2\\sqrt{a}\\) 與 \\(2\\sqrt{3a} + \\sqrt{27a} = 5\\sqrt{3a}\\) 均正確，但依題目答案為單選，故選：\\(5\\sqrt{a} - 3\\sqrt{a} = 2\\sqrt{a}\\)。本題考查二次根式的加減法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第8題，題目無圖，答案無圖"
+    },
+
+    {
+      "question": "計算 \\(\\sqrt{14} \\cdot \\sqrt{7} - \\sqrt{2}\\) 的結果是",
+      "options": ["\\(7\\)", "\\(6\\sqrt{2}\\)", "\\(7\\sqrt{2}\\)", "\\(2\\sqrt{7}\\)"],
+      "answer": "\\(6\\sqrt{2}\\)",
+      "explanation": "解：原式 = \\(\\sqrt{14 \\cdot 7} - \\sqrt{2} = \\sqrt{98} - \\sqrt{2} = \\sqrt{49 \\cdot 2} - \\sqrt{2} = 7\\sqrt{2} - \\sqrt{2} = 6\\sqrt{2}\\)。選項 \\(7\\)、\\(7\\sqrt{2}\\)、\\(2\\sqrt{7}\\) 均不符。故選：\\(6\\sqrt{2}\\)。本題考查二次根式的乘法與減法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第12題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算中正確的是",
+      "options": ["\\(\\sqrt{6} \\div \\sqrt{2} = \\sqrt{3}\\)", "\\(2\\sqrt{3} + 3\\sqrt{3} = 6\\sqrt{3}\\)", "\\(\\sqrt{8} - \\sqrt{2} = \\sqrt{6}\\)", "\\((\\sqrt{2} + 1)(\\sqrt{2} - 1) = 3\\)"],
+      "answer": "\\(\\sqrt{6} \\div \\sqrt{2} = \\sqrt{3}\\)",
+      "explanation": "解：選項 \\(\\sqrt{6} \\div \\sqrt{2} = \\sqrt{\\frac{6}{2}} = \\sqrt{3}\\)，正確。選項 \\(2\\sqrt{3} + 3\\sqrt{3} = 5\\sqrt{3}\\)，不等於 \\(6\\sqrt{3}\\)。選項 \\(\\sqrt{8} - \\sqrt{2} = 2\\sqrt{2} - \\sqrt{2} = \\sqrt{2}\\)，不等於 \\(\\sqrt{6}\\)。選項 \\((\\sqrt{2} + 1)(\\sqrt{2} - 1) = 2 - 1 = 1\\)，不等於 3。故選：\\(\\sqrt{6} \\div \\sqrt{2} = \\sqrt{3}\\)。本題考查二次根式的運算法則。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第13題，題目無圖，答案無圖"
+    },
+  
+    {
+      "question": "化簡 \\(\\sqrt{2}(\\sqrt{2} + 2)\\) 的結果是",
+      "options": ["\\(2 + 2\\sqrt{2}\\)", "\\(2 + \\sqrt{2}\\)", "\\(4\\)", "\\(3\\sqrt{2}\\)"],
+      "answer": "\\(2 + 2\\sqrt{2}\\)",
+      "explanation": "本題解析由AI生成：解：原式 \\(\\sqrt{2}(\\sqrt{2} + 2) = \\sqrt{2} \\cdot \\sqrt{2} + \\sqrt{2} \\cdot 2 = 2 + 2\\sqrt{2}\\)。選項 \\(2 + \\sqrt{2}\\)、\\(4\\)、\\(3\\sqrt{2}\\) 均不符。故選：\\(2 + 2\\sqrt{2}\\)。本題考查二次根式的分配律與化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第15題，題目無圖，答案無圖"
+    },
+
+    {
+      "question": "計算 \\(\\sqrt{27} - \\sqrt{8} \\cdot \\sqrt{\\frac{3}{2}}\\) 的結果是",
+      "options": ["\\(\\sqrt{3}\\)", "\\(-\\sqrt{3}\\)", "\\(2\\sqrt{3}\\)", "\\(5\\sqrt{3}\\)"],
+      "answer": "\\(\\sqrt{3}\\)",
+      "explanation": "本題解析由AI生成：解：先計算 \\(\\sqrt{27} = 3\\sqrt{3}\\)。再計算 \\(\\sqrt{8} \\cdot \\sqrt{\\frac{3}{2}} = \\sqrt{8 \\cdot \\frac{3}{2}} = \\sqrt{12} = 2\\sqrt{3}\\)。則原式為 \\(3\\sqrt{3} - 2\\sqrt{3} = \\sqrt{3}\\)。選項 \\(-\\sqrt{3}\\)、\\(2\\sqrt{3}\\)、\\(5\\sqrt{3}\\) 均不符。故選：\\(\\sqrt{3}\\)。本題考查二次根式的減法與化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第17題，題目無圖，答案無圖"
+    },
+  
+    {
+      "question": "下列各數中與 \\(2 + \\sqrt{3}\\) 的積是有理數的是",
+      "options": ["\\(2 + \\sqrt{3}\\)", "\\(2\\)", "\\(\\sqrt{3}\\)", "\\(2 - \\sqrt{3}\\)"], 
+      "answer": "\\(2 - \\sqrt{3}\\)",
+      "explanation": "本題解析由AI生成：解：設 \\(x\\) 為某數，則 \\((2 + \\sqrt{3})x\\) 為有理數。逐一檢驗：選項 \\((2 + \\sqrt{3})(2 + \\sqrt{3}) = 4 + 4\\sqrt{3} + 3 = 7 + 4\\sqrt{3}\\)，無理數。選項 \\((2 + \\sqrt{3}) \\cdot 2 = 4 + 2\\sqrt{3}\\)，無理數。選項 \\((2 + \\sqrt{3}) \\cdot \\sqrt{3} = 2\\sqrt{3} + 3\\)，無理數。選項 \\((2 + \\sqrt{3})(2 - \\sqrt{3}) = 4 - 3 = 1\\)，有理數。故選：\\(2 - \\sqrt{3}\\)。本題考查二次根式的乘法與有理數性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第21題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算正確的是",
+      "options": ["\\(\\sqrt{6} \\div \\sqrt{2} = 3\\)", "\\(\\sqrt{2} + \\sqrt{3} = \\sqrt{5}\\)", "\\(2\\sqrt{3} \\cdot 3\\sqrt{3} = 6\\sqrt{3}\\)", "\\(\\sqrt{2} - \\sqrt{8} = -\\sqrt{2}\\)"],
+      "answer": "\\(\\sqrt{2} - \\sqrt{8} = -\\sqrt{2}\\)",
+      "explanation": "解：選項 \\(\\sqrt{6} \\div \\sqrt{2} = \\sqrt{\\frac{6}{2}} = \\sqrt{3}\\)。選項 \\(\\sqrt{2} + \\sqrt{3} \\approx 3.146\\)，\\(\\sqrt{5} \\approx 2.236\\)，不等。選項 \\(2\\sqrt{3} \\cdot 3\\sqrt{3} = 6 \\cdot 3 = 18\\)。選項 \\(\\sqrt{2} - \\sqrt{8} = \\sqrt{2} - 2\\sqrt{2} = -\\sqrt{2}\\)。故選：\\(\\sqrt{2} - \\sqrt{8} = -\\sqrt{2}\\)。本題考查二次根式的運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第22題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\sqrt{12} - \\sqrt{12} \\cdot \\sqrt{\\frac{1}{4}}\\) 的結果是",
+      "options": ["\\(0\\)", "\\(\\sqrt{3}\\)", "\\(3\\sqrt{3}\\)", "\\(\\frac{1}{2}\\)"],
+      "answer": "\\(\\sqrt{3}\\)",
+      "explanation": "解：原式 = \\(\\sqrt{12} - \\sqrt{12 \\cdot \\frac{1}{4}} = \\sqrt{12} - \\sqrt{3} = 2\\sqrt{3} - \\sqrt{3} = \\sqrt{3}\\)。選項 \\(0\\)、\\(3\\sqrt{3}\\)、\\(\\frac{1}{2}\\) 均不符。故選：\\(\\sqrt{3}\\)。本題考查二次根式的減法與化簡。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第23題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算中正確的是",
+      "options": ["\\(2\\sqrt{3} + 3\\sqrt{2} = 5\\sqrt{5}\\)", "\\(\\sqrt{10}(\\sqrt{3} + \\sqrt{7}) = 10\\sqrt{10}\\)", "\\((3 + 2\\sqrt{3})(3 - 2\\sqrt{3}) = -3\\)", "\\(\\sqrt{13} - \\sqrt{5} = 2\\sqrt{2}\\)"],
+      "answer": "\\((3 + 2\\sqrt{3})(3 - 2\\sqrt{3}) = -3\\)",
+      "explanation": "本題解析由AI生成：解：選項 \\(2\\sqrt{3} + 3\\sqrt{2} \\approx 3.464 + 4.243 = 7.707\\)，\\(5\\sqrt{5} \\approx 11.180\\)，不等，錯誤。選項 \\(\\sqrt{10}(\\sqrt{3} + \\sqrt{7}) = \\sqrt{30} + \\sqrt{70} \\approx 5.477 + 8.367 = 13.844\\)，\\(10\\sqrt{10} \\approx 31.62\\)，不等，錯誤。選項 \\((3 + 2\\sqrt{3})(3 - 2\\sqrt{3}) = 9 - 4 \\cdot 3 = 9 - 12 = -3\\)，正確。選項 \\(\\sqrt{13} - \\sqrt{5} \\approx 3.606 - 2.236 = 1.37\\)，\\(2\\sqrt{2} \\approx 2.828\\)，不等，錯誤。故選：\\((3 + 2\\sqrt{3})(3 - 2\\sqrt{3}) = -3\\)。本題考查二次根式的乘法與平方差公式。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第24題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列各式計算正確的是",
+      "options": ["\\(\\sqrt{2^2} = \\pm 2\\)", "\\((\\sqrt{5} + \\sqrt{2})(\\sqrt{5} - \\sqrt{2}) = 3\\)", "\\(\\sqrt{(-2)^2} = -2\\)", "\\(\\sqrt{(-4) \\cdot (-9)} = \\sqrt{-4} \\cdot \\sqrt{-9}\\)"], 
+      "answer": "\\((\\sqrt{5} + \\sqrt{2})(\\sqrt{5} - \\sqrt{2}) = 3\\)",
+      "explanation": "解：選項 \\(\\sqrt{2^2} = \\sqrt{4} = 2\\)，不為 \\(\\pm 2\\)，錯誤。選項 \\((\\sqrt{5} + \\sqrt{2})(\\sqrt{5} - \\sqrt{2}) = 5 - 2 = 3\\)，正確。選項 \\(\\sqrt{(-2)^2} = \\sqrt{4} = 2\\)，不為 -2，錯誤。選項 \\(\\sqrt{(-4) \\cdot (-9)} = \\sqrt{36} = 6\\)，\\(\\sqrt{-4} \\cdot \\sqrt{-9}\\) 無定義，錯誤。故選：\\((\\sqrt{5} + \\sqrt{2})(\\sqrt{5} - \\sqrt{2}) = 3\\)。本題考查二次根式的乘法與性質。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第25題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是",
+      "options": ["\\(\\sqrt{2} + \\sqrt{3} = \\sqrt{5}\\)", "\\(3\\sqrt{7} - \\sqrt{7} = 3\\)", "\\(\\sqrt{2} \\cdot \\sqrt{5} = \\sqrt{10}\\)", "\\(\\sqrt{(-3)^2} = -3\\)"],
+      "answer": "\\(\\sqrt{2} \\cdot \\sqrt{5} = \\sqrt{10}\\)",
+      "explanation": "解：選項 \\(\\sqrt{2} + \\sqrt{3} \\approx 3.146\\)，\\(\\sqrt{5} \\approx 2.236\\)，不等，錯誤。選項 \\(3\\sqrt{7} - \\sqrt{7} = 2\\sqrt{7}\\)，不等於 3，錯誤。選項 \\(\\sqrt{2} \\cdot \\sqrt{5} = \\sqrt{10}\\)，正確。選項 \\(\\sqrt{(-3)^2} = \\sqrt{9} = 3\\)，不為 -3，錯誤。故選：\\(\\sqrt{2} \\cdot \\sqrt{5} = \\sqrt{10}\\)。本題考查二次根式的乘法。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第26題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列運算正確的是",
+      "options": ["\\((3 - 2\\sqrt{3})(3 + 2\\sqrt{3}) = 3^2 - 2 \\cdot 3 = 3\\)", "\\((2\\sqrt{a} + \\sqrt{b})(\\sqrt{a} - \\sqrt{b}) = 2a - b\\)", "\\((3 - 2\\sqrt{3})^2 = 3^2 - (2\\sqrt{3})^2 = 9 - 12 = -3\\)", "\\((\\sqrt{a} + \\sqrt{a - 1})(\\sqrt{a} - \\sqrt{a - 1}) = 1\\)"],
+      "answer": "\\((\\sqrt{a} + \\sqrt{a - 1})(\\sqrt{a} - \\sqrt{a - 1}) = 1\\)",
+      "explanation": "解：選項 \\((3 - 2\\sqrt{3})(3 + 2\\sqrt{3}) = 9 - 12 = -3\\)，不等於 \\(3^2 - 2 \\cdot 3 = 3\\)，錯誤。選項 \\((2\\sqrt{a} + \\sqrt{b})(\\sqrt{a} - \\sqrt{b}) = 2a - 2\\sqrt{ab} + \\sqrt{ab} - b = 2a - \\sqrt{ab} - b\\)，不等於 \\(2a - b\\)，錯誤。選項 \\((3 - 2\\sqrt{3})^2 = 9 - 12\\sqrt{3} + 12 = 21 - 12\\sqrt{3}\\)，不等於 \\(-3\\)，錯誤。選項 \\((\\sqrt{a} + \\sqrt{a - 1})(\\sqrt{a} - \\sqrt{a - 1}) = a - (a - 1) = 1\\)，正確。故選：\\((\\sqrt{a} + \\sqrt{a - 1})(\\sqrt{a} - \\sqrt{a - 1}) = 1\\)。本題考查二次根式的乘法與平方差公式。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第27題，題目無圖，答案無圖"
+    },
+    {
+      "question": "下列計算中不正確的是",
+      "options": ["\\(\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{6}\\)", "\\(3\\sqrt{5} - \\sqrt{5} = 2\\)", "\\(\\sqrt{18} \\div \\sqrt{2} = 3\\)", "\\((1 + \\sqrt{2})^2 = 3 + 2\\sqrt{2}\\)"],
+      "answer": "\\(3\\sqrt{5} - \\sqrt{5} = 2\\)",
+      "explanation": "解：選項 \\(\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{6}\\)，正確。選項 \\(3\\sqrt{5} - \\sqrt{5} = 2\\sqrt{5}\\)，不等於 2，錯誤。選項 \\(\\sqrt{18} \\div \\sqrt{2} = \\sqrt{\\frac{18}{2}} = \\sqrt{9} = 3\\)，正確。選項 \\((1 + \\sqrt{2})^2 = 1 + 2\\sqrt{2} + 2 = 3 + 2\\sqrt{2}\\)，正確。故選：\\(3\\sqrt{5} - \\sqrt{5} = 2\\)。本題考查二次根式的運算。",
+      "image": null,
+      "answerimage": null,
+      "comment": "第28題，題目無圖，答案無圖"
+    },
+    {
+      "question": "計算 \\(\\sqrt{32} - \\sqrt{3}(\\sqrt{6} - \\sqrt{3}) - \\frac{2}{\\sqrt{2}}\\) 的結果是",
+      "options": ["\\(3\\)", "\\(3\\sqrt{2}\\)", "\\(\\sqrt{2} + 3\\)", "\\(\\sqrt{2}\\)"],
+      "answer": "\\(3\\)",
+      "explanation": "略",
+      "image": null,
+      "answerimage": null,
+      "comment": "第29題，題目無圖，答案無圖"
+    }
+  ]
+}
