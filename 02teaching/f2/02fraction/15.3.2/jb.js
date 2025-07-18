@@ -544,9 +544,9 @@
       let stars = '';
       if (isStandardMode) {
         const remainingWrong = Math.max(0, STANDARD_MODE_MAX_WRONG - wrongCount);
-        stars = '★'.repeat(remainingWrong);
+        stars = '❤️'.repeat(remainingWrong);
       }
-      document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題${stars}`;
+      document.getElementById('remaining-questions').innerHTML = `還剩 ${remaining} 題, 生命值：${stars}`;
 
       const shuffledOptions = shuffleArray([...question.options]);
       console.log('題目:', question.question);
