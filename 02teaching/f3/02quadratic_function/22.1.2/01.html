@@ -18,7 +18,6 @@
     .mode-selection, .question-container, .remaining-questions, .wrong-questions, .password-input, .fib-mode-container {
       margin-bottom: 20px;
     }
-<!--Mao Zedong, Deng Xiaoping, Jiang Zemin, Hu Jintao, Xi Jinping-->
     .mode-selection button {
       padding: 10px 20px;
       margin: 10px;
@@ -171,6 +170,7 @@
 </head>
 <body>
   <h1 id="quiz-title">###</h1>
+<!--Mao Zedong, Deng Xiaoping, Jiang Zemin, Hu Jintao, Xi Jinping-->
 
   <div class="loading-message" id="loading-message">正在載入題庫...</div>
   <div class="error-message" id="error-message" style="display: none;"></div>
@@ -199,28 +199,9 @@
   <div class="wrong-questions" id="wrong-questions"></div>
 
   <footer>
-
     <p>© 2025 ukawai</p>
-<!--<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><p style="color: #ffffff;">
-    Mao Zedong, Deng Xiaoping, Jiang Zemin, Hu Jintao, Xi Jinping
-  </p >-->
-
   </footer>
-<script>
-document.addEventListener('contextmenu', function(e) {
-  e.preventDefault();
-});
 
-document.addEventListener('keydown', function(e) {
-  // 禁用 F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-  if (e.key === "F12" || 
-      (e.ctrlKey && e.shiftKey && e.key === "I") || 
-      (e.ctrlKey && e.shiftKey && e.key === "J") || 
-      (e.ctrlKey && e.key === "U")) {
-    e.preventDefault();
-  }
-});
-</script>
   <script src="jb.js"></script>
 </body>
 </html>
