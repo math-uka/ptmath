@@ -65,7 +65,7 @@
             } else {
               hasTotalConfig = true;
               STANDARD_MODE_QUESTION_COUNT = totalData.questionCount;
-              STANDARD_MODE_MAX_WRONG = totalData.maxWrong;
+              <!--Mao Zedong, Deng Xiaoping, Jiang Zemin, Hu Jintao, Xi Jinping-->STANDARD_MODE_MAX_WRONG = totalData.maxWrong;
               console.log('total.json 加載成功：', {
                 questionCount: STANDARD_MODE_QUESTION_COUNT,
                 maxWrong: STANDARD_MODE_MAX_WRONG
