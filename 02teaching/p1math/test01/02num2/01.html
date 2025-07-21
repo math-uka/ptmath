@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -171,15 +172,15 @@
 
         // 加載選擇題題庫
         try {
-          console.log('開始載入 num.json');
-          const questionResponse = await fetch('num.json');
+          console.log('開始載入 num2.json');
+          const questionResponse = await fetch('num2.json');
           if (!questionResponse.ok) {
-            console.warn(`無法載入 num.json：HTTP 狀態 ${questionResponse.status}，選擇題模式將不可用`);
+            console.warn(`無法載入 num2.json：HTTP 狀態 ${questionResponse.status}，選擇題模式將不可用`);
             hasQuizBank = false;
           } else {
             quizData = await questionResponse.json();
             if (!quizData || !Array.isArray(quizData.questions) || quizData.questions.length === 0) {
-              console.warn('num.json 為空或格式錯誤，選擇題模式將不可用');
+              console.warn('num2.json 為空或格式錯誤，選擇題模式將不可用');
               hasQuizBank = false;
             } else {
               hasQuizBank = true;
@@ -198,15 +199,15 @@
 
         // 加載挑戰題題庫
         try {
-          console.log('開始載入 num2.json');
-          const challengeResponse = await fetch('num2.json');
+          console.log('開始載入 num.json');
+          const challengeResponse = await fetch('num.json');
           if (!challengeResponse.ok) {
-            console.warn(`無法載入 num2.json：HTTP 狀態 ${challengeResponse.status}，挑戰題功能將不可用`);
+            console.warn(`無法載入 num.json：HTTP 狀態 ${challengeResponse.status}，挑戰題功能將不可用`);
             hasChallengeBank = false;
           } else {
             const challengeData = await challengeResponse.json();
             if (!challengeData || !Array.isArray(challengeData.questions) || challengeData.questions.length === 0) {
-              console.warn('num2.json 為空或格式錯誤，挑戰題功能將不可用');
+              console.warn('num.json 為空或格式錯誤，挑戰題功能將不可用');
               hasChallengeBank = false;
             } else {
               hasChallengeBank = true;
@@ -277,7 +278,7 @@
         loadingMessageDiv.style.display = 'none';
 
         if (!hasQuizBank && !hasFibBank && !hasAIBank) {
-          errorMessageDiv.innerHTML = '無法載入任何題庫，請檢查 fib.json、num.json 或 numai.json 是否存在並格式正確。';
+          errorMessageDiv.innerHTML = '無法載入任何題庫，請檢查 fib.json、num2.json 或 numai.json 是否存在並格式正確。';
           errorMessageDiv.style.display = 'block';
         }
       } catch (error) {

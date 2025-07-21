@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -14,22 +15,9 @@
       margin: 0 auto;
       padding: 20px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-      background: #ffffff; 
-    }
-    .background-text {
-      position: absolute;
-      font-size: 1.5rem;
-      color: rgba(0, 0, 0, 0.015);
-      user-select: none;
-      z-index: 0;
-      white-space: nowrap;
     }
     .mode-selection, .question-container, .remaining-questions, .wrong-questions, .password-input, .fib-mode-container {
       margin-bottom: 20px;
-      z-index: 1; 
-      position: relative;
     }
     .mode-selection button {
       padding: 10px 20px;
@@ -168,8 +156,6 @@
       margin-top: 40px;
       font-size: 0.9em;
       color: #555;
-      z-index: 1;
-      position: relative;
     }
     .error-message {
       color: red;
@@ -185,6 +171,7 @@
 </head>
 <body>
   <h1 id="quiz-title">###</h1>
+<!--Mao Zedong, Deng Xiaoping, Jiang Zemin, Hu Jintao, Xi Jinping-->
 
   <div class="loading-message" id="loading-message">正在載入題庫...</div>
   <div class="error-message" id="error-message" style="display: none;"></div>
@@ -216,34 +203,6 @@
     <p>© 2025 ukawai</p>
   </footer>
 
-  <script>
-    const body = document.body;
-    const movements = [];
-    const chineseNumbers = ['四', '五', '六', '七', '八'];
-    
-    
-    for (let i = 0; i < 5; i++) {
-      movements.push(`${chineseNumbers[i]}四運動`);
-    }
-    
-  
-    const gridSizeX = 150; // 水平格子大小（像素）
-    const gridSizeY = 50;  // 垂直格子大小（像素）
-    let movementIndex = 0;
-    
-    for (let y = 0; y < window.innerHeight; y += gridSizeY) {
-      for (let x = 0; x < window.innerWidth; x += gridSizeX) {
-        const movement = movements[movementIndex % movements.length];
-        const div = document.createElement('div');
-        div.className = 'background-text';
-        div.textContent = movement;
-        div.style.left = `${x}px`;
-        div.style.top = `${y}px`;
-        body.appendChild(div);
-        movementIndex++;
-      }
-    }
-  </script>
   <script src="jb.js"></script>
 </body>
 </html>
