@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>數學測驗互動題目</title>
+    <title id="page-title">載入中...</title>
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
     <style>
         body {
@@ -39,20 +39,27 @@
             border-radius: 4px;
         }
         
-        input[type="text"], input[type="number"] {
-            padding: 8px 12px;
-            margin: 0 10px;
-            width: 80px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+        .options {
+            display: none;
+            margin-top: 15px;
         }
         
-        input[type="text"]:focus, input[type="number"]:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        .option {
+            padding: 8px 12px;
+            margin: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e8f8f0;
+        }
+        
+        .option.selected {
+            background-color: #3498db;
+            color: white;
         }
         
         button {
@@ -148,10 +155,18 @@
             margin: 20px 0;
             display: none;
         }
+        
+        #timer {
+            text-align: center;
+            font-size: 18px;
+            color: #e74c3c;
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h2>數學測驗互動題目</h2>
+    <h2 id="page-title">載入中...</h2>
     <div class="stars-container">
         <div class="star">★</div>
         <div class="star">★</div>
@@ -161,20 +176,14 @@
     <div id="completion-message"></div>
     
     <div id="quiz">
-        <p>在一次數學測驗中，我們班的平均分為<span id="X" class="highlight"></span>分，把高出平均分的分數記為正數。</p>
-        <div class="question">
-            (1) 小敏得<span id="Y" class="highlight"></span>分，應記為多少？ 
-            <input type="text" id="answer1"> 分
+        <p id="description"></p>
+        <div class="question" id="question1">
+            <span id="question-text"></span>
+            <div class="options" id="options1"></div>
         </div>
-        <div class="question">
-            (2) 李虎記作<span id="Z" class="highlight"></span>分，他實際得多少分？ 
-            <input type="text" id="answer2"> 分
-        </div>
-        <div class="question">
-            (3) 張明剛好得<span id="X2" class="highlight"></span>分，怎麼記？ 
-            <input type="text" id="answer3"> 分
-        </div>
-        <button id="submit-btn" onclick="checkAnswers()">提交答案</button>
+        <button id="start-btn" onclick="startAnswering()">可以作答</button>
+        <div id="timer"></div>
+        <button id="submit-btn" onclick="checkAnswers()" disabled>提交答案</button>
         <p id="result"></p>
     </div>
     
@@ -193,6 +202,10 @@
         let stars = 0;
         let currentQuestion = 0;
         let passData = null;
+        let timer;
+        let timeLeft = 8;
+        let hwData = null;
+        let currentProblem = null;
         
         // Load pass.json if exists
         fetch('pass.json')
@@ -210,32 +223,159 @@
                 console.log('pass.json not found or error loading it');
             });
         
-        // Generate random values for first question
-        generateQuestion();
+        // Load hw.json
+        fetch('hw.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('hw.json not found');
+                }
+                return response.json();
+            })
+            .then(data => {
+                hwData = data;
+                document.getElementById('page-title').textContent = hwData.title;
+                generateQuestion();
+            })
+            .catch(error => {
+                console.error('Error loading hw.json:', error);
+                document.getElementById('page-title').textContent = '錯誤：無法載入題目';
+            });
         
         function generateQuestion() {
-            const X = Math.floor(Math.random() * 20) + 80; // Average score between 80 and 99
-            const Y = X + Math.floor(Math.random() * 15) + 5; // Xiaomin's score, 5-19 above average
-            const Z = Math.floor(Math.random() * 15) - 20; // Lihu's relative score, -20 to -5
+            if (!hwData) return;
             
-            // Store correct answers as data attributes
-            document.getElementById('quiz').dataset.correctAnswer1 = Y - X;
-            document.getElementById('quiz').dataset.correctAnswer2 = X + Z;
-            document.getElementById('quiz').dataset.correctAnswer3 = 0;
+            // Randomly select a problem
+            currentProblem = hwData.problems[Math.floor(Math.random() * hwData.problems.length)];
             
-            // Display values
-            document.getElementById('X').textContent = X;
-            document.getElementById('X2').textContent = X;
-            document.getElementById('Y').textContent = Y;
-            document.getElementById('Z').textContent = Z;
+            // Generate random values for variables
+            const variables = {};
+            currentProblem.variables.forEach(variable => {
+                const range = variable.range;
+                let min = range.min;
+                let max = range.max;
+                
+                // Evaluate min/max if they are formulas
+                if (typeof min === 'string') {
+                    min = eval(min.replace(/{[A-Za-z]+}/g, match => {
+                        const varName = match.slice(1, -1);
+                        return variables[varName];
+                    }));
+                }
+                if (typeof max === 'string') {
+                    max = eval(max.replace(/{[A-Za-z]+}/g, match => {
+                        const varName = match.slice(1, -1);
+                        return variables[varName];
+                    }));
+                }
+                
+                variables[variable.name] = Math.floor(Math.random() * (max - min + 1)) + min;
+            });
             
-            // Clear input fields
-            document.getElementById('answer1').value = '';
-            document.getElementById('answer2').value = '';
-            document.getElementById('answer3').value = '';
+            // Calculate correct answer using the provided formula
+            const correctAnswer = eval(currentProblem.answer.formula.replace(/{[A-Za-z]+}/g, match => {
+                const varName = match.slice(1, -1);
+                return variables[varName];
+            }));
             
-            // Enable submit button
+            // Store correct answer
+            document.getElementById('quiz').dataset.correctAnswer1 = correctAnswer;
+            
+            // Display description and question
+            let description = currentProblem.description;
+            let questionText = currentProblem.question;
+            for (const [varName, value] of Object.entries(variables)) {
+                description = description.replace(`{${varName}}`, `<span class="highlight">${value}</span>`);
+                questionText = questionText.replace(`{${varName}}`, `<span class="highlight">${value}</span>`);
+            }
+            document.getElementById('description').innerHTML = description;
+            document.getElementById('question-text').innerHTML = questionText;
+            
+            // Generate multiple-choice options
+            generateOptions('options1', correctAnswer, currentProblem.answer.optionRange.min, currentProblem.answer.optionRange.max);
+            
+            // Hide options initially
+            document.getElementById('options1').style.display = 'none';
+            
+            // Reset selections
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Enable start button, disable submit button
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('submit-btn').disabled = true;
+            
+            // Reset timer display
+            document.getElementById('timer').style.display = 'none';
+        }
+        
+        function generateOptions(containerId, correctAnswer, min, max) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const options = new Set([correctAnswer]);
+            while (options.size < 4) {
+                const randomOption = Math.floor(Math.random() * (max - min + 1)) + min;
+                options.add(randomOption);
+            }
+            const optionsArray = Array.from(options).sort(() => Math.random() - 0.5);
+            optionsArray.forEach(option => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.textContent = option;
+                div.onclick = () => selectOption(div, containerId);
+                container.appendChild(div);
+            });
+        }
+        
+        function selectOption(optionElement, containerId) {
+            const options = document.querySelectorAll(`#${containerId} .option`);
+            options.forEach(opt => opt.classList.remove('selected'));
+            optionElement.classList.add('selected');
             document.getElementById('submit-btn').disabled = false;
+        }
+        
+        function startAnswering() {
+            // Show options
+            document.getElementById('options1').style.display = 'block';
+            
+            // Disable start button
+            document.getElementById('start-btn').disabled = true;
+            
+            // Start timer
+            timeLeft = 8;
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.style.display = 'block';
+            timerDisplay.textContent = `剩餘時間: ${timeLeft}秒`;
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `剩餘時間: ${timeLeft}秒`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+        
+        function handleTimeout() {
+            stars = 0;
+            updateStars();
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = '時間到！回答錯誤，星星清零！';
+            resultDiv.style.color = '#e74c3c';
+            resultDiv.style.background = '#fdedec';
+            document.getElementById('quiz').classList.add('shake');
+            
+            // Hide options and reset
+            document.getElementById('options1').style.display = 'none';
+            document.getElementById('submit-btn').disabled = true;
+            document.getElementById('timer').style.display = 'none';
+            
+            setTimeout(() => {
+                document.getElementById('quiz').classList.remove('shake');
+                generateQuestion();
+                resultDiv.textContent = '';
+            }, 1500);
         }
         
         function updateStars() {
@@ -250,21 +390,21 @@
         }
         
         function checkAnswers() {
-            const answer1 = parseInt(document.getElementById('answer1').value);
-            const answer2 = parseInt(document.getElementById('answer2').value);
-            const answer3 = parseInt(document.getElementById('answer3').value);
+            clearInterval(timer);
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.style.display = 'none';
+            
+            const answer1 = parseInt(document.querySelector('#options1 .option.selected')?.textContent);
             const resultDiv = document.getElementById('result');
             const quizDiv = document.getElementById('quiz');
             
             const correctAnswer1 = parseInt(quizDiv.dataset.correctAnswer1);
-            const correctAnswer2 = parseInt(quizDiv.dataset.correctAnswer2);
-            const correctAnswer3 = parseInt(quizDiv.dataset.correctAnswer3);
             
             // Disable submit button during processing
             document.getElementById('submit-btn').disabled = true;
             
-            // Check if all answers are correct
-            if (answer1 === correctAnswer1 && answer2 === correctAnswer2 && answer3 === correctAnswer3) {
+            // Check if answer is correct
+            if (answer1 === correctAnswer1) {
                 stars++;
                 updateStars();
                 resultDiv.textContent = '回答正確！獲得一顆星星！';
@@ -296,6 +436,10 @@
                 resultDiv.style.color = '#e74c3c';
                 resultDiv.style.background = '#fdedec';
                 quizDiv.classList.add('shake');
+                
+                // Hide options
+                document.getElementById('options1').style.display = 'none';
+                
                 setTimeout(() => {
                     quizDiv.classList.remove('shake');
                     generateQuestion();

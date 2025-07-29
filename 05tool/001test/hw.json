@@ -1,0 +1,86 @@
+{
+    "title": "數學練習",
+    "problems": [
+        {
+            "description": "在一次數學測驗中，我們班的平均分為{X}分，把高出平均分的分數記為正數。",
+            "question": "小敏得{Y}分，應記為多少？",
+            "variables": [
+                {
+                    "name": "X",
+                    "range": {
+                        "min": 80,
+                        "max": 99
+                    }
+                },
+                {
+                    "name": "Y",
+                    "range": {
+                        "min": "X + 5",
+                        "max": "X + 19"
+                    }
+                }
+            ],
+            "answer": {
+                "formula": "Y - X",
+                "optionRange": {
+                    "min": -20,
+                    "max": 20
+                }
+            }
+        },
+        {
+            "description": "一個矩形的長為{L}公分，寬為{W}公分。",
+            "question": "請問矩形的面積是多少平方公分？",
+            "variables": [
+                {
+                    "name": "L",
+                    "range": {
+                        "min": 10,
+                        "max": 50
+                    }
+                },
+                {
+                    "name": "W",
+                    "range": {
+                        "min": 5,
+                        "max": 30
+                    }
+                }
+            ],
+            "answer": {
+                "formula": "L * W",
+                "optionRange": {
+                    "min": 50,
+                    "max": 1500
+                }
+            }
+        },
+        {
+            "description": "小明有{A}顆蘋果，小紅有{B}顆蘋果。",
+            "question": "他們總共有多少顆蘋果？",
+            "variables": [
+                {
+                    "name": "A",
+                    "range": {
+                        "min": 1,
+                        "max": 20
+                    }
+                },
+                {
+                    "name": "B",
+                    "range": {
+                        "min": 1,
+                        "max": 20
+                    }
+                }
+            ],
+            "answer": {
+                "formula": "A + B",
+                "optionRange": {
+                    "min": 2,
+                    "max": 40
+                }
+            }
+        }
+    ]
+}
