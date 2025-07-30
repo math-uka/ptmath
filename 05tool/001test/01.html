@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">載入中...</title>
+    <title id="page-title">隨機練習</title>
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
     <style>
         body {
@@ -166,7 +166,7 @@
     </style>
 </head>
 <body>
-    <h2 id="page-title">載入中...</h2>
+    <h2 id="quiz-title"></h2>
     <div class="stars-container">
         <div class="star">★</div>
         <div class="star">★</div>
@@ -176,11 +176,8 @@
     <div id="completion-message"></div>
     
     <div id="quiz">
-        <p id="description"></p>
-        <div class="question" id="question1">
-            <span id="question-text"></span>
-            <div class="options" id="options1"></div>
-        </div>
+        <p id="quiz-description"></p>
+        <div class="question" id="question1"></div>
         <button id="start-btn" onclick="startAnswering()">可以作答</button>
         <div id="timer"></div>
         <button id="submit-btn" onclick="checkAnswers()" disabled>提交答案</button>
@@ -205,7 +202,6 @@
         let timer;
         let timeLeft = 8;
         let hwData = null;
-        let currentProblem = null;
         
         // Load pass.json if exists
         fetch('pass.json')
@@ -227,71 +223,60 @@
         fetch('hw.json')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('hw.json not found');
+                    throw new Error('Failed to load hw.json');
                 }
                 return response.json();
             })
             .then(data => {
                 hwData = data;
-                document.getElementById('page-title').textContent = hwData.title;
-                generateQuestion();
+                console.log('hw.json loaded successfully');
+                initializeQuiz();
             })
             .catch(error => {
                 console.error('Error loading hw.json:', error);
-                document.getElementById('page-title').textContent = '錯誤：無法載入題目';
+                alert('無法載入題目資料，請確認 hw.json 文件是否存在');
             });
         
+        function initializeQuiz() {
+            // Set page title and quiz title
+            document.getElementById('page-title').textContent = hwData.title;
+            document.getElementById('quiz-title').textContent = hwData.title;
+            
+            // Generate first question
+            generateQuestion();
+        }
+        
         function generateQuestion() {
-            if (!hwData) return;
+            // Randomly select a question template
+            const questionTemplate = hwData.questions[Math.floor(Math.random() * hwData.questions.length)];
             
-            // Randomly select a problem
-            currentProblem = hwData.problems[Math.floor(Math.random() * hwData.problems.length)];
-            
-            // Generate random values for variables
-            const variables = {};
-            currentProblem.variables.forEach(variable => {
-                const range = variable.range;
-                let min = range.min;
-                let max = range.max;
-                
-                // Evaluate min/max if they are formulas
-                if (typeof min === 'string') {
-                    min = eval(min.replace(/{[A-Za-z]+}/g, match => {
-                        const varName = match.slice(1, -1);
-                        return variables[varName];
-                    }));
-                }
-                if (typeof max === 'string') {
-                    max = eval(max.replace(/{[A-Za-z]+}/g, match => {
-                        const varName = match.slice(1, -1);
-                        return variables[varName];
-                    }));
-                }
-                
-                variables[variable.name] = Math.floor(Math.random() * (max - min + 1)) + min;
+            // Generate random values for placeholders
+            const values = {};
+            questionTemplate.placeholders.forEach(placeholder => {
+                const range = hwData.ranges[placeholder];
+                values[placeholder] = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
             });
             
-            // Calculate correct answer using the provided formula
-            const correctAnswer = eval(currentProblem.answer.formula.replace(/{[A-Za-z]+}/g, match => {
-                const varName = match.slice(1, -1);
-                return variables[varName];
-            }));
+            // Replace placeholders in question and description
+            let description = hwData.description;
+            let questionText = questionTemplate.text;
+            Object.keys(values).forEach(key => {
+                description = description.replace(`{${key}}`, `<span class="highlight">${values[key]}</span>`);
+                questionText = questionText.replace(`{${key}}`, `<span class="highlight">${values[key]}</span>`);
+            });
             
-            // Store correct answer
+            // Calculate correct answer
+            const correctAnswer = eval(questionTemplate.answer.replace(/{[A-Za-z0-9]+}/g, match => values[match.slice(1, -1)]));
+            
+            // Store correct answer as data attribute
             document.getElementById('quiz').dataset.correctAnswer1 = correctAnswer;
             
             // Display description and question
-            let description = currentProblem.description;
-            let questionText = currentProblem.question;
-            for (const [varName, value] of Object.entries(variables)) {
-                description = description.replace(`{${varName}}`, `<span class="highlight">${value}</span>`);
-                questionText = questionText.replace(`{${varName}}`, `<span class="highlight">${value}</span>`);
-            }
-            document.getElementById('description').innerHTML = description;
-            document.getElementById('question-text').innerHTML = questionText;
+            document.getElementById('quiz-description').innerHTML = description;
+            document.getElementById('question1').innerHTML = questionText + '<div class="options" id="options1"></div>';
             
             // Generate multiple-choice options
-            generateOptions('options1', correctAnswer, currentProblem.answer.optionRange.min, currentProblem.answer.optionRange.max);
+            generateOptions('options1', correctAnswer, questionTemplate.optionsRange.min, questionTemplate.optionsRange.max);
             
             // Hide options initially
             document.getElementById('options1').style.display = 'none';
