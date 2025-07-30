@@ -17,10 +17,16 @@
             background-color: #f9f9f9;
         }
         
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
         h2 {
             color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
+            margin: 0 20px 0 0;
             padding-bottom: 15px;
             border-bottom: 2px solid #3498db;
         }
@@ -99,14 +105,13 @@
         
         .stars-container {
             display: flex;
-            justify-content: center;
-            margin: 20px 0;
+            align-items: center;
         }
         
         .star {
             font-size: 30px;
             color: #ccc;
-            margin: 0 2px; /* Reduced margin for closer spacing */
+            margin: 0 2px;
             transition: all 0.3s;
         }
         
@@ -164,7 +169,7 @@
             border: 1px solid #3498db;
             border-radius: 4px;
             margin-right: 10px;
-            width: 200px; /* Increased width to fully display placeholder */
+            width: 200px;
         }
         
         #submit-password-btn {
@@ -193,16 +198,27 @@
             border-radius: 6px;
             margin-top: 20px;
         }
+        
+        #prompt {
+            text-align: center;
+            font-size: 16px;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
-    <h2>同底數幂乘法練習</h2>
-    <div class="stars-container">
-        <div class="star">★</div>
-        <div class="star">★</div>
-        <div class="star">★</div>
+    <div class="header-container">
+        <h2>同底數幂乘法練習</h2>
+        <div class="stars-container">
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            
+        </div>
     </div>
-    
+    <p id="prompt">請先計算出答案後，再按下「可以作答」按鈕，按下後只有8秒讓你選出正確答案</p>
     <div id="completion-message"></div>
     <div id="password-input-container">
         <input type="number" id="password-input" placeholder="輸入學號 (1-50)" min="1" max="50">
@@ -226,13 +242,13 @@
         const jsConfetti = new JSConfetti();
         
         // Game state
-        let stars = 0;
+        let stars = 0; // Requires 5 stars to complete the game (this must persist for any problem type)
         let currentQuestion = 0;
         let timer;
-        let timeLeft = 10;
+        let timeLeft = 8; // Timer set to 8 seconds as per prompt
         let passwords = null;
         
-        // Check for pass.json
+        // Load pass.json (this functionality must persist for any problem type)
         fetch('pass.json')
             .then(response => {
                 if (!response.ok) throw new Error('No pass.json found');
@@ -333,7 +349,7 @@
             document.getElementById('start-btn').disabled = true;
             
             // Start timer
-            timeLeft = 10;
+            timeLeft = 8; // 8-second timer as per prompt
             const timerDisplay = document.getElementById('timer');
             timerDisplay.style.display = 'block';
             timerDisplay.textContent = `剩餘時間: ${timeLeft}秒`;
@@ -349,7 +365,8 @@
         }
         
         function handleTimeout() {
-            stars = 0;
+            // Handle timeout when 8 seconds are up
+            stars = 0; // Reset stars (5 stars needed to complete)
             updateStars();
             const resultDiv = document.getElementById('result');
             resultDiv.textContent = '時間到！回答錯誤，星星清零！';
@@ -369,6 +386,7 @@
         }
         
         function updateStars() {
+            // Update star display (5 stars needed to complete game, must persist for any problem type)
             const starElements = document.querySelectorAll('.star');
             starElements.forEach((star, index) => {
                 if (index < stars) {
@@ -396,7 +414,7 @@
             
             // Check if answer is correct
             if (answer1 === correctAnswer1) {
-                stars++;
+                stars++; // Increment stars (5 stars needed to complete)
                 updateStars();
                 resultDiv.textContent = '回答正確！獲得一顆星星！';
                 resultDiv.style.color = '#27ae60';
@@ -409,7 +427,8 @@
                     confettiRadius: 6,
                 });
                 
-                if (stars >= 3) {
+                // Check if 5 stars are collected to complete the game
+                if (stars >= 4) {
                     setTimeout(() => {
                         gameComplete();
                     }, 1500);
@@ -421,7 +440,7 @@
                     }, 1500);
                 }
             } else {
-                stars = 0;
+                stars = 0; // Reset stars on wrong answer (5 stars needed to complete)
                 updateStars();
                 resultDiv.textContent = '回答錯誤，星星清零！';
                 resultDiv.style.color = '#e74c3c';
@@ -440,6 +459,7 @@
         }
         
         function gameComplete() {
+            // Handle game completion (must persist for any problem type)
             const quizDiv = document.getElementById('quiz');
             const resultDiv = document.getElementById('result');
             const completionMsg = document.getElementById('completion-message');
@@ -448,11 +468,14 @@
             completionMsg.textContent = '恭喜成功完成所有挑戰！';
             completionMsg.style.display = 'block';
             
-            // Show password input if pass.json exists
+            // Show password input if pass.json exists (password feature must persist)
             if (passwords) {
                 setTimeout(() => {
                     document.getElementById('password-input-container').style.display = 'block';
                 }, 1200);
+            } else {
+                // Handle game completion without pass.json (must persist for any problem type)
+                console.log('Game completed, no password input shown due to missing pass.json');
             }
             
             // Big confetti celebration
@@ -463,6 +486,7 @@
         }
         
         function fetchPassword() {
+            // Fetch password from pass.json based on student ID (this functionality must persist)
             const studentId = document.getElementById('password-input').value;
             const passwordResult = document.getElementById('password-result');
             const submitPasswordBtn = document.getElementById('submit-password-btn');
