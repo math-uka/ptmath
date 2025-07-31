@@ -365,9 +365,9 @@
             const formatCoeff = (coeff) => coeff === 1 ? '' : (coeff === -1 ? '-' : coeff);
             
             // Generate base options
+            // DO NOT MODIFY: Left column must always be positive, right column must always be negative and opposite of left
             const baseOptions = [
                 // Correct answer, handling negative coefficient for odd w
-                // DO NOT MODIFY: Must correctly handle negative coefficient for odd w to produce negative answer
                 {
                     coeff: isNegative && w % 2 === 1 ? -Math.pow(d, w) : Math.pow(d, w),
                     wx: w * x,
@@ -397,11 +397,12 @@
                 }
             ];
             
-            // Create pairs of options (positive and negative)
+            // Create pairs of options, ensuring left is positive and right is negative
             const optionsArray = [];
             baseOptions.forEach(opt => {
-                const positiveOption = `${formatCoeff(opt.coeff)}${formatTerm('a', opt.wx)}${formatTerm('b', opt.wy)}${formatTerm('c', opt.wz)}`;
-                const negativeOption = positiveOption.startsWith('-') ? positiveOption.slice(1) : `-${positiveOption}`;
+                const option = `${formatCoeff(opt.coeff)}${formatTerm('a', opt.wx)}${formatTerm('b', opt.wy)}${formatTerm('c', opt.wz)}`;
+                const positiveOption = option.startsWith('-') ? option.slice(1) : option;
+                const negativeOption = option.startsWith('-') ? option : `-${option}`;
                 optionsArray.push([positiveOption, negativeOption]);
             });
             
@@ -413,7 +414,7 @@
             
             // Create option elements in 4x2 grid
             optionsArray.forEach(pair => {
-                // Left column (positive or negative)
+                // Left column (positive)
                 const div1 = document.createElement('div');
                 div1.className = 'option';
                 div1.textContent = `\\(${pair[0]}\\)`;
@@ -421,7 +422,7 @@
                 div1.onclick = () => selectOption(div1, containerId);
                 container.appendChild(div1);
                 
-                // Right column (opposite sign)
+                // Right column (negative, opposite of left)
                 const div2 = document.createElement('div');
                 div2.className = 'option';
                 div2.textContent = `\\(${pair[1]}\\)`;
