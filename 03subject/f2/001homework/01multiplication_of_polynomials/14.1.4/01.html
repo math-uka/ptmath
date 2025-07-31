@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>整式乘法練習</title>
+    <title>冪的乘方練習</title>
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -49,16 +49,19 @@
         .options {
             display: none;
             margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
         
         .option {
             padding: 8px 12px;
-            margin: 5px 10px;
-            border: 1px solid #ddd;
-            border-color: #3498db;
+            margin: 5px;
+            border: 1px solid #3498db;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            text-align: center;
         }
         
         .option:hover {
@@ -68,6 +71,12 @@
         .option.selected {
             background-color: #3498db;
             color: white;
+        }
+        
+        .option.correct {
+            background-color: #f1c40f;
+            color: black;
+            font-weight: bold;
         }
         
         button {
@@ -207,9 +216,9 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <div class="header-container">
-        <h2>整式乘法練習</h2>
+        <h2>冪的乘方練習</h2>
         <div class="stars-container">
             <div class="star">★</div>
             <div class="star">★</div>
@@ -227,7 +236,7 @@
     <p id="password-result"></p>
     
     <div id="quiz">
-        <p>請運用二項式乘法計算以下表達式的結果：</p>
+        <p>請運用冪的乘方與積的乘方法則計算以下表達式的結果：</p>
         <div class="question" id="question1">
             <span id="expression" class="highlight"></span>
             <div class="options" id="options1"></div>
@@ -238,11 +247,25 @@
     </div>
 
     <script>
+        // DO NOT MODIFY OR REMOVE: Disabling right-click is mandatory and must be retained for security
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // DO NOT MODIFY OR REMOVE: Disabling developer tools (F12, Ctrl+Shift+I/C/J, Ctrl+U) is mandatory and must be retained
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) || 
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+
         // Initialize confetti
         const jsConfetti = new JSConfetti();
         
         // Game state
-        // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained for any problem type
+        // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
         let stars = 0; // Requires 5 stars to complete the game (this must persist for any problem type)
         let currentQuestion = 0;
         let timer;
@@ -267,61 +290,38 @@
         generateQuestion();
         
         function generateQuestion() {
-            // Generate random coefficients a, b, c, d (1 to 5 for simplicity)
-            const a = Math.floor(Math.random() * 5) + 1;
-            const b = Math.floor(Math.random() * 5) + 1;
-            const c = Math.floor(Math.random() * 5) + 1;
-            const d = Math.floor(Math.random() * 5) + 1;
+            // Generate random coefficients and exponents
+            const d = Math.floor(Math.random() * 4) + 1; // d from 1 to 4
+            const w = Math.floor(Math.random() * 3) + 2; // w from 2 to 4
+            const x = Math.floor(Math.random() * 3) + 1; // a^x, x from 1 to 3
+            const y = Math.floor(Math.random() * 3) + 1; // b^y, y from 1 to 3
+            const z = Math.floor(Math.random() * 3) + 1; // c^z, z from 1 to 3
+            const isNegative = Math.random() < 0.5; // Randomly decide if negative
             
-            // Randomly select format: (ax+by)(cx+dy), (ax-by)(cx-dy), (ax+by)(cx-dy), or (ax-by)(cx+dy)
-            const format = Math.floor(Math.random() * 4);
-            let expression, correctAnswer;
+            // Helper function to format term (omit exponent if 1)
+            const formatTerm = (base, exp) => exp === 1 ? base : `${base}^{${exp}}`;
             
-            // Helper function to format term (omit coefficient 1)
-            function formatTerm(coef, variable) {
-                if (coef === 0) return '';
-                if (coef === 1) return variable;
-                if (coef === -1) return `-${variable}`;
-                return `${coef}${variable}`;
-            }
+            // Helper function to format coefficient (omit if 1)
+            const formatCoeff = (coeff) => coeff === 1 ? '' : (coeff === -1 ? '-' : coeff);
             
-            if (format === 0) {
-                // (ax+by)(cx+dy)
-                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '+' : ''}${formatTerm(b, 'y')}`;
-                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '+' : ''}${formatTerm(d, 'y')}`;
-                expression = `(${firstTerm})(${secondTerm})`;
-                const coefX2 = a * c;
-                const coefXY = a * d + b * c;
-                const coefY2 = b * d;
-                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
-            } else if (format === 1) {
-                // (ax-by)(cx-dy)
-                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '-' : '+'}${formatTerm(Math.abs(b), 'y')}`;
-                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '-' : '+'}${formatTerm(Math.abs(d), 'y')}`;
-                expression = `(${firstTerm})(${secondTerm})`;
-                const coefX2 = a * c;
-                const coefXY = -(a * d + b * c);
-                const coefY2 = b * d;
-                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
-            } else if (format === 2) {
-                // (ax+by)(cx-dy)
-                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '+' : ''}${formatTerm(b, 'y')}`;
-                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '-' : '+'}${formatTerm(Math.abs(d), 'y')}`;
-                expression = `(${firstTerm})(${secondTerm})`;
-                const coefX2 = a * c;
-                const coefXY = a * d - b * c;
-                const coefY2 = -b * d;
-                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
-            } else {
-                // (ax-by)(cx+dy)
-                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '-' : '+'}${formatTerm(Math.abs(b), 'y')}`;
-                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '+' : ''}${formatTerm(d, 'y')}`;
-                expression = `(${firstTerm})(${secondTerm})`;
-                const coefX2 = a * c;
-                const coefXY = -a * d + b * c;
-                const coefY2 = -b * d;
-                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
-            }
+            // Build expression
+            const aTerm = formatTerm('a', x);
+            const bTerm = formatTerm('b', y);
+            const cTerm = formatTerm('c', z);
+            const coeff = isNegative ? (d === 1 ? '-' : `-${d}`) : formatCoeff(d);
+            const expression = `(${coeff}${aTerm}${bTerm}${cTerm})^{${w}}`;
+            
+            // Build correct answer, handling negative coefficient for odd w
+            // DO NOT MODIFY: Must correctly handle negative coefficient for odd w to produce negative answer
+            const wx = w * x;
+            const wy = w * y;
+            const wz = w * z;
+            const coeffAnswer = isNegative && w % 2 === 1 ? -Math.pow(d, w) : Math.pow(d, w);
+            const formattedCoeff = formatCoeff(coeffAnswer);
+            const aAnswer = formatTerm('a', wx);
+            const bAnswer = formatTerm('b', wy);
+            const cAnswer = formatTerm('c', wz);
+            const correctAnswer = `${formattedCoeff}${aAnswer}${bAnswer}${cAnswer}`;
             
             // Store correct answer as data attribute
             document.getElementById('quiz').dataset.correctAnswer1 = correctAnswer;
@@ -331,99 +331,105 @@
             MathJax.typeset();
             
             // Generate multiple-choice options
-            generateOptions('options1', correctAnswer, a, b, c, d);
+            generateOptions('options1', correctAnswer, d, w, x, y, z, isNegative);
             
             // Hide options initially
             document.getElementById('options1').style.display = 'none';
             
             // Reset selections
             document.querySelectorAll('.option').forEach(option => {
-                option.classList.remove('selected');
+                option.classList.remove('selected', 'correct');
+                option.style.pointerEvents = 'auto'; // Re-enable option selection
             });
             
-            // Enable start button
-            document.getElementById('start-btn').disabled = false;
+            // Set button to "可以作答"
+            // DO NOT MODIFY: Button must switch to "重新開始" after timeout or wrong answer and must be retained
+            const startBtn = document.getElementById('start-btn');
+            startBtn.textContent = '可以作答';
+            startBtn.onclick = startAnswering;
+            startBtn.disabled = false;
             
-            // Reset timer display
+            // Reset timer display and result
             document.getElementById('timer').style.display = 'none';
+            document.getElementById('result').textContent = '';
         }
         
-        function generateOptions(containerId, correctAnswer, a, b, c, d) {
+        function generateOptions(containerId, correctAnswer, d, w, x, y, z, isNegative) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
-            const options = new Set([correctAnswer]);
             
-            // Helper function to format term (omit coefficient 1)
-            function formatTerm(coef, variable) {
-                if (coef === 0) return '';
-                if (coef === 1) return variable;
-                if (coef === -1) return `-${variable}`;
-                return `${coef}${variable}`;
-            }
+            // Helper function to format term (omit exponent if 1)
+            const formatTerm = (base, exp) => exp === 1 ? base : `${base}^{${exp}}`;
             
-            // Generate distractors
-            while (options.size < 4) {
-                const offsetA = Math.floor(Math.random() * 3) - 1; // -1 to 1
-                const offsetB = Math.floor(Math.random() * 3) - 1; // -1 to 1
-                const offsetC = Math.floor(Math.random() * 3) - 1; // -1 to 1
-                const offsetD = Math.floor(Math.random() * 3) - 1; // -1 to 1
-                const newA = a + offsetA;
-                const newB = b + offsetB;
-                const newC = c + offsetC;
-                const newD = d + offsetD;
-                
-                // Ensure coefficients are not zero or equal to original
-                if (newA === 0 || newB === 0 || newC === 0 || newD === 0 || (newA === a && newB === b && newC === c && newD === d)) {
-                    continue;
+            // Helper function to format coefficient (omit if 1)
+            const formatCoeff = (coeff) => coeff === 1 ? '' : (coeff === -1 ? '-' : coeff);
+            
+            // Generate base options
+            const baseOptions = [
+                // Correct answer, handling negative coefficient for odd w
+                // DO NOT MODIFY: Must correctly handle negative coefficient for odd w to produce negative answer
+                {
+                    coeff: isNegative && w % 2 === 1 ? -Math.pow(d, w) : Math.pow(d, w),
+                    wx: w * x,
+                    wy: w * y,
+                    wz: w * z
+                },
+                // Error 1: Exponents added instead of multiplied
+                {
+                    coeff: isNegative && w % 2 === 1 ? -Math.pow(d, w) : Math.pow(d, w),
+                    wx: x + w - 1,
+                    wy: y + w - 1,
+                    wz: z + w - 1
+                },
+                // Error 2: Coefficient as d*w instead of d^w
+                {
+                    coeff: isNegative ? -(d * w) : d * w,
+                    wx: w * x,
+                    wy: w * y,
+                    wz: w * z
+                },
+                // Error 3: Coefficient as d*w and exponents added
+                {
+                    coeff: isNegative ? -(d * w) : d * w,
+                    wx: x + w - 1,
+                    wy: y + w - 1,
+                    wz: z + w - 1
                 }
-                
-                // Randomly decide format for distractor
-                let coefX2, coefXY, coefY2;
-                const distractorFormat = Math.floor(Math.random() * 4);
-                
-                if (distractorFormat === 0) {
-                    coefX2 = newA * newC;
-                    coefXY = newA * newD + newB * newC;
-                    coefY2 = newB * newD;
-                } else if (distractorFormat === 1) {
-                    coefX2 = newA * newC;
-                    coefXY = -(newA * newD + newB * newC);
-                    coefY2 = newB * newD;
-                } else if (distractorFormat === 2) {
-                    coefX2 = newA * newC;
-                    coefXY = newA * newD - newB * newC;
-                    coefY2 = -newB * newD;
-                } else {
-                    coefX2 = newA * newC;
-                    coefXY = -newA * newD + newB * newC;
-                    coefY2 = -newB * newD;
-                }
-                
-                const option = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
-                
-                if (!options.has(option)) {
-                    options.add(option);
-                }
-            }
+            ];
             
-            // Convert Set to Array
-            const optionsArray = Array.from(options);
+            // Create pairs of options (positive and negative)
+            const optionsArray = [];
+            baseOptions.forEach(opt => {
+                const positiveOption = `${formatCoeff(opt.coeff)}${formatTerm('a', opt.wx)}${formatTerm('b', opt.wy)}${formatTerm('c', opt.wz)}`;
+                const negativeOption = positiveOption.startsWith('-') ? positiveOption.slice(1) : `-${positiveOption}`;
+                optionsArray.push([positiveOption, negativeOption]);
+            });
             
-            // Fisher-Yates shuffle
+            // Fisher-Yates shuffle for rows
             for (let i = optionsArray.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [optionsArray[i], optionsArray[j]] = [optionsArray[j], optionsArray[i]];
             }
             
-            // Create option elements
-            optionsArray.forEach(option => {
-                const div = document.createElement('div');
-                div.className = 'option';
-                div.textContent = `\\(${option}\\)`;
-                div.dataset.value = option;
-                div.onclick = () => selectOption(div, containerId);
-                container.appendChild(div);
+            // Create option elements in 4x2 grid
+            optionsArray.forEach(pair => {
+                // Left column (positive or negative)
+                const div1 = document.createElement('div');
+                div1.className = 'option';
+                div1.textContent = `\\(${pair[0]}\\)`;
+                div1.dataset.value = pair[0];
+                div1.onclick = () => selectOption(div1, containerId);
+                container.appendChild(div1);
+                
+                // Right column (opposite sign)
+                const div2 = document.createElement('div');
+                div2.className = 'option';
+                div2.textContent = `\\(${pair[1]}\\)`;
+                div2.dataset.value = pair[1];
+                div2.onclick = () => selectOption(div2, containerId);
+                container.appendChild(div2);
             });
+            
             MathJax.typeset();
         }
         
@@ -436,7 +442,7 @@
         
         function startAnswering() {
             // Show options
-            document.getElementById('options1').style.display = 'block';
+            document.getElementById('options1').style.display = 'grid';
             
             // Disable start button
             document.getElementById('start-btn').disabled = true;
@@ -460,6 +466,7 @@
         function handleTimeout() {
             // Handle timeout when 8 seconds are up
             // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
+            // DO NOT MODIFY: Must retain timeout message, selected wrong answer (if any), highlight correct answer in yellow, and require manual "重新開始" to proceed
             stars = 0; // Reset stars (5 stars needed to complete)
             updateStars();
             const resultDiv = document.getElementById('result');
@@ -468,14 +475,26 @@
             resultDiv.style.background = '#fdedec';
             document.getElementById('quiz').classList.add('shake');
             
-            // Hide options and reset
-            document.getElementById('options1').style.display = 'none';
+            // Keep options visible to show selected wrong answer (if any)
+            document.getElementById('options1').style.display = 'grid';
             document.getElementById('timer').style.display = 'none';
+            
+            // Highlight correct answer in yellow
+            const correctAnswer = document.getElementById('quiz').dataset.correctAnswer1;
+            document.querySelectorAll('#options1 .option').forEach(opt => {
+                if (opt.dataset.value === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Change button to "重新開始"
+            const startBtn = document.getElementById('start-btn');
+            startBtn.textContent = '重新開始';
+            startBtn.onclick = generateQuestion;
+            startBtn.disabled = false;
             
             setTimeout(() => {
                 document.getElementById('quiz').classList.remove('shake');
-                generateQuestion();
-                resultDiv.textContent = '';
             }, 1500);
         }
         
@@ -493,6 +512,8 @@
         }
         
         function checkAnswers() {
+            // DO NOT MODIFY: Must automatically proceed to next question after 1.5 seconds on correct answer
+            // DO NOT MODIFY: Must retain wrong answer message, selected wrong answer (if any), highlight correct answer in yellow, and require manual "重新開始" to proceed on wrong answer or timeout
             clearInterval(timer);
             const timerDisplay = document.getElementById('timer');
             timerDisplay.style.display = 'none';
@@ -531,6 +552,7 @@
                     }, 1500);
                 } else {
                     setTimeout(() => {
+                        // Automatically proceed to next question after 1.5 seconds
                         currentQuestion++;
                         generateQuestion();
                         resultDiv.textContent = '';
@@ -545,13 +567,24 @@
                 resultDiv.style.background = '#fdedec';
                 quizDiv.classList.add('shake');
                 
-                // Hide options
-                document.getElementById('options1').style.display = 'none';
+                // Keep options visible to show selected wrong answer (if any)
+                document.getElementById('options1').style.display = 'grid';
+                
+                // Highlight correct answer in yellow
+                document.querySelectorAll('#options1 .option').forEach(opt => {
+                    if (opt.dataset.value === correctAnswer1) {
+                        opt.classList.add('correct');
+                    }
+                });
+                
+                // Change button to "重新開始"
+                const startBtn = document.getElementById('start-btn');
+                startBtn.textContent = '重新開始';
+                startBtn.onclick = generateQuestion;
+                startBtn.disabled = false;
                 
                 setTimeout(() => {
                     quizDiv.classList.remove('shake');
-                    generateQuestion();
-                    resultDiv.textContent = '';
                 }, 1500);
             }
         }
