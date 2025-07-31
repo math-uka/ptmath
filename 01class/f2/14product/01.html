@@ -159,7 +159,7 @@
         <h1>多項式乘法互動學習工具</h1>
         <p>探索多項式乘法的核心原理，通過直觀的計算器與詳細的教學內容，輕鬆掌握代數運算技巧！</p>
         <p>輸入任意兩個多項式（如 \( 2x^2 + 3x - 1 \) 和 \( x + 4 \) 或 \( 2ax + b \) 和 \( 3cy - d \)），</p>
-<p>即可查看逐步乘法過程、乘積表格與最終結果</p>
+        <p>即可查看逐步乘法過程、乘積表格與最終結果</p>
     </header>
     
     <div class="calculator-container">
@@ -280,21 +280,22 @@
 
         function parsePolynomial(poly) {
             poly = poly.replace(/\s/g, '');
-            // Add a leading '+' if the polynomial doesn't start with a sign
-            if (!poly.startsWith('+') && !poly.startsWith('-')) {
-                poly = '+' + poly;
-            }
-
             let terms = [];
             let term = '';
             let sign = '+';
             let i = 0;
 
+            // Handle the first term's sign explicitly
+            if (poly.startsWith('-')) {
+                sign = '-';
+                i++;
+            } else if (poly.startsWith('+')) {
+                i++;
+            }
+
             while (i < poly.length) {
-                if ((poly[i] === '+' || poly[i] === '-') && i > 0) {
-                    if (term) {
-                        terms.push({ sign, term });
-                    }
+                if ((poly[i] === '+' || poly[i] === '-') && term) {
+                    terms.push({ sign, term });
                     sign = poly[i];
                     term = '';
                     i++;
