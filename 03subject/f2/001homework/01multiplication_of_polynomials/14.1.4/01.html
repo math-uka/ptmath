@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>整式乘法練習</title>
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            line-height: 1.8;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin: 0 20px 0 0;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        #quiz {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        
+        .options {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        .option {
+            padding: 8px 12px;
+            margin: 5px 10px;
+            border: 1px solid #ddd;
+            border-color: #3498db;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e8f8f0;
+        }
+        
+        .option.selected {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 25px 0 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        #result {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        
+        .stars-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .star {
+            font-size: 30px;
+            color: #ccc;
+            margin: 0 2px;
+            transition: all 0.3s;
+        }
+        
+        .star.active {
+            color: #f1c40f;
+            transform: scale(1.2);
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        #completion-message {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+            padding: 20px;
+            background-color: #e8f8f0;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        #timer {
+            text-align: center;
+            font-size: 18px;
+            color: #e74c3c;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        #password-input-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        #password-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 200px;
+        }
+        
+        #submit-password-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #submit-password-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        #submit-password-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        #password-result {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        
+        #prompt {
+            text-align: center;
+            font-size: 16px;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h2>整式乘法練習</h2>
+        <div class="stars-container">
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+        </div>
+    </div>
+    <p id="prompt">請先計算出答案後，再按下「可以作答」按鈕，按下後只有8秒讓你選出正確答案</p>
+    <div id="completion-message"></div>
+    <div id="password-input-container">
+        <input type="number" id="password-input" placeholder="輸入學號 (1-50)" min="1" max="50">
+        <button id="submit-password-btn" onclick="fetchPassword()">獲取密碼</button>
+    </div>
+    <p id="password-result"></p>
+    
+    <div id="quiz">
+        <p>請運用二項式乘法計算以下表達式的結果：</p>
+        <div class="question" id="question1">
+            <span id="expression" class="highlight"></span>
+            <div class="options" id="options1"></div>
+        </div>
+        <button id="start-btn" onclick="startAnswering()">可以作答</button>
+        <div id="timer"></div>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        // Initialize confetti
+        const jsConfetti = new JSConfetti();
+        
+        // Game state
+        // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained for any problem type
+        let stars = 0; // Requires 5 stars to complete the game (this must persist for any problem type)
+        let currentQuestion = 0;
+        let timer;
+        let timeLeft = 8; // Timer set to 8 seconds as per prompt
+        let passwords = null;
+        
+        // Load pass.json (this functionality must persist for any problem type)
+        // DO NOT MODIFY OR REMOVE: Loading pass.json for password retrieval is mandatory and must be retained
+        fetch('pass.json')
+            .then(response => {
+                if (!response.ok) throw new Error('No pass.json found');
+                return response.json();
+            })
+            .then(data => {
+                passwords = data;
+            })
+            .catch(error => {
+                console.log('No pass.json file found, proceeding without password feature.');
+            });
+        
+        // Generate first question
+        generateQuestion();
+        
+        function generateQuestion() {
+            // Generate random coefficients a, b, c, d (1 to 5 for simplicity)
+            const a = Math.floor(Math.random() * 5) + 1;
+            const b = Math.floor(Math.random() * 5) + 1;
+            const c = Math.floor(Math.random() * 5) + 1;
+            const d = Math.floor(Math.random() * 5) + 1;
+            
+            // Randomly select format: (ax+by)(cx+dy), (ax-by)(cx-dy), (ax+by)(cx-dy), or (ax-by)(cx+dy)
+            const format = Math.floor(Math.random() * 4);
+            let expression, correctAnswer;
+            
+            // Helper function to format term (omit coefficient 1)
+            function formatTerm(coef, variable) {
+                if (coef === 0) return '';
+                if (coef === 1) return variable;
+                if (coef === -1) return `-${variable}`;
+                return `${coef}${variable}`;
+            }
+            
+            if (format === 0) {
+                // (ax+by)(cx+dy)
+                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '+' : ''}${formatTerm(b, 'y')}`;
+                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '+' : ''}${formatTerm(d, 'y')}`;
+                expression = `(${firstTerm})(${secondTerm})`;
+                const coefX2 = a * c;
+                const coefXY = a * d + b * c;
+                const coefY2 = b * d;
+                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
+            } else if (format === 1) {
+                // (ax-by)(cx-dy)
+                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '-' : '+'}${formatTerm(Math.abs(b), 'y')}`;
+                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '-' : '+'}${formatTerm(Math.abs(d), 'y')}`;
+                expression = `(${firstTerm})(${secondTerm})`;
+                const coefX2 = a * c;
+                const coefXY = -(a * d + b * c);
+                const coefY2 = b * d;
+                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
+            } else if (format === 2) {
+                // (ax+by)(cx-dy)
+                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '+' : ''}${formatTerm(b, 'y')}`;
+                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '-' : '+'}${formatTerm(Math.abs(d), 'y')}`;
+                expression = `(${firstTerm})(${secondTerm})`;
+                const coefX2 = a * c;
+                const coefXY = a * d - b * c;
+                const coefY2 = -b * d;
+                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
+            } else {
+                // (ax-by)(cx+dy)
+                const firstTerm = `${formatTerm(a, 'x')}${b >= 0 ? '-' : '+'}${formatTerm(Math.abs(b), 'y')}`;
+                const secondTerm = `${formatTerm(c, 'x')}${d >= 0 ? '+' : ''}${formatTerm(d, 'y')}`;
+                expression = `(${firstTerm})(${secondTerm})`;
+                const coefX2 = a * c;
+                const coefXY = -a * d + b * c;
+                const coefY2 = -b * d;
+                correctAnswer = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
+            }
+            
+            // Store correct answer as data attribute
+            document.getElementById('quiz').dataset.correctAnswer1 = correctAnswer;
+            
+            // Display expression using MathJax
+            document.getElementById('expression').textContent = `\\(${expression}\\)`;
+            MathJax.typeset();
+            
+            // Generate multiple-choice options
+            generateOptions('options1', correctAnswer, a, b, c, d);
+            
+            // Hide options initially
+            document.getElementById('options1').style.display = 'none';
+            
+            // Reset selections
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Enable start button
+            document.getElementById('start-btn').disabled = false;
+            
+            // Reset timer display
+            document.getElementById('timer').style.display = 'none';
+        }
+        
+        function generateOptions(containerId, correctAnswer, a, b, c, d) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const options = new Set([correctAnswer]);
+            
+            // Helper function to format term (omit coefficient 1)
+            function formatTerm(coef, variable) {
+                if (coef === 0) return '';
+                if (coef === 1) return variable;
+                if (coef === -1) return `-${variable}`;
+                return `${coef}${variable}`;
+            }
+            
+            // Generate distractors
+            while (options.size < 4) {
+                const offsetA = Math.floor(Math.random() * 3) - 1; // -1 to 1
+                const offsetB = Math.floor(Math.random() * 3) - 1; // -1 to 1
+                const offsetC = Math.floor(Math.random() * 3) - 1; // -1 to 1
+                const offsetD = Math.floor(Math.random() * 3) - 1; // -1 to 1
+                const newA = a + offsetA;
+                const newB = b + offsetB;
+                const newC = c + offsetC;
+                const newD = d + offsetD;
+                
+                // Ensure coefficients are not zero or equal to original
+                if (newA === 0 || newB === 0 || newC === 0 || newD === 0 || (newA === a && newB === b && newC === c && newD === d)) {
+                    continue;
+                }
+                
+                // Randomly decide format for distractor
+                let coefX2, coefXY, coefY2;
+                const distractorFormat = Math.floor(Math.random() * 4);
+                
+                if (distractorFormat === 0) {
+                    coefX2 = newA * newC;
+                    coefXY = newA * newD + newB * newC;
+                    coefY2 = newB * newD;
+                } else if (distractorFormat === 1) {
+                    coefX2 = newA * newC;
+                    coefXY = -(newA * newD + newB * newC);
+                    coefY2 = newB * newD;
+                } else if (distractorFormat === 2) {
+                    coefX2 = newA * newC;
+                    coefXY = newA * newD - newB * newC;
+                    coefY2 = -newB * newD;
+                } else {
+                    coefX2 = newA * newC;
+                    coefXY = -newA * newD + newB * newC;
+                    coefY2 = -newB * newD;
+                }
+                
+                const option = `${formatTerm(coefX2, 'x^2')}${coefXY >= 0 ? '+' : ''}${formatTerm(coefXY, 'xy')}${coefY2 >= 0 ? '+' : ''}${formatTerm(coefY2, 'y^2')}`;
+                
+                if (!options.has(option)) {
+                    options.add(option);
+                }
+            }
+            
+            // Convert Set to Array
+            const optionsArray = Array.from(options);
+            
+            // Fisher-Yates shuffle
+            for (let i = optionsArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [optionsArray[i], optionsArray[j]] = [optionsArray[j], optionsArray[i]];
+            }
+            
+            // Create option elements
+            optionsArray.forEach(option => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.textContent = `\\(${option}\\)`;
+                div.dataset.value = option;
+                div.onclick = () => selectOption(div, containerId);
+                container.appendChild(div);
+            });
+            MathJax.typeset();
+        }
+        
+        function selectOption(optionElement, containerId) {
+            const options = document.querySelectorAll(`#${containerId} .option`);
+            options.forEach(opt => opt.classList.remove('selected'));
+            optionElement.classList.add('selected');
+            checkAnswers(); // Immediately check answer upon selection
+        }
+        
+        function startAnswering() {
+            // Show options
+            document.getElementById('options1').style.display = 'block';
+            
+            // Disable start button
+            document.getElementById('start-btn').disabled = true;
+            
+            // Start timer
+            timeLeft = 8; // 8-second timer as per prompt
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.style.display = 'block';
+            timerDisplay.textContent = `剩餘時間: ${timeLeft}秒`;
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `剩餘時間: ${timeLeft}秒`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+        
+        function handleTimeout() {
+            // Handle timeout when 8 seconds are up
+            // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
+            stars = 0; // Reset stars (5 stars needed to complete)
+            updateStars();
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = '時間到！回答錯誤，星星清零！';
+            resultDiv.style.color = '#e74c3c';
+            resultDiv.style.background = '#fdedec';
+            document.getElementById('quiz').classList.add('shake');
+            
+            // Hide options and reset
+            document.getElementById('options1').style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
+            
+            setTimeout(() => {
+                document.getElementById('quiz').classList.remove('shake');
+                generateQuestion();
+                resultDiv.textContent = '';
+            }, 1500);
+        }
+        
+        function updateStars() {
+            // Update star display (5 stars needed to complete game, must persist for any problem type)
+            // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
+            const starElements = document.querySelectorAll('.star');
+            starElements.forEach((star, index) => {
+                if (index < stars) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function checkAnswers() {
+            clearInterval(timer);
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.style.display = 'none';
+            
+            const selectedOption = document.querySelector('#options1 .option.selected');
+            const answer1 = selectedOption ? selectedOption.dataset.value : null;
+            const resultDiv = document.getElementById('result');
+            const quizDiv = document.getElementById('quiz');
+            
+            const correctAnswer1 = quizDiv.dataset.correctAnswer1;
+            
+            // Disable further selections during processing
+            document.querySelectorAll('.option').forEach(opt => opt.style.pointerEvents = 'none');
+            
+            // Check if answer is correct
+            if (answer1 === correctAnswer1) {
+                // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
+                stars++; // Increment stars (5 stars needed to complete)
+                updateStars();
+                resultDiv.textContent = '回答正確！獲得一顆星星！';
+                resultDiv.style.color = '#27ae60';
+                resultDiv.style.background = '#e8f8f0';
+                
+                // Add single yellow star confetti
+                jsConfetti.addConfetti({
+                    confettiColors: ['#f1c40f'],
+                    confettiNumber: 30,
+                    confettiRadius: 6,
+                });
+                
+                // Check if 5 stars are collected to complete the game
+                // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
+                if (stars >= 5) {
+                    setTimeout(() => {
+                        gameComplete();
+                    }, 1500);
+                } else {
+                    setTimeout(() => {
+                        currentQuestion++;
+                        generateQuestion();
+                        resultDiv.textContent = '';
+                    }, 1500);
+                }
+            } else {
+                // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
+                stars = 0; // Reset stars on wrong answer (5 stars needed to complete)
+                updateStars();
+                resultDiv.textContent = '回答錯誤，星星清零！';
+                resultDiv.style.color = '#e74c3c';
+                resultDiv.style.background = '#fdedec';
+                quizDiv.classList.add('shake');
+                
+                // Hide options
+                document.getElementById('options1').style.display = 'none';
+                
+                setTimeout(() => {
+                    quizDiv.classList.remove('shake');
+                    generateQuestion();
+                    resultDiv.textContent = '';
+                }, 1500);
+            }
+        }
+        
+        function gameComplete() {
+            // Handle game completion (must persist for any problem type)
+            // DO NOT MODIFY: Game completion logic with star system and password feature must be retained
+            const quizDiv = document.getElementById('quiz');
+            const resultDiv = document.getElementById('result');
+            const completionMsg = document.getElementById('completion-message');
+            
+            quizDiv.style.display = 'none';
+            completionMsg.textContent = '恭喜成功完成所有挑戰！';
+            completionMsg.style.display = 'block';
+            
+            // Show password input if pass.json exists (password feature must persist)
+            // DO NOT MODIFY OR REMOVE: Password input display logic is mandatory and must be retained
+            if (passwords) {
+                setTimeout(() => {
+                    document.getElementById('password-input-container').style.display = 'block';
+                }, 1200);
+            } else {
+                // Handle game completion without pass.json (must persist for any problem type)
+                // DO NOT MODIFY: Handling for missing pass.json must be retained
+                console.log('Game completed, no password input shown due to missing pass.json');
+            }
+            
+            // Big confetti celebration
+            jsConfetti.addConfetti({
+                confettiNumber: 500,
+                confettiRadius: 6,
+            });
+        }
+        
+        function fetchPassword() {
+            // Fetch password from pass.json based on student ID (this functionality must persist)
+            // DO NOT MODIFY OR REMOVE: Password retrieval logic is mandatory and must be retained
+            const studentId = document.getElementById('password-input').value;
+            const passwordResult = document.getElementById('password-result');
+            const submitPasswordBtn = document.getElementById('submit-password-btn');
+            
+            if (!studentId || isNaN(studentId) || studentId < 1 || studentId > 50) {
+                passwordResult.textContent = '請輸入有效的學號（1-50）！';
+                passwordResult.style.color = '#e74c3c';
+                passwordResult.style.background = '#fdedec';
+                return;
+            }
+            
+            if (passwords && passwords[studentId]) {
+                passwordResult.textContent = `您的密碼是：${passwords[studentId]}`;
+                passwordResult.style.color = '#27ae60';
+                passwordResult.style.background = '#e8f8f0';
+                submitPasswordBtn.disabled = true;
+                document.getElementById('password-input').disabled = true;
+            } else {
+                passwordResult.textContent = '無效的學號或密碼不存在！';
+                passwordResult.style.color = '#e74c3c';
+                passwordResult.style.background = '#fdedec';
+            }
+        }
+    </script>
+</body>
+</html>
