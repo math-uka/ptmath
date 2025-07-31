@@ -207,7 +207,7 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <div class="header-container">
         <h2>完全平方公式練習</h2>
         <div class="stars-container">
@@ -238,6 +238,20 @@
     </div>
 
     <script>
+        // DO NOT MODIFY OR REMOVE: Disabling right-click is mandatory and must be retained for security
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // DO NOT MODIFY OR REMOVE: Disabling developer tools (F12, Ctrl+Shift+I/C/J, Ctrl+U) is mandatory and must be retained
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) || 
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+
         // Initialize confetti
         const jsConfetti = new JSConfetti();
         
