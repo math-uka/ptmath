@@ -305,7 +305,7 @@
             MathJax.typeset();
             
             // Generate multiple-choice options
-            generateOptions('options1', correctAnswer, a, b, variable);
+            generateOptions('options1', correctAnswer, a, b, variable, format);
             
             // Hide options initially
             document.getElementById('options1').style.display = 'none';
@@ -322,33 +322,95 @@
             document.getElementById('timer').style.display = 'none';
         }
         
-        function generateOptions(containerId, correctAnswer, a, b, variable) {
+        function generateOptions(containerId, correctAnswer, a, b, variable, format) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             const options = new Set([correctAnswer]);
             
-            // Generate distractors
-            while (options.size < 4) {
-                const offsetA = Math.floor(Math.random() * 5) - 2; // -2 to 2
-                const offsetB = Math.floor(Math.random() * 5) - 2; // -2 to 2
-                const newA = a + offsetA;
-                const newB = b + offsetB;
-                let option;
-                
-                // Randomly decide format for distractor
-                const distractorFormat = Math.floor(Math.random() * 4);
-                if (distractorFormat === 0) {
-                    option = `${newA*newA}${variable}^2+${2*newA*newB}${variable}+${newB*newB}`;
-                } else if (distractorFormat === 1) {
-                    option = `${newA*newA}${variable}^2-${2*newA*newB}${variable}+${newB*newB}`;
-                } else if (distractorFormat === 2) {
-                    option = `${newB*newB}+${2*newA*newB}${variable}+${newA*newA}${variable}^2`;
-                } else {
-                    option = `${newB*newB}-${2*newA*newB}${variable}+${newA*newA}${variable}^2`;
+            // Define error types
+            const errorTypes = [
+                // Error 1: Wrong middle symbol (e.g., + instead of - or vice versa)
+                () => {
+                    let option;
+                    if (format === 0) { // (ax+b)^2 -> a^2x^2 + 2abx + b^2
+                        option = `${a*a}${variable}^2-${2*a*b}${variable}+${b*b}`; // Change + to -
+                    } else if (format === 1) { // (ax-b)^2 -> a^2x^2 - 2abx + b^2
+                        option = `${a*a}${variable}^2+${2*a*b}${variable}+${b*b}`; // Change - to +
+                    } else if (format === 2) { // (b+ax)^2 -> b^2 + 2abx + a^2x^2
+                        option = `${b*b}-${2*a*b}${variable}+${a*a}${variable}^2`; // Change + to -
+                    } else { // (b-ax)^2 -> b^2 - 2abx + a^2x^2
+                        option = `${b*b}+${2*a*b}${variable}+${a*a}${variable}^2`; // Change - to +
+                    }
+                    return option;
+                },
+                // Error 2: a^2 expressed as 2a, keep middle term correct
+                () => {
+                    let option;
+                    if (format === 0) {
+                        option = `${2*a}${variable}^2+${2*a*b}${variable}+${b*b}`;
+                    } else if (format === 1) {
+                        option = `${2*a}${variable}^2-${2*a*b}${variable}+${b*b}`;
+                    } else if (format === 2) {
+                        option = `${b*b}+${2*a*b}${variable}+${2*a}${variable}^2`;
+                    } else {
+                        option = `${b*b}-${2*a*b}${variable}+${2*a}${variable}^2`;
+                    }
+                    return option;
+                },
+                // Error 3: Middle term 2ab becomes ab
+                () => {
+                    let option;
+                    if (format === 0) {
+                        option = `${a*a}${variable}^2+${a*b}${variable}+${b*b}`;
+                    } else if (format === 1) {
+                        option = `${a*a}${variable}^2-${a*b}${variable}+${b*b}`;
+                    } else if (format === 2) {
+                        option = `${b*b}+${a*b}${variable}+${a*a}${variable}^2`;
+                    } else {
+                        option = `${b*b}-${a*b}${variable}+${a*a}${variable}^2`;
+                    }
+                    return option;
+                },
+                // Error 4: Middle term 2ab becomes 4ab
+                () => {
+                    let option;
+                    if (format === 0) {
+                        option = `${a*a}${variable}^2+${4*a*b}${variable}+${b*b}`;
+                    } else if (format === 1) {
+                        option = `${a*a}${variable}^2-${4*a*b}${variable}+${b*b}`;
+                    } else if (format === 2) {
+                        option = `${b*b}+${4*a*b}${variable}+${a*a}${variable}^2`;
+                    } else {
+                        option = `${b*b}-${4*a*b}${variable}+${a*a}${variable}^2`;
+                    }
+                    return option;
+                },
+                // Error 5: Mixture (a^2 as 2a and middle term as ab)
+                () => {
+                    let option;
+                    if (format === 0) {
+                        option = `${2*a}${variable}^2+${a*b}${variable}+${b*b}`;
+                    } else if (format === 1) {
+                        option = `${2*a}${variable}^2-${a*b}${variable}+${b*b}`;
+                    } else if (format === 2) {
+                        option = `${b*b}+${a*b}${variable}+${2*a}${variable}^2`;
+                    } else {
+                        option = `${b*b}-${a*b}${variable}+${2*a}${variable}^2`;
+                    }
+                    return option;
                 }
-                
-                if (newA !== a && newB !== b && !options.has(option)) {
-                    options.add(option);
+            ];
+            
+            // Select 3 distinct error types to ensure 4 options (1 correct + 3 distractors)
+            const selectedErrors = [];
+            while (selectedErrors.length < 3) {
+                const errorIndex = Math.floor(Math.random() * errorTypes.length);
+                if (!selectedErrors.includes(errorIndex)) {
+                    selectedErrors.push(errorIndex);
+                    const option = errorTypes[errorIndex]();
+                    if (!options.has(option)) {
+                        options.add(option);
+                    }
                 }
             }
             
