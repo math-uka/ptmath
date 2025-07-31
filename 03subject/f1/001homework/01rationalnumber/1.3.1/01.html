@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>同底數幂乘法練習</title>
+    <title>出租車行車里程練習</title>
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -209,13 +209,12 @@
 </head>
 <body>
     <div class="header-container">
-        <h2>同底數幂乘法練習</h2>
+        <h2>出租車行車里程練習</h2>
         <div class="stars-container">
             <div class="star">★</div>
             <div class="star">★</div>
             <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
+       
         </div>
     </div>
     <p id="prompt">請先計算出答案後，再按下「可以作答」按鈕，按下後只有8秒讓你選出正確答案</p>
@@ -227,7 +226,7 @@
     <p id="password-result"></p>
     
     <div id="quiz">
-        <p>請計算以下同底數幂乘法的結果並以幂的形式表示（指數為1時省略）：</p>
+        <p>出租車司機在東西走向的大街上營運，向東為正，向西為負，請計算以下乘客行車里程後，司機的最終位置：</p>
         <div class="question" id="question1">
             <span id="expression" class="highlight"></span>
             <div class="options" id="options1"></div>
@@ -242,8 +241,8 @@
         const jsConfetti = new JSConfetti();
         
         // Game state
-        // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained for any problem type
-        let stars = 0; // Requires 5 stars to complete the game (this must persist for any problem type)
+        // DO NOT MODIFY: Star system with 3 stars to complete
+        let stars = 0; // Requires 3 stars to complete the game
         let currentQuestion = 0;
         let timer;
         let timeLeft = 8; // Timer set to 8 seconds as per prompt
@@ -267,30 +266,36 @@
         generateQuestion();
         
         function generateQuestion() {
-            // Generate random base (a, b, or c)
-            const bases = ['a', 'b', 'c'];
-            const base = bases[Math.floor(Math.random() * bases.length)];
+            // Generate random number of passengers (5 to 8)
+            const numPassengers = Math.floor(Math.random() * 4) + 5;
             
-            // Decide number of terms (2 or 3)
-            const numTerms = Math.random() < 0.5 ? 2 : 3;
+            // Generate random mileages (-10 to +10, excluding 0)
+            let totalMileage;
+            let mileages;
+            do {
+                mileages = Array.from({ length: numPassengers }, () => {
+                    let mileage;
+                    do {
+                        mileage = Math.floor(Math.random() * 21) - 10; // -10 to +10
+                    } while (mileage === 0);
+                    return mileage;
+                });
+                totalMileage = mileages.reduce((sum, mileage) => sum + mileage, 0);
+            } while (totalMileage === 0); // Ensure totalMileage is not zero
             
-            // Generate exponents (1 to 10)
-            const exponents = Array.from({ length: numTerms }, () => Math.floor(Math.random() * 10) + 1);
-            
-            // Calculate correct answer exponent
-            const correctExp = exponents.reduce((sum, exp) => sum + exp, 0);
-            const correctAnswer = correctExp === 1 ? base : `${base}^{${correctExp}}`;
+            // Calculate correct answer
+            const correctAnswer = totalMileage >= 0 ? `東邊 ${totalMileage} 公里` : `西邊 ${Math.abs(totalMileage)} 公里`;
             
             // Store correct answer as data attribute
             document.getElementById('quiz').dataset.correctAnswer1 = correctAnswer;
             
-            // Display expression using MathJax
-            const terms = exponents.map(exp => exp === 1 ? base : `${base}^{${exp}}`);
-            document.getElementById('expression').textContent = `\\(${terms.join(' \\times ')}\\)`;
+            // Display expression
+            const terms = mileages.map(mileage => (mileage > 0 ? `+${mileage}` : mileage.toString()));
+            document.getElementById('expression').textContent = `\\(${terms.join(', ')}\\)`;
             MathJax.typeset();
             
             // Generate multiple-choice options
-            generateOptions('options1', correctAnswer, base, correctExp);
+            generateOptions('options1', totalMileage);
             
             // Hide options initially
             document.getElementById('options1').style.display = 'none';
@@ -307,28 +312,41 @@
             document.getElementById('timer').style.display = 'none';
         }
         
-        function generateOptions(containerId, correctAnswer, base, correctExp) {
+        function generateOptions(containerId, totalMileage) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
-            const options = new Set([correctAnswer]);
-            const possibleExps = new Set([correctExp]);
+            const correctAnswer = totalMileage >= 0 ? `東邊 ${totalMileage} 公里` : `西邊 ${Math.abs(totalMileage)} 公里`;
+            const options = [];
             
-            // Generate distractors
-            while (options.size < 4) {
-                const offset = Math.floor(Math.random() * 5) - 2; // -2 to 2
-                const newExp = correctExp + offset;
-                if (newExp >= 1 && newExp !== correctExp && !possibleExps.has(newExp)) {
-                    possibleExps.add(newExp);
-                    const option = newExp === 1 ? base : `${base}^{${newExp}}`;
-                    options.add(option);
+            // Add correct answer
+            options.push(correctAnswer);
+            
+            // Generate three distractors
+            const distractors = new Set();
+            while (distractors.size < 3) {
+                const offset = Math.floor(Math.random() * 21) - 10; // -10 to +10
+                const newMileage = Math.abs(totalMileage + offset); // Ensure positive distance for display
+                if (newMileage !== Math.abs(totalMileage) && newMileage !== 0) {
+                    distractors.add(newMileage);
                 }
             }
             
-            const optionsArray = Array.from(options).sort(() => Math.random() - 0.5);
-            optionsArray.forEach(option => {
+            // Assign first two distractors as "東邊", last two as "西邊"
+            const distractorArray = Array.from(distractors);
+            options.push(`東邊 ${distractorArray[0]} 公里`);
+            options.push(`東邊 ${distractorArray[1]} 公里`);
+            options.push(`西邊 ${distractorArray[2]} 公里`);
+            options.push(`西邊 ${Math.abs(totalMileage + (Math.floor(Math.random() * 21) - 10))} 公里`);
+            
+            // Shuffle options but ensure first two are "東邊" and last two are "西邊"
+            const eastOptions = options.filter(opt => opt.startsWith('東邊')).sort(() => Math.random() - 0.5);
+            const westOptions = options.filter(opt => opt.startsWith('西邊')).sort(() => Math.random() - 0.5);
+            const finalOptions = [...eastOptions, ...westOptions];
+            
+            finalOptions.forEach(option => {
                 const div = document.createElement('div');
                 div.className = 'option';
-                div.textContent = `\\(${option}\\)`;
+                div.textContent = option; // Display as plain text since it's already formatted
                 div.dataset.value = option;
                 div.onclick = () => selectOption(div, containerId);
                 container.appendChild(div);
@@ -368,8 +386,8 @@
         
         function handleTimeout() {
             // Handle timeout when 8 seconds are up
-            // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
-            stars = 0; // Reset stars (5 stars needed to complete)
+            // DO NOT MODIFY: Star system with 3 stars to complete
+            stars = 0; // Reset stars (3 stars needed to complete)
             updateStars();
             const resultDiv = document.getElementById('result');
             resultDiv.textContent = '時間到！回答錯誤，星星清零！';
@@ -389,8 +407,8 @@
         }
         
         function updateStars() {
-            // Update star display (5 stars needed to complete game, must persist for any problem type)
-            // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
+            // Update star display (3 stars needed to complete game)
+            // DO NOT MODIFY: Star system with 3 stars to complete
             const starElements = document.querySelectorAll('.star');
             starElements.forEach((star, index) => {
                 if (index < stars) {
@@ -418,8 +436,8 @@
             
             // Check if answer is correct
             if (answer1 === correctAnswer1) {
-                // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
-                stars++; // Increment stars (5 stars needed to complete)
+                // DO NOT MODIFY: Star system with 3 stars to complete
+                stars++; // Increment stars (3 stars needed to complete)
                 updateStars();
                 resultDiv.textContent = '回答正確！獲得一顆星星！';
                 resultDiv.style.color = '#27ae60';
@@ -432,9 +450,8 @@
                     confettiRadius: 6,
                 });
                 
-                // Check if 5 stars are collected to complete the game
-                // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
-                if (stars >= 5) {
+                // Check if 3 stars are collected to complete the game
+                if (stars >= 3) {
                     setTimeout(() => {
                         gameComplete();
                     }, 1500);
@@ -446,8 +463,8 @@
                     }, 1500);
                 }
             } else {
-                // DO NOT MODIFY: Star system with 5 stars to complete is critical and must be retained
-                stars = 0; // Reset stars on wrong answer (5 stars needed to complete)
+                // DO NOT MODIFY: Star system with 3 stars to complete
+                stars = 0; // Reset stars on wrong answer (3 stars needed to complete)
                 updateStars();
                 resultDiv.textContent = '回答錯誤，星星清零！';
                 resultDiv.style.color = '#e74c3c';
