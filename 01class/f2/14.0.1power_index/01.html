@@ -168,7 +168,7 @@
     <header>
         <h1>同底數冪乘法互動學習工具</h1>
         <p>通過直觀的步驟展示和互動計算器，輕鬆掌握同底數冪乘法的核心原理！</p>
-        <p>輸入兩個同底數的冪如 \( a^3 \) 和 \( a^5 \) ，即可查看逐步計算過程與最終結果。對於指數大於5的情況，將使用省略號表示。</p>
+        <p>輸入兩個同底數的冪如 \( a^3 \) 和 \( a^5 \) ，即可查看逐步計算過程與最終結果。對於單變數或數字，括號可選；對於複雜表達式，必須使用括號。對於指數大於5的情況，將使用省略號表示。</p>
     </header>
 
     <div class="card">
@@ -192,13 +192,13 @@
 
         <div class="step">
             <h3><span class="step-number">1</span>理解冪的含義</h3>
-            <p>冪表示一個底數連續乘以自身的次數。底數可以是單個變數、多項式或任何代數表達式。例如：</p>
+            <p>冪表示一個底數連續乘以自身的次數。底數可以是單個變數、數字或任何代數表達式。對於單變數或數字，括號可選；對於複雜表達式，必須使用括號。例如：</p>
             <p class="example">\( a^3 = a \cdot a \cdot a \)</p>
             <p class="example">\( (ab)^3 = (ab) \cdot (ab) \cdot (ab) \)</p>
             <p class="example">\( (-a)^3 = (-a) \cdot (-a) \cdot (-a) \)</p>
             <p class="example">\( (a+b)^3 = (a+b) \cdot (a+b) \cdot (a+b) \)</p>
             <p class="example">\( (a+3b^2)^2 = (a+3b^2) \cdot (a+3b^2) \)</p>
-            <p class="example">\( (a+b)^7 = (a+b) \cdot (a+b) \cdot \ldots \cdot (a+b) \)（7次）</p>
+            <p class="example">\( a^7 = a \cdot a \cdot \ldots \cdot a \)（7次）</p>
             <p>其中 \( a \)、\( (ab) \)、\( (-a) \)、\( (a+b) \) 或 \( (a+3b^2) \) 是底數，指數表示重複次數。對於指數大於5的情況，使用省略號表示展開。</p>
         </div>
 
@@ -210,6 +210,13 @@
                 <li>相乘：\( (a+b)^3 \cdot (a+b)^4 = [(a+b) \cdot (a+b) \cdot (a+b)] \cdot [(a+b) \cdot (a+b) \cdot (a+b) \cdot (a+b)] = (a+b)^7 \)</li>
                 <li>展開：\( (a+b)^7 = (a+b) \cdot (a+b) \cdot \ldots \cdot (a+b) \)（7次，使用省略號）</li>
                 <li>指數相加：\( (a+b)^3 \cdot (a+b)^4 = (a+b)^{3+4} = (a+b)^7 \)</li>
+            </ul>
+            <p>對於單變數，如 \( a^3 \cdot a^4 \)：</p>
+            <ul>
+                <li>表示形式：\( a^3 = a \cdot a \cdot a \)，\( a^4 = a \cdot a \cdot a \cdot a \)</li>
+                <li>相乘：\( a^3 \cdot a^4 = (a \cdot a \cdot a) \cdot (a \cdot a \cdot a \cdot a) = a^7 \)</li>
+                <li>展開：\( a^7 = a \cdot a \cdot \ldots \cdot a \)（7次，使用省略號）</li>
+                <li>指數相加：\( a^3 \cdot a^4 = a^{3+4} = a^7 \)</li>
             </ul>
         </div>
 
@@ -231,7 +238,7 @@
                 <li><strong>指數相加錯誤</strong>：錯誤：\( (ab)^3 \cdot (ab)^3 = (ab)^{3 \cdot 3} \)，正確：\( (ab)^{3+3} \)</li>
                 <li><strong>負底數</strong>：底數帶負號時，保持底數不變：\( (-a)^2 \cdot (-a)^3 = (-a)^{2+3} = (-a)^5 \)，而不是 \( a^5 \)。</li>
                 <li><strong>多項式底數</strong>：多項式如 \( (a+b) \) 或 \( (a+3b^2) \) 必須整體作為底數：\( (a+b)^3 \cdot (a+b)^4 = (a+b)^{3+4} \)，不能拆開處理。</li>
-                <li><strong>括號必要性</strong>：負底數或複雜表達式必須用括號，例如 \( (-a)^3 \) 或 \( (a+3b^2)^2 \)，不能寫成 \( -a^3 \)。 </li>
+                <li><strong>括號必要性</strong>：負底數或複雜表達式必須用括號，例如 \( (-a)^3 \) 或 \( (a+3b^2)^2 \)，不能寫成 \( -a^3 \)。單變數或數字可省略括號，如 \( a^3 \)。 </li>
             </ul>
         </div>
     </div>
@@ -386,11 +393,11 @@
             if (exponent === 0) return '1';
             if (exponent < 0) {
                 // For negative exponents, ensure base is properly formatted
-                let absBase = base.match(/^\(.+\)$/) ? base : `(${base})`;
+                let absBase = base.match(/^\(.+\)$/) || base.match(/^[a-zA-Z]$|^[0-9]+$/) ? base : `(${base})`;
                 return `\\frac{1}{${absBase}}^{${-exponent}}`;
             }
-            // Ensure complex bases are kept with parentheses
-            let displayBase = base.match(/^\(.+\)$/) ? base : `(${base})`;
+            // Use base as-is for single variables or numbers, otherwise add parentheses
+            let displayBase = base.match(/^\(.+\)$/) ? base : base.match(/^[a-zA-Z]$|^[0-9]+$/) ? base : `(${base})`;
             if (Math.abs(exponent) <= 5) {
                 return Array(Math.abs(exponent)).fill(displayBase).join(' \\cdot ');
             } else {
@@ -399,10 +406,10 @@
         }
 
         function formatVisualLatex(str) {
-            // Split on terms, preserving parenthesized expressions
+            // Split on terms, only add parentheses for complex expressions
             let terms = str.split(' \\cdot ');
             if (terms.length <= 1) return str;
-            return terms.map(term => term.match(/^\(.+\)$/) ? term : `(${term})`).join(' \\cdot ');
+            return terms.map(term => term.match(/^\(.+\)$/) || term.match(/^[a-zA-Z]$|^[0-9]+$/) ? term : `(${term})`).join(' \\cdot ');
         }
 
         function calculatePowerMultiplication() {
@@ -429,7 +436,7 @@
                 let visualResult = visualizePower(base, exponentSum);
 
                 // Prepare display strings with proper LaTeX formatting
-                let displayBase = base.match(/^\(.+\)$/) ? base : `(${base})`;
+                let displayBase = base.match(/^\(.+\)$/) || base.match(/^[a-zA-Z]$|^[0-9]+$/) ? base : `(${base})`;
                 let latexBase1 = base1.replace(/\^(\d+)/g, '^{$1}');
                 let latexBase2 = base2.replace(/\^(\d+)/g, '^{$1}');
                 let latexBase = displayBase.replace(/\^(\d+)/g, '^{$1}');
