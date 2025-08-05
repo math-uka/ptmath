@@ -258,7 +258,7 @@
                 </div>
 
                 <!-- 年級題庫 -->
-                <div class="category-card" onclick="window.location.href='https://math-uka.github.io/exercise/'">
+                <div class="category-card" onclick="checkAndRedirect()">
                     <h2>年級題庫</h2>
                     <div class="slideshow-container grade">
                         <div class="slide"></div>
@@ -386,6 +386,28 @@
         ['teaching', 'grade', 'subject', 'art', 'other', 'demo'].forEach(category => {
             currentSlide(1, category);
         });
+
+        // 年級題庫重定向邏輯
+        function checkAndRedirect() {
+            const githubUrl = 'https://math-uka.github.io/exercise/';
+            const localUrl = '02teaching/f2exercise.html';
+
+            // 嘗試檢查 GitHub URL 是否可訪問
+            fetch(githubUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        // 如果 URL 可訪問，重定向到 GitHub
+                        window.location.href = githubUrl;
+                    } else {
+                        // 如果 URL 不可訪問（例如私人或404），重定向到本地文件
+                        window.location.href = localUrl;
+                    }
+                })
+                .catch(() => {
+                    // 如果 fetch 失敗（例如網絡錯誤或 CORS），重定向到本地文件
+                    window.location.href = localUrl;
+                });
+        }
     </script>
 </body>
 </html>
