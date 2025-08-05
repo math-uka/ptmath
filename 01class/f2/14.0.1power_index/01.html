@@ -168,7 +168,7 @@
     <header>
         <h1>同底數冪乘法互動學習工具</h1>
         <p>通過直觀的步驟展示和互動計算器，輕鬆掌握同底數冪乘法的核心原理！</p>
-        <p>輸入兩個同底數的冪（如 \( a^3 \) 和 \( a^5 \) 或 \( (a+b)^3 \) 和 \( (a+b)^4 \)，即可查看逐步計算過程與最終結果。</p>
+        <p>輸入兩個同底數的冪如 \( a^3 \) 和 \( a^5 \) ，即可查看逐步計算過程與最終結果。對於指數大於5的情況，將使用省略號表示。</p>
     </header>
 
     <div class="card">
@@ -198,15 +198,17 @@
             <p class="example">\( (-a)^3 = (-a) \cdot (-a) \cdot (-a) \)</p>
             <p class="example">\( (a+b)^3 = (a+b) \cdot (a+b) \cdot (a+b) \)</p>
             <p class="example">\( (a+3b^2)^2 = (a+3b^2) \cdot (a+3b^2) \)</p>
-            <p>其中 \( a \)、\( (ab) \)、\( (-a) \)、\( (a+b) \) 或 \( (a+3b^2) \) 是底數，指數表示重複次數。</p>
+            <p class="example">\( (a+b)^7 = (a+b) \cdot (a+b) \cdot \ldots \cdot (a+b) \)（7次）</p>
+            <p>其中 \( a \)、\( (ab) \)、\( (-a) \)、\( (a+b) \) 或 \( (a+3b^2) \) 是底數，指數表示重複次數。對於指數大於5的情況，使用省略號表示展開。</p>
         </div>
 
         <div class="step">
             <h3><span class="step-number">2</span>計算步驟</h3>
             <p>以 \( (a+b)^3 \cdot (a+b)^4 \) 為例，計算過程如下：</p>
             <ul>
-                <li>表示形式：\( (a+b)^3 = (a+b) \cdot (a+b) \cdot (a+b) \)</li>
+                <li>表示形式：\( (a+b)^3 = (a+b) \cdot (a+b) \cdot (a+b) \)，\( (a+b)^4 = (a+b) \cdot (a+b) \cdot (a+b) \cdot (a+b) \)</li>
                 <li>相乘：\( (a+b)^3 \cdot (a+b)^4 = [(a+b) \cdot (a+b) \cdot (a+b)] \cdot [(a+b) \cdot (a+b) \cdot (a+b) \cdot (a+b)] = (a+b)^7 \)</li>
+                <li>展開：\( (a+b)^7 = (a+b) \cdot (a+b) \cdot \ldots \cdot (a+b) \)（7次，使用省略號）</li>
                 <li>指數相加：\( (a+b)^3 \cdot (a+b)^4 = (a+b)^{3+4} = (a+b)^7 \)</li>
             </ul>
         </div>
@@ -389,7 +391,11 @@
             }
             // Ensure complex bases are kept with parentheses
             let displayBase = base.match(/^\(.+\)$/) ? base : `(${base})`;
-            return Array(Math.abs(exponent)).fill(displayBase).join(' \\cdot ');
+            if (Math.abs(exponent) <= 5) {
+                return Array(Math.abs(exponent)).fill(displayBase).join(' \\cdot ');
+            } else {
+                return `${displayBase} \\cdot ${displayBase} \\cdot \\ldots \\cdot ${displayBase}`;
+            }
         }
 
         function formatVisualLatex(str) {
@@ -422,24 +428,36 @@
                 let visual2 = visualizePower(base, power2.exponent);
                 let visualResult = visualizePower(base, exponentSum);
 
+                // Prepare display strings with proper LaTeX formatting
+                let displayBase = base.match(/^\(.+\)$/) ? base : `(${base})`;
+                let latexBase1 = base1.replace(/\^(\d+)/g, '^{$1}');
+                let latexBase2 = base2.replace(/\^(\d+)/g, '^{$1}');
+                let latexBase = displayBase.replace(/\^(\d+)/g, '^{$1}');
+                let absExponent1 = Math.abs(power1.exponent);
+                let absExponent2 = Math.abs(power2.exponent);
+                let absExponentSum = Math.abs(exponentSum);
+
+                // Prepare expansion string for step 2
+                let expansionStr = visual1 + ' \\cdot ' + visual2;
+
                 let steps = `
                     <div class="step-container">
                         <h3>計算過程</h3>
                         <div class="step">
                             <p><strong>步驟 1：表示冪</strong></p>
-                            <p>\\[ ${base1.replace(/\^(\d+)/g, '^{$1}')} = ${visual1} \\]</p>
-                            <p>\\[ ${base2.replace(/\^(\d+)/g, '^{$1}')} = ${visual2} \\]</p>
+                            <p>\\[ ${latexBase1} = \\underset{${absExponent1}個${displayBase}}{${visual1}} \\]</p>
+                            <p>\\[ ${latexBase2} = \\underset{${absExponent2}個${displayBase}}{${visual2}} \\]</p>
                         </div>
                         <div class="step">
                             <p><strong>步驟 2：相乘</strong></p>
-                            <p>\\[ ${base1.replace(/\^(\d+)/g, '^{$1}')} \\cdot ${base2.replace(/\^(\d+)/g, '^{$1}')} = \\underset{${Math.abs(power1.exponent)}個${base}}{(${visual1})} \\cdot \\underset{${Math.abs(power2.exponent)}個${base}}{(${visual2})} = \\underset{${Math.abs(exponentSum)}個${base}}{${visualResult}} \\]</p>
+                            <p>\\[ ${latexBase1} \\cdot ${latexBase2} = \\underset{${absExponent1}個${displayBase}}{(${visual1})} \\cdot \\underset{${absExponent2}個${displayBase}}{(${visual2})} = \\underset{${absExponentSum}個${displayBase}}{${visualResult}} \\]</p>
                         </div>
                         <div class="step">
                             <p><strong>步驟 3：指數相加</strong></p>
-                            <p>\\[ ${base1.replace(/\^(\d+)/g, '^{$1}')} \\cdot ${base2.replace(/\^(\d+)/g, '^{$1}')} = ${base}^{${power1.exponent} + ${power2.exponent}} = ${base}^{${exponentSum}} \\]</p>
+                            <p>\\[ ${latexBase1} \\cdot ${latexBase2} = ${latexBase}^{${power1.exponent} + ${power2.exponent}} = ${latexBase}^{${exponentSum}} \\]</p>
                         </div>
                     </div>
-                    <p><strong>最終結果</strong>：\\[ ${base}^{${exponentSum}} \\]</p>
+                    <p><strong>最終結果</strong>：\\[ ${latexBase}^{${exponentSum}} \\]</p>
                 `;
 
                 document.getElementById('result-container').innerHTML = steps;
