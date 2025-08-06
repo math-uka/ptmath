@@ -1,0 +1,543 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一元一次方程互動學習工具</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --secondary-color: #43a047;
+            --accent-color: #e53935;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: #fafafa;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-container {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        input {
+            padding: 12px;
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: 6px;
+            font-size: 1.1em;
+        }
+
+        .step-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .step {
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .example {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .preview-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--light-gray);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .exercise-container {
+            margin: 20px 0;
+        }
+
+        .exercise {
+            margin-bottom: 20px;
+        }
+
+        .exercise p {
+            margin: 10px 0;
+        }
+
+        .answer {
+            display: none;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .answer-button {
+            background-color: var(--secondary-color);
+        }
+
+        .answer-button:hover {
+            background-color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>一元一次方程互動學習工具</h1>
+        <p>通過直觀的步驟展示和互動計算器，輕鬆掌握一元一次方程的解題方法！</p>
+        <p>輸入方程的左邊和右邊，例如 \( 2x + 4 \) 和 \( x - 4 \)，即可查看逐步解題過程與最終結果。</p>
+<p>提示：只能輸入未知數為x的方程, 且不能輸入分數 </p>
+    </header>
+
+    <div class="card">
+        <h2>一元一次方程計算器</h2>
+        <div class="input-container">
+            <input type="text" id="leftSide" value="2x + 4" placeholder="例: 2x + 4 或 2(x + 4)">
+            <span style="font-size: 1.5em;">=</span>
+            <input type="text" id="rightSide" value="x - 4" placeholder="例: x - 4">
+            <button onclick="solveEquation()">解方程</button>
+        </div>
+        <div class="preview-container">
+            <h3>當前方程</h3>
+            <div id="preview">\[ 2x + 4 = x - 4 \]</div>
+        </div>
+        <div id="solution" class="result-container"></div>
+    </div>
+
+    <div class="card">
+        <h2>一元一次方程教學</h2>
+        <p>一元一次方程是形如 \( ax + b = cx + d \) 的代數方程，其中 \( x \) 是未知數。我們通過移項和化簡求解 \( x \) 的值。以下是詳細步驟：</p>
+
+        <div class="step">
+            <h3><span class="step-number">1</span>理解一元一次方程</h3>
+            <p>一元一次方程包含一個未知數 \( x \)，且 \( x \) 的指數為 1。例如：</p>
+            <p class="example">\[ 2x + 4 = x - 4 \]</p>
+            <p>目標是將 \( x \) 單獨放在等號一邊，求出其值。</p>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">2</span>解題步驟</h3>
+            <p>以 \( 2x + 4 = x - 4 \) 為例，解題過程如下：</p>
+            <ul>
+                <li>展開括號（若有）：將括號內的項乘以係數。</li>
+                <li>將 \( x \) 項移到左邊：\( 2x - x + 4 = -4 \)</li>
+                <li>合併同類項：\( x + 4 = -4 \)</li>
+                <li>將常數項移到右邊：\( x = -4 - 4 \)</li>
+                <li>計算：\( x = -8 \)</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">3</span>一元一次方程規則</h3>
+            <p>解一元一次方程的通用步驟：</p>
+            <p class="example">\[ ax + b = cx + d \]</p>
+            <p>1. 展開括號（若有）。</p>
+            <p>2. 將 \( x \) 項移到左邊，常數項移到右邊：\[ ax - cx = d - b \]</p>
+            <p>3. 合併同類項：\[ (a - c)x = d - b \]</p>
+            <p>4. 係數化為 1，兩邊同時除以 \( a - c \)，得：\[ x = \frac{d - b}{a - c} \]</p>
+            <p>例如：\( 2x + 4 = x - 4 \)，則 \( x = \frac{-4 - 4}{2 - 1} = -8 \)</p>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">4</span>常見錯誤與注意事項</h3>
+            <ul>
+                <li><strong>移項時符號變化</strong>：移動項到等號另一邊時，符號要改變。例如，\( +4 \) 移項後變為 \( -4 \).</li>
+                <li><strong>無解或無窮多解</strong>：若最終得到 \( 0 = 0 \)，則方程有無窮多解；若得到 \( 0 = k \)（k ≠ 0），則無解。</li>
+                <li><strong>括號處理</strong>：若有括號，需先展開。例如，\( 2(x + 3) = 4 \) 展開為 \( 2x + 6 = 4 \).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>隨堂練習</h2>
+        <p>請解以下一元一次方程，點擊「顯示答案」按鈕查看正確答案。</p>
+        <div class="exercise-container">
+            <div class="exercise">
+                <p>1. \( 3x + 5 = 2x + 7 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer1')">顯示答案</button>
+                <div id="answer1" class="answer">\[ 3x + 5 = 2x + 7 \implies 3x - 2x = 
+
+7 - 5 \implies x = 2 \]</div>
+            </div>
+            <div class="exercise">
+                <p>2. \( 2x - 3 = x + 4 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer2')">顯示答案</button>
+                <div id="answer2" class="answer">\[ 2x - 3 = x + 4 \implies 2x - x = 4 + 3 \implies x = 7 \]</div>
+            </div>
+            <div class="exercise">
+                <p>3. \( 4x + 2 = 2x - 6 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer3')">顯示答案</button>
+                <div id="answer3" class="answer">\[ 4x + 2 = 2x - 6 \implies 4x - 2x = -6 - 2 \implies 2x = -8 \implies x = -4 \]</div>
+            </div>
+            <div class="exercise">
+                <p>4. \( 2x - 3 = -4 - 3x \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer4')">顯示答案</button>
+                <div id="answer4" class="answer">\[ 2x - 3 = -4 - 3x \implies 2x + 3x = -4 + 3 \implies 5x = -1 \implies x = -\frac{1}{5} \]</div>
+            </div>
+            <div class="exercise">
+                <p>5. \( 3x - 8 = x + 2 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer5')">顯示答案</button>
+                <div id="answer5" class="answer">\[ 3x - 8 = x + 2 \implies 3x - x = 2 + 8 \implies 2x = 10 \implies x = 5 \]</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('右鍵功能已被禁用！');
+        });
+
+        // Disable F12 key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                alert('開發者工具已被禁用！');
+            }
+        });
+
+        // Toggle answer visibility
+        function toggleAnswer(id) {
+            let answer = document.getElementById(id);
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+            } else {
+                answer.style.display = 'block';
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            }
+        }
+
+        // Real-time preview update
+        function updatePreview() {
+            let leftSide = document.getElementById('leftSide').value.trim() || '2x + 4';
+            let rightSide = document.getElementById('rightSide').value.trim() || 'x - 4';
+            let preview = `\\[ ${leftSide.replace(/\s/g, '')} = ${rightSide.replace(/\s/g, '')} \\]`;
+            document.getElementById('preview').innerHTML = preview;
+            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+        }
+
+        // Add input event listeners for real-time updates
+        document.getElementById('leftSide').addEventListener('input', updatePreview);
+        document.getElementById('rightSide').addEventListener('input', updatePreview);
+
+        // Initial preview render
+        window.onload = updatePreview;
+
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b) {
+                let temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        function toFraction(num, denom) {
+            if (num === 0) return "0";
+            if (denom === 0) return "無解";
+            if (Number.isInteger(num / denom)) return (num / denom).toString();
+            let g = gcd(num, denom);
+            num /= g;
+            denom /= g;
+            if (num < 0 || denom < 0) {
+                // Ensure negative sign is placed in front of the fraction
+                return `-\\frac{${Math.abs(num)}}{${Math.abs(denom)}}`;
+            }
+            return `\\frac{${num}}{${denom}}`;
+        }
+
+        function formatTerm(coef, isConstant = false) {
+            if (coef === 0) return "";
+            if (isConstant) {
+                return coef > 0 ? `+${coef}` : `${coef}`;
+            } else {
+                if (coef === 1) return "+x";
+                if (coef === -1) return "-x";
+                return coef > 0 ? `+${coef}x` : `${coef}x`;
+            }
+        }
+
+        function parseExpression(expr) {
+            expr = expr.replace(/\s/g, '');
+            let coef = 0, constant = 0;
+
+            // Handle brackets
+            let bracketMatch = expr.match(/([-]?\d*\.?\d*)\(([^)]+)\)/);
+            if (bracketMatch) {
+                let multiplier = bracketMatch[1] === '' ? 1 : (bracketMatch[1] === '-' ? -1 : parseFloat(bracketMatch[1]));
+                let innerExpr = bracketMatch[2];
+                let [innerCoef, innerConst] = parseExpression(innerExpr);
+                coef += multiplier * innerCoef;
+                constant += multiplier * innerConst;
+                expr = expr.replace(bracketMatch[0], '');
+            }
+
+            // Split remaining terms by + or -
+            let terms = expr.split(/(?=[-+])/).filter(term => term !== '');
+            for (let term of terms) {
+                if (term.includes('x')) {
+                    let c = term.replace('x', '');
+                    if (c === '' || c === '+') c = '1';
+                    if (c === '-') c = '-1';
+                    coef += parseFloat(c);
+                } else {
+                    constant += parseFloat(term);
+                }
+            }
+            return [coef, constant];
+        }
+
+        function expandExpression(expr) {
+            expr = expr.replace(/\s/g, '');
+            let bracketMatch = expr.match(/([-]?\d*\.?\d*)\(([^)]+)\)/);
+            if (bracketMatch) {
+                let multiplier = bracketMatch[1] === '' ? 1 : (bracketMatch[1] === '-' ? -1 : parseFloat(bracketMatch[1]));
+                let innerExpr = bracketMatch[2];
+                let [innerCoef, innerConst] = parseExpression(innerExpr);
+                let expandedCoef = multiplier * innerCoef;
+                let expandedConst = multiplier * innerConst;
+                let expanded = expandedConst >= 0 
+                    ? `${expandedCoef}x + ${expandedConst}`
+                    : `${expandedCoef}x ${expandedConst}`;
+                expr = expr.replace(bracketMatch[0], expanded);
+                return expr;
+            }
+            return expr;
+        }
+
+        function solveEquation() {
+            const leftSide = document.getElementById('leftSide').value.trim();
+            const rightSide = document.getElementById('rightSide').value.trim();
+            const solutionDiv = document.getElementById('solution');
+
+            if (!leftSide || !rightSide) {
+                solutionDiv.innerHTML = '<p style="color: red;">請輸入方程的兩邊！</p>';
+                return;
+            }
+
+            try {
+                // Parse left and right sides
+                let [leftCoef, leftConst] = parseExpression(leftSide);
+                let [rightCoef, rightConst] = parseExpression(rightSide);
+
+                // Display solution steps
+                let steps = `
+                    <div class="step-container">
+                        <h3>解題過程</h3>
+                        <div class="step">
+                            <p><strong>步驟 1：表示方程</strong></p>
+                            <p>\\[ ${leftSide.replace(/\s/g, '')} = ${rightSide.replace(/\s/g, '')} \\]</p>
+                        </div>
+                `;
+
+                // Handle brackets if present
+                let stepNumber = 2;
+                let hasBrackets = leftSide.includes('(') || rightSide.includes('(');
+                if (hasBrackets) {
+                    let expandedLeft = expandExpression(leftSide);
+                    let expandedRight = expandExpression(rightSide);
+                    steps += `
+                        <div class="step">
+                            <p><strong>步驟 ${stepNumber}：展開括號</strong></p>
+                            <p>\\[ ${expandedLeft} = ${expandedRight} \\]</p>
+                        </div>
+                    `;
+                    stepNumber++;
+                    // Update coefficients after expansion
+                    [leftCoef, leftConst] = parseExpression(expandedLeft);
+                    [rightCoef, rightConst] = parseExpression(expandedRight);
+                }
+
+                // Move x terms to left, constants to right
+                let newCoef = leftCoef - rightCoef;
+                let newConst = rightConst - leftConst;
+                let moveXTerm = rightCoef !== 0 ? formatTerm(-rightCoef) : "";
+                let moveConstTerm = leftConst !== 0 ? formatTerm(-leftConst, true) : "";
+                steps += `
+                    <div class="step">
+                        <p><strong>步驟 ${stepNumber}：將 x 項移到左邊，常數項移到右邊</strong></p>
+                        <p>\\[ ${formatTerm(leftCoef)}${moveXTerm} = ${formatTerm(rightConst, true)}${moveConstTerm} \\]</p>
+                    </div>
+                    <div class="step">
+                        <p><strong>步驟 ${stepNumber + 1}：合併同類項</strong></p>
+                        <p>\\[ ${formatTerm(newCoef)} = ${newConst} \\]</p>
+                    </div>
+                `;
+                stepNumber += 2;
+
+                // Check for no solution or infinitely many solutions
+                if (newCoef === 0 && newConst === 0) {
+                    steps += `
+                        <div class="step">
+                            <p><strong>步驟 ${stepNumber}：檢查解</strong></p>
+                            <p>\\[ 0 = 0 \\]</p>
+                            <p>方程為 0 = 0，解為所有實數。</p>
+                        </div>
+                    </div>
+                    `;
+                    solutionDiv.innerHTML = steps;
+                    MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+                    return;
+                } else if (newCoef === 0 && newConst !== 0) {
+                    steps += `
+                        <div class="step">
+                            <p><strong>步驟 ${stepNumber}：檢查解</strong></p>
+                            <p>\\[ 0 = ${newConst} \\]</p>
+                            <p>方程為 0 = ${newConst}，無解。</p>
+                        </div>
+                    </div>
+                    `;
+                    solutionDiv.innerHTML = steps;
+                    MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+                    return;
+                }
+
+                // Solve for x
+                steps += `
+                    <div class="step">
+                        <p><strong>步驟 ${stepNumber}：係數化為 1，兩邊同時除以 ${newCoef} 得</strong></p>
+                        <p>\\[ x = \\frac{${newConst}}{${newCoef}} \\]</p>
+                        <p>\\[ x = ${toFraction(newConst, newCoef)} \\]</p>
+                    </div>
+                </div>
+                <p><strong>最終結果</strong>：\\[ x = ${toFraction(newConst, newCoef)} \\]</p>
+                `;
+
+                solutionDiv.innerHTML = steps;
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            } catch (e) {
+                solutionDiv.innerHTML = '<p style="color: red;">輸入格式錯誤！請輸入如 "2x + 4" 或 "2(x + 4)" 的格式。</p>';
+            }
+        }
+    </script>
+</body>
+</html>
