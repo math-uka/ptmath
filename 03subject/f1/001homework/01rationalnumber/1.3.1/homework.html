@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>數學作業 11</title>
+    <title>數學作業 12</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true
+            },
+            chtml: {
+                scale: 1.0,
+                mtextInheritFont: true
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    MathJax.startup.promise.then(() => {
+                        console.log('MathJax is ready');
+                    });
+                }
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
     <style>
         :root {
@@ -197,8 +217,8 @@
                 <div class="input-subgroup">
                     <input type="text" id="answerInput1" placeholder="輸入答案">
                     <div class="button-group">
-                        <button class="input-button" onclick="insertText('/', 'answerInput1')"><span class="mathjax-content">\(\frac{a}{b}\)</span></button>
-                        <button class="input-button" onclick="insertText('√', 'answerInput1')"><span class="mathjax-content">\(\sqrt{}\)</span></button>
+                        <button class="input-button" onclick="insertText('/', 'answerInput1')">\(\frac{a}{b}\)</button>
+                        <button class="input-button" onclick="insertText('√', 'answerInput1')">\(\sqrt{}\)</button>
                         <button class="input-button" onclick="insertText('無解', 'answerInput1')">無解</button>
                         <button class="input-button" onclick="insertText('+', 'answerInput1')">+</button>
                         <button class="input-button" onclick="insertText('-', 'answerInput1')">-</button>
@@ -230,9 +250,9 @@
         <h2>操作指南</h2>
         <div class="help-container" id="operationGuide">
             <ul>
-                <li><strong>輸入分數</strong>：點擊分數按鈕 <span class="mathjax-content">\(\frac{a}{b}\)</span>，輸入框中會插入 <code>/</code>，然後輸入分子和分母，例如 <code>1/2</code> 表示 <span class="mathjax-content">\(\frac{1}{2}\)</span>。</li>
+                <li><strong>輸入分數</strong>：點擊分數按鈕 \(\frac{a}{b}\)，輸入框中會插入 <code>/</code>，然後輸入分子和分母，例如 <code>1/2</code> 表示 \(\frac{1}{2}\)。 </li>
                 <li><strong>輸入「無解」</strong>：點擊「無解」按鈕，輸入框中會直接插入「無解」，表示方程無解。</li>
-                <li><strong>輸入帶根號的數</strong>：先輸入數字部分（常數或係數），然後點擊根號按鈕 <span class="mathjax-content">\(\sqrt{}\)</span>，再輸入根號下的數字，例如輸入 <code>2+√3</code> 表示 <span class="mathjax-content">\(2 + \sqrt{3}\)</span>。</li>
+                <li><strong>輸入帶根號的數</strong>：先輸入數字部分（常數或係數），然後點擊根號按鈕 \(\sqrt{}\)，再輸入根號下的數字，例如輸入 <code>2+√3</code> 表示 \(2 + \sqrt{3}\)。 </li>
             </ul>
         </div>
     </div>
@@ -311,10 +331,6 @@
                 MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
             });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            MathJax.typesetPromise().catch(err => console.error('MathJax initial typesetting error:', err));
-        });
-
         function loadNewQuestion() {
             let currentQuestions = isChallengeMode ? hwhQuestions : questions;
             let currentUsedQuestions = isChallengeMode ? usedHwhQuestions : usedQuestions;
@@ -349,8 +365,8 @@
                         <div class="input-subgroup">
                             <input type="text" id="answerInput1" placeholder="輸入第一個答案">
                             <div class="button-group">
-                                <button class="input-button" onclick="insertText('/', 'answerInput1')"><span class="mathjax-content">\(\frac{a}{b}\)</span></button>
-                                <button class="input-button" onclick="insertText('√', 'answerInput1')"><span class="mathjax-content">\(\sqrt{}\)</span></button>
+                                <button class="input-button" onclick="insertText('/', 'answerInput1')">\(\frac{a}{b}\)</button>
+                                <button class="input-button" onclick="insertText('√', 'answerInput1')">\(\sqrt{}\)</button>
                                 <button class="input-button" onclick="insertText('無解', 'answerInput1')">無解</button>
                                 <button class="input-button" onclick="insertText('+', 'answerInput1')">+</button>
                                 <button class="input-button" onclick="insertText('-', 'answerInput1')">-</button>
@@ -359,8 +375,8 @@
                         <div class="input-subgroup">
                             <input type="text" id="answerInput2" placeholder="輸入第二個答案">
                             <div class="button-group">
-                                <button class="input-button" onclick="insertText('/', 'answerInput2')"><span class="mathjax-content">\(\frac{a}{b}\)</span></button>
-                                <button class="input-button" onclick="insertText('√', 'answerInput2')"><span class="mathjax-content">\(\sqrt{}\)</span></button>
+                                <button class="input-button" onclick="insertText('/', 'answerInput2')">\(\frac{a}{b}\)</button>
+                                <button class="input-button" onclick="insertText('√', 'answerInput2')">\(\sqrt{}\)</button>
                                 <button class="input-button" onclick="insertText('無解', 'answerInput2')">無解</button>
                                 <button class="input-button" onclick="insertText('+', 'answerInput2')">+</button>
                                 <button class="input-button" onclick="insertText('-', 'answerInput2')">-</button>
@@ -374,8 +390,8 @@
                         <div class="input-subgroup">
                             <input type="text" id="answerInput1" placeholder="輸入答案">
                             <div class="button-group">
-                                <button class="input-button" onclick="insertText('/', 'answerInput1')"><span class="mathjax-content">\(\frac{a}{b}\)</span></button>
-                                <button class="input-button" onclick="insertText('√', 'answerInput1')"><span class="mathjax-content">\(\sqrt{}\)</span></button>
+                                <button class="input-button" onclick="insertText('/', 'answerInput1')">\(\frac{a}{b}\)</button>
+                                <button class="input-button" onclick="insertText('√', 'answerInput1')">\(\sqrt{}\)</button>
                                 <button class="input-button" onclick="insertText('無解', 'answerInput1')">無解</button>
                                 <button class="input-button" onclick="insertText('+', 'answerInput1')">+</button>
                                 <button class="input-button" onclick="insertText('-', 'answerInput1')">-</button>
@@ -383,10 +399,9 @@
                         </div>
                     </div>
                 `;
-            document.getElementById('feedback').textContent = '';
-            document.getElementById('submit-btn').style.display = 'inline-block';
-            document.getElementById('next-btn').style.display = 'none';
-            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            setTimeout(() => {
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            }, 100);
         }
 
         function insertText(text, inputId) {
@@ -398,7 +413,6 @@
                 targetInput.value += text;
             }
             targetInput.focus();
-            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
         }
 
         function parseAnswer(answer) {
@@ -571,7 +585,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            MathJax.typesetPromise().catch(err => console.error('MathJax initial typesetting error:', err));
+            setTimeout(() => {
+                MathJax.typesetPromise().catch(err => console.error('MathJax initial typesetting error:', err));
+            }, 100);
         });
     </script>
 </body>
