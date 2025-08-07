@@ -1,505 +1,605 @@
 {
-    "title": "有理數加減法練習",
+    "title": "有理數加法練習",
     "questions": [
         {
             "question": "\\( 45 + 72 \\)",
             "answers": ["117"],
-            "prefix": "答案："
+            "prefix": "答案：",
+            "annotation": "第1題"
         },
         {
-            "question": "\\( 128 + (-39) \\)",
-            "answers": ["89"],
-            "prefix": "答案："
+            "question": "\\( 128 + (-56) \\)",
+            "answers": ["72"],
+            "prefix": "答案：",
+            "annotation": "第2題"
         },
         {
-            "question": "\\( -67 + 154 \\)",
-            "answers": ["87"],
-            "prefix": "答案："
+            "question": "\\( -93 + 147 \\)",
+            "answers": ["54"],
+            "prefix": "答案：",
+            "annotation": "第3題"
         },
         {
-            "question": "\\( -93 + (-28) \\)",
-            "answers": ["-121"],
-            "prefix": "答案："
+            "question": "\\( -76 + (-29) \\)",
+            "answers": ["-105"],
+            "prefix": "答案：",
+            "annotation": "第4題"
         },
         {
-            "question": "\\( 176 + 53 \\)",
-            "answers": ["229"],
-            "prefix": "答案："
+            "question": "\\( 182 + (-64) + (-23) \\)",
+            "answers": ["95"],
+            "prefix": "答案：",
+            "annotation": "第5題"
         },
         {
-            "question": "\\( 84 + (-117) \\)",
-            "answers": ["-33"],
-            "prefix": "答案："
+            "question": "\\( -112 + (-45) + (-78) \\)",
+            "answers": ["-235"],
+            "prefix": "答案：",
+            "annotation": "第6題"
         },
         {
-            "question": "\\( -142 + 65 \\)",
-            "answers": ["-77"],
-            "prefix": "答案："
+            "question": "\\( 67 + 89 \\)",
+            "answers": ["156"],
+            "prefix": "答案：",
+            "annotation": "第7題"
         },
         {
-            "question": "\\( -31 + (-89) \\)",
-            "answers": ["-120"],
-            "prefix": "答案："
+            "question": "\\( 175 + (-33) \\)",
+            "answers": ["142"],
+            "prefix": "答案：",
+            "annotation": "第8題"
         },
         {
-            "question": "\\( 197 + 24 \\)",
-            "answers": ["221"],
-            "prefix": "答案："
+            "question": "\\( -54 + 122 \\)",
+            "answers": ["68"],
+            "prefix": "答案：",
+            "annotation": "第9題"
         },
         {
-            "question": "\\( 56 + (-132) \\)",
-            "answers": ["-76"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -108 + 47 \\)",
-            "answers": ["-61"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -75 + (-96) \\)",
-            "answers": ["-171"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 163 + 88 \\)",
-            "answers": ["251"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 29 + (-174) \\)",
-            "answers": ["-145"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -136 + 91 \\)",
-            "answers": ["-45"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -42 + (-113) \\)",
-            "answers": ["-155"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 181 + 67 \\)",
-            "answers": ["248"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 94 + (-58) \\)",
-            "answers": ["36"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -129 + 33 \\)",
-            "answers": ["-96"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -87 + (-76) \\)",
-            "answers": ["-163"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 152 + 41 \\)",
-            "answers": ["193"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 63 + (-149) \\)",
-            "answers": ["-86"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -115 + 82 \\)",
-            "answers": ["-33"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -54 + (-97) \\)",
-            "answers": ["-151"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 188 + 19 \\)",
-            "answers": ["207"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 37 + (-126) \\)",
-            "answers": ["-89"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -171 + 44 \\)",
-            "answers": ["-127"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -68 + (-105) \\)",
-            "answers": ["-173"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 139 + 92 \\)",
-            "answers": ["231"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 81 + (-164) \\)",
-            "answers": ["-83"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -102 + 57 \\)",
-            "answers": ["-45"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -49 + (-118) \\)",
-            "answers": ["-167"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 175 + 36 \\)",
-            "answers": ["211"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 27 + (-143) \\)",
-            "answers": ["-116"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -159 + 71 \\)",
-            "answers": ["-88"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -85 + (-94) \\)",
+            "question": "\\( -88 + (-91) \\)",
             "answers": ["-179"],
-            "prefix": "答案："
+            "prefix": "答案：",
+            "annotation": "第10題"
         },
         {
-            "question": "\\( 192 + 48 \\)",
-            "answers": ["240"],
-            "prefix": "答案："
+            "question": "\\( 29 + (-147) + (-52) \\)",
+            "answers": ["-170"],
+            "prefix": "答案：",
+            "annotation": "第11題"
         },
         {
-            "question": "\\( 66 + (-121) \\)",
-            "answers": ["-55"],
-            "prefix": "答案："
+            "question": "\\( -134 + (-66) + (-25) \\)",
+            "answers": ["-225"],
+            "prefix": "答案：",
+            "annotation": "第12題"
         },
         {
-            "question": "\\( -134 + 39 \\)",
-            "answers": ["-95"],
-            "prefix": "答案："
+            "question": "\\( 198 + 44 \\)",
+            "answers": ["242"],
+            "prefix": "答案：",
+            "annotation": "第13題"
         },
         {
-            "question": "\\( -61 + (-107) \\)",
-            "answers": ["-168"],
-            "prefix": "答案："
+            "question": "\\( 73 + (-159) \\)",
+            "answers": ["-86"],
+            "prefix": "答案：",
+            "annotation": "第14題"
         },
         {
-            "question": "\\( 146 + 83 \\)",
-            "answers": ["229"],
-            "prefix": "答案："
+            "question": "\\( -165 + 87 \\)",
+            "answers": ["-78"],
+            "prefix": "答案：",
+            "annotation": "第15題"
         },
         {
-            "question": "\\( 98 + (-52) \\)",
-            "answers": ["46"],
-            "prefix": "答案："
+            "question": "\\( -42 + (-138) \\)",
+            "answers": ["-180"],
+            "prefix": "答案：",
+            "annotation": "第16題"
         },
         {
-            "question": "\\( -123 + 66 \\)",
-            "answers": ["-57"],
-            "prefix": "答案："
+            "question": "\\( 96 + (-31) + (-112) \\)",
+            "answers": ["-47"],
+            "prefix": "答案：",
+            "annotation": "第17題"
         },
         {
-            "question": "\\( -79 + (-88) \\)",
-            "answers": ["-167"],
-            "prefix": "答案："
+            "question": "\\( -179 + (-24) + (-67) \\)",
+            "answers": ["-270"],
+            "prefix": "答案：",
+            "annotation": "第18題"
         },
         {
-            "question": "\\( 167 + 74 \\)",
-            "answers": ["241"],
-            "prefix": "答案："
+            "question": "\\( 151 + 28 \\)",
+            "answers": ["179"],
+            "prefix": "答案：",
+            "annotation": "第19題"
         },
         {
-            "question": "\\( 32 + (-138) \\)",
-            "answers": ["-106"],
-            "prefix": "答案："
+            "question": "\\( 62 + (-94) \\)",
+            "answers": ["-32"],
+            "prefix": "答案：",
+            "annotation": "第20題"
         },
         {
-            "question": "\\( -141 + 45 \\)",
-            "answers": ["-96"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -56 + (-112) \\)",
-            "answers": ["-168"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 184 + 29 \\)",
-            "answers": ["213"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 77 + (-159) \\)",
+            "question": "\\( -137 + 55 \\)",
             "answers": ["-82"],
-            "prefix": "答案："
+            "prefix": "答案：",
+            "annotation": "第21題"
         },
         {
-            "question": "\\( -106 + 83 \\)",
-            "answers": ["-23"],
-            "prefix": "答案："
+            "question": "\\( -81 + (-73) \\)",
+            "answers": ["-154"],
+            "prefix": "答案：",
+            "annotation": "第22題"
         },
         {
-            "question": "\\( -43 + (-95) \\)",
-            "answers": ["-138"],
-            "prefix": "答案："
+            "question": "\\( 114 + (-46) + (-89) \\)",
+            "answers": ["-21"],
+            "prefix": "答案：",
+            "annotation": "第23題"
         },
         {
-            "question": "\\( 155 + 61 \\)",
-            "answers": ["216"],
-            "prefix": "答案："
+            "question": "\\( -95 + (-132) + (-38) \\)",
+            "answers": ["-265"],
+            "prefix": "答案：",
+            "annotation": "第24題"
         },
         {
-            "question": "\\( 88 + (-144) \\)",
-            "answers": ["-56"],
-            "prefix": "答案："
+            "question": "\\( 33 + 167 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第25題"
         },
         {
-            "question": "\\( -130 + 37 \\)",
+            "question": "\\( 186 + (-77) \\)",
+            "answers": ["109"],
+            "prefix": "答案：",
+            "annotation": "第26題"
+        },
+        {
+            "question": "\\( -121 + 43 \\)",
+            "answers": ["-78"],
+            "prefix": "答案：",
+            "annotation": "第27題"
+        },
+        {
+            "question": "\\( -56 + (-149) \\)",
+            "answers": ["-205"],
+            "prefix": "答案：",
+            "annotation": "第28題"
+        },
+        {
+            "question": "\\( 78 + (-125) + (-22) \\)",
+            "answers": ["-69"],
+            "prefix": "答案：",
+            "annotation": "第29題"
+        },
+        {
+            "question": "\\( -168 + (-53) + (-94) \\)",
+            "answers": ["-315"],
+            "prefix": "答案：",
+            "annotation": "第30題"
+        },
+        {
+            "question": "\\( 142 + 36 \\)",
+            "answers": ["178"],
+            "prefix": "答案：",
+            "annotation": "第31題"
+        },
+        {
+            "question": "\\( 91 + (-163) \\)",
+            "answers": ["-72"],
+            "prefix": "答案：",
+            "annotation": "第32題"
+        },
+        {
+            "question": "\\( -47 + 128 \\)",
+            "answers": ["81"],
+            "prefix": "答案：",
+            "annotation": "第33題"
+        },
+        {
+            "question": "\\( -109 + (-82) \\)",
+            "answers": ["-191"],
+            "prefix": "答案：",
+            "annotation": "第34題"
+        },
+        {
+            "question": "\\( 155 + (-68) + (-37) \\)",
+            "answers": ["50"],
+            "prefix": "答案：",
+            "annotation": "第35題"
+        },
+        {
+            "question": "\\( -74 + (-141) + (-59) \\)",
+            "answers": ["-274"],
+            "prefix": "答案：",
+            "annotation": "第36題"
+        },
+        {
+            "question": "\\( 88 + 112 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第37題"
+        },
+        {
+            "question": "\\( 136 + (-49) \\)",
+            "answers": ["87"],
+            "prefix": "答案：",
+            "annotation": "第38題"
+        },
+        {
+            "question": "\\( -172 + 65 \\)",
+            "answers": ["-107"],
+            "prefix": "答案：",
+            "annotation": "第39題"
+        },
+        {
+            "question": "\\( -35 + (-126) \\)",
+            "answers": ["-161"],
+            "prefix": "答案：",
+            "annotation": "第40題"
+        },
+        {
+            "question": "\\( 97 + (-84) + (-29) \\)",
+            "answers": ["-16"],
+            "prefix": "答案：",
+            "annotation": "第41題"
+        },
+        {
+            "question": "\\( -153 + (-71) + (-46) \\)",
+            "answers": ["-270"],
+            "prefix": "答案：",
+            "annotation": "第42題"
+        },
+        {
+            "question": "\\( 174 + 26 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第43題"
+        },
+        {
+            "question": "\\( 53 + (-138) \\)",
+            "answers": ["-85"],
+            "prefix": "答案：",
+            "annotation": "第44題"
+        },
+        {
+            "question": "\\( -99 + 162 \\)",
+            "answers": ["63"],
+            "prefix": "答案：",
+            "annotation": "第45題"
+        },
+        {
+            "question": "\\( -124 + (-57) \\)",
+            "answers": ["-181"],
+            "prefix": "答案：",
+            "annotation": "第46題"
+        },
+        {
+            "question": "\\( 66 + (-143) + (-31) \\)",
+            "answers": ["-108"],
+            "prefix": "答案：",
+            "annotation": "第47題"
+        },
+        {
+            "question": "\\( -187 + (-42) + (-69) \\)",
+            "answers": ["-298"],
+            "prefix": "答案：",
+            "annotation": "第48題"
+        },
+        {
+            "question": "\\( 119 + 81 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第49題"
+        },
+        {
+            "question": "\\( 148 + (-75) \\)",
+            "answers": ["73"],
+            "prefix": "答案：",
+            "annotation": "第50題"
+        },
+        {
+            "question": "\\( -62 + 134 \\)",
+            "answers": ["72"],
+            "prefix": "答案：",
+            "annotation": "第51題"
+        },
+        {
+            "question": "\\( -87 + (-113) \\)",
+            "answers": ["-200"],
+            "prefix": "答案：",
+            "annotation": "第52題"
+        },
+        {
+            "question": "\\( 171 + (-58) + (-24) \\)",
+            "answers": ["89"],
+            "prefix": "答案：",
+            "annotation": "第53題"
+        },
+        {
+            "question": "\\( -135 + (-79) + (-36) \\)",
+            "answers": ["-250"],
+            "prefix": "答案：",
+            "annotation": "第54題"
+        },
+        {
+            "question": "\\( 77 + 123 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第55題"
+        },
+        {
+            "question": "\\( 192 + (-41) \\)",
+            "answers": ["151"],
+            "prefix": "答案：",
+            "annotation": "第56題"
+        },
+        {
+            "question": "\\( -146 + 53 \\)",
             "answers": ["-93"],
-            "prefix": "答案："
+            "prefix": "答案：",
+            "annotation": "第57題"
         },
         {
-            "question": "\\( -72 + (-101) \\)",
-            "answers": ["-173"],
-            "prefix": "答案："
+            "question": "\\( -68 + (-152) \\)",
+            "answers": ["-220"],
+            "prefix": "答案：",
+            "annotation": "第58題"
         },
         {
-            "question": "\\( 179 + 42 \\)",
-            "answers": ["221"],
-            "prefix": "答案："
+            "question": "\\( 104 + (-67) + (-28) \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第59題"
         },
         {
-            "question": "\\( 51 + (-127) \\)",
-            "answers": ["-76"],
-            "prefix": "答案："
+            "question": "\\( -181 + (-39) + (-80) \\)",
+            "answers": ["-300"],
+            "prefix": "答案：",
+            "annotation": "第60題"
         },
         {
-            "question": "\\( -147 + 68 \\)",
+            "question": "\\( 133 + 67 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第61題"
+        },
+        {
+            "question": "\\( 85 + (-164) \\)",
             "answers": ["-79"],
-            "prefix": "答案："
+            "prefix": "答案：",
+            "annotation": "第62題"
         },
         {
-            "question": "\\( -64 + (-109) \\)",
-            "answers": ["-173"],
-            "prefix": "答案："
+            "question": "\\( -111 + 89 \\)",
+            "answers": ["-22"],
+            "prefix": "答案：",
+            "annotation": "第63題"
         },
         {
-            "question": "\\( 161 + 85 \\)",
-            "answers": ["246"],
-            "prefix": "答案："
+            "question": "\\( -47 + (-133) \\)",
+            "answers": ["-180"],
+            "prefix": "答案：",
+            "annotation": "第64題"
         },
         {
-            "question": "\\( 96 + (-49) \\)",
-            "answers": ["47"],
-            "prefix": "答案："
+            "question": "\\( 156 + (-72) + (-34) \\)",
+            "answers": ["50"],
+            "prefix": "答案：",
+            "annotation": "第65題"
         },
         {
-            "question": "\\( -119 + 55 \\)",
-            "answers": ["-64"],
-            "prefix": "答案："
+            "question": "\\( -98 + (-145) + (-57) \\)",
+            "answers": ["-300"],
+            "prefix": "答案：",
+            "annotation": "第66題"
         },
         {
-            "question": "\\( -81 + (-93) \\)",
-            "answers": ["-174"],
-            "prefix": "答案："
+            "question": "\\( 176 + 24 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第67題"
         },
         {
-            "question": "\\( 170 + 76 \\)",
-            "answers": ["246"],
-            "prefix": "答案："
+            "question": "\\( 69 + (-131) \\)",
+            "answers": ["-62"],
+            "prefix": "答案：",
+            "annotation": "第68題"
         },
         {
-            "question": "\\( 44 + (-135) \\)",
-            "answers": ["-91"],
-            "prefix": "答案："
+            "question": "\\( -154 + 46 \\)",
+            "answers": ["-108"],
+            "prefix": "答案：",
+            "annotation": "第69題"
         },
         {
-            "question": "\\( -153 + 62 \\)",
-            "answers": ["-91"],
-            "prefix": "答案："
+            "question": "\\( -82 + (-118) \\)",
+            "answers": ["-200"],
+            "prefix": "答案：",
+            "annotation": "第70題"
         },
         {
-            "question": "\\( -58 + (-104) \\)",
-            "answers": ["-162"],
-            "prefix": "答案："
+            "question": "\\( 123 + (-59) + (-64) \\)",
+            "answers": ["0"],
+            "prefix": "答案：",
+            "annotation": "第71題"
         },
         {
-            "question": "\\( 186 + 33 \\)",
-            "answers": ["219"],
-            "prefix": "答案："
+            "question": "\\( -166 + (-34) + (-100) \\)",
+            "answers": ["-300"],
+            "prefix": "答案：",
+            "annotation": "第72題"
         },
         {
-            "question": "\\( 69 + (-151) \\)",
-            "answers": ["-82"],
-            "prefix": "答案："
+            "question": "\\( 141 + 59 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第73題"
         },
         {
-            "question": "\\( -125 + 79 \\)",
-            "answers": ["-46"],
-            "prefix": "答案："
+            "question": "\\( 94 + (-106) \\)",
+            "answers": ["-12"],
+            "prefix": "答案：",
+            "annotation": "第74題"
         },
         {
-            "question": "\\( -47 + (-98) \\)",
-            "answers": ["-145"],
-            "prefix": "答案："
+            "question": "\\( -78 + 122 \\)",
+            "answers": ["44"],
+            "prefix": "答案：",
+            "annotation": "第75題"
         },
         {
-            "question": "\\( 149 + 87 \\)",
-            "answers": ["236"],
-            "prefix": "答案："
+            "question": "\\( -135 + (-65) \\)",
+            "answers": ["-200"],
+            "prefix": "答案：",
+            "annotation": "第76題"
         },
         {
-            "question": "\\( 91 + (-56) \\)",
-            "answers": ["35"],
-            "prefix": "答案："
+            "question": "\\( 188 + (-47) + (-41) \\)",
+            "answers": ["100"],
+            "prefix": "答案：",
+            "annotation": "第77題"
         },
         {
-            "question": "\\( -137 + 41 \\)",
-            "answers": ["-96"],
-            "prefix": "答案："
+            "question": "\\( -109 + (-91) + (-100) \\)",
+            "answers": ["-300"],
+            "prefix": "答案：",
+            "annotation": "第78題"
         },
         {
-            "question": "\\( -73 + (-110) \\)",
-            "answers": ["-183"],
-            "prefix": "答案："
+            "question": "\\( 155 + 45 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第79題"
         },
         {
-            "question": "\\( 165 + 59 \\)",
-            "answers": ["224"],
-            "prefix": "答案："
+            "question": "\\( 72 + (-128) \\)",
+            "answers": ["-56"],
+            "prefix": "答案：",
+            "annotation": "第80題"
         },
         {
-            "question": "\\( 38 + (-142) \\)",
-            "answers": ["-104"],
-            "prefix": "答案："
+            "question": "\\( -163 + 37 \\)",
+            "answers": ["-126"],
+            "prefix": "答案：",
+            "annotation": "第81題"
         },
         {
-            "question": "\\( -111 + 64 \\)",
-            "answers": ["-47"],
-            "prefix": "答案："
+            "question": "\\( -56 + (-144) \\)",
+            "answers": ["-200"],
+            "prefix": "答案：",
+            "annotation": "第82題"
         },
         {
-            "question": "\\( -66 + (-103) \\)",
-            "answers": ["-169"],
-            "prefix": "答案："
+            "question": "\\( 101 + (-53) + (-48) \\)",
+            "answers": ["0"],
+            "prefix": "答案：",
+            "annotation": "第83題"
         },
         {
-            "question": "\\( 182 + 46 \\)",
-            "answers": ["228"],
-            "prefix": "答案："
+            "question": "\\( -177 + (-23) + (-100) \\)",
+            "answers": ["-300"],
+            "prefix": "答案：",
+            "annotation": "第84題"
         },
         {
-            "question": "\\( 82 + (-158) \\)",
-            "answers": ["-76"],
-            "prefix": "答案："
+            "question": "\\( 132 + 68 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第85題"
         },
         {
-            "question": "\\( -104 + 81 \\)",
-            "answers": ["-23"],
-            "prefix": "答案："
+            "question": "\\( 87 + (-113) \\)",
+            "answers": ["-26"],
+            "prefix": "答案：",
+            "annotation": "第86題"
         },
         {
-            "question": "\\( -52 + (-99) \\)",
-            "answers": ["-151"],
-            "prefix": "答案："
+            "question": "\\( -146 + 54 \\)",
+            "answers": ["-92"],
+            "prefix": "答案：",
+            "annotation": "第87題"
         },
         {
-            "question": "\\( 157 + 73 \\)",
-            "answers": ["230"],
-            "prefix": "答案："
+            "question": "\\( -69 + (-131) \\)",
+            "answers": ["-200"],
+            "prefix": "答案：",
+            "annotation": "第88題"
         },
         {
-            "question": "\\( 99 + (-47) \\)",
-            "answers": ["52"],
-            "prefix": "答案："
+            "question": "\\( 178 + (-78) + (-100) \\)",
+            "answers": ["0"],
+            "prefix": "答案：",
+            "annotation": "第89題"
         },
         {
-            "question": "\\( -132 + 38 \\)",
-            "answers": ["-94"],
-            "prefix": "答案："
+            "question": "\\( -122 + (-78) + (-100) \\)",
+            "answers": ["-300"],
+            "prefix": "答案：",
+            "annotation": "第90題"
         },
         {
-            "question": "\\( -78 + (-106) \\)",
-            "answers": ["-184"],
-            "prefix": "答案："
+            "question": "\\( 149 + 51 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第91題"
         },
         {
-            "question": "\\( 174 + 65 \\)",
-            "answers": ["239"],
-            "prefix": "答案："
+            "question": "\\( 96 + (-104) \\)",
+            "answers": ["-8"],
+            "prefix": "答案：",
+            "annotation": "第92題"
         },
         {
-            "question": "\\( 55 + (-139) \\)",
-            "answers": ["-84"],
-            "prefix": "答案："
+            "question": "\\( -133 + 67 \\)",
+            "answers": ["-66"],
+            "prefix": "答案：",
+            "annotation": "第93題"
         },
         {
-            "question": "\\( -148 + 52 \\)",
-            "answers": ["-96"],
-            "prefix": "答案："
+            "question": "\\( -87 + (-113) \\)",
+            "answers": ["-200"],
+            "prefix": "答案：",
+            "annotation": "第94題"
         },
         {
-            "question": "\\( -60 + (-108) \\)",
-            "answers": ["-168"],
-            "prefix": "答案："
+            "question": "\\( 165 + (-65) + (-100) \\)",
+            "answers": ["0"],
+            "prefix": "答案：",
+            "annotation": "第95題"
         },
         {
-            "question": "\\( 180 + 31 \\)",
-            "answers": ["211"],
-            "prefix": "答案："
+            "question": "\\( -111 + (-89) + (-100) \\)",
+            "answers": ["-300"],
+            "prefix": "答案：",
+            "annotation": "第96題"
         },
         {
-            "question": "\\( 76 + (-153) \\)",
-            "answers": ["-77"],
-            "prefix": "答案："
+            "question": "\\( 124 + 76 \\)",
+            "answers": ["200"],
+            "prefix": "答案：",
+            "annotation": "第97題"
         },
         {
-            "question": "\\( -116 + 69 \\)",
-            "answers": ["-47"],
-            "prefix": "答案："
+            "question": "\\( 81 + (-119) \\)",
+            "answers": ["-38"],
+            "prefix": "答案：",
+            "annotation": "第98題"
         },
         {
-            "question": "\\( -45 + (-97) \\)",
-            "answers": ["-142"],
-            "prefix": "答案："
+            "question": "\\( -154 + 46 \\)",
+            "answers": ["-108"],
+            "prefix": "答案：",
+            "annotation": "第99題"
         },
         {
-            "question": "\\( 168 + 84 \\)",
-            "answers": ["252"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( 92 + (-50) \\)",
-            "answers": ["42"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -140 + 43 \\)",
-            "answers": ["-97"],
-            "prefix": "答案："
-        },
-        {
-            "question": "\\( -71 + (-111) \\)",
-            "answers": ["-182"],
-            "prefix": "答案："
+            "question": "\\( -67 + (-133) \\)",
+            "answers": ["-200"],
+            "prefix": "答案：",
+            "annotation": "第100題"
         }
     ]
 }

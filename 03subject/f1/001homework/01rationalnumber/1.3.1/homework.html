@@ -217,8 +217,8 @@
                 <div class="input-subgroup">
                     <input type="text" id="answerInput1" placeholder="輸入答案">
                     <div class="button-group">
-                        <button class="input-button" onclick="insertText('/', 'answerInput1')">\(\frac{a}{b}\)</button>
-                        <button class="input-button" onclick="insertText('√', 'answerInput1')">\(\sqrt{}\)</button>
+                        <button class="input-button" onclick="insertText('/', 'answerInput1')">分數</button>
+                        <button class="input-button" onclick="insertText('√', 'answerInput1')">根號</button>
                         <button class="input-button" onclick="insertText('無解', 'answerInput1')">無解</button>
                         <button class="input-button" onclick="insertText('+', 'answerInput1')">+</button>
                         <button class="input-button" onclick="insertText('-', 'answerInput1')">-</button>
@@ -243,16 +243,16 @@
 
     <div class="card">
         <h2>教學指南</h2>
-        <div class="help-container" id="helpContent">載入中...</div>
+       <div class="help-container" id="helpContent">載入中...</div>
     </div>
 
     <div class="card">
         <h2>操作指南</h2>
         <div class="help-container" id="operationGuide">
             <ul>
-                <li><strong>輸入分數</strong>：點擊分數按鈕 \(\frac{a}{b}\)，輸入框中會插入 <code>/</code>，然後輸入分子和分母，例如 <code>1/2</code> 表示 \(\frac{1}{2}\)。 </li>
+                <li><strong>輸入分數</strong>：點擊「分數」按鈕，輸入框中會插入 <code>/</code>，然後輸入分子和分母，例如 <code>1/2</code> 表示 \(\frac{1}{2}\)。 </li>
                 <li><strong>輸入「無解」</strong>：點擊「無解」按鈕，輸入框中會直接插入「無解」，表示方程無解。</li>
-                <li><strong>輸入帶根號的數</strong>：先輸入數字部分（常數或係數），然後點擊根號按鈕 \(\sqrt{}\)，再輸入根號下的數字，例如輸入 <code>2+√3</code> 表示 \(2 + \sqrt{3}\)。 </li>
+                <li><strong>輸入帶根號的數</strong>：先輸入數字部分（常數或係數），然後點擊「根號」按鈕，再輸入根號下的數字，例如輸入 <code>2+√3</code> 表示 \(2 + \sqrt{3}\)。 </li>
             </ul>
         </div>
     </div>
@@ -365,8 +365,8 @@
                         <div class="input-subgroup">
                             <input type="text" id="answerInput1" placeholder="輸入第一個答案">
                             <div class="button-group">
-                                <button class="input-button" onclick="insertText('/', 'answerInput1')">\(\frac{a}{b}\)</button>
-                                <button class="input-button" onclick="insertText('√', 'answerInput1')">\(\sqrt{}\)</button>
+                                <button class="input-button" onclick="insertText('/', 'answerInput1')">分數</button>
+                                <button class="input-button" onclick="insertText('√', 'answerInput1')">根號</button>
                                 <button class="input-button" onclick="insertText('無解', 'answerInput1')">無解</button>
                                 <button class="input-button" onclick="insertText('+', 'answerInput1')">+</button>
                                 <button class="input-button" onclick="insertText('-', 'answerInput1')">-</button>
@@ -375,8 +375,8 @@
                         <div class="input-subgroup">
                             <input type="text" id="answerInput2" placeholder="輸入第二個答案">
                             <div class="button-group">
-                                <button class="input-button" onclick="insertText('/', 'answerInput2')">\(\frac{a}{b}\)</button>
-                                <button class="input-button" onclick="insertText('√', 'answerInput2')">\(\sqrt{}\)</button>
+                                <button class="input-button" onclick="insertText('/', 'answerInput2')">分數</button>
+                                <button class="input-button" onclick="insertText('√', 'answerInput2')">根號</button>
                                 <button class="input-button" onclick="insertText('無解', 'answerInput2')">無解</button>
                                 <button class="input-button" onclick="insertText('+', 'answerInput2')">+</button>
                                 <button class="input-button" onclick="insertText('-', 'answerInput2')">-</button>
@@ -390,8 +390,8 @@
                         <div class="input-subgroup">
                             <input type="text" id="answerInput1" placeholder="輸入答案">
                             <div class="button-group">
-                                <button class="input-button" onclick="insertText('/', 'answerInput1')">\(\frac{a}{b}\)</button>
-                                <button class="input-button" onclick="insertText('√', 'answerInput1')">\(\sqrt{}\)</button>
+                                <button class="input-button" onclick="insertText('/', 'answerInput1')">分數</button>
+                                <button class="input-button" onclick="insertText('√', 'answerInput1')">根號</button>
                                 <button class="input-button" onclick="insertText('無解', 'answerInput1')">無解</button>
                                 <button class="input-button" onclick="insertText('+', 'answerInput1')">+</button>
                                 <button class="input-button" onclick="insertText('-', 'answerInput1')">-</button>
@@ -402,6 +402,9 @@
             setTimeout(() => {
                 MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
             }, 100);
+            document.getElementById('submit-btn').style.display = 'inline-block';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('feedback').textContent = '';
         }
 
         function insertText(text, inputId) {
@@ -437,7 +440,6 @@
             const feedback = document.getElementById('feedback');
             const quizDiv = document.getElementById('quiz');
             const submitBtn = document.getElementById('submit-btn');
-            const nextBtn = document.getElementById('next-btn');
             let userAnswers = [document.getElementById('answerInput1').value.trim()];
             if (currentQuestion.answers.length > 1) {
                 userAnswers.push(document.getElementById('answerInput2').value.trim());
@@ -466,7 +468,7 @@
                 feedback.textContent = '正確！';
                 feedback.style.color = 'green';
                 correctCount++;
-                if (isChallengeMode) {
+                if (isChallengeMode || stars >= questionCount) {
                     jsConfetti.addConfetti({
                         confettiNumber: 500,
                         confettiRadius: 6,
@@ -480,22 +482,9 @@
                     }
                     return;
                 }
-                if (stars >= questionCount) {
-                    jsConfetti.addConfetti({
-                        confettiNumber: 500,
-                        confettiRadius: 6,
-                    });
-                    document.getElementById('quiz').style.display = 'none';
-                    document.getElementById('completion-message').style.display = 'block';
-                    if (passData) {
-                        setTimeout(() => {
-                            document.getElementById('student-id-section').style.display = 'block';
-                        }, 2000);
-                    }
-                    return;
-                }
-                submitBtn.style.display = 'none';
-                nextBtn.style.display = 'inline-block';
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1500);
             } else {
                 if (isChallengeMode) {
                     isChallengeMode = false;
@@ -522,9 +511,8 @@
                 quizDiv.classList.add('shake');
                 setTimeout(() => {
                     quizDiv.classList.remove('shake');
+                    document.getElementById('next-btn').style.display = 'inline-block';
                 }, 500);
-                submitBtn.style.display = 'none';
-                nextBtn.style.display = 'inline-block';
             }
         }
 
