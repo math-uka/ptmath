@@ -1,0 +1,495 @@
+{
+    "title": "有理數加減法練習",
+    "questions": [
+        {
+            "question": "\\( \\frac{5}{12} + \\frac{7}{18} \\)",
+            "answers": ["29/36"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{3}{8} + (-\\frac{9}{14}) \\)",
+            "answers": ["-3/56"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{11}{20} + \\frac{4}{15} \\)",
+            "answers": ["-17/60"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{7}{16} + (-\\frac{5}{24}) \\)",
+            "answers": ["-29/48"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{13}{30} + 4 \\)",
+            "answers": ["133/30"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 6 + (-\\frac{8}{21}) \\)",
+            "answers": ["118/21"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{9}{10} + 2 \\)",
+            "answers": ["11/10"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -3 + (-\\frac{15}{28}) \\)",
+            "answers": ["-99/28"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{17}{24} + \\frac{3}{8} \\)",
+            "answers": ["23/24"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{2}{9} + (-\\frac{11}{27}) \\)",
+            "answers": ["-5/27"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{4}{15} + \\frac{7}{25} \\)",
+            "answers": ["3/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{12}{35} + (-\\frac{5}{14}) \\)",
+            "answers": ["-29/70"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{19}{32} + 7 \\)",
+            "answers": ["243/32"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 8 + (-\\frac{6}{13}) \\)",
+            "answers": ["98/13"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{10}{21} + 5 \\)",
+            "answers": ["95/21"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -2 + (-\\frac{14}{33}) \\)",
+            "answers": ["-80/33"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{8}{15} + \\frac{5}{12} \\)",
+            "answers": ["61/60"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{11}{18} + (-\\frac{3}{10}) \\)",
+            "answers": ["37/90"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{7}{24} + \\frac{9}{16} \\)",
+            "answers": ["13/48"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{5}{14} + (-\\frac{8}{21}) \\)",
+            "answers": ["-31/42"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{15}{28} + 3 \\)",
+            "answers": ["99/28"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 4 + (-\\frac{13}{30}) \\)",
+            "answers": ["107/30"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{9}{22} + 6 \\)",
+            "answers": ["123/22"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -7 + (-\\frac{4}{9}) \\)",
+            "answers": ["-67/9"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{10}{27} + \\frac{7}{18} \\)",
+            "answers": ["47/54"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{6}{25} + (-\\frac{11}{20}) \\)",
+            "answers": ["-43/100"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{12}{35} + \\frac{5}{14} \\)",
+            "answers": ["1/70"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{8}{15} + (-\\frac{3}{10}) \\)",
+            "answers": ["-25/30"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{17}{36} + 9 \\)",
+            "answers": ["341/36"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 2 + (-\\frac{5}{12}) \\)",
+            "answers": ["19/12"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{11}{24} + 4 \\)",
+            "answers": ["85/24"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -6 + (-\\frac{7}{15}) \\)",
+            "answers": ["-97/15"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{4}{9} + \\frac{13}{27} \\)",
+            "answers": ["25/27"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{9}{16} + (-\\frac{5}{24}) \\)",
+            "answers": ["19/48"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{3}{10} + \\frac{7}{25} \\)",
+            "answers": ["-1/50"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{12}{35} + (-\\frac{8}{21}) \\)",
+            "answers": ["-44/105"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{15}{32} + 5 \\)",
+            "answers": ["175/32"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 7 + (-\\frac{9}{20}) \\)",
+            "answers": ["131/20"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{6}{13} + 3 \\)",
+            "answers": ["33/13"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -4 + (-\\frac{11}{30}) \\)",
+            "answers": ["-131/30"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{8}{15} + \\frac{4}{25} \\)",
+            "answers": ["28/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{10}{21} + (-\\frac{7}{14}) \\)",
+            "answers": ["-1/42"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{5}{18} + \\frac{9}{27} \\)",
+            "answers": ["1/18"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{13}{28} + (-\\frac{6}{35}) \\)",
+            "answers": ["-103/140"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{17}{36} + 8 \\)",
+            "answers": ["305/36"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 3 + (-\\frac{5}{12}) \\)",
+            "answers": ["31/12"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{7}{20} + 6 \\)",
+            "answers": ["113/20"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -9 + (-\\frac{4}{15}) \\)",
+            "answers": ["-139/15"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{11}{24} + \\frac{3}{8} \\)",
+            "answers": ["5/6"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{9}{16} + (-\\frac{5}{12}) \\)",
+            "answers": ["7/48"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{4}{15} + \\frac{7}{25} \\)",
+            "answers": ["3/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{12}{35} + (-\\frac{8}{21}) \\)",
+            "answers": ["-44/105"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{19}{30} + 2 \\)",
+            "answers": ["79/30"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 5 + (-\\frac{13}{28}) \\)",
+            "answers": ["99/28"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{8}{17} + 7 \\)",
+            "answers": ["111/17"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -3 + (-\\frac{9}{22}) \\)",
+            "answers": ["-75/22"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{7}{18} + \\frac{5}{27} \\)",
+            "answers": ["37/54"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{11}{20} + (-\\frac{3}{10}) \\)",
+            "answers": ["1/5"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{6}{25} + \\frac{8}{15} \\)",
+            "answers": ["22/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{10}{21} + (-\\frac{7}{14}) \\)",
+            "answers": ["-17/42"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{15}{32} + 4 \\)",
+            "answers": ["143/32"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 6 + (-\\frac{11}{24}) \\)",
+            "answers": ["133/24"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{9}{20} + 5 \\)",
+            "answers": ["91/20"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -7 + (-\\frac{5}{12}) \\)",
+            "answers": ["-89/12"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{8}{15} + \\frac{7}{25} \\)",
+            "answers": ["61/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{12}{35} + (-\\frac{9}{28}) \\)",
+            "answers": ["3/140"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{5}{18} + \\frac{4}{9} \\)",
+            "answers": ["1/6"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{13}{30} + (-\\frac{7}{20}) \\)",
+            "answers": ["-43/60"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{17}{36} + 3 \\)",
+            "answers": ["125/36"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 8 + (-\\frac{5}{14}) \\)",
+            "answers": ["107/14"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{11}{24} + 2 \\)",
+            "answers": ["37/24"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -4 + (-\\frac{7}{15}) \\)",
+            "answers": ["-67/15"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{9}{16} + \\frac{5}{24} \\)",
+            "answers": ["23/48"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{7}{20} + (-\\frac{3}{10}) \\)",
+            "answers": ["1/20"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{4}{15} + \\frac{8}{25} \\)",
+            "answers": ["4/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{12}{35} + (-\\frac{9}{21}) \\)",
+            "answers": ["-17/35"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{19}{30} + 6 \\)",
+            "answers": ["199/30"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 4 + (-\\frac{13}{28}) \\)",
+            "answers": ["99/28"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{8}{17} + 5 \\)",
+            "answers": ["77/17"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -7 + (-\\frac{9}{22}) \\)",
+            "answers": ["-163/22"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{7}{18} + \\frac{5}{27} \\)",
+            "answers": ["37/54"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{11}{20} + (-\\frac{3}{10}) \\)",
+            "answers": ["1/5"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{6}{25} + \\frac{8}{15} \\)",
+            "answers": ["22/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{10}{21} + (-\\frac{7}{14}) \\)",
+            "answers": ["-17/42"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{15}{32} + 4 \\)",
+            "answers": ["143/32"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 6 + (-\\frac{11}{24}) \\)",
+            "answers": ["133/24"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{9}{20} + 5 \\)",
+            "answers": ["91/20"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -7 + (-\\frac{5}{12}) \\)",
+            "answers": ["-89/12"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{8}{15} + \\frac{7}{25} \\)",
+            "answers": ["61/75"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{12}{35} + (-\\frac{9}{28}) \\)",
+            "answers": ["3/140"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{5}{18} + \\frac{4}{9} \\)",
+            "answers": ["1/6"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{13}{30} + (-\\frac{7}{20}) \\)",
+            "answers": ["-43/60"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{17}{36} + 3 \\)",
+            "answers": ["125/36"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( 8 + (-\\frac{5}{14}) \\)",
+            "answers": ["107/14"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -\\frac{11}{24} + 2 \\)",
+            "answers": ["37/24"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( -4 + (-\\frac{7}{15}) \\)",
+            "answers": ["-67/15"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{9}{16} + \\frac{5}{24} \\)",
+            "answers": ["23/48"],
+            "prefix": "答案："
+        },
+        {
+            "question": "\\( \\frac{7}{20} + (-\\frac{3}{10}) \\)",
+            "answers": ["1/20"],
+            "prefix": "答案："
+        }
+    ]
+}

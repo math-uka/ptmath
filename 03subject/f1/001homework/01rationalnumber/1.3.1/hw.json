@@ -1,504 +1,504 @@
 {
-    "title": "有理數加法練習",
+    "title": "有理數加減法練習",
     "questions": [
         {
-            "question": "\\( 3 + (+5) \\)",
-            "answers": ["8"],
+            "question": "\\( 45 + 72 \\)",
+            "answers": ["117"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 7 + (-2) \\)",
-            "answers": ["5"],
+            "question": "\\( 128 + (-39) \\)",
+            "answers": ["89"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -4 + (+6) \\)",
-            "answers": ["2"],
+            "question": "\\( -67 + 154 \\)",
+            "answers": ["87"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -8 + (-3) \\)",
-            "answers": ["-11"],
+            "question": "\\( -93 + (-28) \\)",
+            "answers": ["-121"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{1}{2} + (+\\frac{3}{4}) \\)",
-            "answers": ["5/4"],
+            "question": "\\( 176 + 53 \\)",
+            "answers": ["229"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{2}{3} + (-\\frac{1}{6}) \\)",
-            "answers": ["1/2"],
+            "question": "\\( 84 + (-117) \\)",
+            "answers": ["-33"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{3}{5} + (+\\frac{2}{5}) \\)",
-            "answers": ["-1/5"],
+            "question": "\\( -142 + 65 \\)",
+            "answers": ["-77"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{4}{7} + (-\\frac{3}{7}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -31 + (-89) \\)",
+            "answers": ["-120"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 9 + (+1) \\)",
-            "answers": ["10"],
+            "question": "\\( 197 + 24 \\)",
+            "answers": ["221"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 5 + (-7) \\)",
-            "answers": ["-2"],
+            "question": "\\( 56 + (-132) \\)",
+            "answers": ["-76"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -2 + (+8) \\)",
-            "answers": ["6"],
+            "question": "\\( -108 + 47 \\)",
+            "answers": ["-61"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -6 + (-4) \\)",
-            "answers": ["-10"],
+            "question": "\\( -75 + (-96) \\)",
+            "answers": ["-171"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{5}{6} + (+\\frac{1}{3}) \\)",
-            "answers": ["7/6"],
+            "question": "\\( 163 + 88 \\)",
+            "answers": ["251"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{3}{8} + (-\\frac{5}{8}) \\)",
-            "answers": ["-1/4"],
+            "question": "\\( 29 + (-174) \\)",
+            "answers": ["-145"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{2}{3} + (+\\frac{1}{2}) \\)",
-            "answers": ["-1/6"],
+            "question": "\\( -136 + 91 \\)",
+            "answers": ["-45"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{7}{9} + (-\\frac{2}{9}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -42 + (-113) \\)",
+            "answers": ["-155"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 10 + (+3) \\)",
-            "answers": ["13"],
+            "question": "\\( 181 + 67 \\)",
+            "answers": ["248"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 4 + (-9) \\)",
-            "answers": ["-5"],
+            "question": "\\( 94 + (-58) \\)",
+            "answers": ["36"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -7 + (+2) \\)",
-            "answers": ["-5"],
+            "question": "\\( -129 + 33 \\)",
+            "answers": ["-96"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -5 + (-6) \\)",
-            "answers": ["-11"],
+            "question": "\\( -87 + (-76) \\)",
+            "answers": ["-163"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{3}{4} + (+\\frac{1}{2}) \\)",
-            "answers": ["5/4"],
+            "question": "\\( 152 + 41 \\)",
+            "answers": ["193"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{1}{5} + (-\\frac{2}{5}) \\)",
-            "answers": ["-1/5"],
+            "question": "\\( 63 + (-149) \\)",
+            "answers": ["-86"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{5}{6} + (+\\frac{1}{3}) \\)",
-            "answers": ["-1/2"],
+            "question": "\\( -115 + 82 \\)",
+            "answers": ["-33"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{2}{7} + (-\\frac{3}{7}) \\)",
-            "answers": ["-5/7"],
+            "question": "\\( -54 + (-97) \\)",
+            "answers": ["-151"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 8 + (+4) \\)",
-            "answers": ["12"],
+            "question": "\\( 188 + 19 \\)",
+            "answers": ["207"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 6 + (-8) \\)",
-            "answers": ["-2"],
+            "question": "\\( 37 + (-126) \\)",
+            "answers": ["-89"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -3 + (+7) \\)",
-            "answers": ["4"],
+            "question": "\\( -171 + 44 \\)",
+            "answers": ["-127"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -9 + (-1) \\)",
-            "answers": ["-10"],
+            "question": "\\( -68 + (-105) \\)",
+            "answers": ["-173"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{7}{8} + (+\\frac{1}{8}) \\)",
-            "answers": ["1"],
+            "question": "\\( 139 + 92 \\)",
+            "answers": ["231"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{2}{5} + (-\\frac{3}{5}) \\)",
-            "answers": ["-1/5"],
+            "question": "\\( 81 + (-164) \\)",
+            "answers": ["-83"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{1}{4} + (+\\frac{3}{4}) \\)",
-            "answers": ["1/2"],
+            "question": "\\( -102 + 57 \\)",
+            "answers": ["-45"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{5}{9} + (-\\frac{4}{9}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -49 + (-118) \\)",
+            "answers": ["-167"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 12 + (+2) \\)",
-            "answers": ["14"],
+            "question": "\\( 175 + 36 \\)",
+            "answers": ["211"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 3 + (-10) \\)",
-            "answers": ["-7"],
+            "question": "\\( 27 + (-143) \\)",
+            "answers": ["-116"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -8 + (+5) \\)",
-            "answers": ["-3"],
+            "question": "\\( -159 + 71 \\)",
+            "answers": ["-88"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -4 + (-7) \\)",
-            "answers": ["-11"],
+            "question": "\\( -85 + (-94) \\)",
+            "answers": ["-179"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{1}{3} + (+\\frac{2}{3}) \\)",
-            "answers": ["1"],
+            "question": "\\( 192 + 48 \\)",
+            "answers": ["240"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{4}{7} + (-\\frac{2}{7}) \\)",
-            "answers": ["2/7"],
+            "question": "\\( 66 + (-121) \\)",
+            "answers": ["-55"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{3}{8} + (+\\frac{5}{8}) \\)",
-            "answers": ["1/4"],
+            "question": "\\( -134 + 39 \\)",
+            "answers": ["-95"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{6}{11} + (-\\frac{5}{11}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -61 + (-107) \\)",
+            "answers": ["-168"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 11 + (+6) \\)",
-            "answers": ["17"],
+            "question": "\\( 146 + 83 \\)",
+            "answers": ["229"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 2 + (-9) \\)",
-            "answers": ["-7"],
+            "question": "\\( 98 + (-52) \\)",
+            "answers": ["46"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -5 + (+3) \\)",
-            "answers": ["-2"],
+            "question": "\\( -123 + 66 \\)",
+            "answers": ["-57"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -7 + (-8) \\)",
-            "answers": ["-15"],
+            "question": "\\( -79 + (-88) \\)",
+            "answers": ["-167"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{5}{9} + (+\\frac{2}{9}) \\)",
-            "answers": ["7/9"],
+            "question": "\\( 167 + 74 \\)",
+            "answers": ["241"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{1}{6} + (-\\frac{5}{6}) \\)",
-            "answers": ["-2/3"],
+            "question": "\\( 32 + (-138) \\)",
+            "answers": ["-106"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{7}{10} + (+\\frac{3}{10}) \\)",
-            "answers": ["-2/5"],
+            "question": "\\( -141 + 45 \\)",
+            "answers": ["-96"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{4}{5} + (-\\frac{1}{5}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -56 + (-112) \\)",
+            "answers": ["-168"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 15 + (+4) \\)",
-            "answers": ["19"],
+            "question": "\\( 184 + 29 \\)",
+            "answers": ["213"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 8 + (-12) \\)",
-            "answers": ["-4"],
+            "question": "\\( 77 + (-159) \\)",
+            "answers": ["-82"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -6 + (+9) \\)",
-            "answers": ["3"],
+            "question": "\\( -106 + 83 \\)",
+            "answers": ["-23"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -10 + (-5) \\)",
-            "answers": ["-15"],
+            "question": "\\( -43 + (-95) \\)",
+            "answers": ["-138"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{2}{3} + (+\\frac{1}{6}) \\)",
-            "answers": ["5/6"],
+            "question": "\\( 155 + 61 \\)",
+            "answers": ["216"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{3}{5} + (-\\frac{4}{5}) \\)",
-            "answers": ["-1/5"],
+            "question": "\\( 88 + (-144) \\)",
+            "answers": ["-56"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{1}{2} + (+\\frac{1}{4}) \\)",
-            "answers": ["-1/4"],
+            "question": "\\( -130 + 37 \\)",
+            "answers": ["-93"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{5}{8} + (-\\frac{3}{8}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -72 + (-101) \\)",
+            "answers": ["-173"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 14 + (+7) \\)",
-            "answers": ["21"],
+            "question": "\\( 179 + 42 \\)",
+            "answers": ["221"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 9 + (-11) \\)",
-            "answers": ["-2"],
+            "question": "\\( 51 + (-127) \\)",
+            "answers": ["-76"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -3 + (+10) \\)",
-            "answers": ["7"],
+            "question": "\\( -147 + 68 \\)",
+            "answers": ["-79"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -12 + (-2) \\)",
-            "answers": ["-14"],
+            "question": "\\( -64 + (-109) \\)",
+            "answers": ["-173"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{3}{7} + (+\\frac{2}{7}) \\)",
-            "answers": ["5/7"],
+            "question": "\\( 161 + 85 \\)",
+            "answers": ["246"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{1}{4} + (-\\frac{3}{4}) \\)",
-            "answers": ["-1/2"],
+            "question": "\\( 96 + (-49) \\)",
+            "answers": ["47"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{2}{5} + (+\\frac{4}{5}) \\)",
-            "answers": ["2/5"],
+            "question": "\\( -119 + 55 \\)",
+            "answers": ["-64"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{7}{12} + (-\\frac{5}{12}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -81 + (-93) \\)",
+            "answers": ["-174"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 13 + (+8) \\)",
-            "answers": ["21"],
+            "question": "\\( 170 + 76 \\)",
+            "answers": ["246"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 7 + (-13) \\)",
-            "answers": ["-6"],
+            "question": "\\( 44 + (-135) \\)",
+            "answers": ["-91"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -4 + (+11) \\)",
-            "answers": ["7"],
+            "question": "\\( -153 + 62 \\)",
+            "answers": ["-91"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -11 + (-6) \\)",
-            "answers": ["-17"],
+            "question": "\\( -58 + (-104) \\)",
+            "answers": ["-162"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{4}{9} + (+\\frac{5}{9}) \\)",
-            "answers": ["1"],
+            "question": "\\( 186 + 33 \\)",
+            "answers": ["219"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{2}{7} + (-\\frac{6}{7}) \\)",
-            "answers": ["-4/7"],
+            "question": "\\( 69 + (-151) \\)",
+            "answers": ["-82"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{3}{10} + (+\\frac{7}{10}) \\)",
-            "answers": ["2/5"],
+            "question": "\\( -125 + 79 \\)",
+            "answers": ["-46"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{5}{6} + (-\\frac{1}{6}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -47 + (-98) \\)",
+            "answers": ["-145"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 16 + (+3) \\)",
-            "answers": ["19"],
+            "question": "\\( 149 + 87 \\)",
+            "answers": ["236"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 10 + (-14) \\)",
-            "answers": ["-4"],
+            "question": "\\( 91 + (-56) \\)",
+            "answers": ["35"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -8 + (+12) \\)",
-            "answers": ["4"],
+            "question": "\\( -137 + 41 \\)",
+            "answers": ["-96"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -13 + (-4) \\)",
-            "answers": ["-17"],
+            "question": "\\( -73 + (-110) \\)",
+            "answers": ["-183"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{1}{8} + (+\\frac{3}{8}) \\)",
-            "answers": ["1/2"],
+            "question": "\\( 165 + 59 \\)",
+            "answers": ["224"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{5}{12} + (-\\frac{7}{12}) \\)",
-            "answers": ["-1/6"],
+            "question": "\\( 38 + (-142) \\)",
+            "answers": ["-104"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{1}{3} + (+\\frac{2}{3}) \\)",
-            "answers": ["1/3"],
+            "question": "\\( -111 + 64 \\)",
+            "answers": ["-47"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{4}{9} + (-\\frac{5}{9}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -66 + (-103) \\)",
+            "answers": ["-169"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 17 + (+5) \\)",
-            "answers": ["22"],
+            "question": "\\( 182 + 46 \\)",
+            "answers": ["228"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 11 + (-15) \\)",
-            "answers": ["-4"],
+            "question": "\\( 82 + (-158) \\)",
+            "answers": ["-76"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -9 + (+13) \\)",
-            "answers": ["4"],
+            "question": "\\( -104 + 81 \\)",
+            "answers": ["-23"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -14 + (-3) \\)",
-            "answers": ["-17"],
+            "question": "\\( -52 + (-99) \\)",
+            "answers": ["-151"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{2}{5} + (+\\frac{1}{5}) \\)",
-            "answers": ["3/5"],
+            "question": "\\( 157 + 73 \\)",
+            "answers": ["230"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{3}{8} + (-\\frac{7}{8}) \\)",
-            "answers": ["-1/2"],
+            "question": "\\( 99 + (-47) \\)",
+            "answers": ["52"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{4}{7} + (+\\frac{6}{7}) \\)",
-            "answers": ["2/7"],
+            "question": "\\( -132 + 38 \\)",
+            "answers": ["-94"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{3}{5} + (-\\frac{2}{5}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -78 + (-106) \\)",
+            "answers": ["-184"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 18 + (+6) \\)",
-            "answers": ["24"],
+            "question": "\\( 174 + 65 \\)",
+            "answers": ["239"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 12 + (-16) \\)",
-            "answers": ["-4"],
+            "question": "\\( 55 + (-139) \\)",
+            "answers": ["-84"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -10 + (+14) \\)",
-            "answers": ["4"],
+            "question": "\\( -148 + 52 \\)",
+            "answers": ["-96"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -15 + (-5) \\)",
-            "answers": ["-20"],
+            "question": "\\( -60 + (-108) \\)",
+            "answers": ["-168"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{3}{4} + (+\\frac{1}{4}) \\)",
-            "answers": ["1"],
+            "question": "\\( 180 + 31 \\)",
+            "answers": ["211"],
             "prefix": "答案："
         },
         {
-            "question": "\\( \\frac{1}{6} + (-\\frac{4}{6}) \\)",
-            "answers": ["-1/2"],
+            "question": "\\( 76 + (-153) \\)",
+            "answers": ["-77"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{2}{9} + (+\\frac{4}{9}) \\)",
-            "answers": ["2/9"],
+            "question": "\\( -116 + 69 \\)",
+            "answers": ["-47"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -\\frac{7}{10} + (-\\frac{3}{10}) \\)",
-            "answers": ["-1"],
+            "question": "\\( -45 + (-97) \\)",
+            "answers": ["-142"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 19 + (+7) \\)",
-            "answers": ["26"],
+            "question": "\\( 168 + 84 \\)",
+            "answers": ["252"],
             "prefix": "答案："
         },
         {
-            "question": "\\( 13 + (-17) \\)",
-            "answers": ["-4"],
+            "question": "\\( 92 + (-50) \\)",
+            "answers": ["42"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -11 + (+15) \\)",
-            "answers": ["4"],
+            "question": "\\( -140 + 43 \\)",
+            "answers": ["-97"],
             "prefix": "答案："
         },
         {
-            "question": "\\( -16 + (-6) \\)",
-            "answers": ["-22"],
+            "question": "\\( -71 + (-111) \\)",
+            "answers": ["-182"],
             "prefix": "答案："
         }
     ]

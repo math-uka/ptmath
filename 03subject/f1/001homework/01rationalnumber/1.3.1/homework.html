@@ -26,6 +26,11 @@
             background-color: #fafafa;
         }
 
+        body.challenge-mode {
+            --primary-color: #e53935;
+            --secondary-color: #d32f2f;
+        }
+
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -179,7 +184,7 @@
 <body>
     <header>
         <h1 id="practiceTitle">載入中...</h1>
-        <p>通過互動練習和詳細教學，輕鬆掌握方程解題技巧！</p>
+        <p id="headerText">通過互動練習和詳細教學，輕鬆掌握方程解題技巧！</p>
     </header>
 
     <div class="card" id="quiz">
@@ -239,13 +244,18 @@
     <script>
         const jsConfetti = new JSConfetti();
         let questions = [];
+        let hwhQuestions = [];
         let currentQuestion = null;
         let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions')) || [];
+        let usedHwhQuestions = JSON.parse(localStorage.getItem('usedHwhQuestions')) || [];
         let questionCount = 3;
         let stars = 0;
         let correctCount = 0;
         let currentQuestionNumber = 1;
         let passData = null;
+        let isChallengeMode = false;
+        let hasEnteredChallengeMode = false;
+        let hasHwh = false;
 
         function initializeStars() {
             const starsContainer = document.getElementById('starsContainer');
@@ -276,6 +286,16 @@
             .then(data => passData = data)
             .catch(() => console.log('無 pass.json'));
 
+        fetch('hwh.json')
+            .then(response => response.ok ? response.json() : Promise.reject('無 hwh.json'))
+            .then(data => {
+                hasHwh = true;
+                hwhQuestions = data.questions;
+            })
+            .catch(() => {
+                hasHwh = false;
+            });
+
         fetch('hw.json')
             .then(response => response.json())
             .then(data => {
@@ -296,16 +316,30 @@
         });
 
         function loadNewQuestion() {
-            let availableQuestions = questions.filter((q, index) => !usedQuestions.includes(index));
+            let currentQuestions = isChallengeMode ? hwhQuestions : questions;
+            let currentUsedQuestions = isChallengeMode ? usedHwhQuestions : usedQuestions;
+            let currentStorageKey = isChallengeMode ? 'usedHwhQuestions' : 'usedQuestions';
+
+            if (hasHwh && !hasEnteredChallengeMode && currentQuestionNumber === questionCount - 2) {
+                isChallengeMode = true;
+                hasEnteredChallengeMode = true;
+                document.body.classList.add('challenge-mode');
+                document.getElementById('headerText').textContent = '你已進入挑戰模式';
+                currentQuestions = hwhQuestions;
+                currentUsedQuestions = usedHwhQuestions;
+                currentStorageKey = 'usedHwhQuestions';
+            }
+
+            let availableQuestions = currentQuestions.filter((q, index) => !currentUsedQuestions.includes(index));
             if (availableQuestions.length === 0) {
-                usedQuestions = [];
-                localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
-                availableQuestions = questions;
+                currentUsedQuestions.length = 0;
+                localStorage.setItem(currentStorageKey, JSON.stringify(currentUsedQuestions));
+                availableQuestions = currentQuestions;
             }
             const index = Math.floor(Math.random() * availableQuestions.length);
             currentQuestion = availableQuestions[index];
-            usedQuestions.push(questions.indexOf(currentQuestion));
-            localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
+            currentUsedQuestions.push(currentQuestions.indexOf(currentQuestion));
+            localStorage.setItem(currentStorageKey, JSON.stringify(currentUsedQuestions));
             document.getElementById('questionText').innerHTML = currentQuestion.question;
             const answerContainer = document.getElementById('answerContainer');
             answerContainer.innerHTML = currentQuestion.answers.length > 1
@@ -418,6 +452,20 @@
                 feedback.textContent = '正確！';
                 feedback.style.color = 'green';
                 correctCount++;
+                if (isChallengeMode) {
+                    jsConfetti.addConfetti({
+                        confettiNumber: 500,
+                        confettiRadius: 6,
+                    });
+                    document.getElementById('quiz').style.display = 'none';
+                    document.getElementById('completion-message').style.display = 'block';
+                    if (passData) {
+                        setTimeout(() => {
+                            document.getElementById('student-id-section').style.display = 'block';
+                        }, 2000);
+                    }
+                    return;
+                }
                 if (stars >= questionCount) {
                     jsConfetti.addConfetti({
                         confettiNumber: 500,
@@ -435,16 +483,29 @@
                 submitBtn.style.display = 'none';
                 nextBtn.style.display = 'inline-block';
             } else {
-                stars = 0;
-                updateStars();
+                if (isChallengeMode) {
+                    isChallengeMode = false;
+                    document.body.classList.remove('challenge-mode');
+                    document.getElementById('headerText').textContent = '通過互動練習和詳細教學，輕鬆掌握方程解題技巧！';
+                    feedback.innerHTML = `
+                        <div class="error-message">
+                            <span style="font-size:24px">✖</span><br>
+                            答案錯誤！正確答案是 ${currentQuestion.answers.join(' 和 ')}。<br>
+                            <small>已退出挑戰模式</small>
+                        </div>
+                    `;
+                } else {
+                    stars = 0;
+                    updateStars();
+                    feedback.innerHTML = `
+                        <div class="error-message">
+                            <span style="font-size:24px">✖</span><br>
+                            答案錯誤！正確答案是 ${currentQuestion.answers.join(' 和 ')}。<br>
+                            <small>星星已重置</small>
+                        </div>
+                    `;
+                }
                 quizDiv.classList.add('shake');
-                feedback.innerHTML = `
-                    <div class="error-message">
-                        <span style="font-size:24px">✖</span><br>
-                        答案錯誤！正確答案是 ${currentQuestion.answers.join(' 和 ')}。<br>
-                        <small>星星已重置</small>
-                    </div>
-                `;
                 setTimeout(() => {
                     quizDiv.classList.remove('shake');
                 }, 500);
@@ -491,10 +552,16 @@
 
         function resetQuiz() {
             usedQuestions = [];
+            usedHwhQuestions = [];
             localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
+            localStorage.setItem('usedHwhQuestions', JSON.stringify(usedHwhQuestions));
             stars = 0;
             correctCount = 0;
             currentQuestionNumber = 1;
+            isChallengeMode = false;
+            hasEnteredChallengeMode = false;
+            document.body.classList.remove('challenge-mode');
+            document.getElementById('headerText').textContent = '通過互動練習和詳細教學，輕鬆掌握方程解題技巧！';
             document.getElementById('questionNumber').textContent = currentQuestionNumber;
             updateStars();
             loadNewQuestion();
