@@ -1,0 +1,605 @@
+{
+    "title": "有理數除法練習",
+    "questions": [
+        {
+            "question": "\\( 16 \\div 4 \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第1題"
+        },
+        {
+            "question": "\\( 18 \\div (-6) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第2題"
+        },
+        {
+            "question": "\\( -20 \\div 5 \\)",
+            "answers": ["-4"],
+            "prefix": "答案：",
+            "annotation": "第3題"
+        },
+        {
+            "question": "\\( -12 \\div (-3) \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第4題"
+        },
+        {
+            "question": "\\( \\frac{3}{5} \\div \\frac{9}{10} \\)",
+            "answers": ["2/3"],
+            "prefix": "答案：",
+            "annotation": "第5題 分數除法，轉換為乘法：\\( \\frac{3}{5} \\times \\frac{10}{9} = \\frac{2}{3} \\)"
+        },
+        {
+            "question": "\\( 15 \\div 3 \\)",
+            "answers": ["5"],
+            "prefix": "答案：",
+            "annotation": "第6題"
+        },
+        {
+            "question": "\\( 10 \\div (-2) \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第7題"
+        },
+        {
+            "question": "\\( -14 \\div 7 \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第8題"
+        },
+        {
+            "question": "\\( -18 \\div (-9) \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第9題"
+        },
+        {
+            "question": "\\( \\frac{4}{7} \\div \\frac{8}{7} \\)",
+            "answers": ["1/2"],
+            "prefix": "答案：",
+            "annotation": "第10題 分數除法，轉換為乘法：\\( \\frac{4}{7} \\times \\frac{7}{8} = \\frac{1}{2} \\)"
+        },
+        {
+            "question": "\\( 12 \\div 6 \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第11題"
+        },
+        {
+            "question": "\\( 20 \\div (-4) \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第12題"
+        },
+        {
+            "question": "\\( -15 \\div 5 \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第13題"
+        },
+        {
+            "question": "\\( -16 \\div (-2) \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第14題"
+        },
+        {
+            "question": "\\( \\frac{6}{5} \\div \\frac{9}{10} \\)",
+            "answers": ["4/3"],
+            "prefix": "答案：",
+            "annotation": "第15題 分數除法，轉換為乘法：\\( \\frac{6}{5} \\times \\frac{10}{9} = \\frac{4}{3} \\)"
+        },
+        {
+            "question": "\\( 14 \\div 2 \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第16題"
+        },
+        {
+            "question": "\\( 9 \\div (-3) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第17題"
+        },
+        {
+            "question": "\\( -12 \\div 4 \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第18題"
+        },
+        {
+            "question": "\\( -20 \\div (-10) \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第19題"
+        },
+        {
+            "question": "\\( \\frac{2}{3} \\div \\frac{4}{9} \\)",
+            "answers": ["3/2"],
+            "prefix": "答案：",
+            "annotation": "第20題 分數除法，轉換為乘法：\\( \\frac{2}{3} \\times \\frac{9}{4} = \\frac{3}{2} \\)"
+        },
+        {
+            "question": "\\( 10 \\div 5 \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第21題"
+        },
+        {
+            "question": "\\( 16 \\div (-8) \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第22題"
+        },
+        {
+            "question": "\\( -18 \\div 3 \\)",
+            "answers": ["-6"],
+            "prefix": "答案：",
+            "annotation": "第23題"
+        },
+        {
+            "question": "\\( -14 \\div (-7) \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第24題"
+        },
+        {
+            "question": "\\( \\frac{5}{8} \\div \\frac{15}{4} \\)",
+            "answers": ["1/6"],
+            "prefix": "答案：",
+            "annotation": "第25題 分數除法，轉換為乘法：\\( \\frac{5}{8} \\times \\frac{4}{15} = \\frac{1}{6} \\)"
+        },
+        {
+            "question": "\\( 20 \\div 2 \\)",
+            "answers": ["10"],
+            "prefix": "答案：",
+            "annotation": "第26題"
+        },
+        {
+            "question": "\\( 12 \\div (-3) \\)",
+            "answers": ["-4"],
+            "prefix": "答案：",
+            "annotation": "第27題"
+        },
+        {
+            "question": "\\( -10 \\div 2 \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第28題"
+        },
+        {
+            "question": "\\( -16 \\div (-4) \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第29題"
+        },
+        {
+            "question": "\\( \\frac{8}{9} \\div \\frac{4}{3} \\)",
+            "answers": ["2/3"],
+            "prefix": "答案：",
+            "annotation": "第30題 分數除法，轉換為乘法：\\( \\frac{8}{9} \\times \\frac{3}{4} = \\frac{2}{3} \\)"
+        },
+        {
+            "question": "\\( 18 \\div 9 \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第31題"
+        },
+        {
+            "question": "\\( 15 \\div (-5) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第32題"
+        },
+        {
+            "question": "\\( -14 \\div 2 \\)",
+            "answers": ["-7"],
+            "prefix": "答案：",
+            "annotation": "第33題"
+        },
+        {
+            "question": "\\( -12 \\div (-6) \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第34題"
+        },
+        {
+            "question": "\\( \\frac{3}{4} \\div \\frac{9}{8} \\)",
+            "answers": ["2/3"],
+            "prefix": "答案：",
+            "annotation": "第35題 分數除法，轉換為乘法：\\( \\frac{3}{4} \\times \\frac{8}{9} = \\frac{2}{3} \\)"
+        },
+        {
+            "question": "\\( 16 \\div 8 \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第36題"
+        },
+        {
+            "question": "\\( 10 \\div (-2) \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第37題"
+        },
+        {
+            "question": "\\( -20 \\div 4 \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第38題"
+        },
+        {
+            "question": "\\( -18 \\div (-3) \\)",
+            "answers": ["6"],
+            "prefix": "答案：",
+            "annotation": "第39題"
+        },
+        {
+            "question": "\\( \\frac{4}{5} \\div \\frac{8}{5} \\)",
+            "answers": ["1/2"],
+            "prefix": "答案：",
+            "annotation": "第40題 分數除法，轉換為乘法：\\( \\frac{4}{5} \\times \\frac{5}{8} = \\frac{1}{2} \\)"
+        },
+        {
+            "question": "\\( 14 \\div 7 \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第41題"
+        },
+        {
+            "question": "\\( 12 \\div (-4) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第42題"
+        },
+        {
+            "question": "\\( -16 \\div 4 \\)",
+            "answers": ["-4"],
+            "prefix": "答案：",
+            "annotation": "第43題"
+        },
+        {
+            "question": "\\( -10 \\div (-5) \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第44題"
+        },
+        {
+            "question": "\\( \\frac{5}{6} \\div \\frac{5}{12} \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第45題 分數除法，轉換為乘法：\\( \\frac{5}{6} \\times \\frac{12}{5} = 2 \\)"
+        },
+        {
+            "question": "\\( 20 \\div 10 \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第46題"
+        },
+        {
+            "question": "\\( 9 \\div (-3) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第47題"
+        },
+        {
+            "question": "\\( -12 \\div 2 \\)",
+            "answers": ["-6"],
+            "prefix": "答案：",
+            "annotation": "第48題"
+        },
+        {
+            "question": "\\( -14 \\div (-2) \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第49題"
+        },
+        {
+            "question": "\\( \\frac{2}{5} \\div \\frac{8}{15} \\)",
+            "answers": ["3/4"],
+            "prefix": "答案：",
+            "annotation": "第50題 分數除法，轉換為乘法：\\( \\frac{2}{5} \\times \\frac{15}{8} = \\frac{3}{4} \\)"
+        },
+        {
+            "question": "\\( 18 \\div 6 \\)",
+            "answers": ["3"],
+            "prefix": "答案：",
+            "annotation": "第51題"
+        },
+        {
+            "question": "\\( 15 \\div (-5) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第52題"
+        },
+        {
+            "question": "\\( -10 \\div 5 \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第53題"
+        },
+        {
+            "question": "\\( -20 \\div (-4) \\)",
+            "answers": ["5"],
+            "prefix": "答案：",
+            "annotation": "第54題"
+        },
+        {
+            "question": "\\( \\frac{6}{7} \\div \\frac{3}{14} \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第55題 分數除法，轉換為乘法：\\( \\frac{6}{7} \\times \\frac{14}{3} = 4 \\)"
+        },
+        {
+            "question": "\\( 16 \\div 2 \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第56題"
+        },
+        {
+            "question": "\\( 12 \\div (-6) \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第57題"
+        },
+        {
+            "question": "\\( -18 \\div 9 \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第58題"
+        },
+        {
+            "question": "\\( -15 \\div (-3) \\)",
+            "answers": ["5"],
+            "prefix": "答案：",
+            "annotation": "第59題"
+        },
+        {
+            "question": "\\( \\frac{8}{9} \\div \\frac{16}{3} \\)",
+            "answers": ["1/6"],
+            "prefix": "答案：",
+            "annotation": "第60題 分數除法，轉換為乘法：\\( \\frac{8}{9} \\times \\frac{3}{16} = \\frac{1}{6} \\)"
+        },
+        {
+            "question": "\\( 20 \\div 5 \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第61題"
+        },
+        {
+            "question": "\\( 10 \\div (-5) \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第62題"
+        },
+        {
+            "question": "\\( -14 \\div 2 \\)",
+            "answers": ["-7"],
+            "prefix": "答案：",
+            "annotation": "第63題"
+        },
+        {
+            "question": "\\( -12 \\div (-4) \\)",
+            "answers": ["3"],
+            "prefix": "答案：",
+            "annotation": "第64題"
+        },
+        {
+            "question": "\\( \\frac{3}{8} \\div \\frac{9}{16} \\)",
+            "answers": ["2/3"],
+            "prefix": "答案：",
+            "annotation": "第65題 分數除法，轉換為乘法：\\( \\frac{3}{8} \\times \\frac{16}{9} = \\frac{2}{3} \\)"
+        },
+        {
+            "question": "\\( 18 \\div 3 \\)",
+            "answers": ["6"],
+            "prefix": "答案：",
+            "annotation": "第66題"
+        },
+        {
+            "question": "\\( 9 \\div (-3) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第67題"
+        },
+        {
+            "question": "\\( -16 \\div 8 \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第68題"
+        },
+        {
+            "question": "\\( -20 \\div (-10) \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第69題"
+        },
+        {
+            "question": "\\( \\frac{4}{5} \\div \\frac{2}{5} \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第70題 分數除法，轉換為乘法：\\( \\frac{4}{5} \\times \\frac{5}{2} = 2 \\)"
+        },
+        {
+            "question": "\\( 14 \\div 2 \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第71題"
+        },
+        {
+            "question": "\\( 12 \\div (-3) \\)",
+            "answers": ["-4"],
+            "prefix": "答案：",
+            "annotation": "第72題"
+        },
+        {
+            "question": "\\( -10 \\div 2 \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第73題"
+        },
+        {
+            "question": "\\( -18 \\div (-6) \\)",
+            "answers": ["3"],
+            "prefix": "答案：",
+            "annotation": "第74題"
+        },
+        {
+            "question": "\\( \\frac{5}{9} \\div \\frac{10}{3} \\)",
+            "answers": ["1/6"],
+            "prefix": "答案：",
+            "annotation": "第75題 分數除法，轉換為乘法：\\( \\frac{5}{9} \\times \\frac{3}{10} = \\frac{1}{6} \\)"
+        },
+        {
+            "question": "\\( 20 \\div 4 \\)",
+            "answers": ["5"],
+            "prefix": "答案：",
+            "annotation": "第76題"
+        },
+        {
+            "question": "\\( 15 \\div (-5) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第77題"
+        },
+        {
+            "question": "\\( -12 \\div 3 \\)",
+            "answers": ["-4"],
+            "prefix": "答案：",
+            "annotation": "第78題"
+        },
+        {
+            "question": "\\( -16 \\div (-2) \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第79題"
+        },
+        {
+            "question": "\\( \\frac{2}{3} \\div \\frac{8}{9} \\)",
+            "answers": ["3/4"],
+            "prefix": "答案：",
+            "annotation": "第80題 分數除法，轉換為乘法：\\( \\frac{2}{3} \\times \\frac{9}{8} = \\frac{3}{4} \\)"
+        },
+        {
+            "question": "\\( 18 \\div 2 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第81題"
+        },
+        {
+            "question": "\\( 10 \\div (-2) \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第82題"
+        },
+        {
+            "question": "\\( -14 \\div 7 \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第83題"
+        },
+        {
+            "question": "\\( -20 \\div (-5) \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第84題"
+        },
+        {
+            "question": "\\( \\frac{6}{5} \\div \\frac{3}{10} \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第85題 分數除法，轉換為乘法：\\( \\frac{6}{5} \\times \\frac{10}{3} = 4 \\)"
+        },
+        {
+            "question": "\\( 16 \\div 4 \\)",
+            "answers": ["4"],
+            "prefix": "答案：",
+            "annotation": "第86題"
+        },
+        {
+            "question": "\\( 12 \\div (-6) \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第87題"
+        },
+        {
+            "question": "\\( -10 \\div 5 \\)",
+            "answers": ["-2"],
+            "prefix": "答案：",
+            "annotation": "第88題"
+        },
+        {
+            "question": "\\( -18 \\div (-3) \\)",
+            "answers": ["6"],
+            "prefix": "答案：",
+            "annotation": "第89題"
+        },
+        {
+            "question": "\\( \\frac{3}{4} \\div \\frac{6}{5} \\)",
+            "answers": ["5/8"],
+            "prefix": "答案：",
+            "annotation": "第90題 分數除法，轉換為乘法：\\( \\frac{3}{4} \\times \\frac{5}{6} = \\frac{5}{8} \\)"
+        },
+        {
+            "question": "\\( 20 \\div 10 \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第91題"
+        },
+        {
+            "question": "\\( 9 \\div (-3) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第92題"
+        },
+        {
+            "question": "\\( -16 \\div 2 \\)",
+            "answers": ["-8"],
+            "prefix": "答案：",
+            "annotation": "第93題"
+        },
+        {
+            "question": "\\( -12 \\div (-4) \\)",
+            "answers": ["3"],
+            "prefix": "答案：",
+            "annotation": "第94題"
+        },
+        {
+            "question": "\\( \\frac{4}{9} \\div \\frac{8}{3} \\)",
+            "answers": ["1/6"],
+            "prefix": "答案：",
+            "annotation": "第95題 分數除法，轉換為乘法：\\( \\frac{4}{9} \\times \\frac{3}{8} = \\frac{1}{6} \\)"
+        },
+        {
+            "question": "\\( 21 \\div 3 \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第96題"
+        },
+        {
+            "question": "\\( 15 \\div (-5) \\)",
+            "answers": ["-3"],
+            "prefix": "答案：",
+            "annotation": "第97題"
+        },
+        {
+            "question": "\\( 25 \\div (-5) \\)",
+            "answers": ["-5"],
+            "prefix": "答案：",
+            "annotation": "第98題"
+        },
+        {
+            "question": "\\( -18 \\div (-9) \\)",
+            "answers": ["2"],
+            "prefix": "答案：",
+            "annotation": "第99題"
+        },
+        {
+            "question": "\\( \\frac{5}{6} \\div \\frac{10}{3} \\)",
+            "answers": ["1/4"],
+            "prefix": "答案：",
+            "annotation": "第100題 分數除法，轉換為乘法：\\( \\frac{5}{6} \\times \\frac{3}{10} = \\frac{1}{4} \\)"
+        }
+    ]
+}
