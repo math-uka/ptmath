@@ -1,0 +1,125 @@
+{
+    "title": "小學個位數加法練習",
+    "questions": [
+        {
+            "question": "\\( 3 + 4 \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第1題"
+        },
+        {
+            "question": "\\( 5 + 2 \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第2題"
+        },
+        {
+            "question": "\\( 6 + 3 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第3題"
+        },
+        {
+            "question": "\\( 1 + 8 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第4題"
+        },
+        {
+            "question": "\\( 7 + 1 \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第5題"
+        },
+        {
+            "question": "\\( 4 + 5 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第6題"
+        },
+        {
+            "question": "\\( 2 + 6 \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第7題"
+        },
+        {
+            "question": "\\( 8 + 0 \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第8題"
+        },
+        {
+            "question": "\\( 9 + 1 \\)",
+            "answers": ["10"],
+            "prefix": "答案：",
+            "annotation": "第9題"
+        },
+        {
+            "question": "\\( 5 + 3 \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第10題"
+        },
+        {
+            "question": "\\( 6 + 1 \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第11題"
+        },
+        {
+            "question": "\\( 4 + 2 \\)",
+            "answers": ["6"],
+            "prefix": "答案：",
+            "annotation": "第12題"
+        },
+        {
+            "question": "\\( 7 + 2 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第13題"
+        },
+        {
+            "question": "\\( 3 + 3 \\)",
+            "answers": ["6"],
+            "prefix": "答案：",
+            "annotation": "第14題"
+        },
+        {
+            "question": "\\( 8 + 1 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第15題"
+        },
+        {
+            "question": "\\( 2 + 7 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第16題"
+        },
+        {
+            "question": "\\( 5 + 4 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第17題"
+        },
+        {
+            "question": "\\( 6 + 2 \\)",
+            "answers": ["8"],
+            "prefix": "答案：",
+            "annotation": "第18題"
+        },
+        {
+            "question": "\\( 4 + 3 \\)",
+            "answers": ["7"],
+            "prefix": "答案：",
+            "annotation": "第19題"
+        },
+        {
+            "question": "\\( 9 + 0 \\)",
+            "answers": ["9"],
+            "prefix": "答案：",
+            "annotation": "第20題"
+        }
+    ]
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初一作業題庫</title>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #2c3e50;
+            padding: 30px 0;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            vertical-align: top;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        td:hover {
+            transform: translateY(-3px);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                border-radius: 8px 8px 0 0;
+            }
+
+            td {
+                border-radius: 0 0 8px 8px;
+                position: relative;
+                padding-left: 15px;
+            }
+
+            td:before {
+                content: attr(data-label);
+                display: block;
+                font-weight: bold;
+                color: #3498db;
+                margin-bottom: 10px;
+            }
+        }
+
+        .grade-label {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 20px 0 10px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .semester-label {
+            font-size: 20px;
+            color: #3498db;
+            margin: 15px 0 5px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .subject-label {
+            font-size: 20px;
+            color: #3498db;
+            margin: 15px 0 5px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>年級題庫</h1>
+    <div class="container">
+        <!-- 初一年級內容開始 -->
+        <div class="grade-label">初一年級</div>
+        
+        <div class="semester-label">上學期</div>
+        <table>
+            <tr>
+                <th>有理數</th>
+                <th>整式</th>
+                <th>一元一次方程</th>
+                <th>幾何圖形初步</th>
+                <th>相交線與平行線</th>
+            </tr>
+            <tr>
+                <td data-label="有理數">
+                    <ul>
+                        <li><a href="01rationalnumber/1.1/homework.html">正數和負數</a></li> 
+                        <!-- <li><a href="01rationalnumber/1.2/homework.html">有理數</a></li> -->
+                        <!-- <li><a href="01rationalnumber/1.2.2/homework.html">數軸</a></li> -->
+                         <li><a href="01rationalnumber/1.3.1/homework.html">有理數的加法</a></li> 
+                        <!-- <li><a href="01rationalnumber/1.3.2/homework.html">有理數的減法</a></li> -->
+                         <li><a href="01rationalnumber/1.4.1/homework.html">有理數的乘法</a></li> 
+                        <!-- <li><a href="01rationalnumber/1.4.2/homework.html">有理數的除法</a></li> -->
+                        <!-- <li><a href="01rationalnumber/1.5/homework.html">有理數的乘方</a></li> -->
+                        <!-- <li><a href="01rationalnumber/1.all/homework.html">有理數-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="整式">
+                    <ul>
+                       <li><a href="02Integral_expression/2.1/homework.html">整式</a></li> 
+                       <li><a href="02Integral_expression/2.2/homework.html">整式的加減</a></li> 
+                        <!-- <li><a href="02Integral_expression/2all/homework.html">整式章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="一元一次方程">
+                    <ul>
+                        <!-- <li><a href="03equation/3.1/homework.html">從算式到方程</a></li> -->
+                        <!-- <li><a href="03equation/3.2.1/homework.html">解一元一次方程-合併同類項及移項</a></li> -->
+                        <!-- <li><a href="03equation/3.2.2/homework.html">解一元一次方程-去括號及去分母</a></li> -->
+                        <!-- <li><a href="03equation/3.4/homework.html">實際問題與一元一次方程</a></li> -->
+                        <!-- <li><a href="03equation/3.all/homework.html">一元一次方程-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="幾何圖形初步">
+                    <ul>
+                        <!-- <li><a href="04geometric_shapes/4.1/homework.html">幾何圖形初步</a></li> -->
+                        <!-- <li><a href="04geometric_shapes/4.2/homework.html">直線、射線、線段</a></li> -->
+                        <!-- <li><a href="04geometric_shapes/4.3.1/homework.html">角</a></li> -->
+                        <!-- <li><a href="04geometric_shapes/4.3.2/homework.html">角的比較與運算</a></li> -->
+                        <!-- <li><a href="04geometric_shapes/4.3.3/homework.html">餘角和補角</a></li> -->
+                        <!-- <li><a href="04geometric_shapes/4.all/homework.html">幾何圖形初步-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="相交線與平行線">
+                    <ul>
+                        <!-- <li><a href="05parallel/5.1.1/homework.html">相交線</a></li> -->
+                        <!-- <li><a href="05parallel/5.1.2/homework.html">平行線與垂線</a></li> -->
+                        <!-- <li><a href="05parallel/5.1.3/homework.html">同位角, 內錯角, 同旁內角</a></li> -->
+                        <!-- <li><a href="05parallel/5.2/homework.html">平行線及其判定</a></li> -->
+                        <!-- <li><a href="05parallel/5.3/homework.html">平行線的性質</a></li> -->
+                        <!-- <li><a href="05parallel/5.all/homework.html">相交線與平行線-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="semester-label">下學期</div>
+        <table>
+            <tr>
+                <th>實數</th>
+                <th>平面直角坐標系</th>
+                <th>二元一次方程組</th>
+                <th>不等式與不等式組</th>
+                <th>數據收集</th>
+            </tr>
+            <tr>
+                <td data-label="實數">
+                    <ul>
+                        <!-- <li><a href="08real_number/8.1/homework.html">平方根</a></li> -->
+                        <!-- <li><a href="08real_number/8.2/homework.html">立方根</a></li> -->
+                        <!-- <li><a href="08real_number/8.3/homework.html">實數及其簡單運算</a></li> -->
+                        <!-- <li><a href="08real_number/8.all/homework.html">實數-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="平面直角坐標系">
+                    <ul>
+                        <!-- <li><a href="07coordinate_system/7.1/homework.html">平面直角坐標系</a></li> -->
+                        <!-- <li><a href="07coordinate_system/7.2/homework.html">坐標方法的簡單應用</a></li> -->
+                        <!-- <li><a href="07coordinate_system/7.all/homework.html">平面直角坐標系-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="二元一次方程組">
+                    <ul>
+                        <!-- <li><a href="010Simultaneous_equation/10.1/homework.html">二元一次方程的概念</a></li> -->
+                        <!-- <li><a href="010Simultaneous_equation/10.2.1/homework.html">代入消元法解方程組</a></li> -->
+                        <!-- <li><a href="010Simultaneous_equation/10.2.2/homework.html">加減消元法解方程組</a></li> -->
+                        <!-- <li><a href="010Simultaneous_equation/10.3/homework.html">實際問題與二元一次方程組</a></li> -->
+                        <!-- <li><a href="010Simultaneous_equation/10.4/homework.html">三元一次方程組</a></li> -->
+                        <!-- <li><a href="010Simultaneous_equation/10.all/homework.html">二元一次方程-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="不等式與不等式組">
+                    <ul>
+                        <!-- <li><a href="011inequality/11.1.1/homework.html">不等式及其解集</a></li> -->
+                        <!-- <li><a href="011inequality/11.1.2/homework.html">不等式性質</a></li> -->
+                        <!-- <li><a href="011inequality/11.2/homework.html">一元一次不等式</a></li> -->
+                        <!-- <li><a href="011inequality/11.3/homework.html">一元一次不等式組</a></li> -->
+                        <!-- <li><a href="011inequality/11.3/homework.html">一元一次不等式-章綜合複習</a></li> -->
+                    </ul>
+                </td>
+                <td data-label="數據收集">
+                    <ul>
+                        <!-- <li><a href="012Statistics/12.1/homework.html">統計調查</a></li> -->
+                        <!-- <li><a href="012Statistics/12.2/homework.html">用統計圖描述數據</a></li> -->
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <!-- 初一年級內容結束 -->
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>
