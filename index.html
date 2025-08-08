@@ -258,7 +258,7 @@
                 </div>
 
                 <!-- 年級題庫 -->
-                <div class="category-card" onclick="checkAndRedirect()">
+                <div class="category-card" onclick="checkAndRedirect('grade')">
                     <h2>年級題庫</h2>
                     <div class="slideshow-container grade">
                         <div class="slide"></div>
@@ -273,7 +273,7 @@
                 </div>
 
                 <!-- 學科練習 -->
-                <div class="category-card" onclick="window.location.href='03subject/03index.html'">
+                <div class="category-card" onclick="checkAndRedirect('subject')">
                     <h2>學科練習</h2>
                     <div class="slideshow-container subject">
                         <div class="slide"></div>
@@ -387,10 +387,20 @@
             currentSlide(1, category);
         });
 
-        // 年級題庫重定向邏輯
-        function checkAndRedirect() {
-            const githubUrl = 'https://math-uka.github.io/exercise/';
-            const localUrl = '02teaching/f2exercise.html';
+        // 重定向邏輯
+        function checkAndRedirect(category) {
+            const redirects = {
+                'grade': {
+                    githubUrl: 'https://math-uka.github.io/exercise/',
+                    localUrl: '02teaching/f2exercise.html'
+                },
+                'subject': {
+                    githubUrl: 'https://math-uka.github.io/03subject/',
+                    localUrl: '03subject/03index.html'
+                }
+            };
+
+            const { githubUrl, localUrl } = redirects[category];
 
             // 嘗試檢查 GitHub URL 是否可訪問
             fetch(githubUrl, { method: 'HEAD' })
@@ -399,7 +409,7 @@
                         // 如果 URL 可訪問，重定向到 GitHub
                         window.location.href = githubUrl;
                     } else {
-                        // 如果 URL 不可訪問（例如私人或404），重定向到本地文件
+                        // 如果 URL 不可訪問（例如 404），重定向到本地文件
                         window.location.href = localUrl;
                     }
                 })
