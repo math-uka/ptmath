@@ -1,0 +1,3 @@
+{
+    "content": "<ul><li><strong>輸入答案格式</strong>：請按照題目要求輸入答案，並使用英文逗號分隔，例如 <code>A,C,D</code>。</li><li><strong>大寫字母要求</strong>：答案必須使用大寫字母輸入，例如必須輸入 <code>A,C,D</code>，而不能使用小寫字母如 <code>a,c,d</code>。</li><li><strong>字母順序要求</strong>：答案必須按英文字母順序輸入，例如必須輸入 <code>A,C,D</code>，而不能輸入 <code>A,D,C</code>。</li><li><strong>禁止空格與中文逗號</strong>：輸入時請勿使用空格或中文逗號（，），只能使用英文逗號（,）分隔答案。</li><li><strong>檢查輸入</strong>：提交前請確認答案格式正確，系統將嚴格檢查大寫字母、字母順序及逗號格式。</li></ul>"
+}
