@@ -1,481 +1,349 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">隨機練習</title>
-    <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 30px;
-            line-height: 1.8;
-            color: #333;
-            background-color: #f9f9f9;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quadratic Equations - Formula Method Quiz</title>
+  <!-- MathJax 引入 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        processEscapes: true
+      },
+      chtml: {
+        scale: 1.0,
+        mtextInheritFont: true
+      },
+      startup: {
+        ready: () => {
+          MathJax.startup.defaultReady();
+          MathJax.startup.promise.then(() => {
+            console.log('MathJax is ready');
+          });
         }
-        
-        h2 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #3498db;
-        }
-        
-        #quiz {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .question {
-            margin-bottom: 25px;
-            padding: 15px;
-            background-color: #f8fafc;
-            border-left: 4px solid #3498db;
-            border-radius: 4px;
-        }
-        
-        .options {
-            display: none;
-            margin-top: 15px;
-        }
-        
-        .option {
-            padding: 8px 12px;
-            margin: 5px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .option:hover {
-            background-color: #e8f8f0;
-        }
-        
-        .option.selected {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 25px 0 15px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: #2980b9;
-        }
-        
-        button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-        }
-        
-        #result {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-        }
-        
-        .stars-container {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        
-        .star {
-            font-size: 30px;
-            color: #ccc;
-            margin: 0 5px;
-            transition: all 0.3s;
-        }
-        
-        .star.active {
-            color: #f1c40f;
-            transform: scale(1.2);
-        }
-        
-        .shake {
-            animation: shake 0.5s;
-        }
-        
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-            100% { transform: translateX(0); }
-        }
-        
-        .highlight {
-            font-weight: bold;
-            color: #e74c3c;
-        }
-        
-        #student-id-section {
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-        }
-        
-        #password-display {
-            font-size: 24px;
-            font-weight: bold;
-            color: #27ae60;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        #completion-message {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #27ae60;
-            padding: 20px;
-            background-color: #e8f8f0;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        #timer {
-            text-align: center;
-            font-size: 18px;
-            color: #e74c3c;
-            margin-top: 10px;
-            display: none;
-        }
-    </style>
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --primary-color: #1e88e5;
+      --secondary-color: #43a047;
+      --accent-color: #e53935;
+      --light-gray: #f5f5f5;
+      --dark-gray: #333;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: var(--dark-gray);
+      background-color: #fafafa;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    h1, h2, h3 {
+      color: var(--primary-color);
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .mode-selection, .question-container, .remaining-questions, .wrong-questions, .password-input, .fib-mode-container {
+      margin-bottom: 20px;
+    }
+
+    .mode-selection button {
+      padding: 12px 24px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .mode-selection button:hover:not(:disabled) {
+      background-color: #1565c0;
+    }
+
+    .mode-selection button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .question-container, .fib-mode-container {
+      font-size: 1.2em;
+    }
+
+    .question-image, .answer-image {
+      margin-top: 10px;
+      max-width: 300px;
+      width: 100%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .remaining-questions {
+      font-size: 1em;
+      color: var(--dark-gray);
+    }
+
+    .star {
+      color: #ccc;
+      font-size: 30px;
+      margin: 0 5px;
+      transition: all 0.3s;
+    }
+
+    .star.active {
+      color: #f1c40f;
+      transform: scale(1.2);
+    }
+
+    .options-table {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    .options-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      vertical-align: middle;
+    }
+
+    .option-button {
+      width: 40px;
+      height: 40px;
+      font-size: 1em;
+      font-weight: bold;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .option-button:hover:not(:disabled) {
+      background-color: #1565c0;
+    }
+
+    .option-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .option-content {
+      padding-left: 10px;
+      min-width: 150px;
+      text-align: left;
+    }
+
+    .feedback, .fib-feedback {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: var(--light-gray);
+      border-radius: 6px;
+      font-size: 1.1em;
+    }
+
+    .next-question-button {
+      padding: 12px 24px;
+      margin-top: 10px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .next-question-button:hover {
+      background-color: #1565c0;
+    }
+
+    .password-input input[type="number"] {
+      padding: 12px;
+      width: 200px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .password-input button {
+      padding: 12px 24px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .password-input button:hover:not(:disabled) {
+      background-color: #1565c0;
+    }
+
+    .password-input button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .password-result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .wrong-questions {
+      text-align: left;
+    }
+
+    .wrong-question {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: var(--light-gray);
+      border-radius: 6px;
+    }
+
+    .wrong-question img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 200px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .fib-mode-container button {
+      padding: 12px 24px;
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .fib-mode-container button:hover:not(:disabled) {
+      background-color: #2e7d32;
+    }
+
+    .fib-mode-container button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #777;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      background-color: #fdedec;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .loading-message {
+      color: var(--primary-color);
+      background-color: var(--light-gray);
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h2 id="quiz-title"></h2>
-    <div class="stars-container">
-        <div class="star">★</div>
-        <div class="star">★</div>
-        <div class="star">★</div>
-    </div>
-    
-    <div id="completion-message"></div>
-    
-    <div id="quiz">
-        <p id="quiz-description"></p>
-        <div class="question" id="question1"></div>
-        <button id="start-btn" onclick="startAnswering()">可以作答</button>
-        <div id="timer"></div>
-        <button id="submit-btn" onclick="checkAnswers()" disabled>提交答案</button>
-        <p id="result"></p>
-    </div>
-    
-    <div id="student-id-section">
-        <p>請輸入您的學號 (1-50):</p>
-        <input type="number" id="student-id" min="1" max="50">
-        <button id="get-password-btn" onclick="getPassword()">獲取密碼</button>
-        <div id="password-display"></div>
-    </div>
+  <header>
+    <h1 id="quiz-title">###</h1>
+  </header>
 
-    <script>
-        // Initialize confetti
-        const jsConfetti = new JSConfetti();
-        
-        // Game state
-        let stars = 0;
-        let currentQuestion = 0;
-        let passData = null;
-        let timer;
-        let timeLeft = 8;
-        let hwData = null;
-        
-        // Load pass.json if exists
-        fetch('pass.json')
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                return null;
-            })
-            .then(data => {
-                passData = data;
-                console.log('pass.json loaded successfully');
-            })
-            .catch(error => {
-                console.log('pass.json not found or error loading it');
-            });
-        
-        // Load hw.json
-        fetch('hw.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load hw.json');
-                }
-                return response.json();
-            })
-            .then(data => {
-                hwData = data;
-                console.log('hw.json loaded successfully');
-                initializeQuiz();
-            })
-            .catch(error => {
-                console.error('Error loading hw.json:', error);
-                alert('無法載入題目資料，請確認 hw.json 文件是否存在');
-            });
-        
-        function initializeQuiz() {
-            // Set page title and quiz title
-            document.getElementById('page-title').textContent = hwData.title;
-            document.getElementById('quiz-title').textContent = hwData.title;
-            
-            // Generate first question
-            generateQuestion();
-        }
-        
-        function generateQuestion() {
-            // Randomly select a question template
-            const questionTemplate = hwData.questions[Math.floor(Math.random() * hwData.questions.length)];
-            
-            // Generate random values for placeholders
-            const values = {};
-            questionTemplate.placeholders.forEach(placeholder => {
-                const range = hwData.ranges[placeholder];
-                values[placeholder] = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
-            });
-            
-            // Replace placeholders in question and description
-            let description = hwData.description;
-            let questionText = questionTemplate.text;
-            Object.keys(values).forEach(key => {
-                description = description.replace(`{${key}}`, `<span class="highlight">${values[key]}</span>`);
-                questionText = questionText.replace(`{${key}}`, `<span class="highlight">${values[key]}</span>`);
-            });
-            
-            // Calculate correct answer
-            const correctAnswer = eval(questionTemplate.answer.replace(/{[A-Za-z0-9]+}/g, match => values[match.slice(1, -1)]));
-            
-            // Store correct answer as data attribute
-            document.getElementById('quiz').dataset.correctAnswer1 = correctAnswer;
-            
-            // Display description and question
-            document.getElementById('quiz-description').innerHTML = description;
-            document.getElementById('question1').innerHTML = questionText + '<div class="options" id="options1"></div>';
-            
-            // Generate multiple-choice options
-            generateOptions('options1', correctAnswer, questionTemplate.optionsRange.min, questionTemplate.optionsRange.max);
-            
-            // Hide options initially
-            document.getElementById('options1').style.display = 'none';
-            
-            // Reset selections
-            document.querySelectorAll('.option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // Enable start button, disable submit button
-            document.getElementById('start-btn').disabled = false;
-            document.getElementById('submit-btn').disabled = true;
-            
-            // Reset timer display
-            document.getElementById('timer').style.display = 'none';
-        }
-        
-        function generateOptions(containerId, correctAnswer, min, max) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            const options = new Set([correctAnswer]);
-            while (options.size < 4) {
-                const randomOption = Math.floor(Math.random() * (max - min + 1)) + min;
-                options.add(randomOption);
-            }
-            const optionsArray = Array.from(options).sort(() => Math.random() - 0.5);
-            optionsArray.forEach(option => {
-                const div = document.createElement('div');
-                div.className = 'option';
-                div.textContent = option;
-                div.onclick = () => selectOption(div, containerId);
-                container.appendChild(div);
-            });
-        }
-        
-        function selectOption(optionElement, containerId) {
-            const options = document.querySelectorAll(`#${containerId} .option`);
-            options.forEach(opt => opt.classList.remove('selected'));
-            optionElement.classList.add('selected');
-            document.getElementById('submit-btn').disabled = false;
-        }
-        
-        function startAnswering() {
-            // Show options
-            document.getElementById('options1').style.display = 'block';
-            
-            // Disable start button
-            document.getElementById('start-btn').disabled = true;
-            
-            // Start timer
-            timeLeft = 8;
-            const timerDisplay = document.getElementById('timer');
-            timerDisplay.style.display = 'block';
-            timerDisplay.textContent = `剩餘時間: ${timeLeft}秒`;
-            
-            timer = setInterval(() => {
-                timeLeft--;
-                timerDisplay.textContent = `剩餘時間: ${timeLeft}秒`;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    handleTimeout();
-                }
-            }, 1000);
-        }
-        
-        function handleTimeout() {
-            stars = 0;
-            updateStars();
-            const resultDiv = document.getElementById('result');
-            resultDiv.textContent = '時間到！回答錯誤，星星清零！';
-            resultDiv.style.color = '#e74c3c';
-            resultDiv.style.background = '#fdedec';
-            document.getElementById('quiz').classList.add('shake');
-            
-            // Hide options and reset
-            document.getElementById('options1').style.display = 'none';
-            document.getElementById('submit-btn').disabled = true;
-            document.getElementById('timer').style.display = 'none';
-            
-            setTimeout(() => {
-                document.getElementById('quiz').classList.remove('shake');
-                generateQuestion();
-                resultDiv.textContent = '';
-            }, 1500);
-        }
-        
-        function updateStars() {
-            const starElements = document.querySelectorAll('.star');
-            starElements.forEach((star, index) => {
-                if (index < stars) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-        }
-        
-        function checkAnswers() {
-            clearInterval(timer);
-            const timerDisplay = document.getElementById('timer');
-            timerDisplay.style.display = 'none';
-            
-            const answer1 = parseInt(document.querySelector('#options1 .option.selected')?.textContent);
-            const resultDiv = document.getElementById('result');
-            const quizDiv = document.getElementById('quiz');
-            
-            const correctAnswer1 = parseInt(quizDiv.dataset.correctAnswer1);
-            
-            // Disable submit button during processing
-            document.getElementById('submit-btn').disabled = true;
-            
-            // Check if answer is correct
-            if (answer1 === correctAnswer1) {
-                stars++;
-                updateStars();
-                resultDiv.textContent = '回答正確！獲得一顆星星！';
-                resultDiv.style.color = '#27ae60';
-                resultDiv.style.background = '#e8f8f0';
-                
-                // Add single yellow star confetti
-                jsConfetti.addConfetti({
-                    confettiColors: ['#f1c40f'],
-                    confettiNumber: 30,
-                    confettiRadius: 6,
-                });
-                
-                if (stars >= 3) {
-                    setTimeout(() => {
-                        gameComplete();
-                    }, 1500);
-                } else {
-                    setTimeout(() => {
-                        currentQuestion++;
-                        generateQuestion();
-                        resultDiv.textContent = '';
-                    }, 1500);
-                }
-            } else {
-                stars = 0;
-                updateStars();
-                resultDiv.textContent = '回答錯誤，星星清零！';
-                resultDiv.style.color = '#e74c3c';
-                resultDiv.style.background = '#fdedec';
-                quizDiv.classList.add('shake');
-                
-                // Hide options
-                document.getElementById('options1').style.display = 'none';
-                
-                setTimeout(() => {
-                    quizDiv.classList.remove('shake');
-                    generateQuestion();
-                    resultDiv.textContent = '';
-                }, 1500);
-            }
-        }
-        
-        function gameComplete() {
-            const quizDiv = document.getElementById('quiz');
-            const resultDiv = document.getElementById('result');
-            const completionMsg = document.getElementById('completion-message');
-            
-            quizDiv.style.display = 'none';
-            completionMsg.textContent = '恭喜成功完成所有挑戰！';
-            completionMsg.style.display = 'block';
-            
-            // Big confetti celebration
-            jsConfetti.addConfetti({
-                confettiNumber: 500,
-                confettiRadius: 6,
-            });
-            
-            if (passData) {
-                setTimeout(() => {
-                    document.getElementById('student-id-section').style.display = 'block';
-                }, 2000);
-            }
-        }
-        
-        function getPassword() {
-            const studentId = document.getElementById('student-id').value;
-            const passwordDisplay = document.getElementById('password-display');
-            
-            if (!studentId || studentId < 1 || studentId > 50) {
-                alert('請輸入有效的學號 (1-50)');
-                return;
-            }
-            
-            const password = passData[studentId];
-            if (password) {
-                passwordDisplay.textContent = `您的密碼是: ${password}`;
-                passwordDisplay.style.display = 'block';
-                
-                // Disable input and button after showing password
-                document.getElementById('student-id').disabled = true;
-                document.getElementById('get-password-btn').disabled = true;
-            } else {
-                alert('找不到對應的密碼，請確認學號是否正確');
-            }
-        }
-    </script>
+  <div class="card">
+    <div class="loading-message" id="loading-message">正在載入題庫...</div>
+    <div class="error-message" id="error-message" style="display: none;"></div>
+    <div class="mode-selection" id="mode-selection">
+      <h2>請選擇遊戲模式</h2>
+      <button id="standard-mode-btn" onclick="startStandardMode()" disabled>標準模式</button>
+    </div>
+    <div class="question-container" id="question" style="display: none;"></div>
+    <div id="question-image-container" style="display: none;"></div>
+    <div class="remaining-questions" id="remaining-questions" style="display: none;"></div>
+    <table class="options-table" id="options" style="display: none;"></table>
+    <div class="feedback" id="feedback"></div>
+    <div class="fib-mode-container" id="fib-mode" style="display: none;">
+      <div id="fib-question"></div>
+      <div id="fib-image-container" style="display: none;"></div>
+      <button id="fib-show-answer" onclick="showFibAnswer()">答案</button>
+      <button id="fib-next" onclick="nextFibQuestion()">下一題</button>
+      <div class="fib-feedback" id="fib-feedback"></div>
+    </div>
+    <div class="password-input" id="password-input" style="display: none;">
+      <p>恭喜！你已完成挑戰！輸入學號以獲取密碼：</p>
+      <input type="number" id="password-number" min="1" max="50" placeholder="輸入 1~50">
+      <button id="password-submit">提交</button>
+      <div class="password-result" id="password-result"></div>
+    </div>
+    <div class="wrong-questions" id="wrong-questions"></div>
+  </div>
+
+  <footer>
+    <p>© 2025 ukawai</p>
+  </footer>
+
+  <script>
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    // Prevent F12, Ctrl+U, and Ctrl+S
+    document.addEventListener('keydown', function(e) {
+      // F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+      }
+      // Ctrl+U
+      if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+      }
+      // Ctrl+S
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+      }
+    });
+  </script>
+  <script src="jb.js"></script>
 </body>
 </html>
