@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -70,9 +31,21 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
             text-align: left;
             white-space: pre-wrap;
             font-family: monospace;
+        }
+        .password-group {
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+        }
+        .password-group h3 {
+            margin-top: 0;
+            color: #333;
         }
         .download-btn {
             background-color: #2196F3;
@@ -88,13 +61,25 @@
 <body>
     <h1>隨機密碼生成器</h1>
     <button id="generateBtn">生成新密碼</button>
-    <button id="downloadBtn1" class="download-btn">下載 pass.json</button>
-    <button id="downloadBtn2" class="download-btn">下載 pass2.json</button>
+    <button id="downloadBtn1" class="download-btn">下載隨機密碼 (pass.json)</button>
+    <button id="downloadBtn2" class="download-btn">下載PASS密碼 (pass.json)</button>
+    <button id="downloadBtn3" class="download-btn">下載PASS2密碼 (pass2.json)</button>
     
-    <div id="passwordDisplay">點擊"生成新密碼"按鈕開始</div>
+    <div id="passwordDisplay">
+        <div class="password-group">點擊"生成新密碼"按鈕開始</div>
+    </div>
 
     <script>
-        let currentPasswordData = {};
+        let passwordData = {
+            random: {},
+            xyyyz: {},
+            yxzyy: {}
+        };
+        
+        // 生成隨機5位數
+        function generateRandomFiveDigits() {
+            return Math.floor(10000 + Math.random() * 90000).toString().padStart(5, '0');
+        }
         
         // 生成隨機三位數字 (YYY)
         function generateRandomYYY() {
@@ -102,33 +87,64 @@
         }
         
         // 根據索引和日期生成 XYYYZ 格式的密碼
-        function generateRandomPassword(index, dayOfMonth) {
-            const tensOfDay = Math.floor(dayOfMonth / 10); // 日期的十位數
-            const unitsOfDay = dayOfMonth % 10; // 日期的個位數
-            const tensOfIndex = Math.floor((index - 1) / 10) + 1; // 索引的十位數（從 1 開始）
-            const unitsOfIndex = (index - 1) % 10 + 1; // 索引的個位數（從 1 開始）
-            const X = (tensOfDay + tensOfIndex) % 10; // X = 日期十位數 + 索引十位數
-            const Z = (unitsOfDay + unitsOfIndex) % 10; // Z = 日期個位數 + 索引個位數
-            const YYY = generateRandomYYY(); // 隨機三位數字
+        function generateXYYYZPassword(index, dayOfMonth) {
+            const tensOfDay = Math.floor(dayOfMonth / 10);
+            const unitsOfDay = dayOfMonth % 10;
+            const tensOfIndex = Math.floor((index - 1) / 10) + 1;
+            const unitsOfIndex = (index - 1) % 10 + 1;
+            const X = (tensOfDay + tensOfIndex) % 10;
+            const Z = (unitsOfDay + unitsOfIndex) % 10;
+            const YYY = generateRandomYYY();
             return `${X}${YYY}${Z}`;
         }
         
-        // 生成50個密碼
+        // 根據索引和日期生成 YXZYY 格式的密碼
+        function generateYXZYYPassword(index, dayOfMonth) {
+            const tensOfDay = Math.floor(dayOfMonth / 10);
+            const unitsOfDay = dayOfMonth % 10;
+            const tensOfIndex = Math.floor((index - 1) / 10) + 1;
+            const unitsOfIndex = (index - 1) % 10 + 1;
+            const X = (tensOfDay + tensOfIndex) % 10;
+            const Z = (unitsOfDay + unitsOfIndex) % 10;
+            const YY = generateRandomYYY().slice(0, 2);
+            return `${YY}${X}${Z}${YY}`;
+        }
+        
+        // 生成三組密碼
         function generatePasswords() {
             const today = new Date();
-            const dayOfMonth = today.getDate(); // 獲取當天日期（僅“日”）
-            const newData = {};
+            const dayOfMonth = today.getDate();
+            const randomData = {};
+            const xyyyzData = {};
+            const yxzyyData = {};
             for (let i = 1; i <= 50; i++) {
-                newData[i] = generateRandomPassword(i, dayOfMonth);
+                randomData[i] = generateRandomFiveDigits();
+                xyyyzData[i] = generateXYYYZPassword(i, dayOfMonth);
+                yxzyyData[i] = generateYXZYYPassword(i, dayOfMonth);
             }
-            currentPasswordData = newData;
-            return newData;
+            passwordData.random = randomData;
+            passwordData.xyyyz = xyyyzData;
+            passwordData.yxzyy = yxzyyData;
+            return passwordData;
         }
         
         // 更新顯示
         function updateDisplay() {
             const display = document.getElementById('passwordDisplay');
-            display.textContent = JSON.stringify(currentPasswordData, null, 2);
+            display.innerHTML = `
+                <div class="password-group">
+                    <h3>隨機5位數密碼</h3>
+                    <pre>${JSON.stringify(passwordData.random, null, 2)}</pre>
+                </div>
+                <div class="password-group">
+                    <h3>XYYYZ密碼</h3>
+                    <pre>${JSON.stringify(passwordData.xyyyz, null, 2)}</pre>
+                </div>
+                <div class="password-group">
+                    <h3>YXZYY密碼</h3>
+                    <pre>${JSON.stringify(passwordData.yxzyy, null, 2)}</pre>
+                </div>
+            `;
         }
         
         // 下載JSON文件
@@ -151,19 +167,27 @@
         });
         
         document.getElementById('downloadBtn1').addEventListener('click', () => {
-            if (Object.keys(currentPasswordData).length === 0) {
+            if (Object.keys(passwordData.random).length === 0) {
                 alert('請先生成密碼！');
                 return;
             }
-            downloadJSON('pass.json', currentPasswordData);
+            downloadJSON('pass.json', passwordData.random);
         });
         
         document.getElementById('downloadBtn2').addEventListener('click', () => {
-            if (Object.keys(currentPasswordData).length === 0) {
+            if (Object.keys(passwordData.xyyyz).length === 0) {
                 alert('請先生成密碼！');
                 return;
             }
-            downloadJSON('pass2.json', currentPasswordData);
+            downloadJSON('pass.json', passwordData.xyyyz); // Changed from 'pass.json' to 'pass2.json'
+        });
+        
+        document.getElementById('downloadBtn3').addEventListener('click', () => {
+            if (Object.keys(passwordData.yxzyy).length === 0) {
+                alert('請先生成密碼！');
+                return;
+            }
+            downloadJSON('pass2.json', passwordData.yxzyy);
         });
     </script>
 </body>
