@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大電視遊戲</title>
+    <title>大電視猜詞遊戲</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
             text-align: center;
+            background-color: #f0f8ff;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
         }
-        .container {
+        .game-container {
             max-width: 800px;
             margin: 0 auto;
             background-color: white;
@@ -20,29 +20,42 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 30px;
+        }
         .word-display {
-            font-size: 72px;
-            margin: 40px 0;
-            min-height: 100px;
-            color: #333;
+            font-size: 120px;
+            font-weight: bold;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
         }
         .timer {
-            font-size: 36px;
-            margin: 20px 0;
+            font-size: 48px;
             color: #e74c3c;
+            margin: 20px 0;
+            font-weight: bold;
         }
         .controls {
             margin: 30px 0;
         }
         button {
-            padding: 12px 24px;
-            font-size: 18px;
             background-color: #3498db;
             color: white;
             border: none;
+            padding: 15px 30px;
+            font-size: 24px;
             border-radius: 5px;
             cursor: pointer;
             margin: 0 10px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #2980b9;
@@ -51,113 +64,166 @@
             background-color: #95a5a6;
             cursor: not-allowed;
         }
-        .score {
-            font-size: 24px;
+        .instructions {
             margin: 20px 0;
+            padding: 15px;
+            background-color: #fffde7;
+            border-radius: 5px;
+            text-align: left;
+        }
+        .game-info {
+            display: block;
+        }
+        .game-started .game-info {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>大電視遊戲</h1>
-        <p>一人做動作，其他人猜詞語！</p>
+    <div class="game-container" id="gameContainer">
+        <h1>大電視猜詞遊戲</h1>
+        
+        <div class="game-info">
+            <div class="instructions">
+                <h3>遊戲規則：</h3>
+                <p>1. 一人表演，一人猜詞</p>
+                <p>2. 表演者可以用動作、表情或語言提示（但不能說出詞語中的字）</p>
+                <p>3. 按 Enter 鍵或點擊螢幕任意位置進入下一個詞</p>
+                <p>4. 遊戲時間為3分鐘，時間到遊戲結束</p>
+            </div>
+            
+            <div class="controls">
+                <button id="startBtn">開始遊戲</button>
+            </div>
+        </div>
         
         <div class="timer" id="timer">03:00</div>
         
         <div class="word-display" id="wordDisplay">準備開始！</div>
-        
-        <div class="score" id="score">得分: 0</div>
-        
-        <div class="controls">
-            <button id="startBtn">開始遊戲</button>
-            <button id="nextBtn" disabled>下一個詞語</button>
-        </div>
     </div>
 
     <script>
         // 詞語庫 (100個小學程度的中文詞語)
         const words = [
-            "蘋果", "香蕉", "橙子", "西瓜", "葡萄",
-            "貓咪", "狗狗", "兔子", "大象", "老虎",
-            "跑步", "跳躍", "游泳", "跳舞", "唱歌",
-            "太陽", "月亮", "星星", "雲朵", "彩虹",
-            "書包", "鉛筆", "橡皮", "尺子", "書本",
-            "爸爸", "媽媽", "哥哥", "姐姐", "弟弟",
-            "學校", "教室", "操場", "圖書館", "食堂",
-            "飛機", "火車", "汽車", "自行車", "輪船",
-            "紅色", "藍色", "黃色", "綠色", "黑色",
-            "開心", "難過", "生氣", "驚訝", "害怕",
+            "蘋果", "香蕉", "大象", "老虎", "書包", 
+            "鉛筆", "老師", "學校", "足球", "籃球",
+            "蝴蝶", "蜜蜂", "花朵", "樹木", "太陽",
+            "月亮", "星星", "下雨", "彩虹", "風箏",
+            "蛋糕", "冰淇淋", "火車", "汽車", "飛機",
+            "輪船", "自行車", "電視", "電腦", "手機",
+            "小狗", "小貓", "兔子", "烏龜", "金魚",
+            "桌子", "椅子", "床鋪", "窗戶", "門鈴",
+            "牙刷", "毛巾", "肥皂", "雨傘", "帽子",
+            "手套", "圍巾", "毛衣", "裙子", "鞋子",
+            "醫生", "護士", "警察", "廚師", "農夫",
+            "畫家", "歌手", "跳舞", "唱歌", "畫畫",
+            "寫字", "讀書", "跑步", "跳繩", "游泳",
+            "爬山", "釣魚", "野餐", "露營", "旅行",
             "春天", "夏天", "秋天", "冬天", "雪人",
-            "足球", "籃球", "羽毛球", "乒乓球", "跳繩",
-            "醫生", "老師", "警察", "廚師", "農夫",
-            "電腦", "手機", "電視", "冰箱", "電風扇",
-            "漢堡", "薯條", "披薩", "冰淇淋", "蛋糕",
-            "刷牙", "洗臉", "洗澡", "梳頭", "剪指甲",
-            "公園", "動物園", "游泳池", "電影院", "博物館",
-            "雨傘", "帽子", "手套", "圍巾", "外套",
-            "蝴蝶", "蜜蜂", "螞蟻", "蜻蜓", "蜘蛛",
-            "鋼琴", "吉他", "小提琴", "鼓", "喇叭"
+            "聖誕", "新年", "生日", "禮物", "氣球",
+            "公園", "動物園", "博物館", "圖書館", "游泳池",
+            "超市", "餐廳", "醫院", "銀行", "郵局",
+            "火車站", "飛機場", "公車站", "地鐵站", "紅綠燈"
         ];
         
-        let currentWordIndex = 0;
-        let score = 0;
-        let timer;
+        // 遊戲變數
+        let usedWords = [];
         let timeLeft = 180; // 3分鐘 = 180秒
+        let gameStarted = false;
+        let timerId = null;
         
+        // DOM元素
+        const gameContainer = document.getElementById('gameContainer');
         const wordDisplay = document.getElementById('wordDisplay');
         const timerDisplay = document.getElementById('timer');
-        const scoreDisplay = document.getElementById('score');
         const startBtn = document.getElementById('startBtn');
-        const nextBtn = document.getElementById('nextBtn');
         
         // 開始遊戲
-        startBtn.addEventListener('click', function() {
-            startBtn.disabled = true;
-            nextBtn.disabled = false;
-            score = 0;
-            currentWordIndex = 0;
-            scoreDisplay.textContent = `得分: ${score}`;
-            wordDisplay.textContent = words[currentWordIndex];
-            
-            // 開始倒計時
-            timeLeft = 180;
-            updateTimerDisplay();
-            timer = setInterval(function() {
-                timeLeft--;
-                updateTimerDisplay();
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    endGame();
-                }
-            }, 1000);
-        });
+        startBtn.addEventListener('click', startGame);
         
-        // 下一個詞語
-        nextBtn.addEventListener('click', function() {
-            score++;
-            scoreDisplay.textContent = `得分: ${score}`;
-            
-            currentWordIndex++;
-            if (currentWordIndex >= words.length) {
-                currentWordIndex = 0; // 循環使用詞語
+        // 隨機選詞（不重複）
+        function getRandomWord() {
+            if (usedWords.length >= words.length) {
+                usedWords = []; // 如果詞語用完，重置已使用列表
             }
-            wordDisplay.textContent = words[currentWordIndex];
-        });
+            let availableWords = words.filter(word => !usedWords.includes(word));
+            if (availableWords.length === 0) {
+                usedWords = [];
+                availableWords = words;
+            }
+            const randomIndex = Math.floor(Math.random() * availableWords.length);
+            const selectedWord = availableWords[randomIndex];
+            usedWords.push(selectedWord);
+            return selectedWord;
+        }
         
-        // 更新計時器顯示
-        function updateTimerDisplay() {
+        // 顯示下一個詞
+        function showNextWord() {
+            if (!gameStarted) return;
+            wordDisplay.textContent = getRandomWord();
+        }
+        
+        // 更新計時器
+        function updateTimer() {
+            if (!gameStarted) return;
+            
+            timeLeft--;
+            
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
+            
+            // 格式化時間顯示，確保兩位數
             timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                endGame();
+            } else {
+                // 使用 setTimeout 替代 setInterval，提高舊式瀏覽器兼容性
+                timerId = setTimeout(updateTimer, 1000);
+            }
         }
         
-        // 遊戲結束
-        function endGame() {
-            wordDisplay.textContent = "時間到！";
-            nextBtn.disabled = true;
-            startBtn.disabled = false;
+        // 開始遊戲函數
+        function startGame() {
+            if (gameStarted) return;
+            
+            gameStarted = true;
+            usedWords = [];
+            timeLeft = 180;
+            
+            // 隱藏遊戲規則，顯示遊戲元素
+            gameContainer.classList.add('game-started');
+            
+            // 顯示第一個詞
+            showNextWord();
+            
+            // 開始計時
+            updateTimer();
         }
+        
+        // 結束遊戲
+        function endGame() {
+            if (timerId) {
+                clearTimeout(timerId);
+                timerId = null;
+            }
+            gameStarted = false;
+            wordDisplay.textContent = "時間到！遊戲結束";
+        }
+        
+        // 鍵盤事件：按 Enter 進入下一題
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && gameStarted) {
+                showNextWord();
+            }
+        });
+        
+        // 點擊事件：點擊頁面任意位置進入下一題
+        document.addEventListener('click', (e) => {
+            if (gameStarted && e.target !== startBtn) {
+                showNextWord();
+            }
+        });
     </script>
 </body>
 </html>
