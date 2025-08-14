@@ -37,12 +37,6 @@
             border-radius: 8px;
             padding: 10px;
         }
-        .timer {
-            font-size: 48px;
-            color: #e74c3c;
-            margin: 20px 0;
-            font-weight: bold;
-        }
         .controls {
             margin: 30px 0;
         }
@@ -50,8 +44,8 @@
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 24px;
+            padding: 30px 60px; /* 按鈕尺寸加倍 */
+            font-size: 48px; /* 按鈕字體加倍 */
             border-radius: 5px;
             cursor: pointer;
             margin: 0 10px;
@@ -89,15 +83,12 @@
                 <p>1. 一人表演，一人猜詞</p>
                 <p>2. 表演者可以用動作、表情或語言提示（但不能說出詞語中的字）</p>
                 <p>3. 按 Enter 鍵或點擊螢幕任意位置進入下一個詞</p>
-                <p>4. 遊戲時間為3分鐘，時間到遊戲結束</p>
             </div>
             
             <div class="controls">
                 <button id="startBtn">開始遊戲</button>
             </div>
         </div>
-        
-        <div class="timer" id="timer">03:00</div>
         
         <div class="word-display" id="wordDisplay">準備開始！</div>
     </div>
@@ -128,14 +119,11 @@
         
         // 遊戲變數
         let usedWords = [];
-        let timeLeft = 180; // 3分鐘 = 180秒
         let gameStarted = false;
-        let timerId = null;
         
         // DOM元素
         const gameContainer = document.getElementById('gameContainer');
         const wordDisplay = document.getElementById('wordDisplay');
-        const timerDisplay = document.getElementById('timer');
         const startBtn = document.getElementById('startBtn');
         
         // 開始遊戲
@@ -163,52 +151,18 @@
             wordDisplay.textContent = getRandomWord();
         }
         
-        // 更新計時器
-        function updateTimer() {
-            if (!gameStarted) return;
-            
-            timeLeft--;
-            
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            
-            // 格式化時間顯示，確保兩位數
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (timeLeft <= 0) {
-                endGame();
-            } else {
-                // 使用 setTimeout 替代 setInterval，提高舊式瀏覽器兼容性
-                timerId = setTimeout(updateTimer, 1000);
-            }
-        }
-        
         // 開始遊戲函數
         function startGame() {
             if (gameStarted) return;
             
             gameStarted = true;
             usedWords = [];
-            timeLeft = 180;
             
             // 隱藏遊戲規則，顯示遊戲元素
             gameContainer.classList.add('game-started');
             
             // 顯示第一個詞
             showNextWord();
-            
-            // 開始計時
-            updateTimer();
-        }
-        
-        // 結束遊戲
-        function endGame() {
-            if (timerId) {
-                clearTimeout(timerId);
-                timerId = null;
-            }
-            gameStarted = false;
-            wordDisplay.textContent = "時間到！遊戲結束";
         }
         
         // 鍵盤事件：按 Enter 進入下一題
