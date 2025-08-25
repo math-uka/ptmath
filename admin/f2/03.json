@@ -1,0 +1,8 @@
+{
+  "buttonText": "思考問題",
+  "cardId": "thinking-card",
+  "content": "<h2>思考問題</h2><div class=\"segment-container\"><div class=\"segment\" id=\"think-segment-1\"><p><strong>問題 1</strong>：如果小明的姐姐在銀行記錄存入 5 萬元為 +50000 元，那麼支取 3 萬元應該記作什麼？請說明理由。</p></div><div class=\"segment\" id=\"think-segment-2\"><p><strong>解析</strong>：支取表示資金減少，根據負數的定義，應記作 -30000 元。理由：負數表示與正數相反的量，存入是增加（正數），支取是減少（負數）。</p></div><div class=\"segment\" id=\"think-segment-3\"><p><strong>答案</strong>：-30000 元。</p></div><div class=\"segment\" id=\"think-segment-4\"><p><strong>問題 2</strong>：某地氣溫上午是零上 8℃，下午下降到零下 2℃，分別用正負數表示這兩個溫度，並解釋它們的含義。</p></div><div class=\"segment\" id=\"think-segment-5\"><p><strong>解析</strong>：零上 8℃表示高於 0℃，記作 +8℃（正數）。零下 2℃表示低於 0℃，記作 -2℃（負數）。正負數區分了溫度相對於 0℃的方向。</p></div><div class=\"segment\" id=\"think-segment-6\"><p><strong>答案</strong>：上午 +8℃，下午 -2℃。</p></div><div class=\"segment\" id=\"think-segment-7\"><p><strong>問題 3</strong>：如果向南移動 10 米記作 +10 米，那麼向北移動 15 米應該記作什麼？為什麼？</p></div><div class=\"segment\" id=\"think-segment-8\"><p><strong>解析</strong>：向南和向北是相反方向，向南定為正數 (+10 米)，則向北為負數，記作 -15 米。理由：正負數用於表示相反意義的量。</p></div><div class=\"segment\" id=\"think-segment-9\"><p><strong>答案</strong>：-15 米。#</p></div></div>",
+  "segments": ["think-segment-1", "think-segment-2", "think-segment-3", "think-segment-4", "think-segment-5", "think-segment-6", "think-segment-7", "think-segment-8", "think-segment-9"],
+  "isPractice": false,
+  "questions": []
+}

@@ -1,0 +1,8 @@
+{
+  "buttonText": "引入",
+  "cardId": "introduction-card",
+  "content": "<header><h1>有理數：正數與負數</h1><p>通過實際生活的例子，來認識正數與負數的概念！</p></header><h2>引入</h2><div class=\"segment-container\"><div class=\"segment\" id=\"intro-segment-1\"><p>在日常生活中，我們經常用數字來表示不同的量。例如，小明在銀行存了 3000 元的壓歲錢，記作 +3000 元。如果他花了 2000 元買了一個新玩具，這筆支出應該怎麼表示呢？這種情況需要用到正數和負數！</p></div><div class=\"segment\" id=\"intro-segment-2\"><p>想像一下，你站在一個湖邊，水位有時會上升，有時會下降。當水位上升 2 米時，記作 +2 米；當水位下降 3 米時，應該怎麼記錄呢？通過這節課，我們將學習如何用正數和負數來表示這些具有相反意義的量。#</p></div></div>",
+  "segments": ["intro-segment-1", "intro-segment-2"],
+  "isPractice": false,
+  "questions": []
+}

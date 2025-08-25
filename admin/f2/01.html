@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quadratic Equations - Formula Method Quiz</title>
+  <!-- MathJax 引入 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        processEscapes: true
+      },
+      chtml: {
+        scale: 1.0,
+        mtextInheritFont: true
+      },
+      startup: {
+        ready: () => {
+          MathJax.startup.defaultReady();
+          MathJax.startup.promise.then(() => {
+            console.log('MathJax is ready');
+          });
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --primary-color: #1e88e5;
+      --secondary-color: #43a047;
+      --accent-color: #e53935;
+      --light-gray: #f5f5f5;
+      --dark-gray: #333;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: var(--dark-gray);
+      background-color: #fafafa;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    h1, h2, h3 {
+      color: var(--primary-color);
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .mode-selection, .question-container, .remaining-questions, .wrong-questions, .password-input, .fib-mode-container {
+      margin-bottom: 20px;
+    }
+
+    .mode-selection button {
+      padding: 12px 24px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .mode-selection button:hover:not(:disabled) {
+      background-color: #1565c0;
+    }
+
+    .mode-selection button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .question-container, .fib-mode-container {
+      font-size: 1.2em;
+    }
+
+    .question-image, .answer-image {
+      margin-top: 10px;
+      max-width: 300px;
+      width: 100%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .remaining-questions {
+      font-size: 1em;
+      color: var(--dark-gray);
+    }
+
+    .star {
+      color: #ccc;
+      font-size: 30px;
+      margin: 0 5px;
+      transition: all 0.3s;
+    }
+
+    .star.active {
+      color: #f1c40f;
+      transform: scale(1.2);
+    }
+
+    .options-table {
+      margin-left: 0; /* 修改：表格靠左 */
+      margin-right: auto;
+      border-collapse: collapse;
+      text-align: left; /* 確保表格內容左對齊 */
+    }
+
+    .options-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      vertical-align: middle;
+    }
+
+    .option-button {
+      width: 40px;
+      height: 40px;
+      font-size: 1em;
+      font-weight: bold;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .option-button:hover:not(:disabled) {
+      background-color: #1565c0;
+    }
+
+    .option-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .option-content {
+      padding-left: 10px;
+      min-width: 150px;
+      text-align: left; /* 確保選項內容左對齊 */
+    }
+
+    .feedback, .fib-feedback {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: var(--light-gray);
+      border-radius: 6px;
+      font-size: 1.1em;
+    }
+
+    .next-question-button {
+      padding: 12px 24px;
+      margin-top: 10px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .next-question-button:hover {
+      background-color: #1565c0;
+    }
+
+    .password-input input[type="number"] {
+      padding: 12px;
+      width: 200px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .password-input button {
+      padding: 12px 24px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .password-input button:hover:not(:disabled) {
+      background-color: #1565c0;
+    }
+
+    .password-input button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .password-result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .wrong-questions {
+      text-align: left;
+    }
+
+    .wrong-question {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: var(--light-gray);
+      border-radius: 6px;
+    }
+
+    .wrong-question img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 200px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .fib-mode-container button {
+      padding: 12px 24px;
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .fib-mode-container button:hover:not(:disabled) {
+      background-color: #2e7d32;
+    }
+
+    .fib-mode-container button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #777;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      background-color: #fdedec;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .loading-message {
+      color: var(--primary-color);
+      background-color: var(--light-gray);
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="quiz-title">###</h1>
+  </header>
+
+  <div class="card">
+    <div class="loading-message" id="loading-message">正在載入題庫...</div>
+    <div class="error-message" id="error-message" style="display: none;"></div>
+    <div class="mode-selection" id="mode-selection">
+      <h2>請選擇遊戲模式</h2>
+      <button id="standard-mode-btn" onclick="startStandardMode()" disabled>標準模式</button>
+    </div>
+    <div class="question-container" id="question" style="display: none;"></div>
+    <div id="question-image-container" style="display: none;"></div>
+    <div class="remaining-questions" id="remaining-questions" style="display: none;"></div>
+    <table class="options-table" id="options" style="display: none;"></table>
+    <div class="feedback" id="feedback"></div>
+    <div class="fib-mode-container" id="fib-mode" style="display: none;">
+      <div id="fib-question"></div>
+      <div id="fib-image-container" style="display: none;"></div>
+      <button id="fib-show-answer" onclick="showFibAnswer()">答案</button>
+      <button id="fib-next" onclick="nextFibQuestion()">下一題</button>
+      <div class="fib-feedback" id="fib-feedback"></div>
+    </div>
+    <div class="password-input" id="password-input" style="display: none;">
+      <p>恭喜！你已完成挑戰！輸入學號以獲取密碼：</p>
+      <input type="number" id="password-number" min="1" max="50" placeholder="輸入 1~50">
+      <button id="password-submit">提交</button>
+      <div class="password-result" id="password-result"></div>
+    </div>
+    <div class="wrong-questions" id="wrong-questions"></div>
+  </div>
+
+  <footer>
+    <p>© 2025 NokIn</p>
+  </footer>
+
+  <script>
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    // Prevent F12, Ctrl+U, and Ctrl+S
+    document.addEventListener('keydown', function(e) {
+      // F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+      }
+      // Ctrl+U
+      if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+      }
+      // Ctrl+S
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+      }
+    });
+  </script>
+  <script src="jb.js"></script>
+</body>
+</html>

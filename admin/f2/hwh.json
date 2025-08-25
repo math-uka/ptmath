@@ -1,0 +1,85 @@
+{
+    "title": "小學數學 - 個位數除法練習 (整數答案)",
+    "questions": [
+        {
+            "question": "計算 \\( 6 \\div 2 = ? \\)",
+            "prefix": "",
+            "answers": ["3"],
+            "answerlatex": ["\\( 3 \\)"],
+            "annotation": "第1題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 6 \\div 2 \\)\n\n2. 計算結果：\\( 6 \\div 2 = 3 \\)\n\n答案：\\( 3 \\)"
+        },
+        {
+            "question": "計算 \\( 12 \\div 3 = ? \\)",
+            "prefix": "",
+            "answers": ["4"],
+            "answerlatex": ["\\( 4 \\)"],
+            "annotation": "第2題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 12 \\div 3 \\)\n\n2. 計算結果：\\( 12 \\div 3 = 4 \\)\n\n答案：\\( 4 \\)"
+        },
+        {
+            "question": "計算 \\( 10 \\div 5 = ? \\)",
+            "prefix": "",
+            "answers": ["2"],
+            "answerlatex": ["\\( 2 \\)"],
+            "annotation": "第3題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 10 \\div 5 \\)\n\n2. 計算結果：\\( 10 \\div 5 = 2 \\)\n\n答案：\\( 2 \\)"
+        },
+        {
+            "question": "計算 \\( 16 \\div 4 = ? \\)",
+            "prefix": "",
+            "answers": ["4"],
+            "answerlatex": ["\\( 4 \\)"],
+            "annotation": "第4題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 16 \\div 4 \\)\n\n2. 計算結果：\\( 16 \\div 4 = 4 \\)\n\n答案：\\( 4 \\)"
+        },
+        {
+            "question": "計算 \\( 18 \\div 6 = ? \\)",
+            "prefix": "",
+            "answers": ["3"],
+            "answerlatex": ["\\( 3 \\)"],
+            "annotation": "第5題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 18 \\div 6 \\)\n\n2. 計算結果：\\( 18 \\div 6 = 3 \\)\n\n答案：\\( 3 \\)"
+        },
+        {
+            "question": "計算 \\( 14 \\div 7 = ? \\)",
+            "prefix": "",
+            "answers": ["2"],
+            "answerlatex": ["\\( 2 \\)"],
+            "annotation": "第6題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 14 \\div 7 \\)\n\n2. 計算結果：\\( 14 \\div 7 = 2 \\)\n\n答案：\\( 2 \\)"
+        },
+        {
+            "question": "計算 \\( 8 \\div 1 = ? \\)",
+            "prefix": "",
+            "answers": ["8"],
+            "answerlatex": ["\\( 8 \\)"],
+            "annotation": "第7題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 8 \\div 1 \\)\n\n2. 計算結果：\\( 8 \\div 1 = 8 \\)\n\n答案：\\( 8 \\)"
+        },
+        {
+            "question": "計算 \\( 9 \\div 3 = ? \\)",
+            "prefix": "",
+            "answers": ["3"],
+            "answerlatex": ["\\( 3 \\)"],
+            "annotation": "第8題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 9 \\div 3 \\)\n\n2. 計算結果：\\( 9 \\div 3 = 3 \\)\n\n答案：\\( 3 \\)"
+        },
+        {
+            "question": "計算 \\( 25 \\div 5 = ? \\)",
+            "prefix": "",
+            "answers": ["5"],
+            "answerlatex": ["\\( 5 \\)"],
+            "annotation": "第9題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 25 \\div 5 \\)\n\n2. 計算結果：\\( 25 \\div 5 = 5 \\)\n\n答案：\\( 5 \\)"
+        },
+        {
+            "question": "計算 \\( 24 \\div 4 = ? \\)",
+            "prefix": "",
+            "answers": ["6"],
+            "answerlatex": ["\\( 6 \\)"],
+            "annotation": "第10題",
+            "tutorial": "解題步驟：\n1. 將兩個數字相除：\\( 24 \\div 4 \\)\n\n2. 計算結果：\\( 24 \\div 4 = 6 \\)\n\n答案：\\( 6 \\)"
+        }
+    ]
+}

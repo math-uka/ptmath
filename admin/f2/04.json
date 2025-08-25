@@ -1,0 +1,63 @@
+{
+  "buttonText": "互動練習",
+  "cardId": "practice-card",
+  "content": "<h2>互動練習</h2><p id=\"questionText\">請計算：\\( \\text{存入 4000 元} \\)</p><div class=\"input-container\"><div class=\"button-group\"><button class=\"input-button\" onclick=\"showAnswer()\">顯示答案</button><button class=\"input-button\" onclick=\"showStepByStep()\">逐步解題</button><button class=\"input-button\" onclick=\"nextQuestion()\">下一題</button></div></div><div class=\"feedback\" id=\"feedback\"></div><div class=\"step-by-step-container\" id=\"stepByStep\" style=\"display: none;\"></div>",
+  "segments": [],
+  "isPractice": true,
+  "questions": [
+    {
+      "expression": "\\text{存入 4000 元}",
+      "questionText": "請表示：\\( \\text{存入 4000 元} \\)",
+      "answer": "+4000 元",
+      "steps": [
+        "存入表示資金增加，根據正數的定義，應使用正號。",
+        "因此，存入 4000 元記作 +4000 元。"
+      ]
+    },
+    {
+      "expression": "\\text{水位下降 3.5 米}",
+      "questionText": "請表示：\\( \\text{水位下降 3.5 米} \\)",
+      "answer": "-3.5 米",
+      "steps": [
+        "下降表示減少，根據負數的定義，應使用負號。",
+        "因此，水位下降 3.5 米記作 -3.5 米。"
+      ]
+    },
+    {
+      "expression": "\\text{零上 12℃}",
+      "questionText": "請表示：\\( \\text{零上 12℃} \\)",
+      "answer": "+12℃",
+      "steps": [
+        "零上表示高於 0℃，屬於正數。",
+        "因此，零上 12℃記作 +12℃。"
+      ]
+    },
+    {
+      "expression": "\\text{向西移動 20 米}",
+      "questionText": "請表示：\\( \\text{向西移動 20 米} \\)，假設向東為正方向。",
+      "answer": "-20 米",
+      "steps": [
+        "向東定為正方向，則向西為負方向。",
+        "因此，向西移動 20 米記作 -20 米。"
+      ]
+    },
+    {
+      "expression": "\\text{支出 1500 元}",
+      "questionText": "請表示：\\( \\text{支出 1500 元} \\)",
+      "answer": "-1500 元",
+      "steps": [
+        "支出表示資金減少，根據負數的定義，應使用負號。",
+        "因此，支出 1500 元記作 -1500 元。"
+      ]
+    },
+    {
+      "expression": "\\text{水位不變}",
+      "questionText": "請表示：\\( \\text{水位不變} \\)",
+      "answer": "0 米",
+      "steps": [
+        "水位不變表示無增無減，根據定義，記作 0。",
+        "因此，水位不變記作 0 米。"
+      ]
+    }
+  ]
+}

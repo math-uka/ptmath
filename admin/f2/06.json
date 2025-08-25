@@ -1,0 +1,8 @@
+{
+  "buttonText": "總結",
+  "cardId": "summary-card",
+  "content": "<h2>課堂總結</h2><div class=\"segment-container\"><div class=\"segment\" id=\"summary-segment-1\"><p>通過本課學習，我們掌握了正數和負數的概念，並學會用它們表示相反意義的量。以下是本課的重點：</p></div><div class=\"segment\" id=\"summary-segment-2\"><p><strong>重點 1</strong>：正數是大於 0 的數，如 \\( 5, 2.3, \\frac{4}{5} \\)；負數是小於 0 的數，前面有負號，如 \\( -3, -1.5, -\\frac{2}{3} \\)；0 既不是正數也不是負數。</p></div><div class=\"segment\" id=\"summary-segment-3\"><p><strong>重點 2</strong>：正數和負數用於表示相反意義的量，例如：<ul><li>存款（+2000 元）與支出（-2000 元）。</li><li>水位上升（+3 米）與下降（-3 米）。</li><li>零上溫度（+15℃）與零下溫度（-15℃）。</li></ul></p></div><div class=\"segment\" id=\"summary-segment-4\"><p><strong>重點 3</strong>：在表示相反意義的量時，正負號表示方向，數值表示大小。例如，引入中的例子：小明的 +3000 元表示存款增加，-2000 元表示支出減少。</p></div><div class=\"segment\" id=\"summary-segment-5\"><p><strong>應用</strong>：正負數廣泛應用於記賬、氣溫記錄、運動方向等生活場景。通過本課的學習，我們能更好地理解和應用正數與負數。#</p></div></div>",
+  "segments": ["summary-segment-1", "summary-segment-2", "summary-segment-3", "summary-segment-4", "summary-segment-5"],
+  "isPractice": false,
+  "questions": []
+}
