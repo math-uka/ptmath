@@ -1,8 +1,0 @@
-{
-  "buttonText": "相反意義的量",
-  "cardId": "application-card",
-  "content": "<h2>相反意義的量</h2><div class=\"segment-container\"><div class=\"segment\" id=\"app-segment-1\"><p>正數和負數可以用來表示生活中具有相反意義的量。讓我們通過例子來鞏固這一知識！</p></div><div class=\"segment\" id=\"app-segment-2\"><p><strong>問題 1</strong>：如果收入增加 10% 記作 +10%，那麼收入減少 5% 應記作什麼？請說明理由。</p></div><div class=\"segment\" id=\"app-segment-3\"><p><strong>解析</strong>：收入減少表示與增加相反，應使用負數表示。根據負數的定義，減少 5% 記作 -5%。理由：正負數用於區分相反意義的量。</p></div><div class=\"segment\" id=\"app-segment-4\"><p><strong>答案</strong>：-5%。</p></div><div class=\"segment\" id=\"app-segment-5\"><p><strong>問題 2</strong>：某藥品需在 18℃ 至 22℃ 保存。如果 20℃ 記作基準溫度 0℃，則 18℃ 和 22℃ 應如何表示？</p></div><div class=\"segment\" id=\"app-segment-6\"><p><strong>解析</strong>：以 20℃ 為基準，18℃ 低於基準 2℃，記作 -2℃；22℃ 高於基準 2℃，記作 +2℃。正負數表示相對於基準的變化方向。</p></div><div class=\"segment\" id=\"app-segment-7\"><p><strong>答案</strong>：18℃ 為 -2℃，22℃ 為 +2℃。#</p></div></div>",
-  "segments": ["app-segment-1", "app-segment-2", "app-segment-3", "app-segment-4", "app-segment-5", "app-segment-6", "app-segment-7"],
-  "isPractice": false,
-  "questions": []
-}
