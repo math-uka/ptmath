@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Multiplication Teaching Tool - Two-Digit by One-Digit</title>
+    <!-- MathJax for mathematical expressions -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .equation-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .equals-sign {
+            width: 20px;
+            text-align: right;
+            flex-shrink: 0;
+            padding-right: 5px;
+        }
+        .math-expression {
+            flex-grow: 1;
+            text-align: left;
+        }
+        #horizontal, #vertical {
+            min-height: 400px;
+            max-width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+        #horizontal-steps, #vertical-steps {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        #vertical-steps {
+            justify-content: center;
+            align-items: center;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+        .input-container input {
+            width: 80px;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        .input-container input:invalid {
+            border-color: red;
+        }
+        @media (max-width: 640px) {
+            #horizontal, #vertical {
+                max-width: 100%;
+                min-height: 350px;
+            }
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+            .p-6 {
+                padding: 1rem;
+            }
+            .py-4 {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+            .input-container input {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white py-4 text-center">
+        <h1 class="text-xl sm:text-2xl font-bold">兩位數乘一位數 / Two-Digit by One-Digit Multiplication</h1>
+    </header>
+    <main class="flex-grow flex flex-col p-4 gap-4">
+        <!-- Input Box for Problem -->
+        <div class="input-container">
+            <input type="text" id="two-digit" pattern="[1-9][0-9]" value="49" required>
+            <span class="text-xl">×</span>
+            <input type="text" id="one-digit" pattern="[1-9]" value="6" required>
+        </div>
+        <div class="flex flex-col md:flex-row justify-center items-start gap-4">
+            <!-- Left Side: Horizontal Multiplication -->
+            <section id="horizontal" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg sm:text-xl font-semibold mb-4 text-center">橫式乘法 / Horizontal Method</h2>
+                <div id="horizontal-steps" class="text-2xl mb-4 flex flex-col items-center"></div>
+                <button id="horizontal-next-step" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full text-base sm:text-lg">下一步 / Next Step</button>
+            </section>
+            <!-- Right Side: Vertical Multiplication -->
+            <section id="vertical" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg sm:text-xl font-semibold mb-4 text-center">直式乘法 / Vertical Method</h2>
+                <div id="vertical-steps" class="text-2xl mb-4"></div>
+                <button id="vertical-next-step" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full text-base sm:text-lg">下一步 / Next Step</button>
+            </section>
+        </div>
+        <div class="text-center mt-4">
+            <button id="new-problem" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 text-base sm:text-lg">重新出題 / Generate New Problem</button>
+        </div>
+    </main>
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>© 2025 ukawai</p>
+    </footer>
+    <!-- External JavaScript -->
+    <script src="qs.js"></script>
+</body>
+</html>

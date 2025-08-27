@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密碼生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #passwordDisplay {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            text-align: left;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .password-group {
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+        }
+        .password-group h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .download-btn {
+            background-color: #2196F3;
+        }
+        .download-btn:hover {
+            background-color: #0b7dda;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>隨機密碼生成器</h1>
+    <button id="generateBtn">生成新密碼</button>
+    <button id="downloadBtn1" class="download-btn">下載隨機密碼 (pass.json)</button>
+    <button id="downloadBtn2" class="download-btn">下載PASS密碼 (pass.json)</button>
+    <button id="downloadBtn3" class="download-btn">下載PASS2密碼 (pass2.json)</button>
+    
+    <div id="passwordDisplay">
+        <div class="password-group">點擊"生成新密碼"按鈕開始</div>
+    </div>
+
+    <script>
+        let passwordData = {
+            random: {},
+            xyyyz: {},
+            yxzyy: {}
+        };
+        
+        // 生成隨機5位數
+        function generateRandomFiveDigits() {
+            return Math.floor(10000 + Math.random() * 90000).toString().padStart(5, '0');
+        }
+        
+        // 生成隨機三位數字 (YYY)
+        function generateRandomYYY() {
+            return Math.floor(100 + Math.random() * 900).toString().padStart(3, '0');
+        }
+        
+        // 根據索引和日期生成 XYYYZ 格式的密碼
+        function generateXYYYZPassword(index, dayOfMonth) {
+            const tensOfDay = Math.floor(dayOfMonth / 10);
+            const unitsOfDay = dayOfMonth % 10;
+            const tensOfIndex = Math.floor((index - 1) / 10) + 1;
+            const unitsOfIndex = (index - 1) % 10 + 1;
+            const X = (tensOfDay + tensOfIndex) % 10;
+            const Z = (unitsOfDay + unitsOfIndex) % 10;
+            const YYY = generateRandomYYY();
+            return `${X}${YYY}${Z}`;
+        }
+        
+        // 根據索引和日期生成 YXZYY 格式的密碼
+        function generateYXZYYPassword(index, dayOfMonth) {
+            const tensOfDay = Math.floor(dayOfMonth / 10);
+            const unitsOfDay = dayOfMonth % 10;
+            const tensOfIndex = Math.floor((index - 1) / 10) + 1;
+            const unitsOfIndex = (index - 1) % 10 + 1;
+            const X = (tensOfDay + tensOfIndex) % 10;
+            const Z = (unitsOfDay + unitsOfIndex) % 10;
+            const YY = generateRandomYYY().slice(0, 2);
+            return `${YY}${X}${Z}${YY}`;
+        }
+        
+        // 生成三組密碼
+        function generatePasswords() {
+            const today = new Date();
+            const dayOfMonth = today.getDate();
+            const randomData = {};
+            const xyyyzData = {};
+            const yxzyyData = {};
+            for (let i = 1; i <= 50; i++) {
+                randomData[i] = generateRandomFiveDigits();
+                xyyyzData[i] = generateXYYYZPassword(i, dayOfMonth);
+                yxzyyData[i] = generateYXZYYPassword(i, dayOfMonth);
+            }
+            passwordData.random = randomData;
+            passwordData.xyyyz = xyyyzData;
+            passwordData.yxzyy = yxzyyData;
+            return passwordData;
+        }
+        
+        // 更新顯示
+        function updateDisplay() {
+            const display = document.getElementById('passwordDisplay');
+            display.innerHTML = `
+                <div class="password-group">
+                    <h3>隨機5位數密碼</h3>
+                    <pre>${JSON.stringify(passwordData.random, null, 2)}</pre>
+                </div>
+                <div class="password-group">
+                    <h3>XYYYZ密碼</h3>
+                    <pre>${JSON.stringify(passwordData.xyyyz, null, 2)}</pre>
+                </div>
+                <div class="password-group">
+                    <h3>YXZYY密碼</h3>
+                    <pre>${JSON.stringify(passwordData.yxzyy, null, 2)}</pre>
+                </div>
+            `;
+        }
+        
+        // 下載JSON文件
+        function downloadJSON(filename, data) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // 事件監聽器
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            generatePasswords();
+            updateDisplay();
+        });
+        
+        document.getElementById('downloadBtn1').addEventListener('click', () => {
+            if (Object.keys(passwordData.random).length === 0) {
+                alert('請先生成密碼！');
+                return;
+            }
+            downloadJSON('pass.json', passwordData.random);
+        });
+        
+        document.getElementById('downloadBtn2').addEventListener('click', () => {
+            if (Object.keys(passwordData.xyyyz).length === 0) {
+                alert('請先生成密碼！');
+                return;
+            }
+            downloadJSON('pass.json', passwordData.xyyyz); // Changed from 'pass.json' to 'pass2.json'
+        });
+        
+        document.getElementById('downloadBtn3').addEventListener('click', () => {
+            if (Object.keys(passwordData.yxzyy).length === 0) {
+                alert('請先生成密碼！');
+                return;
+            }
+            downloadJSON('pass2.json', passwordData.yxzyy);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .panel {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 5px;
+        }
+        .quick-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        .quick-buttons button {
+            flex: 1;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.download {
+            padding: 10px 15px;
+            background-color: #2196F3;
+            margin-top: 10px;
+        }
+        button.download:hover {
+            background-color: #0b7dda;
+        }
+        .json-output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON生成器</h1>
+    <div class="container">
+        <div class="panel">
+            <h2>左側設定 (total.json)</h2>
+            <div class="input-group">
+                <label for="leftQuestionCount">題數:</label>
+                <input type="number" id="leftQuestionCount" placeholder="輸入題數">
+                <div class="quick-buttons">
+                    <button onclick="setLeftQuestionCount(3)">3</button>
+                    <button onclick="setLeftQuestionCount(5)">5</button>
+                    <button onclick="setLeftQuestionCount(7)">7</button>
+                    <button onclick="setLeftQuestionCount(10)">10</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="leftMaxWrong">最多錯題數:</label>
+                <input type="number" id="leftMaxWrong" placeholder="輸入最多錯題數">
+                <div class="quick-buttons">
+                    <button onclick="setLeftMaxWrong(0)">0</button>
+                    <button onclick="setLeftMaxWrong(1)">1</button>
+                    <button onclick="setLeftMaxWrong(2)">2</button>
+                </div>
+            </div>
+            <button class="download" onclick="downloadLeftJson()">下載 total.json</button>
+            <div class="json-output" id="leftJsonOutput"></div>
+        </div>
+
+        <div class="panel">
+            <h2>右側設定 (total2.json)</h2>
+            <div class="input-group">
+                <label for="rightQuestionCount">題數:</label>
+                <input type="number" id="rightQuestionCount" placeholder="輸入題數">
+                <div class="quick-buttons">
+                    <button onclick="setRightQuestionCount(3)">3</button>
+                    <button onclick="setRightQuestionCount(5)">5</button>
+                    <button onclick="setRightQuestionCount(7)">7</button>
+                    <button onclick="setRightQuestionCount(10)">10</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="rightMaxWrong">最多錯題數:</label>
+                <input type="number" id="rightMaxWrong" placeholder="輸入最多錯題數">
+                <div class="quick-buttons">
+                    <button onclick="setRightMaxWrong(0)">0</button>
+                    <button onclick="setRightMaxWrong(1)">1</button>
+                    <button onclick="setRightMaxWrong(2)">2</button>
+                </div>
+            </div>
+            <button class="download" onclick="downloadRightJson()">下載 total2.json</button>
+            <div class="json-output" id="rightJsonOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        function setLeftQuestionCount(value) {
+            document.getElementById('leftQuestionCount').value = value;
+            updateLeftJsonPreview();
+        }
+
+        function setLeftMaxWrong(value) {
+            document.getElementById('leftMaxWrong').value = value;
+            updateLeftJsonPreview();
+        }
+
+        function setRightQuestionCount(value) {
+            document.getElementById('rightQuestionCount').value = value;
+            updateRightJsonPreview();
+        }
+
+        function setRightMaxWrong(value) {
+            document.getElementById('rightMaxWrong').value = value;
+            updateRightJsonPreview();
+        }
+
+        function updateLeftJsonPreview() {
+            const questionCount = document.getElementById('leftQuestionCount').value;
+            const maxWrong = document.getElementById('leftMaxWrong').value;
+            
+            if (questionCount && maxWrong) {
+                const jsonData = {
+                    questionCount: parseInt(questionCount),
+                    maxWrong: parseInt(maxWrong)
+                };
+                document.getElementById('leftJsonOutput').textContent = JSON.stringify(jsonData, null, 2);
+            }
+        }
+
+        function updateRightJsonPreview() {
+            const questionCount = document.getElementById('rightQuestionCount').value;
+            const maxWrong = document.getElementById('rightMaxWrong').value;
+            
+            if (questionCount && maxWrong) {
+                const jsonData = {
+                    questionCount: parseInt(questionCount),
+                    maxWrong: parseInt(maxWrong)
+                };
+                document.getElementById('rightJsonOutput').textContent = JSON.stringify(jsonData, null, 2);
+            }
+        }
+
+        function downloadJson(data, filename) {
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadLeftJson() {
+            const questionCount = document.getElementById('leftQuestionCount').value;
+            const maxWrong = document.getElementById('leftMaxWrong').value;
+            
+            if (!questionCount || !maxWrong) {
+                alert('請填寫所有欄位');
+                return;
+            }
+
+            const jsonData = {
+                questionCount: parseInt(questionCount),
+                maxWrong: parseInt(maxWrong)
+            };
+            
+            downloadJson(jsonData, 'total.json');
+            document.getElementById('leftJsonOutput').textContent = JSON.stringify(jsonData, null, 2);
+        }
+
+        function downloadRightJson() {
+            const questionCount = document.getElementById('rightQuestionCount').value;
+            const maxWrong = document.getElementById('rightMaxWrong').value;
+            
+            if (!questionCount || !maxWrong) {
+                alert('請填寫所有欄位');
+                return;
+            }
+
+            const jsonData = {
+                questionCount: parseInt(questionCount),
+                maxWrong: parseInt(maxWrong)
+            };
+            
+            downloadJson(jsonData, 'total2.json');
+            document.getElementById('rightJsonOutput').textContent = JSON.stringify(jsonData, null, 2);
+        }
+
+        // 監聽輸入變化，實時更新預覽
+        document.getElementById('leftQuestionCount').addEventListener('input', updateLeftJsonPreview);
+        document.getElementById('leftMaxWrong').addEventListener('input', updateLeftJsonPreview);
+        document.getElementById('rightQuestionCount').addEventListener('input', updateRightJsonPreview);
+        document.getElementById('rightMaxWrong').addEventListener('input', updateRightJsonPreview);
+    </script>
+</body>
+</html>

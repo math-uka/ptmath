@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隨機二元一次方程組生成器</title>
+    <!-- 引入 MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- 引入 confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            min-height: 80vh;
+        }
+        .left-panel, .right-panel {
+            flex: 1;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+        }
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .input-group label {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .input-group input {
+            padding: 8px;
+            font-size: 14px;
+            width: 100px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .input-group input:disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            align-self: flex-start;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+        .step {
+            margin-bottom: 10px;
+        }
+        .calculation {
+            margin: 10px 0;
+            line-height: 2;
+        }
+        hr {
+            margin: 20px 0;
+            border: 0;
+            height: 1px;
+            background-color: #ccc;
+        }
+        h1 {
+            text-align: center;
+            font-size: 18px;
+        }
+        #stars {
+            margin: 10px 0;
+            font-size: 24px;
+            color: #FFD700;
+            text-align: center;
+        }
+        #feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+        }
+        #feedback.correct {
+            color: #4CAF50;
+        }
+        #feedback.incorrect {
+            color: #FF0000;
+        }
+        #congratulations {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
+        #passwordContainer {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        #passwordResult {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
+        #passwordResult.error {
+            color: #FF0000;
+        }
+        #passwordResult.success {
+            color: #4CAF50;
+        }
+        .correct-animation {
+            animation: correct 0.5s ease-in-out;
+        }
+        .shake-animation {
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes correct {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: #4CAF50; color: white; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-5px, 0); }
+            20%, 40%, 60%, 80% { transform: translate(5px, 0); }
+        }
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        #content.shake {
+            animation: shake 0.5s;
+        }
+        #problem .MJx-chtml {
+            font-size: 200% !important;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 16px;
+            }
+            .container {
+                flex-direction: column;
+            }
+            .left-panel, .right-panel {
+                margin: 5px 0;
+            }
+            .input-group input {
+                width: 80px;
+                font-size: 12px;
+            }
+            .input-group label {
+                font-size: 12px;
+            }
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            #stars {
+                font-size: 20px;
+            }
+            #feedback {
+                font-size: 14px;
+            }
+            #congratulations, #passwordContainer {
+                font-size: 16px;
+            }
+            #passwordResult {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+    <div id="content">
+        <h1>隨機二元一次方程組生成器</h1>
+        <div id="stars"></div>
+        <div id="feedback"></div>
+        <div class="container">
+            <div class="left-panel">
+                <div id="problem"></div>
+                <div class="input-group" id="input-group">
+                    <div>
+                        <label for="xInput">x = </label>
+                        <input type="text" id="xInput" placeholder="輸入 x 值">
+                    </div>
+                    <div>
+                        <label for="yInput">y = </label>
+                        <input type="text" id="yInput" placeholder="輸入 y 值">
+                    </div>
+                    <button id="checkAnswerBtn" onclick="checkAnswer()">確定</button>
+                    <div id="congratulations"></div>
+                    <div id="passwordContainer">
+                        <div class="input-group">
+                            <label for="passwordInput">輸入 1~50 的數字以獲取密碼：</label>
+                            <input type="text" id="passwordInput" placeholder="輸入數字">
+                            <button id="confirmPasswordBtn" onclick="submitPasswordInput()">確定</button>
+                        </div>
+                        <div id="passwordResult"></div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="nextProblemBtn" onclick="resetStarsAndNextProblem()">生成新題目</button>
+                    <button id="eliminateXButton" onclick="showEliminateX()">加減消元消去X</button>
+                    <button id="eliminateYButton" onclick="showEliminateY()">加減消元消去Y</button>
+                </div>
+            </div>
+            <div class="right-panel" id="steps"></div>
+        </div>
+        <footer>
+            <p>© 2025 ukawai</p>
+        </footer>
+    </div>
+
+    <script>
+        let starCount = 0;
+        let problemCount = 0;
+        let hasPassJson = false;
+        let passJson = null;
+        let a, b, c, d, e, f, x, y, x_frac, y_frac;
+        let currentStepX = 0;
+        let currentStepY = 0;
+        let inputsLocked = false;
+
+        // Check for pass.json at startup
+        async function checkPassJson() {
+            try {
+                const response = await fetch('pass.json');
+                if (response.ok) {
+                    passJson = await response.json();
+                    hasPassJson = true;
+                } else {
+                    hasPassJson = false;
+                }
+            } catch (e) {
+                hasPassJson = false;
+            }
+        }
+
+        // 計算最大公因數
+        function gcd(a, b) {
+            return b === 0 ? Math.abs(a) : gcd(b, a % b);
+        }
+
+        // 計算最小公倍數
+        function lcm(a, b) {
+            return Math.abs(a * b) / gcd(a, b);
+        }
+
+        // 化簡分數並返回數字
+        function simplifyFraction(numerator, denominator) {
+            if (denominator === 0) return NaN;
+            if (numerator === 0) return 0;
+            if (denominator < 0) {
+                numerator = -numerator;
+                denominator = -denominator;
+            }
+            const div = gcd(Math.abs(numerator), Math.abs(denominator));
+            const num = numerator / div;
+            const den = denominator / div;
+            return num / den;
+        }
+
+        // 格式化分數為 LaTeX
+        function formatFraction(value) {
+            if (Number.isInteger(value)) return value.toString();
+            const frac = toFraction(value);
+            const sign = frac.num < 0 ? '-' : '';
+            return `${sign}\\frac{${Math.abs(frac.num)}}{${frac.denom}}`;
+        }
+
+        // 將數字轉成分數對象
+        function toFraction(value, tolerance = 1e-6, maxDenominator = 1000) {
+            if (Number.isInteger(value)) {
+                return { num: value, denom: 1 };
+            }
+            let num = 1, denom = 1;
+            let bestNum = 1, bestDenom = 1;
+            let bestError = Math.abs(value - num / denom);
+
+            for (let d = 1; d <= maxDenominator; d++) {
+                const n = Math.round(value * d);
+                const error = Math.abs(value - n / d);
+                if (error < bestError && error < tolerance) {
+                    bestNum = n;
+                    bestDenom = d;
+                    bestError = error;
+                }
+            }
+
+            const divisor = gcd(bestNum, bestDenom);
+            return { num: bestNum / divisor, denom: bestDenom / divisor };
+        }
+
+        // 比較分數是否相等
+        function areFractionsEqual(frac1, frac2) {
+            return frac1.num * frac2.denom === frac2.num * frac1.denom;
+        }
+
+        // 格式化方程為 LaTeX
+        function formatEquation(a, b, c, var1 = 'x', var2 = 'y') {
+            let parts = [];
+            if (a !== 0) {
+                if (a === 1) parts.push(var1);
+                else if (a === -1) parts.push(`-${var1}`);
+                else parts.push(`${a}${var1}`);
+            }
+            if (b !== 0) {
+                const sign = b > 0 ? '+' : '-';
+                const abs_b = Math.abs(b);
+                const y_term = abs_b === 1 ? var2 : `${abs_b}${var2}`;
+                if (parts.length) {
+                    parts.push(`${sign} ${y_term}`);
+                } else {
+                    parts.push(`${sign === '-' ? '-' : ''}${y_term}`);
+                }
+            }
+            if (!parts.length) parts.push("0");
+            return `${parts.join(' ')} = ${c}`;
+        }
+
+        // 生成隨機二元一次方程組
+        function generateEquations() {
+            while (true) {
+                x = Math.floor(Math.random() * 21) - 10;
+                y = Math.floor(Math.random() * 21) - 10;
+                a = Math.floor(Math.random() * 21) - 10;
+                b = Math.floor(Math.random() * 21) - 10;
+                c = Math.floor(Math.random() * 21) - 10;
+                d = Math.floor(Math.random() * 21) - 10;
+                if (a !== 0 && b !== 0 && c !== 0 && d !== 0 && (a * d - b * c) !== 0) break;
+            }
+            e = a * x + b * y;
+            f = c * x + d * y;
+            x_frac = simplifyFraction(e * d - b * f, a * d - b * c);
+            y_frac = simplifyFraction(a * f - e * c, a * d - b * c);
+        }
+
+        // 生成解題步驟
+        function generateSteps() {
+            let steps = [];
+
+            steps.push(`
+                <div class="step">
+                    <h4>加減消元消去X</h4>
+                </div>
+            `);
+
+            const lcm_x = lcm(Math.abs(a), Math.abs(c));
+            const multiplier1_x = lcm_x / a;
+            const multiplier2_x = -lcm_x / c;
+            const display_multiplier1_x = Math.abs(multiplier1_x);
+            const display_multiplier2_x = Math.abs(multiplier2_x);
+            const new_a1 = a * multiplier1_x;
+            const new_b1 = b * multiplier1_x;
+            const new_e1 = e * multiplier1_x;
+            const new_c2 = c * multiplier2_x;
+            const new_d2 = d * multiplier2_x;
+            const new_f2 = f * multiplier2_x;
+
+            steps.push(`
+                <div class="step">
+                    <h4>步驟 1: 把 (1) \\(\\times\\) ${display_multiplier1_x}, (2) \\(\\times\\) ${display_multiplier2_x}，使 X 係數的絕對值相同</h4>
+                    <div>\\(${formatEquation(new_a1, new_b1, new_e1)} \\) (3)</div>
+                    <div>\\(${formatEquation(new_c2, new_d2, new_f2)} \\) (4)</div>
+                </div>
+            `);
+
+            const final_b = new_b1 + new_d2;
+            const final_const = new_e1 + new_f2;
+
+            steps.push(`
+                <div class="step">
+                    <h4>步驟 2: (3) + (4)</h4>
+                    <div>計算過程:</div>
+                    <div class="calculation">\\((${new_b1}y) + (${new_d2}y) = ${new_e1} + (${new_f2})\\)</div>
+                    <div class="calculation">\\(${final_b}y = ${final_const}\\)</div>
+                </div>
+            `);
+
+            let y_solution;
+            if (final_b === 0) {
+                y_solution = final_const === 0 ? "無限多解" : "無解";
+                y_frac = y_solution;
+            } else {
+                y_solution = final_const / final_b;
+                y_frac = simplifyFraction(final_const, final_b);
+            }
+
+            steps.push(`
+                <div class="step">
+                    <h4>步驟 3: 解出 Y</h4>
+                    <div>從方程: \\(${final_b}y = ${final_const}\\)</div>
+                    <div>\\(\\ y = ${formatFraction(y_frac)} \\)</div>
+                </div>
+            `);
+
+            if (typeof y_solution !== 'string') {
+                const ax_term = e - b * y_solution;
+                const x_val = ax_term / a;
+                x_frac = simplifyFraction(Math.round(ax_term), a);
+                const b_term = b * y_solution;
+                const b_term_display = b < 0 ? `+ (${b}) \\times (${formatFraction(y_frac)})` : `+ ${b} \\times (${formatFraction(y_frac)})`;
+
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 4: 將 \\(y = ${formatFraction(y_frac)}\\) 代入原始方程 (1)</h4>
+                        <div>原始方程: \\(${formatEquation(a, b, e)} \\) (1)</div>
+                        <div>代入後: \\(${a}x ${b_term_display} = ${e}\\)</div>
+                        <div>移項: \\( ${a}x = ${e} - (${b_term}) \\)</div>
+                        <div class="calculation">\\( ${a}x = ${ax_term} \\)</div>
+                        <div>\\(\\ x = ${formatFraction(x_frac)} \\)</div>
+                    </div>
+                `);
+
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 5: 答案</h4>
+                        <div>\\(\\begin{cases} x = ${formatFraction(x_frac)} \\\\ y = ${formatFraction(y_frac)} \\end{cases}\\)</div>
+                    </div>
+                `);
+            } else {
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 4: 無法繼續求解</h4>
+                        <div>方程無解或無限多解，無法繼續求解</div>
+                    </div>
+                `);
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 5: 答案</h4>
+                        <div>方程組無解或有無限多解</div>
+                    </div>
+                `);
+            }
+
+            steps.push(`
+                <div class="step">
+                    <h4>加減消元消去Y</h4>
+                </div>
+            `);
+
+            const lcm_y = lcm(Math.abs(b), Math.abs(d));
+            const multiplier1_y = lcm_y / b;
+            const multiplier2_y = -lcm_y / d;
+            const display_multiplier1_y = Math.abs(multiplier1_y);
+            const display_multiplier2_y = Math.abs(multiplier2_y);
+            const new_a1_y = a * multiplier1_y;
+            const new_b1_y = b * multiplier1_y;
+            const new_e1_y = e * multiplier1_y;
+            const new_c2_y = c * multiplier2_y;
+            const new_d2_y = d * multiplier2_y;
+            const new_f2_y = f * multiplier2_y;
+
+            steps.push(`
+                <div class="step">
+                    <h4>步驟 1: 把 (1) \\(\\times\\) ${display_multiplier1_y}, (2) \\(\\times\\) ${display_multiplier2_y}，使 Y 係數的絕對值相同</h4>
+                    <div>\\(${formatEquation(new_a1_y, new_b1_y, new_e1_y)} \\) (3)</div>
+                    <div>\\(${formatEquation(new_c2_y, new_d2_y, new_f2_y)} \\) (4)</div>
+                </div>
+            `);
+
+            const final_a = new_a1_y + new_c2_y;
+            const final_const_y = new_e1_y + new_f2_y;
+
+            steps.push(`
+                <div class="step">
+                    <h4>步驟 2: (3) + (4)</h4>
+                    <div>計算過程:</div>
+                    <div class="calculation">\\((${new_a1_y}x) + (${new_c2_y}x) = ${new_e1_y} + (${new_f2_y})\\)</div>
+                    <div class="calculation">\\(${final_a}x = ${final_const_y}\\)</div>
+                </div>
+            `);
+
+            let x_solution;
+            if (final_a === 0) {
+                x_solution = final_const_y === 0 ? "無限多解" : "無解";
+                x_frac = x_solution;
+            } else {
+                x_solution = final_const_y / final_a;
+                x_frac = simplifyFraction(Math.round(final_const_y), final_a);
+            }
+
+            steps.push(`
+                <div class="step">
+                    <h4>步驟 3: 解出 X</h4>
+                    <div>從方程: \\(${final_a}x = ${final_const_y}\\)</div>
+                    <div>\\(\\ x = ${formatFraction(x_frac)} \\)</div>
+                </div>
+            `);
+
+            if (typeof x_solution !== 'string') {
+                const by_term = e - a * x_solution;
+                const y_val = by_term / b;
+                const y_frac_y = simplifyFraction(Math.round(by_term), b);
+                const a_term_display = a < 0 ? `+ (${a}) \\times (${formatFraction(x_frac)})` : `+ ${a} \\times (${formatFraction(x_frac)})`;
+
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 4: 將 \\(x = ${formatFraction(x_frac)}\\) 代入原始方程 (1)</h4>
+                        <div>原始方程: \\(${formatEquation(a, b, e)} \\) (1)</div>
+                        <div>代入後: \\(${a_term_display} + ${b < 0 ? `(${b}y)` : `${b}y`} = ${e}\\)</div>
+                        <div>移項: \\( ${b < 0 ? `(${b}y)` : `${b}y`} = ${e} - (${a * x_solution}) \\)</div>
+                        <div class="calculation">\\( ${b < 0 ? `(${b}y)` : `${b}y`} = ${by_term} \\)</div>
+                        <div>\\(\\ y = ${formatFraction(y_frac_y)} \\)</div>
+                    </div>
+                `);
+
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 5: 答案</h4>
+                        <div>\\(\\begin{cases} x = ${formatFraction(x_frac)} \\\\ y = ${formatFraction(y_frac_y)} \\end{cases}\\)</div>
+                    </div>
+                `);
+            } else {
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 4: 無法繼續求解</h4>
+                        <div>方程無解或無限多解，無法繼續求解</div>
+                    </div>
+                `);
+                steps.push(`
+                    <div class="step">
+                        <h4>步驟 5: 答案</h4>
+                        <div>方程組無解或有無限多解</div>
+                    </div>
+                `);
+            }
+
+            return steps;
+        }
+
+        // 顯示星星
+        function displayStars() {
+            const starsDiv = document.getElementById('stars');
+            starsDiv.innerHTML = '★'.repeat(starCount) + '☆'.repeat(3 - starCount);
+        }
+
+        // 顯示反饋
+        function showFeedback(message, isCorrect, duration = null) {
+            const feedbackDiv = document.getElementById('feedback');
+            feedbackDiv.innerHTML = message;
+            feedbackDiv.className = isCorrect ? 'correct' : 'incorrect';
+            if (duration) {
+                setTimeout(() => {
+                    feedbackDiv.innerHTML = '';
+                    feedbackDiv.className = '';
+                }, duration);
+            }
+        }
+
+        // 震動畫面
+        function shakeScreen() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.classList.add('shake');
+            setTimeout(() => {
+                contentDiv.classList.remove('shake');
+            }, 500);
+        }
+
+        // 觸發彩紙效果
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const confettiInstance = confetti.create(canvas, { resize: true });
+            confettiInstance({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                duration: 3000
+            });
+        }
+
+        // 顯示密碼輸入框
+        function showPasswordInput() {
+            const congratulationsDiv = document.getElementById('congratulations');
+            const passwordContainer = document.getElementById('passwordContainer');
+            congratulationsDiv.style.display = 'none';
+            passwordContainer.style.display = 'block';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordResult').innerHTML = '';
+            MathJax.typeset();
+        }
+
+        // 提交密碼輸入
+        function submitPasswordInput() {
+            const passwordInput = document.getElementById('passwordInput').value;
+            const passwordResult = document.getElementById('passwordResult');
+            const number = parseInt(passwordInput);
+
+            if (isNaN(number) || number < 1 || number > 50) {
+                passwordResult.innerHTML = '請輸入 1 到 50 之間的數字';
+                passwordResult.className = 'error';
+            } else {
+                const password = passJson[number.toString()];
+                passwordResult.innerHTML = `密碼：${password}`;
+                passwordResult.className = 'success';
+                document.getElementById('passwordInput').disabled = true;
+                document.getElementById('confirmPasswordBtn').disabled = true;
+            }
+            MathJax.typeset();
+        }
+
+        // 檢查答案
+        function checkAnswer() {
+            if (inputsLocked) {
+                showFeedback('輸入框已鎖定，請生成新題目後再試！', false);
+                shakeScreen();
+                return;
+            }
+
+            const xInput = document.getElementById('xInput').value.trim();
+            const yInput = document.getElementById('yInput').value.trim();
+            const feedback = document.getElementById('feedback');
+            const inputGroup = document.getElementById('input-group');
+
+            const parseInput = (input) => {
+                if (input.includes('/')) {
+                    const [num, den] = input.split('/').map(n => parseFloat(n.trim()));
+                    if (isNaN(num) || isNaN(den) || den === 0) return null;
+                    const divisor = gcd(Math.abs(num), Math.abs(den));
+                    return { num: num / divisor, denom: den / divisor };
+                }
+                const value = parseFloat(input);
+                if (isNaN(value)) return null;
+                return toFraction(value);
+            };
+
+            const xValue = parseInput(xInput);
+            const yValue = parseInput(yInput);
+            const xCorrect = toFraction(x_frac);
+            const yCorrect = toFraction(y_frac);
+
+            if (!xValue || !yValue || typeof x_frac === 'string' || typeof y_frac === 'string') {
+                showFeedback('請輸入有效的數字或分數！', false);
+                shakeScreen();
+                return;
+            }
+
+            const isCorrect = areFractionsEqual(xValue, xCorrect) && areFractionsEqual(yValue, yCorrect);
+
+            const xInputElement = document.getElementById('xInput');
+            const yInputElement = document.getElementById('yInput');
+            const checkAnswerBtn = document.getElementById('checkAnswerBtn');
+            const nextProblemBtn = document.getElementById('nextProblemBtn');
+            const eliminateXBtn = document.getElementById('eliminateXButton');
+            const eliminateYBtn = document.getElementById('eliminateYButton');
+
+            if (isCorrect) {
+                starCount++;
+                showFeedback('恭喜答對，獲得一粒星星！', true, 1500);
+                inputsLocked = true;
+                xInputElement.disabled = true;
+                yInputElement.disabled = true;
+                checkAnswerBtn.disabled = true;
+                eliminateXBtn.disabled = true;
+                eliminateYBtn.disabled = true;
+                if (starCount >= 3) {
+                    const congratulationsDiv = document.getElementById('congratulations');
+                    congratulationsDiv.style.display = 'block';
+                    congratulationsDiv.innerHTML = '恭喜完成練習！';
+                    triggerConfetti();
+                    if (hasPassJson) {
+                        setTimeout(showPasswordInput, 1200);
+                    }
+                } else {
+                    setTimeout(nextProblem, 1500);
+                }
+            } else {
+                starCount = 0;
+                showFeedback('答案錯誤，請重新輸入！', false);
+                shakeScreen();
+                xInputElement.value = '';
+                yInputElement.value = '';
+                inputsLocked = false;
+            }
+
+            displayStars();
+            MathJax.typeset();
+        }
+
+        // 鎖定輸入框
+        function lockInputs() {
+            inputsLocked = true;
+            document.getElementById('xInput').disabled = true;
+            document.getElementById('yInput').disabled = true;
+            document.getElementById('checkAnswerBtn').disabled = true;
+            document.getElementById('eliminateXButton').disabled = true;
+            document.getElementById('eliminateYButton').disabled = true;
+        }
+
+        // 解鎖輸入框
+        function unlockInputs() {
+            inputsLocked = false;
+            document.getElementById('xInput').disabled = false;
+            document.getElementById('yInput').disabled = false;
+            document.getElementById('xInput').value = '';
+            document.getElementById('yInput').value = '';
+            document.getElementById('checkAnswerBtn').disabled = false;
+            document.getElementById('eliminateXButton').disabled = false;
+            document.getElementById('eliminateYButton').disabled = false;
+            document.getElementById('feedback').textContent = '';
+        }
+
+        // 重置消去X的按鈕和步驟狀態
+        function resetEliminateX() {
+            currentStepX = 0;
+            document.getElementById('eliminateXButton').textContent = '加減消元消去X';
+        }
+
+        // 重置消去Y的按鈕和步驟狀態
+        function resetEliminateY() {
+            currentStepY = 0;
+            document.getElementById('eliminateYButton').textContent = '加減消元消去Y';
+        }
+
+        // 生成新題目
+        function nextProblem() {
+            problemCount++;
+            document.title = `二元一次方程練習 ${problemCount}`;
+            generateEquations();
+            document.getElementById('problem').innerHTML = `
+                <div class="step">
+                    <h3>解二元一次方程組</h3>
+                    <div style="font-size: 200%;">\\[ \\begin{cases} ${formatEquation(a, b, e)} \\ (1) \\\\ ${formatEquation(c, d, f)} \\ (2) \\end{cases} \\]</div>
+                </div>
+            `;
+            document.getElementById('steps').innerHTML = '';
+            resetEliminateX();
+            resetEliminateY();
+            unlockInputs();
+            const congratulationsDiv = document.getElementById('congratulations');
+            congratulationsDiv.style.display = 'none';
+            const passwordContainer = document.getElementById('passwordContainer');
+            passwordContainer.style.display = 'none';
+            document.getElementById('passwordInput').disabled = false;
+            document.getElementById('confirmPasswordBtn').disabled = false;
+            document.getElementById('passwordResult').innerHTML = '';
+            displayStars();
+            MathJax.typeset();
+        }
+
+        // 重置星星並生成新題目
+        function resetStarsAndNextProblem() {
+            starCount = 0;
+            nextProblem();
+        }
+
+        // 顯示加減消元消去X（逐步）
+        function showEliminateX() {
+            const steps = generateSteps();
+            const eliminateXSteps = steps.slice(0, 6);
+            currentStepX = Math.min(currentStepX + 1, eliminateXSteps.length);
+
+            document.getElementById('steps').innerHTML = eliminateXSteps.slice(0, currentStepX).join('');
+            MathJax.typeset();
+
+            if (currentStepX < eliminateXSteps.length) {
+                document.getElementById('eliminateXButton').textContent = '下一步';
+            } else {
+                document.getElementById('eliminateXButton').textContent = '加減消元消去X';
+            }
+
+            lockInputs();
+            resetEliminateY();
+        }
+
+        // 顯示加減消元消去Y（逐步）
+        function showEliminateY() {
+            const steps = generateSteps();
+            const eliminateYSteps = steps.slice(6);
+            currentStepY = Math.min(currentStepY + 1, eliminateYSteps.length);
+
+            document.getElementById('steps').innerHTML = eliminateYSteps.slice(0, currentStepY).join('');
+            MathJax.typeset();
+
+            if (currentStepY < eliminateYSteps.length) {
+                document.getElementById('eliminateYButton').textContent = '下一步';
+            } else {
+                document.getElementById('eliminateYButton').textContent = '加減消元消去Y';
+            }
+
+            lockInputs();
+            resetEliminateX();
+        }
+
+        // 初始化
+        checkPassJson().then(() => {
+            displayStars();
+            nextProblem();
+        });
+    </script>
+</body>
+</html>

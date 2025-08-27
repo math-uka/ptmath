@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教學互動工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        h1 {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 700;
+            padding: 60px 20px 40px;
+            color: #1d1d1f;
+            letter-spacing: -0.02em;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .category-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .category-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .category-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+        .category-content p {
+            font-size: 16px;
+            color: #6e6e73;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6e6e73;
+            font-size: 14px;
+        }
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+                padding: 40px 20px 20px;
+            }
+            .category-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .category-image {
+                width: 100%;
+                height: 200px;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            .category-content {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>教學互動工具</h1>
+    <div class="container">
+        <div class="category-list">
+
+            <div class="category-item" onclick="window.location.href='p1/p1index.html'">
+                <div class="category-image">
+                    <img src="images/a01.png" alt="小學一年級互動學習工具">
+                </div>
+                <div class="category-content">
+                    <h2>小學一年級 (P1)</h2>
+                    <p>針對小學一年級的練習課件</p>
+                </div>
+             </div>
+            
+     <div class="category-item" onclick="window.location.href='p2/p2index.html'">
+                <div class="category-image">
+                    <img src="images/c01.png" alt="小學二年級互動學習工具">
+                </div>
+                <div class="category-content">
+                    <h2>小學二年級 (P2)</h2>
+                    <p>針對小學二年級的練習課件</p>
+                </div>
+            </div>
+
+
+     <div class="category-item" onclick="window.location.href='p3/p3index.html'">
+                <div class="category-image">
+                    <img src="images/301.png" alt="小學三年級互動學習工具">
+                </div>
+                <div class="category-content">
+                    <h2>小學三年級 (P3)</h2>
+                    <p>針對小學三年級的練習課件</p>
+                </div>
+            </div>
+
+
+          <!--      <div class="category-item" onclick="window.location.href='f1/f1index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="初中一年級互動學習工具">
+                </div>
+                <div class="category-content">
+                    <h2>初中一年級 (F1)</h2>
+                    <p>針對初中一年級的互動學習工具</p>
+                </div>
+            </div>
+       
+      <div class="category-item" onclick="window.location.href='f2/f2index.html'">
+                <div class="category-image">
+                    <img src="images/f201.png" alt="初中二年級互動學習工具">
+                </div>
+                <div class="category-content">
+                    <h2>初中二年級 (F2)</h2>
+                    <p>針對初中二年級的互動學習工具</p>
+                </div>
+            </div>
+       
+     <div class="category-item" onclick="window.location.href='f3/f3index.html'">
+                <div class="category-image">
+                    <img src="images/f301.png" alt="初中三年級互動學習工具">
+                </div>
+                <div class="category-content">
+                    <h2>初中三年級 (F3)</h2>
+                    <p>針對初中三年級的互動學習工具</p>
+                </div>
+            </div>
+       -->
+
+                <!-- 
+            <div class="category-item" onclick="window.location.href='p3/p3index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="小學三年級題庫">
+                </div>
+                <div class="category-content">
+                    <h2>小學三年級 (P3)</h2>
+                    <p>針對小學三年的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='p4/p4index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="小學四年級題庫">
+                </div>
+                <div class="category-content">
+                    <h2>小學四年級 (P4)</h2>
+                    <p>針對小學四年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='p5/p5index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="小學五年級題庫">
+                </div>
+                <div class="category-content">
+                    <h2>小學五年級 (P5)</h2>
+                    <p>針對小學五年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='p6/p6index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="小學六年級題庫">
+                </div>
+                <div class="category-content">
+                    <h2>小學六年級 (P6)</h2>
+                    <p>針對小學六年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='f1/f1index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="初中一年級題庫">
+                </div>
+                <div class="category-content">
+                    <h2>初中一年級 (F1)</h2>
+                    <p>針對初中一年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='f2/f2index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="初中二年級題庫">
+                </div>
+                <div class="category-content">
+                    <h2>初中二年級 (F2)</h2>
+                    <p>針對初中二年級的動態課件</p>
+                </div>
+            </div>
+            <div class="category-item" onclick="window.location.href='f3/f3index.html'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="初中三年級題庫">
+                </div>
+                <div class="category-content">
+                    <h2>初中三年級 (F3)</h2>
+                    <p>針對初中三年級的動態課件</p>
+                </div>
+            </div>
+
+            
+           美術設計工具 
+            <div class="category-item" onclick="window.location.href='art/index.html'">
+                <div class="category-image">
+                    <img src="images/d01.png" alt="美術設計工具">
+                </div>
+                <div class="category-content">
+                    <h2>美術設計工具</h2>
+                    <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
+                </div>
+            </div>
+        
+ -->
+
+            
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>

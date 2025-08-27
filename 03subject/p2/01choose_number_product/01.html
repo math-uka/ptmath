@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乘法大挑戰</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffeb3b, #4caf50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-y: auto;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            animation: bounceIn 1s;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        h1 {
+            color: #e91e63;
+            font-size: clamp(20px, 5vw, 28px);
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 18px;
+            width: 60px;
+            border: 2px solid #2196f3;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1976d2;
+        }
+        #question {
+            font-size: clamp(20px, 5vw, 24px);
+            color: #4caf50;
+            margin: 20px 0;
+        }
+        #answerDisplay {
+            font-size: 24px;
+            padding: 10px;
+            border: 2px solid #2196f3;
+            border-radius: 5px;
+            margin: 10px 0;
+            min-height: 20px;
+        }
+        #result {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .key {
+            padding: 15px;
+            font-size: 20px;
+            background: #ff9800;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .key:hover {
+            background: #f57c00;
+        }
+        .submit-key {
+            background: #2196f3;
+        }
+        .submit-key:hover {
+            background: #1976d2;
+        }
+        .end-screen {
+            display: none;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: red;
+            animation: fall 3s infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h1>乘法大挑戰</h1>
+        <p>請輸入一個數字 (2-9)：</p>
+        <input type="number" id="rangeInput" min="2" max="9" onkeydown="if(event.key === 'Enter') startGame()">
+        <button onclick="startGame()">開始遊戲</button>
+    </div>
+
+    <div class="container" id="gameScreen" style="display: none;">
+        <h1>乘法大挑戰</h1>
+        <div id="question"></div>
+        <div id="answerDisplay"></div>
+        <div class="keyboard">
+            <div class="key" onclick="addDigit(1)">1</div>
+            <div class="key" onclick="addDigit(2)">2</div>
+            <div class="key" onclick="addDigit(3)">3</div>
+            <div class="key" onclick="addDigit(4)">4</div>
+            <div class="key" onclick="addDigit(5)">5</div>
+            <div class="key" onclick="addDigit(6)">6</div>
+            <div class="key" onclick="addDigit(7)">7</div>
+            <div class="key" onclick="addDigit(8)">8</div>
+            <div class="key" onclick="addDigit(9)">9</div>
+            <div class="key" onclick="addDigit(0)">0</div>
+            <div class="key" onclick="clearAnswer()">清除</div>
+            <div class="key submit-key" onclick="checkAnswer()">提交</div>
+        </div>
+        <div id="result"></div>
+        <div id="progress">進度：0/10</div>
+    </div>
+
+    <div class="container end-screen" id="endScreen">
+        <h1>遊戲結束！</h1>
+        <div id="wrongList"></div>
+        <button onclick="retryWrong()">重測錯題</button>
+        <button onclick="restartGame()">重新開始</button>
+    </div>
+
+    <script>
+        let maxRange, questions = [], usedQuestions = new Set(), currentQuestion, correctCount = 0, wrongQuestions = new Set();
+        const totalQuestions = 10;
+        let currentAnswer = '';
+
+        function startGame() {
+            maxRange = parseInt(document.getElementById('rangeInput').value);
+            if (isNaN(maxRange) || maxRange < 2 || maxRange > 9) {
+                alert('請輸入 2 到 9 之間的數字！');
+                return;
+            }
+            generateQuestions();
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            nextQuestion();
+        }
+
+        function generateQuestions() {
+            questions = [];
+            for (let i = 2; i <= maxRange; i++) {
+                for (let j = 2; j <= 9; j++) {
+                    questions.push({ a: i, b: j, answer: i * j });
+                }
+            }
+        }
+
+        function nextQuestion() {
+            if (correctCount + wrongQuestions.size >= totalQuestions) {
+                endGame();
+                return;
+            }
+            let availableQuestions = questions.filter(q => !usedQuestions.has(`${q.a}×${q.b}`));
+            if (availableQuestions.length === 0) {
+                usedQuestions.clear();
+                availableQuestions = questions;
+            }
+            currentQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+            usedQuestions.add(`${currentQuestion.a}×${currentQuestion.b}`);
+            document.getElementById('question').textContent = `${currentQuestion.a} × ${currentQuestion.b} = ?`;
+            currentAnswer = '';
+            document.getElementById('answerDisplay').textContent = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('progress').textContent = `進度：${correctCount + wrongQuestions.size}/${totalQuestions}`;
+        }
+
+        function addDigit(digit) {
+            currentAnswer += digit;
+            document.getElementById('answerDisplay').textContent = currentAnswer;
+        }
+
+        function clearAnswer() {
+            currentAnswer = '';
+            document.getElementById('answerDisplay').textContent = '';
+        }
+
+        function checkAnswer() {
+            if (!currentAnswer) {
+                document.getElementById('result').textContent = '請輸入答案！';
+                document.getElementById('result').style.color = '#f44336';
+                return;
+            }
+            const userAnswer = parseInt(currentAnswer);
+            if (userAnswer === currentQuestion.answer) {
+                document.getElementById('result').textContent = '答對了！🎉';
+                document.getElementById('result').style.color = '#4caf50';
+                correctCount++;
+                document.getElementById('progress').textContent = `進度：${correctCount + wrongQuestions.size}/${totalQuestions}`;
+                setTimeout(nextQuestion, 1000);
+            } else {
+                document.getElementById('result').textContent = `答錯了！正確答案是 ${currentQuestion.answer}，請再試！`;
+                document.getElementById('result').style.color = '#f44336';
+                wrongQuestions.add(`${currentQuestion.a} × ${currentQuestion.b} = ${currentQuestion.answer}`);
+            }
+        }
+
+        function endGame() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('endScreen').style.display = 'block';
+            document.getElementById('wrongList').innerHTML = '<h3>錯題回顧：</h3>' + 
+                (wrongQuestions.size > 0 ? Array.from(wrongQuestions).join('<br>') : '完美！沒有錯題！');
+            addConfetti();
+        }
+
+        function addConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        function retryWrong() {
+            if (wrongQuestions.size === 0) {
+                alert('沒有錯題可重測！');
+                return;
+            }
+            questions = Array.from(wrongQuestions).map(q => {
+                const [a, , b] = q.split(' ');
+                return { a: parseInt(a), b: parseInt(b), answer: parseInt(a) * parseInt(b) };
+            });
+            correctCount = 0;
+            wrongQuestions.clear();
+            usedQuestions.clear();
+            document.getElementById('endScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('progress').textContent = `進度：0/${questions.length}`;
+            nextQuestion();
+        }
+
+        function restartGame() {
+            location.reload();
+        }
+
+        // 監聽鍵盤事件以支援 Enter 鍵
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && document.getElementById('gameScreen').style.display === 'block') {
+                checkAnswer();
+            }
+        });
+    </script>
+        <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+</body>
+</html>

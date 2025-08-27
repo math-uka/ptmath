@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>函數關係判斷練習</title>
+    <style>
+        .question-container {
+            text-align: center;
+            margin: 50px;
+        }
+        .options button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .correct {
+            color: green;
+        }
+        .wrong {
+            color: red;
+        }
+        .background-condition {
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="question-container">
+        <h2 id="question"></h2>
+        <div class="options">
+            <button onclick="checkAnswer(true)">是</button>
+            <button onclick="checkAnswer(false)">否</button>
+        </div>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const questionBank = [
+            { a: "溫度", b: "時間", isFunction: true, explanation: "實驗室環境下每個時間點有唯一溫度記錄", background: "" },
+            { a: "身份證號碼", b: "姓名", isFunction: false, explanation: "存在同名同姓情況，一個姓名可能對應多個號碼", background: "" },
+            { a: "血型", b: "身份證號碼", isFunction: true, explanation: "每個身份證號碼對應唯一持有者的生物特徵", background: "" },
+            { a: "學號", b: "學生身高", isFunction: false, explanation: "相同身高可能對應多個學生", background: "" },
+            { a: "手機型號", b: "生產序號", isFunction: true, explanation: "每個序號唯一標識一台設備的型號", background: "" },
+            { a: "銀行帳戶餘額", b: "帳戶號碼", isFunction: true, explanation: "每個帳戶有且只有一個當前餘額", background: "" },
+            { a: "ISBN編號", b: "書籍名稱", isFunction: false, explanation: "同一書籍的不同版本會有不同ISBN", background: "" },
+            { a: "位移", b: "時間", isFunction: true, explanation: "s=vt 關係下每個時間點對應唯一位移值", background: "勻速直線運動中" },
+            { a: "學號", b: "學生姓名", isFunction: false, explanation: "該班級存在同名同姓學生情況", background: "初二B班中" },
+            { a: "電費", b: "用電量", isFunction: true, explanation: "電費=單價×用電量，嚴格線性關係", background: "固定電價政策下" }
+        ];
+
+        console.log("Script loaded, questionBank length:", questionBank.length);
+
+        let currentQuestion = 0;
+
+        function displayQuestion() {
+            const questionElement = document.getElementById("question");
+            if (!questionElement) {
+                console.error("Element with ID 'question' not found!");
+                return;
+            }
+            const q = questionBank[currentQuestion];
+            let questionText = q.a + " 是 " + q.b + " 的函數嗎？";
+            if (q.background) {
+                questionText = `<span class="background-condition">（${q.background}）</span> ${questionText}`;
+            }
+            questionElement.innerHTML = questionText;
+            document.getElementById("feedback").innerHTML = "";
+        }
+
+        function checkAnswer(userAnswer) {
+            console.log("User answer:", userAnswer);
+            const q = questionBank[currentQuestion];
+            if (userAnswer === q.isFunction) {
+                document.getElementById("feedback").innerHTML = 
+                    `<p class="correct">正確！${q.explanation}</p>`;
+                setTimeout(() => {
+                    currentQuestion++;
+                    if (currentQuestion < questionBank.length) {
+                        displayQuestion();
+                    } else {
+                        alert("練習完成！");
+                    }
+                }, 1500);
+            } else {
+                document.getElementById("feedback").innerHTML = 
+                    `<p class="wrong">錯誤！請重新回答：${q.explanation}</p>`;
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>

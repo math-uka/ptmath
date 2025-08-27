@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看圖默書工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #95a5a6;
+            color: white;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+        .button-group {
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 100px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        #mainContainer {
+            display: none;
+        }
+        #quizContainer {
+            display: none;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        #inputContainer {
+            display: block;
+            text-align: center;
+        }
+        #jsonButtons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        #currentWord, #currentImage {
+            margin: 25px 0;
+            font-size: 1.5em;
+            color: #2c3e50;
+        }
+        #currentImage img {
+            max-width: 200px;
+            height: auto;
+        }
+        #timerDisplay {
+            font-size: 1.2em;
+            color: #e74c3c;
+            margin: 15px 0;
+        }
+        .play-button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #e74c3c;
+        }
+        .play-button:hover {
+            background: #c0392b;
+        }
+        .quiz-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        .word-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .word-button {
+            padding: 12px;
+            background-color: #ecf0f1;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: black;
+        }
+        .word-button.selected {
+            background-color: #95a5a6;
+            color: black;
+        }
+        .word-button:hover {
+            background-color: #bdc3c7;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+            .play-button {
+                padding: 15px;
+                font-size: 18px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .quiz-buttons button {
+                padding: 15px;
+                font-size: 18px;
+            }
+            .word-button {
+                padding: 15px;
+                font-size: 16px;
+            }
+            #jsonButtons button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>看圖默書工具</h1>
+        <div id="inputContainer">
+            <p>請選擇要載入的 JSON 檔案：</p>
+            <div id="jsonButtons"></div>
+        </div>
+        <div id="mainContainer">
+            <div id="tableContainer"></div>
+            <div class="button-group">
+                <button onclick="startQuizMode()">開始測驗</button>
+            </div>
+        </div>
+        <div id="quizContainer">
+            <h2>測驗模式</h2>
+            <div id="modeSelection">
+                <p>請選擇測驗模式：</p>
+                <button onclick="startQuiz('image')">看圖默書</button>
+                <button onclick="startQuiz('audio')">聽默</button>
+            </div>
+            <div id="currentWord"></div>
+            <div id="currentImage"></div>
+            <div id="timerDisplay"></div>
+            <div class="quiz-buttons">
+                <button onclick="replay()">重播/重看</button>
+                <button onclick="nextWord()">下一個</button>
+            </div>
+            <div id="resultContainer"></div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>

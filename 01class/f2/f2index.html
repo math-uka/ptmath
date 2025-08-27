@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初二級互動教學工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        h1 {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 700;
+            padding: 60px 20px 40px;
+            color: #1d1d1f;
+            letter-spacing: -0.02em;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .category-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .category-image {
+            width: 200px;
+            height: 150px;
+            margin-right: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .category-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+        .category-content p {
+            font-size: 16px;
+            color: #6e6e73;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6e6e73;
+            font-size: 14px;
+        }
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+                padding: 40px 20px 20px;
+            }
+            .category-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .category-image {
+                width: 100%;
+                height: 200px;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            .category-content {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>初二級互動教學工具</h1>
+    <div class="container">
+        <div class="category-list">
+
+        <div class="category-item" onclick="window.location.href='14.0.1power_index/01.html'">
+                <div class="category-image">
+                    <img src="00images/140101.png" alt="同底數幂乘法教學">
+                </div>
+                <div class="category-content">
+                    <h2>同底數幂乘法教學</h2>
+                    <p>提供同底數幂乘法教學，設有步驟演示。</p>
+                </div>
+            </div>
+
+
+        <div class="category-item" onclick="window.location.href='11index_product/01.html'">
+                <div class="category-image">
+                    <img src="00images/1101.png" alt="同底數幂乘法">
+                </div>
+                <div class="category-content">
+                    <h2>同底數幂乘法</h2>
+                    <p>提供同底數幂乘法練習，設有答案提示功能。</p>
+                </div>
+            </div>
+
+  <div class="category-item" onclick="window.location.href='14.0.2power_of_power/01.html'">
+                <div class="category-image">
+                    <img src="00images/140201.png" alt="幂的乘方教學">
+                </div>
+                <div class="category-content">
+                    <h2>幂的乘方教學</h2>
+                    <p>提供幂的乘方教學，設有步驟演示。</p>
+                </div>
+            </div>
+
+     <div class="category-item" onclick="window.location.href='12index_power/01.html'">
+                <div class="category-image">
+                    <img src="00images/1201.png" alt="幂的乘方">
+                </div>
+                <div class="category-content">
+                    <h2>幂的乘方</h2>
+                    <p>提供幂的乘方練習，設有答案提示功能。</p>
+                </div>
+            </div>
+
+
+<div class="category-item" onclick="window.location.href='14.0.3product_of_power/01.html'">
+                <div class="category-image">
+                    <img src="00images/140301.png" alt="積的乘方">
+                </div>
+                <div class="category-content">
+                    <h2>積的乘方</h2>
+                    <p>提供積的乘方教學，設有步驟演示。</p>
+                </div>
+            </div>
+  
+
+
+     <div class="category-item" onclick="window.location.href='13index_product_power/01.html'">
+                <div class="category-image">
+                    <img src="00images/1301.png" alt="積的乘方">
+                </div>
+                <div class="category-content">
+                    <h2>積的乘方</h2>
+                    <p>提供積的乘方練習，設有答案提示功能。</p>
+                </div>
+            </div>
+
+   
+
+    <div class="category-item" onclick="window.location.href='14.1product_mon_pol/01.html'">
+                <div class="category-image">
+                    <img src="00images/14a01.png" alt="單項式乘多項式">
+                </div>
+                <div class="category-content">
+                    <h2>單項式乘多項式</h2>
+                    <p>提供單項式乘多項式的教學，設有詳細步驟及圖像化說明。</p>
+                </div>
+            </div>
+
+   <div class="category-item" onclick="window.location.href='14.2product_pol_pol/01.html'">
+                <div class="category-image">
+                    <img src="00images/14b01.png" alt="整式乘法">
+                </div>
+                <div class="category-content">
+                    <h2>整式乘法</h2>
+                    <p>提供整式乘法的教學，設有詳細步驟及圖像化說明。</p>
+                </div>
+            </div>
+
+
+        <div class="category-item" onclick="window.location.href='10irractional_number_simplify/01.html'">
+                <div class="category-image">
+                    <img src="00images/1001.png" alt="化簡二次根式">
+                </div>
+                <div class="category-content">
+                    <h2>化簡二次根式</h2>
+                    <p>提供化簡二次根式練習，設有兩種難度及答案提示。</p>
+                </div>
+            </div>
+
+
+
+            <div class="category-item" onclick="window.location.href='quadrilateral_lab/01.html'">
+                <div class="category-image">
+                    <img src="00images/01.png" alt="四邊形探究">
+                </div>
+                <div class="category-content">
+                    <h2>四邊形探究</h2>
+                    <p>提供互動式工具，研究四邊形的邊角關係。</p>
+                </div>
+            </div>
+
+
+
+
+
+	 <div class="category-item" onclick="window.location.href='01quadrilateral_pet/02.html'">
+                <div class="category-image">
+                    <img src="00images/101.png" alt="平行四邊形判定工具">
+                </div>
+                <div class="category-content">
+                    <h2>平行四邊形判定工具</h2>
+                    <p>探究判定平行四邊形的條件</p>
+                </div>
+            </div>
+
+
+
+<!-- <div class="category-item" onclick="window.location.href='04function_determine/01.html'">
+                <div class="category-image">
+                    <img src="00images/401.png" alt="函數判定">
+                </div>
+                <div class="category-content">
+                    <h2>判定是否函數</h2>
+                    <p>判定是否為函數關係</p>
+                </div>
+            </div> -->
+
+
+<div class="category-item" onclick="window.location.href='03linear_function_graph_beginning/01.html'">
+                <div class="category-image">
+                    <img src="00images/301.png" alt="一次函數圖畫圖教學">
+                </div>
+                <div class="category-content">
+                    <h2>一次函數圖畫圖教學具</h2>
+                    <p>一次函數圖畫圖教學, 學習求函數值, 描點, 畫圖</p>
+                </div>
+            </div>
+
+<div class="category-item" onclick="window.location.href='02linear_function_graph/01.html'">
+                <div class="category-image">
+                    <img src="00images/01.png" alt="一次函數圖像探究工具">
+                </div>
+                <div class="category-content">
+                    <h2>一次函數圖像探究工具</h2>
+                    <p>一次函數圖像探究工具, 支持平移及旋轉功能</p>
+                </div>
+            </div>
+
+
+   <div class="category-item" onclick="window.location.href='06twopoint_dind_function/01.html'">
+                <div class="category-image">
+                    <img src="00images/601.png" alt="待定系數法求函數方程">
+                </div>
+                <div class="category-content">
+                    <h2>待定系數法求函數方程</h2>
+                    <p>待定系數法求函數方程</p>
+                </div>
+            </div>
+
+
+
+
+
+   <div class="category-item" onclick="window.location.href='07sketch_linear_function/01.html'">
+                <div class="category-image">
+                    <img src="00images/701.png" alt="一次函數性質">
+                </div>
+                <div class="category-content">
+                    <h2>一次函數性質</h2>
+                    <p>一次函數草圖, 單調性, XY軸交點練習</p>
+                </div>
+            </div>
+
+		   <div class="category-item" onclick="window.location.href='08avgnumber/01.html'">
+                <div class="category-image">
+                    <img src="00images/801.png" alt="平均數/加权平均數">
+                </div>
+                <div class="category-content">
+                    <h2>平均數/加权平均數</h2>
+                    <p>平均數/加权平均數計算器</p>
+                </div>
+            </div>
+
+		   <div class="category-item" onclick="window.location.href='09Statistics/01.html'">
+                <div class="category-image">
+                    <img src="00images/901.png" alt="平均數/中位數/眾數-教學">
+                </div>
+                <div class="category-content">
+                    <h2>平均數/中位數/眾數</h2>
+                    <p>平均數/中位數/眾數計算器，並設有分步提示，教你怎樣做題</p>
+                </div>
+            </div>
+
+           <!-- <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/b01.png" alt="工具2">
+                </div>
+                <div class="category-content">
+                    <h2>工具2</h2>
+                    <p>針對小學一年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="00images/b01.png" alt="工具3">
+                </div>
+                <div class="category-content">
+                    <h2>工具3</h2>
+                    <p>針對小學二年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具4">
+                </div>
+                <div class="category-content">
+                    <h2>工具4</h2>
+                    <p>針對小學三年的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具5">
+                </div>
+                <div class="category-content">
+                    <h2>工具5</h2>
+                    <p>針對小學四年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具6">
+                </div>
+                <div class="category-content">
+                    <h2>工具6</h2>
+                    <p>針對小學五年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具7">
+                </div>
+                <div class="category-content">
+                    <h2>工具7</h2>
+                    <p>針對小學六年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具8">
+                </div>
+                <div class="category-content">
+                    <h2>工具8</h2>
+                    <p>針對初中一年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具9">
+                </div>
+                <div class="category-content">
+                    <h2>工具9</h2>
+                    <p>針對初中二年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/b01.png" alt="工具10">
+                </div>
+                <div class="category-content">
+                    <h2>工具10</h2>
+                    <p>針對初中三年級的動態課件</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/d01.png" alt="工具11">
+                </div>
+                <div class="category-content">
+                    <h2>工具11</h2>
+                    <p>提供創意設計工具，幫助學生和教師創作美術作品或設計項目。</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="category-item" onclick="window.location.href='#'">
+                <div class="category-image">
+                    <img src="images/e01.png" alt="工具12">
+                </div>
+                <div class="category-content">
+                    <h2>工具12</h2>
+                    <p>涵蓋多種實用工具，滿足教學和學習中的各種需求。</p>
+                </div>
+            </div>
+        </div>
+-->
+
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>

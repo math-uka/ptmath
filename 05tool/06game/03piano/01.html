@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>鋼琴音樂遊戲425</title>
+    <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            overflow: hidden;
+            touch-action: none;
+        }
+        #mode-selection, #song-selection {
+            position: absolute;
+            top: 20px;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #song-selection {
+            display: none;
+        }
+        h2 {
+            font-size: clamp(20px, 5vw, 28px);
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        button {
+            padding: 12px 25px;
+            font-size: clamp(14px, 4vw, 18px);
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            background: #ff6f61;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            background: #ff8a80;
+        }
+        #piano {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 1800px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-top: 2px solid rgba(255,255,255,0.2);
+            box-sizing: border-box;
+        }
+        .key {
+            width: clamp(60px, 10vw, 120px);
+            height: clamp(240px, 50vh, 360px);
+            border: 1px solid #333;
+            background: #fff;
+            cursor: pointer;
+            transition: background 0.1s, transform 0.1s;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            font-size: clamp(12px, 2vw, 16px);
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            touch-action: none;
+        }
+        .key:active {
+            transform: scale(0.98);
+            background: #e0e0e0;
+        }
+        .black-key {
+            width: clamp(40px, 6vw, 80px);
+            height: clamp(140px, 30vh, 220px);
+            background: #222;
+            color: #fff;
+            margin: 0 calc(clamp(40px, 6vw, 80px) / -2);
+            position: relative;
+            z-index: 1;
+        }
+        .black-key:active {
+            background: #444;
+        }
+        .highlight {
+            background: #ffd700 !important;
+        }
+        #speed-control {
+            position: absolute;
+            top: 150px;
+            text-align: center;
+            width: 100%;
+            display: none;
+        }
+        #speed-control label {
+            font-size: clamp(14px, 4vw, 18px);
+            margin-right: 10px;
+        }
+        #speed-control input[type="range"] {
+            width: 200px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            #mode-selection, #song-selection {
+                padding: 10px;
+            }
+            #piano {
+                padding: 10px;
+            }
+            #speed-control {
+                top: 120px;
+            }
+            #speed-control input[type="range"] {
+                width: 150px;
+            }
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="mode-selection">
+        <h2>鋼琴音樂遊戲</h2>
+        <button onclick="startFreeMode()">自由彈奏</button>
+        <button onclick="showSongSelection()">樂譜模式</button>
+    </div>
+    <div id="song-selection">
+        <h2>選擇樂譜</h2>
+        <button onclick="startSongMode('twinkle')">小星星</button>
+        <button onclick="startSongMode('birthday')">生日快樂</button>
+        <button onclick="startSongMode('mary')">瑪莉有隻小羊羔</button>
+        <button onclick="startSongMode('t')">Twinkle Extended</button>
+        <button onclick="startSongMode('canonInD')">卡農D大調</button>
+        <button onclick="startSongMode('aptFull')">APT</button>
+<button onclick="startSongMode('sigmaBoyMelody')">sigmaBoyMelody</button>
+        
+    </div>
+    <div id="speed-control">
+        <label for="speed-slider">播放速度: </label>
+        <input type="range" id="speed-slider" min="0.5" max="2" step="0.1" value="1">
+    </div>
+    <div id="piano" style="display: none;"></div>
+
+    <script>
+        const synth = new Tone.Synth().toDestination();
+
+        const piano = document.getElementById('piano');
+        const modeSelection = document.getElementById('mode-selection');
+        const songSelection = document.getElementById('song-selection');
+        const speedControl = document.getElementById('speed-control');
+        const speedSlider = document.getElementById('speed-slider');
+        const keys = [
+            { note: 'C4', color: 'white' },
+            { note: 'C#4', color: 'black' },
+            { note: 'D4', color: 'white' },
+            { note: 'D#4', color: 'black' },
+            { note: 'E4', color: 'white' },
+            { note: 'F4', color: 'white' },
+            { note: 'F#4', color: 'black' },
+            { note: 'G4', color: 'white' },
+            { note: 'G#4', color: 'black' },
+            { note: 'A4', color: 'white' },
+            { note: 'A#4', color: 'black' },
+            { note: 'B4', color: 'white' }
+        ];
+
+        function playNote(e, note) {
+            e.preventDefault();
+            synth.triggerAttackRelease(note, '8n');
+        }
+
+        function createPiano(isSongMode = false, currentNoteCallback = null) {
+            piano.innerHTML = '';
+            keys.forEach(key => {
+                const div = document.createElement('div');
+                div.className = `key ${key.color === 'black' ? 'black-key' : ''}`;
+                div.dataset.note = key.note;
+                div.textContent = key.note;
+
+                if (isSongMode) {
+                    div.addEventListener('mousedown', e => {
+                        playNote(e, key.note);
+                        if (currentNoteCallback && div.dataset.note === currentNoteCallback() && div.classList.contains('highlight')) {
+                            div.classList.remove('highlight');
+                        }
+                    });
+                    div.addEventListener('touchstart', e => {
+                        e.preventDefault();
+                        playNote(e, key.note);
+                        if (currentNoteCallback && div.dataset.note === currentNoteCallback() && div.classList.contains('highlight')) {
+                            div.classList.remove('highlight');
+                        }
+                    });
+                } else {
+                    div.addEventListener('mousedown', e => playNote(e, key.note));
+                    div.addEventListener('touchstart', e => {
+                        e.preventDefault();
+                        playNote(e, key.note);
+                    });
+                }
+
+                div.addEventListener('touchmove', e => e.preventDefault());
+                div.addEventListener('touchend', e => e.preventDefault());
+                piano.appendChild(div);
+            });
+            piano.style.display = 'flex';
+            modeSelection.style.display = 'none';
+            songSelection.style.display = 'none';
+            if (isSongMode) {
+                speedControl.style.display = 'block';
+            } else {
+                speedControl.style.display = 'none';
+            }
+        }
+
+        function startFreeMode() {
+            createPiano(false);
+        }
+
+        function showSongSelection() {
+            modeSelection.style.display = 'none';
+            songSelection.style.display = 'block';
+        }
+
+        const songs = {
+            twinkle: [
+                { note: 'C4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'G4', duration: 1000 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1000 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'C4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'G4', duration: 1000 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1500 }
+            ],
+            birthday: [
+    // "Happy birthday to you"
+    { note: 'C4', duration: 400 }, { note: 'C4', duration: 400 },
+    { note: 'D4', duration: 800 }, { note: 'C4', duration: 800 },
+    { note: 'F4', duration: 800 }, { note: 'E4', duration: 1200 },
+
+    // "Happy birthday to you"
+    { note: 'C4', duration: 400 }, { note: 'C4', duration: 400 },
+    { note: 'D4', duration: 800 }, { note: 'C4', duration: 800 },
+    { note: 'G4', duration: 800 }, { note: 'F4', duration: 1200 },
+
+    // "Happy birthday dear [name]"
+    { note: 'C4', duration: 400 }, { note: 'C4', duration: 400 },
+    { note: 'C5', duration: 800 }, { note: 'A4', duration: 800 }, // 原曲高音C5，此处用A4替代
+    { note: 'F4', duration: 800 }, { note: 'E4', duration: 800 },
+    { note: 'D4', duration: 1200 },
+
+    // "Happy birthday to you"
+    { note: 'A#4', duration: 400 }, { note: 'A#4', duration: 400 }, // 原曲降B调，用A#4替代
+    { note: 'A4', duration: 800 }, { note: 'F4', duration: 800 },
+    { note: 'G4', duration: 800 }, { note: 'F4', duration: 1200 }
+],
+            mary: [
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 1000 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 1000 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 1000 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 1000 },
+                { note: 'E4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 1000 }
+            ],
+            t: [
+                { note: 'C4', duration: 500 },
+                { note: 'C4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'G4', duration: 1000 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'C4', duration: 1000 },
+                { note: 'G4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'F4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 }
+            ],
+            canonInD: [
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'C#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'C#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'E5', duration: 500 },
+                { note: 'F#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'D4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'C#5', duration: 500 },
+                { note: 'D5', duration: 500 },
+                { note: 'A4', duration: 500 },
+                { note: 'B4', duration: 500 },
+                { note: 'F#4', duration: 500 },
+                { note: 'G4', duration: 500 },
+                { note: 'E4', duration: 500 },
+                { note: 'D4', duration: 1000 }
+            ],
+            aptFull: [
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'G4', duration: 300 }, { note: 'E4', duration: 500 },
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'G4', duration: 300 }, { note: 'E4', duration: 500 },
+                { note: 'C4', duration: 400 }, { note: 'D4', duration: 300 },
+                { note: 'E4', duration: 500 }, { note: 'G4', duration: 300 },
+                { note: 'E4', duration: 400 }, { note: 'D4', duration: 800 },
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'G4', duration: 300 }, { note: 'E4', duration: 400 },
+                { note: 'G4', duration: 300 }, { note: 'A4', duration: 200 },
+                { note: 'B4', duration: 500 },
+                { note: 'A4', duration: 200 }, { note: 'G4', duration: 200 },
+                { note: 'E4', duration: 300 }, { note: 'D4', duration: 700 }
+            ],
+            sigmaBoyMelody:[
+    // 前奏合成器旋律 (原曲高八度，此处降八度)
+    { note: 'E4', duration: 200 }, { note: 'G4', duration: 200 },
+    { note: 'A4', duration: 400 }, { note: 'G4', duration: 200 },
+    { note: 'E4', duration: 400 }, { note: 'D4', duration: 400 },
+
+    // Verse "I'm a sigma boy..."
+    { note: 'C4', duration: 300 }, { note: 'D4', duration: 300 },
+    { note: 'E4', duration: 600 }, { note: 'G4', duration: 300 },
+    { note: 'A4', duration: 300 }, { note: 'G4', duration: 600 }, // "sigma boy"
+
+    // Pre-Chorus "No rules no games..."
+    { note: 'A4', duration: 200 }, { note: 'G4', duration: 200 },
+    { note: 'F4', duration: 200 }, { note: 'E4', duration: 400 },
+    { note: 'D4', duration: 800 }, // "games"
+
+    // Chorus "I do what I want..."
+    { note: 'G4', duration: 250 }, { note: 'G4', duration: 250 },
+    { note: 'A4', duration: 250 }, { note: 'B4', duration: 250 },
+    { note: 'A4', duration: 250 }, { note: 'G4', duration: 250 },
+    { note: 'E4', duration: 1000 }, // "want"
+
+    // 重复段落
+    { note: 'E4', duration: 200 }, { note: 'G4', duration: 200 },
+    { note: 'A4', duration: 400 }, { note: 'G4', duration: 200 },
+    { note: 'E4', duration: 400 }, { note: 'D4', duration: 400 }
+]
+        };
+
+        function startSongMode(songKey) {
+            const selectedSong = songs[songKey];
+            if (!selectedSong) {
+                console.error(`樂譜 ${songKey} 未找到！`);
+                return;
+            }
+
+            let index = 0;
+            let currentNote = null;
+
+            createPiano(true, () => currentNote);
+
+            function highlightNextNote() {
+                if (index >= selectedSong.length) {
+                    speedControl.style.display = 'none'; // 結束時隱藏滑條
+                    return;
+                }
+
+                const speedMultiplier = parseFloat(speedSlider.value); // 獲取滑條值 (0.5 到 2)
+                const { note, duration } = selectedSong[index];
+                const adjustedDuration = duration / speedMultiplier; // 根據速度調整持續時間
+                currentNote = note;
+                const key = piano.querySelector(`[data-note="${note}"]`);
+
+                if (key) {
+                    key.classList.add('highlight');
+                    console.log(`高亮音符: ${note}, 調整後持續時間: ${adjustedDuration}ms`);
+                    setTimeout(() => {
+                        if (key.classList.contains('highlight')) {
+                            key.classList.remove('highlight');
+                        }
+                    }, adjustedDuration);
+                } else {
+                    console.error(`找不到鍵位: ${note}`);
+                }
+
+                setTimeout(() => {
+                    index++;
+                    highlightNextNote();
+                }, adjustedDuration);
+            }
+
+            highlightNextNote();
+        }
+
+        document.addEventListener('touchstart', function startAudio() {
+            Tone.start();
+            document.removeEventListener('touchstart', startAudio);
+        });
+        document.addEventListener('mousedown', function startAudio() {
+            Tone.start();
+            document.removeEventListener('mousedown', startAudio);
+        });
+    </script>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>

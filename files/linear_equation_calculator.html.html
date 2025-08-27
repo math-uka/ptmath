@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>一元二次方程隨機練習</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 20px; }
+        h1 { font-size: 36px; margin: 20px 0; }
+        .container { display: flex; justify-content: center; gap: 40px; }
+        .column { width: 300px; }
+        .equation { font-size: 24px; margin: 20px 0; min-height: 30px; }
+        button { padding: 10px 20px; margin: 5px; font-size: 16px; }
+        .answer { font-size: 20px; margin: 10px 0; color: #333; min-height: 20px; }
+    </style>
+</head>
+<body>
+ <div id="title">一元二次方程大比拼</div>
+
+    <h1>一元二次方程大比拼</h1>
+    <div class="container">
+        <div class="column">
+            <div id="equation1" class="equation"></div>
+            <button onclick="generateEquation(1)">新題目</button>
+            <button onclick="showAnswer(1)">顯示答案</button>
+            <div id="answer1" class="answer"></div>
+        </div>
+        <div class="column">
+            <div id="equation2" class="equation"></div>
+            <button onclick="generateEquation(2)">新題目</button>
+            <button onclick="showAnswer(2)">顯示答案</button>
+            <div id="answer2" class="answer"></div>
+        </div>
+        <div class="column">
+            <div id="equation3" class="equation"></div>
+            <button onclick="generateEquation(3)">新題目</button>
+            <button onclick="showAnswer(3)">顯示答案</button>
+            <div id="answer3" class="answer"></div>
+        </div>
+    </div>
+
+    <script>
+        // 儲存每列的方程
+        let equations = [
+            { a: 0, b: 0, c: 0 },
+            { a: 0, b: 0, c: 0 },
+            { a: 0, b: 0, c: 0 }
+        ];
+
+        function generateEquation(col) {
+            try {
+                const rand = Math.random();
+                let a, b, c;
+
+                // 33% 的概率二次項係數不為 1
+                a = (Math.random() < 0.33) ? Math.floor(Math.random() * 4) + 2 : 1;
+
+                // 20% 無解, 20% 無理數解, 60% 整數解
+                if (rand < 0.2) { // 無解
+                    b = Math.floor(Math.random() * 10) - 5;
+                    c = Math.floor(Math.random() * 10) + Math.ceil((b * b) / (4 * a)) + 1;
+                } else if (rand < 0.4) { // 無理數解
+                    b = Math.floor(Math.random() * 10) - 5;
+                    c = Math.floor(Math.random() * 10) - 5;
+                    let delta = b * b - 4 * a * c;
+                    while (delta <= 0 || isPerfectSquare(delta)) {
+                        c = Math.floor(Math.random() * 10) - 5;
+                        delta = b * b - 4 * a * c;
+                    }
+                } else { // 整數解
+                    const root1 = Math.floor(Math.random() * 10) - 5;
+                    const root2 = Math.floor(Math.random() * 10) - 5;
+                    b = -(root1 + root2) * a;
+                    c = root1 * root2 * a;
+                }
+
+                equations[col - 1] = { a, b, c };
+                let eqStr = '';
+                if (a === 1) eqStr += 'x²';
+                else eqStr += `${a}x²`;
+                if (b !== 0) eqStr += ` ${b > 0 ? '+' : ''}${b}x`;
+                if (c !== 0) eqStr += ` ${c > 0 ? '+' : ''}${c}`;
+                eqStr += ' = 0';
+
+                // 顯示題目
+                const equationElement = document.getElementById(`equation${col}`);
+                if (equationElement) {
+                    equationElement.innerHTML = eqStr;
+                    console.log(`Generated equation for col ${col}: ${eqStr}`);
+                } else {
+                    console.error(`Cannot find equation${col} element`);
+                }
+
+                // 清空答案
+                const answerElement = document.getElementById(`answer${col}`);
+                if (answerElement) {
+                    answerElement.innerHTML = '';
+                } else {
+                    console.error(`Cannot find answer${col} element`);
+                }
+            } catch (error) {
+                console.error(`Error in generateEquation for col ${col}: ${error}`);
+            }
+        }
+
+        function showAnswer(col) {
+            try {
+                const { a, b, c } = equations[col - 1];
+                const delta = b * b - 4 * a * c;
+
+                let answerStr = '';
+                if (delta < 0) {
+                    answerStr = "無實數解";
+                } else if (delta === 0) {
+                    const { num, denom } = simplifyFraction(-b, 2 * a);
+                    answerStr = num % denom === 0 ? `x = ${num / denom}` : `x = <sup>${num}</sup>⁄<sub>${denom}</sub>`;
+                } else {
+                    const sqrtDelta = simplifySqrt(delta);
+                    if (isPerfectSquare(delta)) { // 整數解
+                        const x1 = simplifyFraction(-b + Math.sqrt(delta), 2 * a);
+                        const x2 = simplifyFraction(-b - Math.sqrt(delta), 2 * a);
+                        const x1Str = x1.num % x1.denom === 0 ? x1.num / x1.denom : `<sup>${x1.num}</sup>⁄<sub>${x1.denom}</sub>`;
+                        const x2Str = x2.num % x2.denom === 0 ? x2.num / x2.denom : `<sup>${x2.num}</sup>⁄<sub>${x2.denom}</sub>`;
+                        answerStr = `x = ${x1Str}, x = ${x2Str}`;
+                    } else { // 無理數解
+                        const num = -b === 0 ? '' : (-b > 0 ? `+${-b}` : -b);
+                        if (sqrtDelta.coeff === 1) {
+                            const frac = simplifyFraction(1, 2 * a);
+                            const fracStr = frac.num === frac.denom ? '' : `<sup>${frac.num}</sup>⁄<sub>${frac.denom}</sub>`;
+                            answerStr = `x = ${fracStr}(${num}${num ? ' ± ' : '± '}√${sqrtDelta.inside})`;
+                        } else {
+                            const frac = simplifyFraction(sqrtDelta.coeff, 2 * a);
+                            const fracStr = frac.num === frac.denom ? '' : `<sup>${frac.num}</sup>⁄<sub>${frac.denom}</sub>`;
+                            answerStr = `x = ${fracStr}(${num}${num ? ' ± ' : '± '}√${sqrtDelta.inside})`;
+                        }
+                    }
+                }
+
+                const answerElement = document.getElementById(`answer${col}`);
+                if (answerElement) {
+                    answerElement.innerHTML = answerStr;
+                    console.log(`Answer for col ${col}: ${answerStr}`);
+                } else {
+                    console.error(`Cannot find answer${col} element`);
+                }
+            } catch (error) {
+                console.error(`Error in showAnswer for col ${col}: ${error}`);
+            }
+        }
+
+        function isPerfectSquare(n) {
+            const sqrt = Math.sqrt(n);
+            return sqrt === Math.floor(sqrt);
+        }
+
+        function simplifySqrt(n) {
+            if (n <= 0) return { coeff: 0, inside: 0 };
+            let coeff = 1, inside = n;
+            for (let i = Math.floor(Math.sqrt(n)); i > 1; i--) {
+                if (n % (i * i) === 0) {
+                    coeff = i;
+                    inside = n / (i * i);
+                    break;
+                }
+            }
+            return { coeff, inside };
+        }
+
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b) {
+                let t = b;
+                b = a % b;
+                a = t;
+            }
+            return a;
+        }
+
+        function simplifyFraction(num, denom) {
+            const g = gcd(num, denom);
+            num = num / g;
+            denom = denom / g;
+            if (denom < 0) {
+                num = -num;
+                denom = -denom;
+            }
+            return { num, denom };
+        }
+
+        // 初始化生成三列題目
+        window.onload = function() {
+            generateEquation(1);
+            generateEquation(2);
+            generateEquation(3);
+        };
+    </script>
+     <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+</body>
+</html>

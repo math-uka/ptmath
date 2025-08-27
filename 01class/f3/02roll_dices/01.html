@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>骰子模擬器</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: #34495e;
+            margin: 10px 0;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            max-width: 1000px;
+        }
+
+        .left-panel, .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dice-container {
+            width: 490px;
+            height: 180px;
+            background: #fff;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .dice {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .dice:hover {
+            transform: scale(1.1);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            background: #2c3e50;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .dot.red {
+            background: #e74c3c;
+        }
+
+        .rolling {
+            animation: roll 0.5s infinite;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .tables-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin: 30px auto;
+            max-width: 1000px;
+        }
+
+        canvas {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #summary {
+            margin: 20px;
+            font-size: 18px;
+            color: #2c3e50;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #resultTable {
+            border-collapse: collapse;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #resultTable th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+        }
+
+        #resultTable td {
+            border: 1px solid #ecf0f1;
+            padding: 10px;
+            color: #2c3e50;
+        }
+
+        #resultTable tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @keyframes roll {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>骰子生成統計器</h1>
+
+    <div class="main-container">
+        <div class="left-panel">
+            <button onclick="generateDice(1)">1個骰子</button>
+            <button onclick="generateDice(2)">2個骰子</button>
+            <button onclick="generateDice(3)">3個骰子</button>
+        </div>
+        
+        <div class="dice-container" id="diceContainer"></div>
+        
+        <div class="right-panel">
+            <button onclick="rollDice(1)">擲骰子×1</button>
+            <button onclick="rollDice(3)">擲骰子×3</button>
+            <button onclick="rollDice(9)">擲骰子×9</button>
+        </div>
+    </div>
+
+    <div class="tables-container">
+        <div>
+            <h3>點數分佈</h3>
+            <canvas id="pointChart" width="400" height="200"></canvas>
+        </div>
+        <div>
+            <h3>和值分佈</h3>
+            <canvas id="sumChart" width="600" height="200"></canvas>
+        </div>
+    </div>
+
+    <div id="summary">總測試次數：0</div>
+
+    <table id="resultTable">
+        <tr><th>次數</th><th>生成結果</th><th>點數和</th></tr>
+    </table>
+
+    <script>
+        let diceCount = 0;
+        let pointStats = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0};
+        let sumStats = {};
+        let totalRolls = 0;
+        let rollResults = [];
+
+        const dotPositions = {
+            1: [{top: 16, left: 16, color: 'red'}],
+            2: [{top: 8, left: 8}, {top: 24, left: 24}],
+            3: [{top: 8, left: 8}, {top: 16, left: 16}, {top: 24, left: 24}],
+            4: [{top: 8, left: 8}, {top: 8, left: 24}, {top: 24, left: 8}, {top: 24, left: 24}],
+            5: [
+                {top: 8, left: 8, color: 'red'}, 
+                {top: 8, left: 24, color: 'red'}, 
+                {top: 16, left: 16, color: 'red'}, 
+                {top: 24, left: 8, color: 'red'}, 
+                {top: 24, left: 24, color: 'red'}
+            ],
+            6: [{top: 8, left: 8}, {top: 8, left: 24}, {top: 16, left: 8}, {top: 16, left: 24}, {top: 24, left: 8}, {top: 24, left: 24}]
+        };
+
+        function createDice(value = null) {
+            const dice = document.createElement('div');
+            dice.className = 'dice';
+            if(value) {
+                dotPositions[value].forEach(pos => {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    if(pos.color === 'red') dot.classList.add('red');
+                    dot.style.top = `${pos.top}px`;
+                    dot.style.left = `${pos.left}px`;
+                    dice.appendChild(dot);
+                });
+            }
+            return dice;
+        }
+
+        function generateDice(count) {
+            diceCount = count;
+            const container = document.getElementById('diceContainer');
+            container.innerHTML = '';
+            for(let i = 0; i < count; i++) {
+                container.appendChild(createDice());
+            }
+            updateCharts();
+        }
+
+        function rollDice(rolls) {
+            if(diceCount === 0) {
+                alert('請先選擇骰子數量');
+                return;
+            }
+
+            const container = document.getElementById('diceContainer');
+            container.innerHTML = '';
+
+            let allDice = [];
+            for(let r = 0; r < rolls; r++) {
+                let group = [];
+                for(let i = 0; i < diceCount; i++) {
+                    const dice = createDice();
+                    dice.classList.add('rolling');
+                    container.appendChild(dice);
+                    group.push(dice);
+                }
+                allDice.push(group);
+            }
+
+            setTimeout(() => {
+                for(let group of allDice) {
+                    let sum = 0;
+                    let result = [];
+                    for(let dice of group) {
+                        const roll = Math.floor(Math.random() * 6) + 1;
+                        dice.innerHTML = '';
+                        dotPositions[roll].forEach(pos => {
+                            const dot = document.createElement('div');
+                            dot.className = 'dot';
+                            if(pos.color === 'red') dot.classList.add('red');
+                            dot.style.top = `${pos.top}px`;
+                            dot.style.left = `${pos.left}px`;
+                            dice.appendChild(dot);
+                        });
+                        dice.classList.remove('rolling');
+                        pointStats[roll]++;
+                        sum += roll;
+                        result.push(roll);
+                    }
+                    sumStats[sum] = (sumStats[sum] || 0) + 1;
+                    rollResults.push({result: result.join(', '), sum});
+                    totalRolls++;
+                }
+                updateCharts();
+                updateSummaryAndTable();
+            }, 1000);
+        }
+
+        function updateCharts() {
+            const pointCtx = document.getElementById('pointChart').getContext('2d');
+            const pointValues = Object.values(pointStats);
+            const pointMax = Math.max(...pointValues, 10);
+            pointCtx.clearRect(0, 0, pointCtx.canvas.width, pointCtx.canvas.height);
+
+            const barWidth = 50;
+            const barGap = 10;
+            pointCtx.font = 'bold 16px Arial';
+            pointCtx.fillStyle = '#4CAF50';
+            for(let i = 1; i <= 6; i++) {
+                const height = (pointStats[i] / pointMax) * 150;
+                const x = (i - 1) * (barWidth + barGap) + 50;
+                pointCtx.fillRect(x, 200 - height, barWidth, height);
+                pointCtx.fillStyle = '#000';
+                pointCtx.fillText(`${i}點`, x + barWidth/2 - 10, 190);
+                pointCtx.fillText(pointStats[i], x + barWidth/2 - 10, 170 - height);
+                pointCtx.fillStyle = '#4CAF50';
+            }
+
+            const sumCtx = document.getElementById('sumChart').getContext('2d');
+            sumCtx.clearRect(0, 0, sumCtx.canvas.width, sumCtx.canvas.height);
+            if(diceCount > 0) {
+                const sumValues = Object.values(sumStats);
+                const sumMax = Math.max(...sumValues, 10);
+                const totalBars = diceCount * 6 - diceCount + 1;
+                const sumBarWidth = Math.min(40, (500 / totalBars) - 5);
+
+                sumCtx.font = 'bold 16px Arial';
+                sumCtx.fillStyle = '#2196F3';
+                for(let j = diceCount; j <= diceCount * 6; j++) {
+                    const height = ((sumStats[j] || 0) / sumMax) * 150;
+                    const x = (j - diceCount) * (sumBarWidth + 5) + 50;
+                    sumCtx.fillRect(x, 200 - height, sumBarWidth, height);
+                    sumCtx.fillStyle = '#000';
+                    sumCtx.fillText(j, x + sumBarWidth/2 - 10, 190);
+                    sumCtx.fillText(sumStats[j] || 0, x + sumBarWidth/2 - 10, 170 - height);
+                    sumCtx.fillStyle = '#2196F3';
+                }
+            }
+        }
+
+        function updateSummaryAndTable() {
+            document.getElementById('summary').textContent = `總測試次數：${totalRolls}`;
+
+            const table = document.getElementById('resultTable');
+            table.innerHTML = '<tr><th>次數</th><th>生成結果</th><th>點數和</th></tr>';
+            rollResults.forEach((roll, index) => {
+                const row = table.insertRow();
+                row.insertCell().textContent = index + 1;
+                row.insertCell().textContent = roll.result;
+                row.insertCell().textContent = roll.sum;
+            });
+        }
+    </script>
+      <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+</body>
+</html>

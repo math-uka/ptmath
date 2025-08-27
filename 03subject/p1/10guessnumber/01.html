@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜數字遊戲</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #display {
+            font-size: 24px;
+            margin-bottom: 20px;
+            height: 50px;
+        }
+        #hint {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .key {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .key:hover {
+            background: #e0e0e0;
+        }
+        #submit, #clear {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+        }
+        #submit:hover, #clear:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="display">請輸入數字</div>
+        <div id="hint">範圍：1 ~ 100</div>
+        <div id="keypad">
+            <div class="key" onclick="addDigit('1')">1</div>
+            <div class="key" onclick="addDigit('2')">2</div>
+            <div class="key" onclick="addDigit('3')">3</div>
+            <div class="key" onclick="addDigit('4')">4</div>
+            <div class="key" onclick="addDigit('5')">5</div>
+            <div class="key" onclick="addDigit('6')">6</div>
+            <div class="key" onclick="addDigit('7')">7</div>
+            <div class="key" onclick="addDigit('8')">8</div>
+            <div class="key" onclick="addDigit('9')">9</div>
+            <div class="key" onclick="addDigit('0')">0</div>
+        </div>
+        <button id="submit" onclick="submitGuess()">確認</button>
+        <button id="clear" onclick="clearInput()">清除</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        let targetNumber = Math.floor(Math.random() * 100) + 1;
+        let minRange = 1;
+        let maxRange = 100;
+        let currentInput = '';
+
+        function addDigit(digit) {
+            if (currentInput.length < 3) {
+                currentInput += digit;
+                document.getElementById('display').textContent = currentInput || '請輸入數字';
+            }
+        }
+
+        function clearInput() {
+            currentInput = '';
+            document.getElementById('display').textContent = '請輸入數字';
+        }
+
+        function submitGuess() {
+            if (!currentInput) {
+                document.getElementById('hint').textContent = '請輸入數字！';
+                return;
+            }
+
+            const guess = parseInt(currentInput);
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                document.getElementById('hint').textContent = '請輸入1到100的數字！';
+                clearInput();
+                return;
+            }
+
+            if (guess === targetNumber) {
+                document.getElementById('hint').textContent = '恭喜你猜對了！';
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                setTimeout(() => {
+                    targetNumber = Math.floor(Math.random() * 100) + 1;
+                    minRange = 1;
+                    maxRange = 100;
+                    clearInput();
+                    document.getElementById('hint').textContent = '範圍：1 ~ 100';
+                }, 3000);
+            } else {
+                if (guess < targetNumber) {
+                    minRange = Math.max(minRange, guess);
+                } else {
+                    maxRange = Math.min(maxRange, guess);
+                }
+                document.getElementById('hint').textContent = `範圍：${minRange} ~ ${maxRange}`;
+                clearInput();
+            }
+        }
+
+        // 鍵盤輸入支持
+        document.addEventListener('keydown', (event) => {
+            if (event.key >= '0' && event.key <= '9') {
+                addDigit(event.key);
+            } else if (event.key === 'Enter') {
+                submitGuess();
+            } else if (event.key === 'Backspace') {
+                clearInput();
+            }
+        });
+    </script>
+</body>
+</html>

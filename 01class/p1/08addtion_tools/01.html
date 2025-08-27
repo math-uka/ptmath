@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小朋友快樂加法練習</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffeb3b, #4caf50);
+            font-family: 'Comic Sans MS', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: auto;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 90%;
+            margin: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .problem-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .problem {
+            font-size: 36px;
+            position: relative;
+            display: inline-block;
+        }
+        .number {
+            display: flex;
+            justify-content: flex-end;
+            width: 120px;
+            height: 40px;
+        }
+        .digit {
+            width: 40px;
+            text-align: right;
+            display: inline-block;
+            min-height: 40px;
+            line-height: 40px;
+        }
+        .line {
+            border-bottom: 2px solid black;
+            width: 120px;
+            margin: 5px 0;
+        }
+        .carry {
+            position: absolute;
+            font-size: 12px;
+            color: red;
+            right: 25px;
+            top: 68px;
+            pointer-events: none;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 15px;
+            width: 210px;
+        }
+        .key {
+            padding: 15px;
+            background: #2196f3;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: transform 0.1s;
+            touch-action: manipulation;
+        }
+        .key:hover {
+            transform: scale(1.1);
+            background: #1976d2;
+        }
+        .submit-btn {
+            background: #4caf50;
+        }
+        .submit-btn:hover {
+            background: #388e3c;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            touch-action: manipulation;
+        }
+        .btn:hover {
+            background: #e64a19;
+        }
+        #progress {
+            font-size: 20px;
+            color: #4caf50;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .earned-stars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            max-width: 210px;
+        }
+        .earned-star {
+            font-size: 24px;
+            color: #ffeb3b;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .feedback {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
+            color: #4caf50;
+            opacity: 0;
+            pointer-events: none;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        @keyframes feedbackEffect {
+            0% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); }
+            20% { opacity: 1; transform: translate(-50%, 0) scale(1.1); }
+            80% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes starFadeIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .shake {
+            animation: shake 0.3s;
+        }
+        .correct {
+            animation: feedbackEffect 1.5s;
+        }
+        .star-appear {
+            animation: starFadeIn 0.5s;
+        }
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .problem {
+                font-size: 28px;
+            }
+            .number, .line {
+                width: 100px;
+            }
+            .digit {
+                width: 30px;
+                min-height: 30px;
+                line-height: 30px;
+            }
+            .carry {
+                top: 58px;
+            }
+            .keyboard {
+                grid-template-columns: repeat(3, 50px);
+                width: 170px;
+            }
+            .key {
+                padding: 12px;
+                font-size: 18px;
+            }
+            .btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            .feedback {
+                font-size: 28px;
+                bottom: -40px;
+            }
+            .earned-star {
+                font-size: 20px;
+            }
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="container">
+        <div class="problem-area">
+            <h1>✨ 加法大冒險 ✨</h1>
+            <div id="progress">第 1/10 題</div>
+            <div class="problem" id="problemArea">
+                <div class="number" id="num1"></div>
+                <div class="number" id="num2"><span>+</span></div>
+                <div class="line"></div>
+                <div class="number" id="answer">
+                    <span class="digit" id="tens"></span>
+                    <span class="digit" id="ones"></span>
+                </div>
+                <span id="carry" class="carry"></span>
+                <div id="feedback" class="feedback">太棒了！</div>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="keyboard">
+                <div class="key" onclick="inputNum(1)">1</div>
+                <div class="key" onclick="inputNum(2)">2</div>
+                <div class="key" onclick="inputNum(3)">3</div>
+                <div class="key" onclick="inputNum(4)">4</div>
+                <div class="key" onclick="inputNum(5)">5</div>
+                <div class="key" onclick="inputNum(6)">6</div>
+                <div class="key" onclick="inputNum(7)">7</div>
+                <div class="key" onclick="inputNum(8)">8</div>
+                <div class="key" onclick="inputNum(9)">9</div>
+                <div class="key" onclick="inputNum(0)">0</div>
+                <div class="key" onclick="clearInput()">清除</div>
+                <div class="key submit-btn" onclick="submitAnswer()">確認</div>
+            </div>
+            <button class="btn" onclick="toggleCarry()">進位</button>
+            <div id="earnedStars" class="earned-stars"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentProblem = 0;
+        let problems = new Set();
+        let num1, num2, correctAnswer;
+        let inputOnes = '', inputTens = '';
+        let carryVisible = false;
+        let starCount = 0;
+        let earnedStars = [];
+
+        function generateProblem() {
+            do {
+                num1 = Math.floor(Math.random() * 90) + 1; // 1-89
+                num2 = Math.floor(Math.random() * (99 - num1)) + 1; // Ensure sum < 100
+            } while (problems.has(`${num1}+${num2}`) || num1 + num2 >= 100);
+            
+            problems.add(`${num1}+${num2}`);
+            correctAnswer = num1 + num2;
+
+            // Display num1
+            document.getElementById('num1').innerHTML = num1 < 10 
+                ? `<span class="digit"></span><span class="digit">${num1}</span>` 
+                : `<span class="digit">${Math.floor(num1/10)}</span><span class="digit">${num1%10}</span>`;
+            
+            // Display num2
+            document.getElementById('num2').innerHTML = num2 < 10 
+                ? `<span>+</span><span class="digit"></span><span class="digit">${num2}</span>` 
+                : `<span>+</span><span class="digit">${Math.floor(num2/10)}</span><span class="digit">${num2%10}</span>`;
+            
+            clearInput();
+            carryVisible = false;
+            document.getElementById('carry').textContent = '';
+        }
+
+        function inputNum(num) {
+            if (inputOnes === '') {
+                inputOnes = num;
+                document.getElementById('ones').textContent = num;
+            } else if (inputTens === '') {
+                inputTens = num;
+                document.getElementById('tens').textContent = num;
+            }
+        }
+
+        function clearInput() {
+            inputOnes = '';
+            inputTens = '';
+            document.getElementById('ones').textContent = '';
+            document.getElementById('tens').textContent = '';
+        }
+
+        function addStar() {
+            const earnedStarsDiv = document.getElementById('earnedStars');
+            let star = document.createElement('span');
+            star.textContent = '⭐';
+            star.classList.add('earned-star', 'star-appear');
+            earnedStarsDiv.appendChild(star);
+            earnedStars.push(star);
+            starCount++;
+        }
+
+        function removeStar() {
+            if (starCount > 0) {
+                const earnedStarsDiv = document.getElementById('earnedStars');
+                const star = earnedStars.pop();
+                earnedStarsDiv.removeChild(star);
+                starCount--;
+            }
+        }
+
+        function submitAnswer() {
+            if (inputOnes === '' || inputTens === '') return;
+            let userAnswer = parseInt(inputTens) * 10 + parseInt(inputOnes);
+            if (userAnswer === correctAnswer) {
+                addStar();
+                let feedback = document.getElementById('feedback');
+                feedback.classList.add('correct');
+                setTimeout(() => {
+                    feedback.classList.remove('correct');
+                    nextProblem();
+                }, 1500);
+            } else {
+                removeStar();
+                let problemArea = document.getElementById('problemArea');
+                problemArea.classList.add('shake');
+                setTimeout(() => {
+                    problemArea.classList.remove('shake');
+                    clearInput();
+                }, 300);
+            }
+        }
+
+        function nextProblem() {
+            currentProblem++;
+            if (currentProblem >= 10) {
+                setTimeout(() => {
+                    alert(`遊戲結束！你獲得了 ${starCount} 顆星星！🎉`);
+                    currentProblem = 0;
+                    problems.clear();
+                    earnedStars.forEach(star => star.remove());
+                    earnedStars = [];
+                    starCount = 0;
+                    generateProblem();
+                    document.getElementById('progress').textContent = `第 1/10 題`;
+                }, 1500);
+            } else {
+                document.getElementById('progress').textContent = `第 ${currentProblem + 1}/10 題`;
+                generateProblem();
+            }
+        }
+
+        function toggleCarry() {
+            carryVisible = !carryVisible;
+            document.getElementById('carry').textContent = carryVisible ? '1' : '';
+        }
+
+        function addStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 10; i++) {
+                let star = document.createElement('span');
+                star.textContent = '⭐';
+                star.style.position = 'absolute';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animation = `float ${2 + Math.random() * 2}s infinite`;
+                stars.appendChild(star);
+            }
+        }
+
+        generateProblem();
+        addStars();
+    </script>
+    <footer>
+        <p>&copy; 2025 ukawai</p>
+    </footer>
+</body>
+</html>

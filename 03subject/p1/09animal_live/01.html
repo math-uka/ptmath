@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Origin Game 7</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffeb3b, #4caf50);
+            min-height: 100vh;
+            margin: 0;
+            overflow: auto;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .star {
+            position: absolute;
+            font-size: 24px;
+            color: gold;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 600px;
+            margin: 20px;
+            z-index: 2;
+            position: relative;
+        }
+        .options button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .options button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .star-display {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        .shake {
+            animation: shake 0.3s;
+        }
+        .animal-image {
+            max-width: 200px;
+            margin: 10px auto;
+            display: none;
+        }
+        #question {
+            font-size: 24px; /* 放大題目文字 */
+            margin-bottom: 10px;
+        }
+        .animal-name {
+            font-weight: bold; /* 動物名稱加粗 */
+            font-size: 28px; /* 動物名稱進一步放大 */
+        }
+        footer {
+            margin-top: auto;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+        #leaderboard {
+            margin-top: 20px;
+        }
+        #leaderboard ul {
+            list-style: none;
+            padding: 0;
+        }
+        #leaderboard li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="stars" class="stars"></div>
+    <div class="container">
+        <h1>Animal Origin Matching Game</h1>
+        <div id="question"></div>
+        <img id="animalImage" class="animal-image" src="" alt="Animal Image">
+        <div class="star-display" id="starDisplay">Stars: 0</div>
+        <div class="options" id="options"></div>
+        <div id="result"></div>
+        <div id="endGame" style="display: none;">
+            <h2>Game Over!</h2>
+            <p id="finalScore"></p>
+            <p id="timeTaken"></p>
+            <input type="text" id="playerName" placeholder="Enter your name">
+            <button onclick="saveScore()">Save Score</button>
+        </div>
+        <div id="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboardList"></ul>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+    <script>
+        let animals = [];
+        let currentQuestion = 0;
+        let stars = 0;
+        let startTime = null;
+        let usedAnimals = [];
+        let currentAnimal = null;
+        const maxQuestions = 10;
+        const origins = ["Forest", "Desert", "Ocean", "Lake", "Pond"];
+
+        // 載入 JSON 檔案
+        async function loadAnimals() {
+            try {
+                const response = await fetch('animals.json');
+                animals = await response.json();
+                displayQuestion();
+                displayLeaderboard();
+            } catch (error) {
+                console.error('Failed to load animals.json:', error);
+                document.getElementById('question').textContent = 'Error loading animal data.';
+            }
+        }
+
+        function addStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 10; i++) {
+                let star = document.createElement('span');
+                star.textContent = '⭐';
+                star.className = 'star';
+                star.style.position = 'absolute';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animation = `float ${2 + Math.random() * 2}s infinite`;
+                stars.appendChild(star);
+            }
+        }
+
+        function getRandomAnimal() {
+            const availableAnimals = animals.filter(a => !usedAnimals.includes(a.name));
+            if (availableAnimals.length === 0) return null;
+            const randomIndex = Math.floor(Math.random() * availableAnimals.length);
+            const animal = availableAnimals[randomIndex];
+            usedAnimals.push(animal.name);
+            return animal;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function displayQuestion() {
+            if (currentQuestion >= maxQuestions) {
+                endGame();
+                return;
+            }
+            currentAnimal = getRandomAnimal();
+            if (!currentAnimal) return;
+            document.getElementById('question').innerHTML = `Where does the <span class="animal-name">${currentAnimal.name}</span> live?`;
+            const options = document.getElementById('options');
+            options.innerHTML = '';
+            const shuffledOrigins = shuffle([...origins]);
+            shuffledOrigins.forEach(origin => {
+                const button = document.createElement('button');
+                button.textContent = origin;
+                button.onclick = () => checkAnswer(origin, currentAnimal.origin);
+                options.appendChild(button);
+            });
+            document.getElementById('result').textContent = '';
+            document.getElementById('animalImage').style.display = 'none';
+            document.getElementById('starDisplay').textContent = `Stars: ${stars}`;
+            if (currentQuestion === 0) startTime = new Date();
+        }
+
+        function checkAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.options button');
+            buttons.forEach(button => button.disabled = true);
+            const imageElement = document.getElementById('animalImage');
+            if (selected === correct) {
+                stars++;
+                document.getElementById('result').textContent = 'Correct!';
+                imageElement.src = currentAnimal.image;
+                imageElement.style.display = 'block';
+                currentQuestion++;
+                setTimeout(displayQuestion, 2000);
+            } else {
+                stars = Math.max(0, stars - 1);
+                document.getElementById('result').textContent = `Wrong! Try again.`;
+                imageElement.src = currentAnimal.image;
+                imageElement.style.display = 'block';
+                document.querySelector('.container').classList.add('shake');
+                setTimeout(() => {
+                    document.querySelector('.container').classList.remove('shake');
+                    buttons.forEach(button => button.disabled = false);
+                }, 300);
+            }
+            document.getElementById('starDisplay').textContent = `Stars: ${stars}`;
+        }
+
+        function endGame() {
+            const endTime = new Date();
+            const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+            document.getElementById('question').style.display = 'none';
+            document.getElementById('options').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('animalImage').style.display = 'none';
+            document.getElementById('endGame').style.display = 'block';
+            document.getElementById('finalScore').textContent = `Final Score: ${stars} stars`;
+            document.getElementById('timeTaken').textContent = `Time Taken: ${timeTaken} seconds`;
+        }
+
+        function saveScore() {
+            const name = document.getElementById('playerName').value || "Anonymous";
+            const timeTaken = ((new Date() - startTime) / 1000).toFixed(2);
+            const score = { name, stars, time: parseFloat(timeTaken) };
+            let scores = JSON.parse(localStorage.getItem('scores') || '[]');
+            scores.push(score);
+            scores.sort((a, b) => b.stars - a.stars || a.time - b.time);
+            scores = scores.slice(0, 5);
+            localStorage.setItem('scores', JSON.stringify(scores));
+            displayLeaderboard();
+        }
+
+        function displayLeaderboard() {
+            const scores = JSON.parse(localStorage.getItem('scores') || '[]');
+            const list = document.getElementById('leaderboardList');
+            list.innerHTML = '';
+            scores.forEach((score, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${score.name}: ${score.stars} stars, ${score.time} seconds`;
+                list.appendChild(li);
+            });
+        }
+
+        addStars();
+        loadAnimals();
+    </script>
+</body>
+</html>

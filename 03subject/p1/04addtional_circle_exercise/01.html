@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小學加減法練習 1</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffeb3b, #4caf50);
+            min-height: 100vh;
+            margin: 0;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0.8;
+            animation: fall 2s linear forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            color: #1e3a8a;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        #difficulty-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            z-index: 2;
+        }
+        #difficulty-screen button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 18px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #difficulty-screen button:hover {
+            background-color: #1976d2;
+        }
+        #game-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+            z-index: 2;
+        }
+        .left, .right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        svg {
+            margin-top: 20px;
+        }
+        .circle {
+            fill: #ffffff;
+            stroke: #000000;
+            stroke-width: 2;
+        }
+        .line {
+            stroke: #000000;
+            stroke-width: 2;
+        }
+        .number {
+            font-size: 24px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .keypad button {
+            padding: 15px;
+            font-size: 18px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .keypad button:hover {
+            background-color: #1976d2;
+        }
+        #input-display {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 18px;
+            width: 80px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+        .action-buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .action-buttons button:hover {
+            background-color: #1976d2;
+        }
+        #score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        #result {
+            font-size: 20px;
+            margin: 10px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="confetti" id="confetti"></div>
+    <div id="difficulty-screen">
+        <h1>小學加減法練習</h1>
+        <button onclick="startGame('easy')">Easy</button>
+        <button onclick="startGame('normal')">Normal</button>
+        <button onclick="startGame('hard')">Hard</button>
+    </div>
+    <div id="game-content">
+        <h1>小學加減法練習</h1>
+        <div id="score"></div>
+        <div class="container">
+            <div class="left">
+                <svg width="400" height="300">
+                    <circle class="circle" cx="200" cy="50" r="40"/>
+                    <circle class="circle" cx="150" cy="200" r="40"/>
+                    <circle class="circle" cx="250" cy="200" r="40"/>
+                    <line class="line" x1="180" y1="80" x2="150" y2="160"/>
+                    <line class="line" x1="220" y1="80" x2="250" y2="160"/>
+                    <text class="number" id="top" x="200" y="50"></text>
+                    <text class="number" id="left" x="150" y="200"></text>
+                    <text class="number" id="right" x="250" y="200"></text>
+                </svg>
+            </div>
+            <div class="right" id="controls">
+                <span id="input-display"></span>
+                <div class="keypad">
+                    <button onclick="appendNumber('1')">1</button>
+                    <button onclick="appendNumber('2')">2</button>
+                    <button onclick="appendNumber('3')">3</button>
+                    <button onclick="appendNumber('4')">4</button>
+                    <button onclick="appendNumber('5')">5</button>
+                    <button onclick="appendNumber('6')">6</button>
+                    <button onclick="appendNumber('7')">7</button>
+                    <button onclick="appendNumber('8')">8</button>
+                    <button onclick="appendNumber('9')">9</button>
+                    <button onclick="clearInput()">C</button>
+                    <button onclick="appendNumber('0')">0</button>
+                    <button onclick="submitAnswer()">OK</button>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="showAnswer()">顯示答案</button>
+                </div>
+                <div id="result"></div>
+            </div>
+        </div>
+        <footer>
+            <p>© 2025 ukawai</p>
+        </footer>
+    </div>
+    <script>
+        let titleNumber = 1;
+        let stars = 0;
+        let questionCount = 0;
+        let hiddenKey, correctAnswer;
+        let inputValue = '';
+        let hasDeductedStar = false;
+        let maxNumber = 9; // 預設 Easy
+        let difficulty = 'easy';
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function addStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 10; i++) {
+                let star = document.createElement('span');
+                star.textContent = '⭐';
+                star.style.position = 'absolute';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animation = `float ${2 + Math.random() * 2}s infinite`;
+                stars.appendChild(star);
+            }
+        }
+
+        function triggerConfetti() {
+            const confetti = document.getElementById('confetti');
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            for (let i = 0; i < 100; i++) {
+                const piece = document.createElement('span');
+                piece.className = 'confetti-piece';
+                piece.style.backgroundColor = colors[getRandomInt(0, colors.length - 1)];
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.animationDelay = Math.random() * 1 + 's';
+                confetti.appendChild(piece);
+            }
+            setTimeout(() => confetti.innerHTML = '', 3000); // 3秒後清除彩紙
+        }
+
+        function updateScore() {
+            const scoreDiv = document.getElementById('score');
+            scoreDiv.innerHTML = '';
+            for (let i = 0; i < stars; i++) {
+                const star = document.createElement('span');
+                star.textContent = '⭐';
+                star.style.margin = '0 5px';
+                scoreDiv.appendChild(star);
+            }
+        }
+
+        function startGame(selectedDifficulty) {
+            difficulty = selectedDifficulty;
+            switch (difficulty) {
+                case 'easy':
+                    maxNumber = 9;
+                    break;
+                case 'normal':
+                    maxNumber = 25;
+                    break;
+                case 'hard':
+                    maxNumber = 50;
+                    break;
+            }
+            document.getElementById('difficulty-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'flex';
+            generateQuestion();
+        }
+
+        async function generateQuestion() {
+            if (questionCount >= 10) return endGame();
+            questionCount++;
+            hasDeductedStar = false;
+            let sum, left, right;
+
+            if (difficulty === 'hard') {
+                const keys = ['top', 'left', 'right'];
+                hiddenKey = keys[getRandomInt(0, 2)];
+                if (hiddenKey === 'top') {
+                    sum = getRandomInt(22, 50);
+                    left = getRandomInt(11, sum - 11);
+                    right = sum - left;
+                } else {
+                    sum = getRandomInt(22, 50);
+                    const minAnswer = 10;
+                    const maxAnswer = Math.min(39, sum - 11);
+                    const answer = getRandomInt(minAnswer, maxAnswer);
+                    if (hiddenKey === 'left') {
+                        left = answer;
+                        right = sum - left;
+                    } else {
+                        right = answer;
+                        left = sum - right;
+                    }
+                }
+            } else {
+                sum = getRandomInt(2, maxNumber);
+                left = getRandomInt(1, sum - 1);
+                right = sum - left;
+                hiddenKey = ['top', 'left', 'right'][getRandomInt(0, 2)];
+            }
+
+            const numbers = { top: sum, left: left, right: right };
+            correctAnswer = numbers[hiddenKey];
+
+            ['top', 'left', 'right'].forEach(key => {
+                const element = document.getElementById(key);
+                element.textContent = key === hiddenKey ? '?' : numbers[key];
+                element.dataset.value = numbers[key];
+            });
+
+            clearInput();
+            document.getElementById('result').textContent = '';
+            try {
+                await MathJax.typesetPromise();
+            } catch (err) {
+                console.error('MathJax 渲染失敗:', err);
+            }
+        }
+
+        function appendNumber(digit) {
+            if (questionCount > 10) return;
+            if (inputValue.length < 3) {
+                inputValue += digit;
+                if (parseInt(inputValue) > 999) {
+                    inputValue = inputValue.slice(0, inputValue.length - 1);
+                }
+                document.getElementById('input-display').textContent = inputValue;
+            }
+        }
+
+        function clearInput() {
+            inputValue = '';
+            document.getElementById('input-display').textContent = '';
+        }
+
+        function submitAnswer() {
+            if (questionCount > 10) return;
+            const userAnswer = parseInt(inputValue);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(userAnswer) || inputValue === '') {
+                resultDiv.textContent = '請輸入一個數字！';
+                return;
+            }
+            if (userAnswer === correctAnswer) {
+                if (!hasDeductedStar) {
+                    stars++;
+                    resultDiv.textContent = '答對了！獲得一顆星星！';
+                    updateScore();
+                } else {
+                    resultDiv.textContent = '答對了！';
+                }
+                document.getElementById(hiddenKey).textContent = correctAnswer;
+                MathJax.typesetPromise();
+                setTimeout(() => {
+                    titleNumber++;
+                    document.title = `小學加減法練習 ${titleNumber}`;
+                    generateQuestion();
+                }, 1000); // 1秒後跳下一題
+            } else {
+                if (!hasDeductedStar && stars > 0) {
+                    stars--;
+                    hasDeductedStar = true;
+                    updateScore();
+                }
+                resultDiv.textContent = `答錯了，正確答案是 ${correctAnswer}！`;
+                document.getElementById(hiddenKey).textContent = correctAnswer;
+                MathJax.typesetPromise();
+            }
+        }
+
+        async function showAnswer() {
+            if (questionCount > 10) return;
+            if (!hasDeductedStar && stars > 0) {
+                stars--;
+                hasDeductedStar = true;
+                updateScore();
+            }
+            document.getElementById(hiddenKey).textContent = correctAnswer;
+            document.getElementById('result').textContent = `答案是 ${correctAnswer}`;
+            try {
+                await MathJax.typesetPromise();
+            } catch (err) {
+                console.error('MathJax 渲染失敗:', err);
+            }
+        }
+
+        function endGame() {
+            document.getElementById('controls').styleDisplay = 'none';
+            document.getElementById('result').textContent = `遊戲結束！你獲得了 ${stars} 顆星星！`;
+            const scoreDiv = document.getElementById('score');
+            scoreDiv.innerHTML = '最終得分：';
+            for (let i = 0; i < stars; i++) {
+                const star = document.createElement('span');
+                star.textContent = '⭐';
+                star.style.margin = '0 5px';
+                scoreDiv.appendChild(star);
+            }
+            triggerConfetti();
+        }
+
+        // 初始化
+        addStars();
+        updateScore();
+    </script>
+</body>
+</html>

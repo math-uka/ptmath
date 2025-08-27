@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>單項式乘除練習</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            padding: 0;
+        }
+        #problem {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            word-wrap: break-word;
+        }
+        #options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, auto);
+            gap: 10px;
+            justify-content: center;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .option {
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.1em;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        .option.locked {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        #score {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+        #message {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        #end-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #end-screen h1 {
+            font-size: 2em;
+        }
+        #end-screen p, #end-screen h2 {
+            font-size: 1.2em;
+        }
+        #password-section input, #password-section button {
+            font-size: 1em;
+            padding: 8px;
+            margin: 5px;
+        }
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .fraction span {
+            display: block;
+        }
+        .fraction .numerator {
+            border-bottom: 1px solid black;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin: 10px;
+            }
+            #problem {
+                font-size: 1.2em;
+            }
+            #options {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(4, auto);
+                gap: 8px;
+            }
+            .option {
+                font-size: 0.9em;
+                padding: 12px;
+                min-height: 40px;
+            }
+            #score, #message {
+                font-size: 1em;
+            }
+            #end-screen h1 {
+                font-size: 1.5em;
+            }
+            #end-screen p, #end-screen h2 {
+                font-size: 1em;
+            }
+            #password-section input, #password-section button {
+                font-size: 0.9em;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="problem"></div>
+    <div id="options"></div>
+    <div id="score">得分: 0</div>
+    <div id="message"></div>
+    <div id="end-screen">
+        <h1>遊戲結束！</h1>
+        <p>最終得分: <span id="final-score"></span></p>
+        <h2 id="end-message"></h2>
+        <div id="wrong-problems"></div>
+        <div id="password-section" style="display: none;">
+            <p>請輸入你的學號以獲取密碼！</p>
+            <input type="number" id="password-input" min="1" max="40">
+            <button onclick="generatePassword()">生成密碼</button>
+            <p id="password-output"></p>
+        </div>
+        <button onclick="location.reload()">再玩一次</button>
+    </div>
+
+    <script>
+        let score = 0;
+        let problemCount = 0;
+        let wrongProblems = new Set();
+        let currentAnswer = '';
+        let optionsLocked = false;
+        let passwordGenerated = false;
+
+        const encodedPasswordTable = [
+            "NzI5", "NTM2", "MTQ4", "ODkz", "MjY3", "NDUx", "OTgz", "NjEy", "Mzc1", "ODI0",
+            "Mzg0", "OTE3", "NjI1", "NDMy", "NzU5", "ODM2", "NTc0", "Mjkz", "NjQ4", "OTUx",
+            "MTU2", "Njcy", "MzA5", "NTI4", "MzQ3", "MTk1", "ODI2", "NDYx", "NzM0", "Mjgy",
+            "ODQz", "Mjk1", "NzYx", "OTE0", "NDgy", "NjM5", "MzU4", "MTI3", "NTY5", "NDAz"
+        ];
+
+        function decodePasswordTable(encoded) {
+            const decoded = {};
+            for (let i = 0; i < encoded.length; i++) {
+                decoded[i + 1] = parseInt(atob(encoded[i]));
+            }
+            return decoded;
+        }
+
+        const passwordTable = decodePasswordTable(encodedPasswordTable);
+
+        function generateProblem() {
+            if (score >= 3) { // 答對3題結束
+                showEndScreen();
+                return;
+            }
+
+            problemCount++;
+            optionsLocked = false;
+            document.getElementById('message').textContent = '';
+
+            const isDivision = Math.random() < 0.5;
+            const hasPower = Math.random() < 0.2;
+
+            const coeff1 = randInt(-4, 4, [0]);
+            const coeff2 = randInt(-4, 4, [0]);
+            const expX1 = randInt(-5, 5, [0]);
+            const expY1 = randInt(-5, 5, [0]);
+            const expZ1 = randInt(-5, 5, [0]);
+            const expX2 = randInt(-5, 5, [0]);
+            const expY2 = randInt(-5, 5, [0]);
+            const expZ2 = randInt(-5, 5, [0]);
+            let power = hasPower ? randInt(-2, 2, [0]) : 1;
+
+            let firstTerm = formatMonomial(coeff1, expX1, expY1, expZ1);
+            let secondTerm = formatMonomial(coeff2, expX2, expY2, expZ2);
+            if (!hasPower && coeff2 < 0) secondTerm = `(${secondTerm})`;
+            if (hasPower) secondTerm = `(${secondTerm})<sup>${power}</sup>`;
+            
+            let problem = firstTerm + (isDivision ? ' ÷ ' : ' · ') + secondTerm;
+            problem = problem.replace(/-/g, '−');
+
+            let numCoeff = coeff1;
+            let denCoeff = 1;
+            if (isDivision) {
+                if (power >= 0) {
+                    for (let i = 0; i < power; i++) denCoeff *= coeff2;
+                } else {
+                    for (let i = 0; i < -power; i++) numCoeff *= coeff2;
+                }
+            } else {
+                for (let i = 0; i < power; i++) numCoeff *= coeff2;
+            }
+
+            const [simplifiedNum, simplifiedDen] = simplifyFraction(numCoeff, denCoeff);
+            const resultExpX = expX1 + (isDivision ? -expX2 : expX2) * power;
+            const resultExpY = expY1 + (isDivision ? -expY2 : expY2) * power;
+            const resultExpZ = expZ1 + (isDivision ? -expZ2 : expZ2) * power;
+
+            currentAnswer = formatMonomial(simplifiedNum, resultExpX, resultExpY, resultExpZ, simplifiedDen).replace(/-/g, '−');
+            document.getElementById('problem').innerHTML = problem;
+
+            generateOptions(simplifiedNum, simplifiedDen, resultExpX, resultExpY, resultExpZ, isDivision);
+        }
+
+        function formatMonomial(num, expX, expY, expZ, den = 1) {
+            let sign = num * den < 0 ? '−' : '';
+            let absNum = Math.abs(num);
+            let absDen = Math.abs(den);
+
+            let numPart = '';
+            let denPart = '';
+            let hasNumVars = expX > 0 || expY > 0 || expZ > 0;
+            let hasDenVars = expX < 0 || expY < 0 || expZ < 0;
+
+            if (absNum !== 1 || !hasNumVars) numPart += absNum;
+            if (expX > 0) numPart += `x${expX === 1 ? '' : `<sup>${expX}</sup>`}`;
+            if (expY > 0) numPart += `y${expY === 1 ? '' : `<sup>${expY}</sup>`}`;
+            if (expZ > 0) numPart += `z${expZ === 1 ? '' : `<sup>${expZ}</sup>`}`;
+
+            if (absDen !== 1 || !hasDenVars) denPart += absDen;
+            if (expX < 0) denPart += `x${expX === -1 ? '' : `<sup>${-expX}</sup>`}`;
+            if (expY < 0) denPart += `y${expY === -1 ? '' : `<sup>${-expY}</sup>`}`;
+            if (expZ < 0) denPart += `z${expZ === -1 ? '' : `<sup>${-expZ}</sup>`}`;
+
+            if (!numPart) numPart = '1';
+            if (!denPart) denPart = '1';
+
+            if (denPart === '1') return sign + numPart;
+            return `${sign}<span class="fraction"><span class="numerator">${numPart}</span><span class="denominator">${denPart}</span></span>`;
+        }
+
+        function simplifyFraction(num, den) {
+            const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+            const divisor = gcd(Math.abs(num), Math.abs(den));
+            return [num / divisor, den / divisor];
+        }
+
+        function generateOptions(numCoeff, denCoeff, expX, expY, expZ, isDivision) {
+            const options = [currentAnswer];
+            const wrongExps = [
+                [expX + (isDivision ? 1 : -1), expY, expZ],
+                [expX, expY + (isDivision ? 1 : -1), expZ],
+                [expX, expY, expZ + (isDivision ? 1 : -1)],
+                [expX - 1, expY + 1, expZ],
+                [expX + 1, expY - 1, expZ],
+                [expX + 2, expY, expZ],
+                [expX, expY - 2, expZ]
+            ];
+            const wrongNum = numCoeff * (isDivision ? -1 : 2);
+            const wrongDen = denCoeff;
+
+            for (let i = 0; i < 3; i++) {
+                options.push(formatMonomial(numCoeff, wrongExps[i][0], wrongExps[i][1], wrongExps[i][2], denCoeff).replace(/-/g, '−'));
+            }
+            options.push(formatMonomial(wrongNum, expX, expY, expZ, wrongDen).replace(/-/g, '−'));
+
+            for (let i = 3; i < 7; i++) {
+                options.push(formatMonomial(-numCoeff, wrongExps[i][0], wrongExps[i][1], wrongExps[i][2], denCoeff).replace(/-/g, '−'));
+            }
+
+            shuffle(options);
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            options.forEach(opt => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerHTML = opt;
+                div.onclick = () => checkAnswer(opt, div);
+                optionsDiv.appendChild(div);
+            });
+        }
+
+        function checkAnswer(selected, selectedDiv) {
+            if (optionsLocked) return;
+
+            if (selected === currentAnswer) {
+                score++;
+                document.getElementById('score').textContent = `得分: ${score}`;
+                optionsLocked = true;
+                document.querySelectorAll('.option').forEach(opt => opt.classList.add('locked'));
+                document.getElementById('message').textContent = '回答正確';
+                document.getElementById('message').style.color = 'green';
+                setTimeout(() => {
+                    document.getElementById('message').textContent = '';
+                    generateProblem();
+                }, 1000);
+            } else {
+                document.getElementById('message').textContent = '回答錯誤，請重試！';
+                document.getElementById('message').style.color = 'red';
+                wrongProblems.add(document.getElementById('problem').innerHTML + ' = ' + currentAnswer);
+            }
+        }
+
+        function showEndScreen() {
+            document.getElementById('end-screen').style.display = 'flex';
+            document.getElementById('final-score').textContent = score;
+            const wrongDiv = document.getElementById('wrong-problems');
+            wrongDiv.innerHTML = Array.from(wrongProblems).join('<br>');
+
+            if (score === 3 && wrongProblems.size === 0) { // 全部答對（3題且無錯題）
+                document.getElementById('end-message').textContent = '恭喜全部答對！';
+                document.getElementById('password-section').style.display = 'block';
+            } else {
+                document.getElementById('end-message').textContent = '請重新挑戰，爭取全部答對3題';
+            }
+        }
+
+        function generatePassword() {
+            if (passwordGenerated) return;
+
+            const input = parseInt(document.getElementById('password-input').value);
+            const output = document.getElementById('password-output');
+            if (input >= 1 && input <= 40) {
+                output.textContent = `你的密碼是：${passwordTable[input]}`;
+                passwordGenerated = true;
+                document.getElementById('password-input').disabled = true;
+                document.querySelector('#password-section button').disabled = true;
+            } else {
+                output.textContent = '請輸入1~40之間的學號！';
+            }
+        }
+
+        function randInt(min, max, exclude = []) {
+            let num;
+            do {
+                num = Math.floor(Math.random() * (max - min + 1)) + min;
+            } while (exclude.includes(num));
+            return num;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        window.onload = generateProblem;
+    </script>
+</body>
+</html>

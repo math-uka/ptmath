@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice 1</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .math-problem {
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .controls {
+            text-align: left;
+        }
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+            font-size: 14px;
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+        #answerInput {
+            padding: 8px;
+            margin: 5px;
+            font-size: 14px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #answerInput:disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+        #answer {
+            display: none;
+            margin-top: 20px;
+            color: #4CAF50;
+            font-size: 14px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 16px;
+            }
+            .math-problem {
+                font-size: 12px;
+            }
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            #answerInput {
+                width: 150px;
+                font-size: 12px;
+            }
+            #answer {
+                font-size: 12px;
+            }
+            footer {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>一次函數練習</h1>
+    <div class="container">
+        <div class="math-problem" id="problem">
+            <!-- Initial problem will be set by JavaScript -->
+        </div>
+        <div class="controls">
+            <input type="text" id="answerInput" placeholder="輸入答案 (如 y=2x+1/3)">
+            <button onclick="showAnswer()">答案</button>
+            <button onclick="nextProblem()">下一題</button>
+        </div>
+        <div id="answer">
+            <!-- Initial answer will be set by JavaScript -->
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        let problemCount = 0; // Start at 0 since we increment in nextProblem()
+
+        function generateRandomFunction() {
+            const isFraction = Math.random() < 0.2;
+            let k, b;
+
+            if (isFraction) {
+                const numerator = Math.floor(Math.random() * 5) + 1;
+                const denominator = Math.floor(Math.random() * 5) + 2;
+                k = { num: (Math.random() < 0.5 ? -1 : 1) * numerator, denom: denominator };
+            } else {
+                k = Math.floor(Math.random() * 10) - 5;
+                if (k === 0) k = 1;
+            }
+
+            b = Math.floor(Math.random() * 21) - 10;
+            return { k, b };
+        }
+
+        function generatePoints(k, b) {
+            const x1 = Math.floor(Math.random() * 21) - 10;
+            let x2 = Math.floor(Math.random() * 21) - 10;
+            while (x2 === x1) x2 = Math.floor(Math.random() * 21) - 10;
+
+            let y1, y2;
+            if (typeof k === 'object') {
+                y1 = (k.num * x1) / k.denom + b;
+                y2 = (k.num * x2) / k.denom + b;
+            } else {
+                y1 = k * x1 + b;
+                y2 = k * x2 + b;
+            }
+
+            if (y1 % 1 !== 0) {
+                const adjustment = Math.round(y1) - y1;
+                b += adjustment;
+                y1 = Math.round(y1);
+                if (typeof k === 'object') {
+                    y2 = (k.num * x2) / k.denom + b;
+                } else {
+                    y2 = k * x2 + b;
+                }
+            }
+
+            if (y2 % 1 !== 0) {
+                y2 = Math.round(y2);
+                if (typeof k === 'object') {
+                    b = y2 - (k.num * x2) / k.denom;
+                } else {
+                    b = y2 - k * x2;
+                }
+            }
+
+            return { x1, y1, x2, y2, k, b };
+        }
+
+        function formatNumber(value) {
+            if (typeof value === 'object') {
+                const sign = value.num < 0 ? '-' : '';
+                return `${sign}\\frac{${Math.abs(value.num)}}{${value.denom}}`;
+            }
+            return value.toString();
+        }
+
+        function nextProblem() {
+            problemCount++;
+            document.title = `Math Practice ${problemCount}`;
+            const { k, b } = generateRandomFunction();
+            const { x1, y1, x2, y2 } = generatePoints(k, b);
+
+            const problemDiv = document.getElementById('problem');
+            problemDiv.innerHTML = `已知函數通過點 \\((${x1}, ${y1})\\) 和 \\((${x2}, ${y2})\\)，請求出該一次函數的解析式 \\(y = kx + b\\)。`;
+
+            const answerDiv = document.getElementById('answer');
+            answerDiv.style.display = 'none';
+            answerDiv.innerHTML = `答案：\\(y = ${formatNumber(k)}x ${b >= 0 ? '+' : ''} ${formatNumber(b)}\\)`;
+
+            const answerInput = document.getElementById('answerInput');
+            answerInput.value = '';
+            answerInput.disabled = false;
+
+            MathJax.typeset();
+        }
+
+        function showAnswer() {
+            const answerDiv = document.getElementById('answer');
+            answerDiv.style.display = 'block';
+            const answerInput = document.getElementById('answerInput');
+            answerInput.disabled = true;
+            MathJax.typeset();
+        }
+
+        // Generate a random problem when the page loads
+        window.onload = function() {
+            nextProblem();
+        };
+    </script>
+</body>
+</html>

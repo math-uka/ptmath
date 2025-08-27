@@ -1,0 +1,825 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Function Graph Tool</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+            flex-direction: row;
+        }
+        canvas {
+            border: 1px solid #000;
+            margin-right: 20px;
+        }
+        .controls {
+            text-align: left;
+        }
+        table {
+            border-collapse: collapse;
+            width: 600px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td:first-child {
+            white-space: normal;
+            word-wrap: break-word;
+            padding: 12px 8px;
+        }
+        td.vertex, td.intercepts {
+            font-size: 12px;
+            padding: 8px 4px;
+        }
+        input {
+            width: 60px;
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+            font-size: 14px;
+            min-width: 44px;
+            min-height: 44px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+        .show-btn {
+            padding: 4px 8px;
+            font-size: 12px;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        .drag-mode-buttons {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .drag-mode-buttons button {
+            padding: 6px 12px;
+            margin: 0 3px;
+        }
+        .drag-mode-buttons button.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .drag-mode-buttons button.active:active {
+            background-color: #45a049;
+        }
+        h1 {
+            font-size: 18px;
+            text-align: center;
+            margin: 10px 0;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            canvas {
+                width: 300px;
+                height: 300px;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            table {
+                width: 320px;
+            }
+            th, td {
+                padding: 6px;
+                font-size: 12px;
+            }
+            td:first-child {
+                font-size: 9px;
+                padding: 8px 6px;
+            }
+            td.vertex, td.intercepts {
+                font-size: 10px;
+                padding: 6px 3px;
+            }
+            input {
+                width: 50px;
+                font-size: 12px;
+            }
+            input:focus {
+                border-color: #4CAF50;
+            }
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .show-btn {
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+            .drag-mode-buttons button {
+                padding: 5px 8px;
+                margin: 0 2px;
+                font-size: 12px;
+            }
+            h1 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>輸入二次函數 \( y = ax^2 + bx + c \) 中 \( a \), \( b \), \( c \) 的值，生成圖像</h1>
+    <div class="container">
+        <div>
+            <div id="canvasContainer"></div>
+            <div class="drag-mode-buttons">
+                <button id="translateHorizontalBtn" class="active" onclick="setDragMode('translateHorizontal')">左右平移</button>
+                <button id="translateVerticalBtn" onclick="setDragMode('translateVertical')">上下平移</button>
+                <button id="scaleBtn" onclick="setDragMode('scale')">調整開口大小</button>
+            </div>
+        </div>
+        <div class="controls">
+            <table id="functionTable">
+                <tr>
+                    <th>函數</th>
+                    <th>\( a \)</th>
+                    <th>\( b \)</th>
+                    <th>\( c \)</th>
+                    <th>顏色</th>
+                    <th>頂點坐標</th>
+                    <th>X軸,Y軸截距</th>
+                </tr>
+                <tr>
+                    <td><button class="show-btn" onclick="toggleVisibility(0)">隱藏</button> <span id="func0">\( y = x^2 \)<br>\( y = x^2 \)</span></td>
+                    <td><input type="number" class="coefA" value="1" min="-999" max="999" step="any"></td>
+                    <td><input type="number" class="coefB" value="0" min="-999" max="999" step="any"></td>
+                    <td><input type="number" class="coefC" value="0" min="-999" max="999" step="any"></td>
+                    <td style="background-color: rgb(255, 0, 0);"></td>
+                    <td class="vertex" id="vertex0"></td>
+                    <td class="intercepts" id="intercepts0"></td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <button onclick="addFunction()">新增函數</button>
+                        <button onclick="clearFunctions()">清除</button>
+                        <button onclick="toggleGrid()">顯示格線</button>
+                        <button onclick="toggleTicks()">顯示刻度</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+<script>
+    // MathJax configuration
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            processEscapes: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            ignoreHtmlClass: 'tex2jax_ignore'
+        },
+        startup: {
+            ready: () => {
+                MathJax.startup.defaultReady();
+                MathJax.typesetPromise().then(() => {
+                    console.log('Initial MathJax typesetting complete');
+                }).catch(err => console.error('MathJax initial typesetting error:', err));
+            }
+        }
+    };
+// Debounce function for performance
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Typeset specific element or entire document
+function typesetMath(element = document) {
+    if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise([element]).catch(err => console.error('MathJax typesetting error:', err));
+    }
+}
+
+let functions = [
+    { a: 1, b: 0, c: 0, color: [255, 0, 0], visible: true }
+];
+const colors = [
+    [255, 0, 0], // 紅
+    [0, 0, 255], // 藍
+    [0, 128, 0], // 綠
+    [255, 165, 0], // 橙
+    [128, 0, 128] // 紫
+];
+let showGrid = false;
+let showTicks = true;
+let selectedFunctionIndex = -1;
+let startX, startY;
+let initialState = null;
+let dragMode = 'translateHorizontal';
+const VERTICAL_SENSITIVITY = 0.9;
+
+// 計算最大公約數
+function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+// 格式化數字為整數、分數或根式
+function formatNumber(num, isQuadraticRoot = false, a, b, c) {
+    if (Math.abs(num) < 1e-6) return '0';
+    if (Number.isInteger(num)) return num.toString();
+
+    // For quadratic formula roots, try to express as (m ± √n)/d
+    if (isQuadraticRoot && a !== 0) {
+        let discriminant = b * b - 4 * a * c;
+        if (discriminant >= 0) {
+            let sqrtD = Math.sqrt(discriminant);
+            let denom = 2 * a;
+            let m = -b;
+            // Check if num matches one of the quadratic roots
+            let root1 = (-b + sqrtD) / (2 * a);
+            let root2 = (-b - sqrtD) / (2 * a);
+            if (Math.abs(num - root1) < 1e-6 || Math.abs(num - root2) < 1e-6) {
+                let sqrtDInt = Math.round(discriminant);
+                if (Math.abs(discriminant - sqrtDInt) < 1e-6) {
+                    let sign = Math.abs(num - root1) < 1e-6 ? '+' : '-';
+                    let mStr = m === 0 ? '' : m === 1 ? '1' : m === -1 ? '-1' : m.toString();
+                    let dStr = denom === 1 ? '' : denom === -1 ? '-' : denom.toString();
+                    let sqrtStr = sqrtDInt === 1 ? '' : `\\sqrt{${sqrtDInt}}`;
+                    let numStr = mStr && sqrtStr ? `${mStr} ${sign} ${sqrtStr}` : mStr || sqrtStr;
+                    if (!numStr) numStr = '0';
+                    return dStr ? `\\frac{${numStr}}{${dStr}}` : numStr;
+                }
+            }
+        }
+    }
+
+    // Check for square root representation
+    const square = num * num;
+    const squareInt = Math.round(square);
+    if (Math.abs(square - squareInt) < 1e-6 && squareInt > 0) {
+        const sqrt = Math.sqrt(squareInt);
+        if (Number.isInteger(sqrt)) {
+            return num < 0 ? `-\\sqrt{${squareInt}}` : `\\sqrt{${squareInt}}`;
+        }
+    }
+
+    // Convert to fraction
+    const precision = 1e6;
+    let numerator = Math.round(num * precision);
+    let denominator = precision;
+    let divisor = gcd(numerator, denominator);
+    numerator /= divisor;
+    denominator /= divisor;
+
+    if (denominator === 1) return numerator.toString();
+
+    let sign = num < 0 ? '-' : '';
+    numerator = Math.abs(numerator);
+    return `${sign}\\frac{${numerator}}{${denominator}}`;
+}
+
+// 轉換為頂點式
+function getVertexForm(a, b, c) {
+    if (Math.abs(a) < 1e-6) return '';
+    let h = -b / (2 * a);
+    let k = c - (b * b) / (4 * a);
+    let aFormatted = a === 1 ? '' : a === -1 ? '-' : formatNumber(a);
+    let kFormatted = formatNumber(k);
+    let vertexTerms = [];
+    if (Math.abs(h) < 1e-6) {
+        vertexTerms.push(`${aFormatted}x^2`);
+    } else {
+        let hSign = h >= 0 ? '-' : '+';
+        let hFormatted = formatNumber(Math.abs(h));
+        vertexTerms.push(`${aFormatted}(x ${hSign} ${hFormatted})^2`);
+    }
+    if (Math.abs(k) > 1e-6) {
+        vertexTerms.push(`${k > 0 ? '+' : ''}${kFormatted}`);
+    }
+    return `y = ${vertexTerms.join('') || '0'}`;
+}
+
+// 計算頂點坐標
+function getVertex(a, b, c) {
+    if (Math.abs(a) < 1e-6) return '\\text{無頂點 (非二次函數)}';
+    let h = -b / (2 * a);
+    let k = c - (b * b) / (4 * a);
+    let hFormatted = formatNumber(h, true, a, b, c);
+    let kFormatted = formatNumber(k, true, a, b, c);
+    return `\\left( ${hFormatted}, ${kFormatted} \\right)`;
+}
+
+// 計算X軸與Y軸交點
+function getIntercepts(a, b, c) {
+    let intercepts = [];
+    // Y-axis intercept
+    let cFormatted = formatNumber(c);
+    intercepts.push(`Y軸截距：${cFormatted}`);
+
+    // X-axis intercepts
+    let discriminant = b * b - 4 * a * c;
+    if (Math.abs(a) < 1e-6) {
+        if (Math.abs(b) < 1e-6) {
+            intercepts.push(`X軸截距：\\text{沒有X截距}`);
+        } else {
+            let x = -c / b;
+            let xFormatted = formatNumber(x);
+            intercepts.push(`X軸截距：${xFormatted}`);
+        }
+    } else if (discriminant > 1e-6) {
+        let x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+        let x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+        let x1Formatted = formatNumber(x1, true, a, b, c);
+        let x2Formatted = formatNumber(x2, true, a, b, c);
+        intercepts.push(`X軸截距：${x1Formatted}, ${x2Formatted}`);
+    } else if (Math.abs(discriminant) < 1e-6) {
+        let x = -b / (2 * a);
+        let xFormatted = formatNumber(x, true, a, b, c);
+        intercepts.push(`X軸截距：${xFormatted}`);
+    } else {
+        intercepts.push(`X軸截距：\\text{沒有X截距}`);
+    }
+
+    return intercepts.map(item => `\\(${item}\\)`).join('<br>');
+}
+
+// 四捨五入到指定有效數字
+function toSignificantFigures(value, digits) {
+    if (value === 0) return 0;
+    const isNegative = value < 0;
+    const absValue = Math.abs(value);
+    const magnitude = Math.floor(Math.log10(absValue));
+    const scale = Math.pow(10, digits - magnitude - 1);
+    const rounded = Math.round(absValue * scale) / scale;
+    return isNegative ? -rounded : rounded;
+}
+
+function setup() {
+    let canvasWidth = window.innerWidth <= 600 ? 300 : 400;
+    let canvasHeight = window.innerWidth <= 600 ? 300 : 400;
+    let canvas = createCanvas(canvasWidth, canvasHeight);
+    canvas.parent('canvasContainer');
+
+    // 為按鈕和輸入框添加觸控支持
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('touchstart', (event) => {
+            event.stopPropagation();
+            if (button.onclick) button.onclick();
+        });
+    });
+
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('touchstart', (event) => {
+            event.target.focus();
+        });
+    });
+
+    updateInputs();
+    // Initial typesetting for all functions
+    functions.forEach((_, index) => updateFunctionDisplay(index));
+    typesetMath();
+}
+
+function setDragMode(mode) {
+    dragMode = mode;
+    document.getElementById('translateHorizontalBtn').classList.toggle('active', mode === 'translateHorizontal');
+    document.getElementById('translateVerticalBtn').classList.toggle('active', mode === 'translateVertical');
+    document.getElementById('scaleBtn').classList.toggle('active', mode === 'scale');
+}
+
+function updateInputs() {
+    let inputs = document.querySelectorAll('.coefA, .coefB, .coefC');
+    inputs.forEach(input => {
+        input.addEventListener('input', debounce(() => {
+            let row = input.parentElement.parentElement;
+            let index = Array.from(row.parentElement.children).indexOf(row) - 1;
+            let rawValue = input.value.trim();
+            let value = parseFloat(rawValue);
+            if (isNaN(value) || rawValue === '') value = 0;
+            value = Math.min(Math.max(toSignificantFigures(value, 2), -999), 999);
+            if (input.classList.contains('coefA')) {
+                functions[index].a = value;
+            } else if (input.classList.contains('coefB')) {
+                functions[index].b = value;
+            } else {
+                functions[index].c = value;
+            }
+            input.value = value;
+            updateFunctionDisplay(index);
+        }, 300));
+    });
+}
+
+function updateFunctionDisplay(index) {
+    let a = functions[index].a;
+    let b = functions[index].b;
+    let c = functions[index].c;
+    let aDisplay = toSignificantFigures(a, 2);
+    let bDisplay = toSignificantFigures(b, 2);
+    let cDisplay = toSignificantFigures(c, 2);
+
+    // Update function equation
+    let terms = [];
+    if (a !== 0) {
+        terms.push(aDisplay === 1 ? 'x^2' : aDisplay === -1 ? '-x^2' : `${aDisplay}x^2`);
+    }
+    if (b !== 0) {
+        terms.push(bDisplay === 1 ? 'x' : bDisplay === -1 ? '-x' : `${bDisplay > 0 && terms.length ? '+' : ''}${bDisplay}x`);
+    }
+    if (c !== 0) {
+        terms.push(`${cDisplay > 0 && terms.length ? '+' : ''}${cDisplay}`);
+    }
+    let standardForm = terms.length ? `y = ${terms.join('')}` : 'y = 0';
+    let vertexForm = getVertexForm(a, b, c);
+    let equation = vertexForm ? `\\(${standardForm}\\)<br>\\( ${vertexForm} \\)` : `\\(${standardForm}\\)`;
+
+    let funcElement = document.getElementById(`func${index}`);
+    funcElement.innerHTML = equation;
+
+    // Update vertex coordinates
+    let vertexElement = document.getElementById(`vertex${index}`);
+    vertexElement.innerHTML = `\\(${getVertex(a, b, c)}\\)`;
+
+    // Update intercepts
+    let interceptsElement = document.getElementById(`intercepts${index}`);
+    interceptsElement.innerHTML = getIntercepts(a, b, c);
+
+    // Typeset the updated elements
+    typesetMath(funcElement);
+    typesetMath(vertexElement);
+    typesetMath(interceptsElement);
+}
+
+function toggleVisibility(index) {
+    functions[index].visible = !functions[index].visible;
+    let button = document.getElementsByClassName('show-btn')[index];
+    button.textContent = functions[index].visible ? '隱藏' : '顯示';
+}
+
+function addFunction() {
+    if (functions.length >= 5) {
+        alert('最多只能添加5條函數！');
+        return;
+    }
+    let table = document.getElementById('functionTable');
+    let index = functions.length;
+    let row = table.insertRow(table.rows.length - 1);
+    row.innerHTML = `
+        <td><button class="show-btn" onclick="toggleVisibility(${index})">隱藏</button> <span id="func${index}">\\( y = x^2 \\)<br>\\( y = x^2 \\)</span></td>
+        <td><input type="number" class="coefA" value="1" min="-999" max="999" step="any"></td>
+        <td><input type="number" class="coefB" value="0" min="-999" max="999" step="any"></td>
+        <td><input type="number" class="coefC" value="0" min="-999" max="999" step="any"></td>
+        <td style="background-color: rgb(${colors[index][0]}, ${colors[index][1]}, ${colors[index][2]});"></td>
+        <td class="vertex" id="vertex${index}"></td>
+        <td class="intercepts" id="intercepts${index}"></td>
+    `;
+    functions.push({
+        a: 1,
+        b: 0,
+        c: 0,
+        color: colors[index],
+        visible: true
+    });
+    updateFunctionDisplay(index);
+    updateInputs();
+}
+
+function clearFunctions() {
+    functions = [{ a: 1, b: 0, c: 0, color: [255, 0, 0], visible: true }];
+    showGrid = false;
+    showTicks = true;
+    dragMode = 'translateHorizontal';
+    document.getElementById('translateHorizontalBtn').classList.add('active');
+    document.getElementById('translateVerticalBtn').classList.remove('active');
+    document.getElementById('scaleBtn').classList.remove('active');
+    document.querySelector('button[onclick="toggleGrid()"]').textContent = '顯示格線';
+    document.querySelector('button[onclick="toggleTicks()"]').textContent = '顯示刻度';
+    let table = document.getElementById('functionTable');
+    while (table.rows.length > 2) {
+        table.deleteRow(1);
+    }
+    let row = table.insertRow(1);
+    row.innerHTML = `
+        <td><button class="show-btn" onclick="toggleVisibility(0)">隱藏</button> <span id="func0">\\( y = x^2 \\)<br>\\( y = x^2 \\)</span></td>
+        <td><input type="number" class="coefA" value="1" min="-999" max="999" step="any"></td>
+        <td><input type="number" class="coefB" value="0" min="-999" max="999" step="any"></td>
+        <td><input type="number" class="coefC" value="0" min="-999" max="999" step="any"></td>
+        <td style="background-color: rgb(255, 0, 0);"></td>
+        <td class="vertex" id="vertex0"></td>
+        <td class="intercepts" id="intercepts0"></td>
+    `;
+    updateFunctionDisplay(0);
+    updateInputs();
+}
+
+function toggleGrid() {
+    showGrid = !showGrid;
+    document.querySelector('button[onclick="toggleGrid()"]').textContent = showGrid ? '隱藏格線' : '顯示格線';
+}
+
+function toggleTicks() {
+    showTicks = !showTicks;
+    document.querySelector('button[onclick="toggleTicks()"]').textContent = showTicks ? '隱藏刻度' : '顯示刻度';
+}
+
+function mousePressed() {
+    let isMobile = window.innerWidth <= 600;
+    let canvasWidth = isMobile ? 300 : 400;
+    let canvasHeight = isMobile ? 300 : 400;
+    let scale = isMobile ? 15 : 20;
+    let centerX = canvasWidth / 2;
+    let centerY = canvasHeight / 2;
+
+    let x = (mouseX - centerX) / scale;
+    let y = (centerY - mouseY) / scale;
+
+    if (x < -10 || x > 10 || y < -10 || y > 10) {
+        selectedFunctionIndex = -1;
+        return;
+    }
+
+    let minDistance = Infinity;
+    selectedFunctionIndex = -1;
+    let threshold = isMobile ? 1 : 0.5;
+
+    functions.forEach((func, index) => {
+        if (!func.visible) return;
+        let a = func.a;
+        let b = func.b;
+        let c = func.c;
+        let yFunc = a * x * x + b * x + c;
+        let distance = Math.abs(y - yFunc);
+        if (distance < minDistance && distance < threshold) {
+            minDistance = distance;
+            selectedFunctionIndex = index;
+        }
+    });
+
+    if (selectedFunctionIndex !== -1) {
+        startX = x;
+        startY = y;
+        let a = functions[selectedFunctionIndex].a;
+        let b = functions[selectedFunctionIndex].b;
+        let c = functions[selectedFunctionIndex].c;
+        initialState = {
+            a: a,
+            b: b,
+            c: c,
+            h: -b / (2 * a),
+            k: c - (b * b) / (4 * a)
+        };
+        console.log(`Initial State: a=${a}, b=${b}, c=${c}, h=${initialState.h}, k=${initialState.k}`);
+    }
+}
+
+function mouseDragged() {
+    if (selectedFunctionIndex === -1 || !initialState) return;
+
+    let isMobile = window.innerWidth <= 600;
+    let canvasWidth = isMobile ? 300 : 400;
+    let canvasHeight = isMobile ? 300 : 400;
+    let scale = isMobile ? 15 : 20;
+    let centerX = canvasWidth / 2;
+    let centerY = canvasHeight / 2;
+
+    let x = (mouseX - centerX) / scale;
+    let y = (centerY - mouseY) / scale;
+
+    if (x < -10 || x > 10 || y < -10 || y > 10) return;
+
+    let a = initialState.a;
+    let b = functions[selectedFunctionIndex].b;
+    let c = functions[selectedFunctionIndex].c;
+
+    // 格線間距為 1 單位
+    const gridSpacing = 1;
+
+    if (dragMode === 'translateHorizontal') {
+        if (Math.abs(a) > 1e-6) {
+            let d = x - startX;
+            let newH = initialState.h + d;
+            // 將 newH 四捨五入到最近的格線交點
+            newH = Math.round(newH / gridSpacing) * gridSpacing;
+            b = -2 * a * newH;
+            c = a * newH * newH + initialState.k;
+            let newK = c - (b * b) / (4 * a);
+            console.log(`Horizontal Drag: d=${d}, newH=${newH}, b=${b}, c=${c}, Original k=${initialState.k}, New k=${newK}, Difference=${Math.abs(newK - initialState.k)}`);
+        }
+    } else if (dragMode === 'translateVertical') {
+        let dy = y - startY;
+        let deltaC = VERTICAL_SENSITIVITY * dy;
+        let newK = initialState.k + deltaC;
+        // 將 newK 四捨五入到最近的格線交點
+        newK = Math.round(newK / gridSpacing) * gridSpacing;
+        c = newK + (initialState.b * initialState.b) / (4 * a);
+        b = initialState.b; // 保持 b 不變
+        console.log(`Vertical Drag: dy=${dy}, deltaC=${deltaC}, new c=${c}, new k=${newK}`);
+    } else if (dragMode === 'scale') {
+        let vertexX = Math.abs(b / (2 * a)) < 1e-6 ? 0 : -b / (2 * a);
+        let vertexY = c - (b * b) / (4 * a);
+        let deltaY = y - vertexY;
+        if (Math.abs(x - vertexX) < 0.01 || Math.abs(deltaY) < 1e-6) return;
+        a = deltaY / ((x - vertexX) * (x - vertexX));
+        a = toSignificantFigures(a, 2);
+        if (Math.abs(a) < 0.01) a = a < 0 ? -0.01 : 0.01;
+    }
+
+    functions[selectedFunctionIndex].a = a;
+    functions[selectedFunctionIndex].b = b;
+    functions[selectedFunctionIndex].c = c;
+
+    let row = document.getElementById('functionTable').rows[selectedFunctionIndex + 1];
+    row.querySelector('.coefA').value = toSignificantFigures(a, 2);
+    row.querySelector('.coefB').value = toSignificantFigures(b, 2);
+    row.querySelector('.coefC').value = toSignificantFigures(c, 2);
+
+    updateFunctionDisplay(selectedFunctionIndex);
+}
+
+function mouseReleased() {
+    selectedFunctionIndex = -1;
+    initialState = null;
+}
+
+function touchStarted() {
+    if (event.target.tagName !== 'CANVAS') return true;
+    mousePressed();
+    return false;
+}
+
+function touchMoved() {
+    if (selectedFunctionIndex === -1 || event.target.tagName !== 'CANVAS') return true;
+    event.preventDefault();
+    mouseDragged();
+    return false;
+}
+
+function touchEnded() {
+    if (event.target.tagName !== 'CANVAS') return true;
+    mouseReleased();
+    return false;
+}
+
+function draw() {
+    background(255);
+    stroke(0);
+    strokeWeight(1);
+
+    let isMobile = window.innerWidth <= 600;
+    let canvasWidth = isMobile ? 300 : 400;
+    let canvasHeight = isMobile ? 300 : 400;
+    let scale = isMobile ? 15 : 20;
+    let centerX = canvasWidth / 2;
+    let centerY = canvasHeight / 2;
+
+    if (showGrid) {
+        stroke(200);
+        strokeWeight(0.5);
+        for (let x = -10; x <= 10; x++) {
+            line(centerX + x * scale, 0, centerX + x * scale, canvasHeight);
+        }
+        for (let y = -10; y <= 10; y++) {
+            line(0, centerY - y * scale, canvasWidth, centerY - y * scale);
+        }
+    }
+
+    stroke(0);
+    strokeWeight(1);
+    line(0, centerY, canvasWidth, centerY);
+    line(canvasWidth - 10, centerY - 5, canvasWidth, centerY);
+    line(canvasWidth - 10, centerY + 5, canvasWidth, centerY);
+    line(centerX, 0, centerX, canvasHeight);
+    line(centerX - 5, 10, centerX, 0);
+    line(centerX + 5, 10, centerX, 0);
+
+    if (showTicks) {
+        textSize(isMobile ? 10 : 12);
+        for (let x = -10; x <= 10; x++) {
+            line(centerX + x * scale, centerY - 5, centerX + x * scale, centerY + 5);
+            if (x !== 0) text(x, centerX + x * scale - 5, centerY + (isMobile ? 15 : 20));
+        }
+        for (let y = -10; y <= 10; y++) {
+            line(centerX - 5, centerY - y * scale, centerX + 5, centerY - y * scale);
+            if (y !== 0) text(y, centerX - (isMobile ? 20 : 25), centerY - y * scale + 5);
+        }
+    }
+
+    console.log(`Drawing ${functions.length} functions`);
+    functions.forEach((func, index) => {
+        if (!func.visible) return;
+        let a = func.a;
+        let b = func.b;
+        let c = func.c;
+        let k = c - (b * b) / (4 * a);
+        console.log(`Function ${index} k: ${k}, a=${a}, b=${b}, c=${c}`);
+        noFill();
+        stroke(func.color[0], func.color[1], func.color[2]);
+        strokeWeight(2);
+        beginShape();
+        for (let x = -10; x <= 10; x += 0.1) {
+            let y = func.a * x * x + func.b * x + func.c;
+            vertex(centerX + x * scale, centerY - y * scale);
+        }
+        endShape();
+    });
+
+    // Draw intersections between functions
+    for (let i = 0; i < functions.length; i++) {
+        if (!functions[i].visible) continue;
+        for (let j = i + 1; j < functions.length; j++) {
+            if (!functions[j].visible) continue;
+            let func1 = functions[i];
+            let func2 = functions[j];
+            let a = func1.a - func2.a;
+            let b = func1.b - func2.b;
+            let c = func1.c - func2.c;
+            let discriminant = b * b - 4 * a * c;
+            if (Math.abs(a) < 1e-6) {
+                if (Math.abs(b) > 1e-6) {
+                    let x = -c / b;
+                    let y = func1.a * x * x + func1.b * x + func1.c;
+                    if (x >= -10 && x <= 10 && y >= -10 && y <= 10) {
+                        fill(0);
+                        textSize(isMobile ? 10 : 12);
+                        text(`(${x.toFixed(2)}, ${y.toFixed(2)})`, centerX + x * scale + 5, centerY - y * scale + (isMobile ? 12 : 15));
+                    }
+                }
+            } else if (discriminant >= 0) {
+                let x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                let x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                let y1 = func1.a * x1 * x1 + func1.b * x1 + func1.c;
+                let y2 = func1.a * x2 * x2 + func1.b * x2 + func1.c;
+                if (x1 >= -10 && x1 <= 10 && y1 >= -10 && y1 <= 10) {
+                    fill(0);
+                    textSize(isMobile ? 10 : 12);
+                    text(`(${x1.toFixed(2)}, ${y1.toFixed(2)})`, centerX + x1 * scale + 5, centerY - y1 * scale + (isMobile ? 12 : 15));
+                }
+                if (x2 >= -10 && x2 <= 10 && Math.abs(x2 - x1) > 1e-6 && y2 >= -10 && y2 <= 10) {
+                    fill(0);
+                    textSize(isMobile ? 10 : 12);
+                    text(`(${x2.toFixed(2)}, ${y2.toFixed(2)})`, centerX + x2 * scale + 5, centerY - y2 * scale + (isMobile ? 12 : 15));
+                }
+            }
+        }
+    }
+}
+
+</script></body>
+</html>
+

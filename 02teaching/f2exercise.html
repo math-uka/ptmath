@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>題庫練習</title>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #2c3e50;
+            padding: 30px 0;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            vertical-align: top;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        td:hover {
+            transform: translateY(-3px);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                border-radius: 8px 8px 0 0;
+            }
+
+            td {
+                border-radius: 0 0 8px 8px;
+                position: relative;
+                padding-left: 15px;
+            }
+
+            td:before {
+                content: attr(data-label);
+                display: block;
+                font-weight: bold;
+                color: #3498db;
+                margin-bottom: 10px;
+            }
+        }
+
+        .grade-label {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 20px 0 10px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>年級題庫</h1>
+    <div class="container">
+        <!-- 四校聯考內容開始 -->
+        <div class="grade-label">四校聯考</div>
+        <table>
+            <tr>
+                <th>四校聯考</th>
+            </tr>
+            <tr>
+                <td data-label="四校聯考">
+                    <ul>
+                        
+                        <li><a href="other/4yearmo/math/2024/01.html">2024學年</a></li>
+                        <li><a href="other/4yearmo/math/2023/01.html">2023學年</a></li>
+                        <li><a href="other/4yearmo/math/2022/01.html">2022學年</a></li>
+                        <li><a href="other/4yearmo/math/2021/01.html">2021學年</a></li>
+                 
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <!-- 四校聯考內容結束 -->
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+</body>
+</html>

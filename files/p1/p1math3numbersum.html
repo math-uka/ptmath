@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加法測驗 17</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            touch-action: manipulation;
+            background: linear-gradient(to bottom, #e6f3ff 0%, #ffebcc 100%);
+        }
+        h1 {
+            font-size: clamp(26px, 7vw, 32px);
+            margin: 10px 0;
+            color: #ff4500;
+            text-shadow: 1px 1px 2px #fff;
+        }
+        #mode-selection {
+            margin: 40px auto;
+            max-width: 400px;
+        }
+        #mode-selection h2 {
+            font-size: clamp(20px, 5vw, 24px);
+            color: #4682b4;
+        }
+        .mode-btn {
+            padding: clamp(12px, 3vw, 15px);
+            margin: 10px;
+            font-size: clamp(16px, 4vw, 18px);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+            width: 120px;
+        }
+        .mode-btn:active {
+            transform: scale(0.95);
+        }
+        #easy-btn {
+            background: linear-gradient(#90ee90, #32cd32);
+            color: white;
+        }
+        #normal-btn {
+            background: linear-gradient(#ffd700, #ffa500);
+            color: white;
+        }
+        #hard-btn {
+            background: linear-gradient(#ff6347, #dc143c);
+            color: white;
+        }
+        #game {
+            display: none;
+        }
+        #stars {
+            font-size: clamp(20px, 5vw, 24px);
+            margin: 15px 0;
+            color: #ffd700;
+            min-height: 30px;
+        }
+        #question {
+            font-size: clamp(22px, 6vw, 26px);
+            margin: 20px 0;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #answer {
+            font-size: clamp(18px, 5vw, 20px);
+            width: clamp(100px, 25vw, 120px);
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #87ceeb;
+            border-radius: 8px;
+            margin: 15px auto;
+            display: block;
+            background: #fff;
+        }
+        #keyboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(10px, 2.5vw, 12px);
+            max-width: 360px;
+            margin: 20px auto;
+        }
+        #keyboard button {
+            padding: clamp(14px, 3.5vw, 16px);
+            font-size: clamp(18px, 4.5vw, 20px);
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(#f0f0f0, #d0d0d0);
+            cursor: pointer;
+            touch-action: manipulation;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        #keyboard button:active {
+            transform: scale(0.95);
+            background: linear-gradient(#d0d0d0, #b0b0b0);
+        }
+        #clearBtn {
+            background: linear-gradient(#00ff00, #008000) !important;
+            color: white;
+        }
+        #submitBtn {
+            background: linear-gradient(#0000ff, #000080) !important;
+            color: white;
+        }
+        #result {
+            font-size: clamp(18px, 4.5vw, 20px);
+            margin: 15px 0;
+            min-height: 30px;
+            color: #ff4500;
+        }
+        #wrongQuestions {
+            text-align: left;
+            margin: 20px auto;
+            max-width: 90%;
+            font-size: clamp(16px, 4vw, 18px);
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        footer {
+            font-size: clamp(14px, 3.5vw, 16px);
+            margin-top: 20px;
+            color: #4682b4;
+            text-shadow: 1px 1px 1px #fff;
+        }
+        .shake {
+            animation: shake 0.15s linear 10;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .correct-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .star {
+            position: absolute;
+            font-size: 28px;
+            color: #ffd700;
+            animation: fall 1.5s ease-out forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-50px) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+        }
+        @media (max-width: 600px) {
+            body { padding: 15px; }
+            #keyboard { max-width: 100%; }
+            .mode-btn { width: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="mode-selection">
+        <h2>選擇模式</h2>
+        <button id="easy-btn" class="mode-btn" onclick="startGame('easy')">簡單模式</button>
+        <button id="normal-btn" class="mode-btn" onclick="startGame('normal')">普通模式</button>
+        <button id="hard-btn" class="mode-btn" onclick="startGame('hard')">挑戰模式</button>
+    </div>
+    <div id="game">
+        <h1>加法測驗</h1>
+        <div id="stars"></div>
+        <div id="question"></div>
+        <input type="text" id="answer" maxlength="3" readonly>
+        <div id="keyboard">
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button id="clearBtn" onclick="clearAnswer()">清除</button>
+            <button id="submitBtn" onclick="submitAnswer()">提交</button>
+        </div>
+        <div id="result"></div>
+        <div id="wrongQuestions"></div>
+    </div>
+    <footer>
+        <p>© 2025 ukawai</p>
+    </footer>
+
+    <script>
+        let questionCount = 0;
+        let stars = 0;
+        let wrongQuestions = new Set();
+        let usedQuestions = new Set();
+        let currentAnswer;
+        let num1, num2, num3;
+        let mode = null;
+        const maxQuestions = 10;
+
+        function startGame(selectedMode) {
+            mode = selectedMode;
+            document.getElementById('mode-selection').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            usedQuestions.clear();
+            generateQuestion();
+            updateStars();
+        }
+
+        function checkNoCarry(a, b) {
+            return (a % 10) + (b % 10) < 10 && a + b <= 99;
+        }
+
+        function generateNonZeroDigitNumber(max) {
+            let num;
+            do {
+                num = Math.floor(Math.random() * max) + 1; // 從1開始，確保不為0
+            } while (num % 10 === 0); // 確保個位數不為0
+            return num;
+        }
+
+        function generateQuestion() {
+            let attempts = 0;
+            const maxAttempts = 100;
+            do {
+                attempts++;
+                if (attempts > maxAttempts) {
+                    console.warn("無法生成新題目，可能題目範圍太小");
+                    break;
+                }
+
+                // 生成數字，確保不為0且個位數不為0
+                num1 = generateNonZeroDigitNumber(90);
+                num2 = generateNonZeroDigitNumber(90 - num1);
+                num3 = generateNonZeroDigitNumber(99 - num1 - num2);
+                currentAnswer = num1 + num2 + num3;
+
+                const questionKey = `${num1}+${num2}+${num3}`;
+                if (usedQuestions.has(questionKey) || currentAnswer > 99) {
+                    continue;
+                }
+
+                if (mode === 'easy') {
+                    // 簡單模式：任意兩數相加無進位，所有加法順序無進位
+                    if (
+                        checkNoCarry(num1, num2) &&
+                        checkNoCarry(num1, num3) &&
+                        checkNoCarry(num2, num3) &&
+                        checkNoCarry(num1 + num2, num3)
+                    ) {
+                        usedQuestions.add(questionKey);
+                        break;
+                    }
+                } else if (mode === 'normal') {
+                    // 普通模式：num1和num3 或 num2和num3 個位數和為10
+                    const caseChoice = Math.random() < 0.5 ? 'num1_num3' : 'num2_num3';
+                    if (caseChoice === 'num1_num3') {
+                        num1 = generateNonZeroDigitNumber(90);
+                        const digit1 = num1 % 10;
+                        let digit3 = 10 - digit1;
+                        const maxTens3 = Math.floor((90 - digit3) / 10);
+                        const tens3 = Math.floor(Math.random() * (maxTens3 + 1));
+                        num3 = tens3 * 10 + digit3;
+                        if (num3 % 10 === 0 || num3 === 0) continue; // 確保num3個位數不為0
+                        num2 = generateNonZeroDigitNumber(99 - num1 - num3);
+                    } else {
+                        num2 = generateNonZeroDigitNumber(90);
+                        const digit2 = num2 % 10;
+                        let digit3 = 10 - digit2;
+                        const maxTens3 = Math.floor((90 - digit3) / 10);
+                        const tens3 = Math.floor(Math.random() * (maxTens3 + 1));
+                        num3 = tens3 * 10 + digit3;
+                        if (num3 % 10 === 0 || num3 === 0) continue; // 確保num3個位數不為0
+                        num1 = generateNonZeroDigitNumber(99 - num2 - num3);
+                    }
+                    currentAnswer = num1 + num2 + num3;
+                    if (currentAnswer <= 99) {
+                        usedQuestions.add(questionKey);
+                        break;
+                    }
+                } else if (mode === 'hard') {
+                    // 挑戰模式：至少一次進位
+                    num1 = generateNonZeroDigitNumber(90);
+                    num2 = generateNonZeroDigitNumber(90 - num1);
+                    num3 = generateNonZeroDigitNumber(99 - num1 - num2);
+                    const unitsSum = (num1 % 10) + (num2 % 10) + (num3 % 10);
+                    currentAnswer = num1 + num2 + num3;
+                    if (currentAnswer <= 99 && unitsSum >= 10) {
+                        usedQuestions.add(questionKey);
+                        break;
+                    }
+                }
+            } while (true);
+
+            document.getElementById('question').innerHTML = `\\(${num1} + ${num2} + ${num3} = ?\\)`;
+            MathJax.typeset();
+            document.getElementById('answer').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function appendNumber(num) {
+            const answerInput = document.getElementById('answer');
+            if (answerInput.value.length < 3) {
+                answerInput.value += num;
+            }
+        }
+
+        function clearAnswer() {
+            document.getElementById('answer').value = '';
+        }
+
+        function showCorrectAnimation() {
+            const animationDiv = document.createElement('div');
+            animationDiv.className = 'correct-animation';
+            document.body.appendChild(animationDiv);
+            for (let i = 0; i < 10; i++) {
+                const star = document.createElement('span');
+                star.className = 'star';
+                star.innerHTML = '🌟';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 0.5}s`;
+                animationDiv.appendChild(star);
+            }
+            setTimeout(() => animationDiv.remove(), 1500);
+        }
+
+        function updateStars() {
+            document.getElementById('stars').innerHTML = '🌟'.repeat(stars);
+        }
+
+        function submitAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            if (isNaN(userAnswer)) {
+                document.getElementById('result').innerHTML = '請輸入答案！';
+                return;
+            }
+            if (userAnswer === currentAnswer) {
+                document.getElementById('result').innerHTML = '正確！';
+                stars++;
+                questionCount++;
+                showCorrectAnimation();
+                updateStars();
+                setTimeout(() => {
+                    if (questionCount < maxQuestions) {
+                        generateQuestion();
+                    } else {
+                        showResults();
+                    }
+                }, 1500);
+            } else {
+                document.getElementById('result').innerHTML = '錯誤！';
+                stars = Math.max(0, stars - 1);
+                wrongQuestions.add(`${num1} + ${num2} + ${num3} = ?`);
+                updateStars();
+                document.body.classList.add('shake');
+                setTimeout(() => {
+                    document.body.classList.remove('shake');
+                    document.getElementById('answer').value = '';
+                    document.getElementById('result').innerHTML = '';
+                }, 1500);
+            }
+        }
+
+        function showResults() {
+            document.getElementById('question').innerHTML = '';
+            document.getElementById('keyboard').style.display = 'none';
+            document.getElementById('answer').style.display = 'none';
+            document.getElementById('result').innerHTML = `測驗結束！你獲得了 ${'🌟'.repeat(stars)}！`;
+            let wrongList = '<h3>錯題回顧：</h3>';
+            if (wrongQuestions.size === 0) {
+                wrongList += '<p>恭喜你，沒有錯題！</p>';
+            } else {
+                wrongList += '<ul>';
+                wrongQuestions.forEach(q => {
+                    wrongList += `<li>\\( ${q} \\)</li>`;
+                });
+                wrongList += '</ul>';
+            }
+            document.getElementById('wrongQuestions').innerHTML = wrongList;
+            MathJax.typeset();
+            updateTitle();
+        }
+
+        function updateTitle() {
+            document.title = `加法測驗 ${parseInt(document.title.split(' ')[2]) + 1}`;
+        }
+    </script>
+</body>
+</html>

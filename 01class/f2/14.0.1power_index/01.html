@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同底數冪乘法工具與教學</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --secondary-color: #43a047;
+            --accent-color: #e53935;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: #fafafa;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-container {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        input {
+            padding: 12px;
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: 6px;
+            font-size: 1.1em;
+        }
+
+        .step-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .step {
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .example {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .preview-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--light-gray);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .exercise-container {
+            margin: 20px 0;
+        }
+
+        .exercise {
+            margin-bottom: 20px;
+        }
+
+        .exercise p {
+            margin: 10px 0;
+        }
+
+        .answer {
+            display: none;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .answer-button {
+            background-color: var(--secondary-color);
+        }
+
+        .answer-button:hover {
+            background-color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>同底數冪乘法互動學習工具</h1>
+        <p>通過直觀的步驟展示和互動計算器，輕鬆掌握同底數冪乘法的核心原理！</p>
+        <p>輸入兩個同底數的冪如 \( a^3 \) 和 \( a^5 \) ，即可查看逐步計算過程與最終結果。</p>
+    </header>
+
+    <div class="card">
+        <h2>同底數冪乘法計算器</h2>
+        <div class="input-container">
+            <input type="text" id="base1" value="a^3" placeholder="例如: a^3 或 (ab)^3 或 (-a)^3 或 (a+b)^3 或 (a+3b^2)^2">
+            <span style="font-size: 1.5em;">×</span>
+            <input type="text" id="base2" value="a^5" placeholder="例如: a^5 或 (ab)^3 或 (-a)^3 或 (a+b)^4 或 (a+3b^2)^2">
+            <button onclick="calculatePowerMultiplication()">計算結果</button>
+        </div>
+        <div class="preview-container">
+            <h3>當前運算</h3>
+            <div id="preview">\[ a^3 \cdot a^5 \]</div>
+        </div>
+        <div id="result-container" class="result-container"></div>
+    </div>
+
+    <div class="card">
+        <h2>同底數冪乘法教學</h2>
+        <p>同底數冪乘法是代數中的基本運算，遵循指數相加的規則。以下是詳細步驟：</p>
+
+        <div class="step">
+            <h3><span class="step-number">1</span>理解冪的含義</h3>
+            <p>冪表示一個底數連續乘以自身的次數。底數可以是單個未知數、數字或任何代數表達式。。例如：</p>
+            <p class="example">\( a^3 = a \cdot a \cdot a \)</p>
+            <p class="example">\( (ab)^3 = (ab) \cdot (ab) \cdot (ab) \)</p>
+            <p class="example">\( (-a)^3 = (-a) \cdot (-a) \cdot (-a) \)</p>
+            <p class="example">\( (a+b)^3 = (a+b) \cdot (a+b) \cdot (a+b) \)</p>
+            <p class="example">\( (a+3b^2)^2 = (a+3b^2) \cdot (a+3b^2) \)</p>
+            <p class="example">\( a^7 = a \cdot a \cdot \ldots \cdot a \)（7次）</p>
+            <p>其中 \( a \)、\( (ab) \)、\( (-a) \)、\( (a+b) \) 或 \( (a+3b^2) \) 是底數，指數表示重複次數。對於指數大於5的情況，使用省略號表示展開。</p>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">2</span>計算步驟</h3>
+            <p>以  \( a^3 \cdot a^4 \)為例：</p>
+            <ul>
+                <li>表示形式：\( a^3 = a \cdot a \cdot a \)，\( a^4 = a \cdot a \cdot a \cdot a \)</li>
+                <li>相乘：\( a^3 \cdot a^4 = (a \cdot a \cdot a) \cdot (a \cdot a \cdot a \cdot a) = a^7 \)</li>
+             
+                <li>指數相加：\( a^3 \cdot a^4 = a^{3+4} = a^7 \)</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">3</span>同底數冪乘法規則</h3>
+            <p>當兩個同底數的冪相乘時，指數相加，底數不變：</p>
+            <p class="example">\( x^m \cdot x^n = x^{m+n} \)</p>
+            <p>例如：\( a^3 \cdot a^3 = a^{3+3} = a^6 \)</p>
+            <p>或：\( (ab)^3 \cdot (ab)^3 = (ab)^{3+3} = (ab)^6 \)</p>
+            <p>或：\( (-a)^3 \cdot (-a)^3 = (-a)^{3+3} = (-a)^6 \)</p>
+            <p>或：\( (a+b)^3 \cdot (a+b)^4 = (a+b)^{3+4} = (a+b)^7 \)</p>
+            <p>或：\( (a+3b^2)^2 \cdot (a+3b^2)^2 = (a+3b^2)^{2+2} = (a+3b^2)^4 \)</p>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">4</span>常見錯誤與注意事項</h3>
+            <ul>
+                <li><strong>底數必須相同</strong>：\( a^3 \cdot b^3 \)、\( (ab)^3 \cdot (ac)^3 \) 或 \( (-a)^3 \cdot a^3 \) 不能直接相加指數。</li>
+                <li><strong>指數相加錯誤</strong>：錯誤：\( (ab)^3 \cdot (ab)^3 = (ab)^{3 \cdot 3} \)，正確：\( (ab)^{3+3} \)</li>
+                <li><strong>負底數</strong>：底數帶負號時，保持底數不變：\( (-a)^2 \cdot (-a)^3 = (-a)^{2+3} = (-a)^5 \)，而不是 \( a^5 \)。</li>
+                <li><strong>多項式底數</strong>：多項式如 \( (a+b) \) 或 \( (a+3b^2) \) 必須整體作為底數：\( (a+b)^3 \cdot (a+b)^4 = (a+b)^{3+4} \)，不能拆開處理。</li>
+                <li><strong>括號必要性</strong>：負底數或複雜表達式必須用括號，例如 \( (-a)^3 \) 或 \( (a+3b^2)^2 \)，不能寫成 \( -a^3 \)。 </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>隨堂練習</h2>
+        <p>請計算以下同底數冪乘法的結果，點擊「顯示答案」按鈕查看正確答案。</p>
+        <div class="exercise-container">
+            <div class="exercise">
+                <p>1. \( a^3 \cdot a^4 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer1')">顯示答案</button>
+                <div id="answer1" class="answer">\[ a^3 \cdot a^4 = a^{3+4} = a^7 \]</div>
+            </div>
+            <div class="exercise">
+                <p>2. \( (ab)^2 \cdot (ab)^3 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer2')">顯示答案</button>
+                <div id="answer2" class="answer">\[ (ab)^2 \cdot (ab)^3 = (ab)^{2+3} = (ab)^5 \]</div>
+            </div>
+            <div class="exercise">
+                <p>3. \( x^5 \cdot x^2 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer3')">顯示答案</button>
+                <div id="answer3" class="answer">\[ x^5 \cdot x^2 = x^{5+2} = x^7 \]</div>
+            </div>
+            <div class="exercise">
+                <p>4. \( 10^3 \cdot 10^{10} \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer4')">顯示答案</button>
+                <div id="answer4" class="answer">\[ 10^3 \cdot 10^{10} = 10^{3+10} = 10^{13} \]</div>
+            </div>
+            <div class="exercise">
+                <p>5. \( (xy)^4 \cdot (xy)^2 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer5')">顯示答案</button>
+                <div id="answer5" class="answer">\[ (xy)^4 \cdot (xy)^2 = (xy)^{4+2} = (xy)^6 \]</div>
+            </div>
+            <div class="exercise">
+                <p>6. \( (a+b)^3 \cdot (a+b)^4 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer6')">顯示答案</button>
+                <div id="answer6" class="answer">\[ (a+b)^3 \cdot (a+b)^4 = (a+b)^{3+4} = (a+b)^7 \]</div>
+            </div>
+            <div class="exercise">
+                <p>7. \( (a+3b^2)^2 \cdot (a+3b^2)^2 \)</p>
+                <button class="answer-button" onclick="toggleAnswer('answer7')">顯示答案</button>
+                <div id="answer7" class="answer">\[ (a+3b^2)^2 \cdot (a+3b^2)^2 = (a+3b^2)^{2+2} = (a+3b^2)^4 \]</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© ukawai</p>
+    </footer>
+
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('右鍵功能已被禁用！');
+        });
+
+        // Disable F12 key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                alert('開發者工具已被禁用！');
+            }
+        });
+
+        // Toggle answer visibility
+        function toggleAnswer(id) {
+            let answer = document.getElementById(id);
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+            } else {
+                answer.style.display = 'block';
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            }
+        }
+
+        // Real-time preview update
+        function updatePreview() {
+            let base1 = document.getElementById('base1').value || 'a^3';
+            let base2 = document.getElementById('base2').value || 'a^5';
+            // Add curly braces around multi-digit exponents for MathJax
+            base1 = base1.replace(/\^(\d+)/g, '^{$1}');
+            base2 = base2.replace(/\^(\d+)/g, '^{$1}');
+            let preview = `\\[ ${base1} \\cdot ${base2} \\]`;
+            document.getElementById('preview').innerHTML = preview;
+            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+        }
+
+        // Add input event listeners for real-time updates
+        document.getElementById('base1').addEventListener('input', updatePreview);
+        document.getElementById('base2').addEventListener('input', updatePreview);
+
+        // Initial preview render
+        window.onload = updatePreview;
+
+        function parsePower(term) {
+            term = term.replace(/\s/g, '');
+            // Reject -a^3 or similar without parentheses
+            if (term.match(/^-[a-zA-Z0-9](?:\^\d+)?$/)) {
+                throw new Error('負底數必須用括號括起來，例如 (-a)^3，而不是 -a^3');
+            }
+            // Match single variable, number, or any parenthesized algebraic expression
+            let match = term.match(/^(?:([a-zA-Z]|\d+|\([^()]+?\)))(?:\^(-?\d+))?$/);
+            if (!match) {
+                throw new Error('請輸入有效冪格式，例如 a^3、(-a)^3、10^3、(ab)^3、(a+b)^3、(a-b)^3、(-ab)^3、(a+3b^2)^2');
+            }
+            let base = match[1];
+            let exponent = match[2] ? parseInt(match[2]) : 1;
+            return { base, exponent };
+        }
+
+        function visualizePower(base, exponent) {
+            if (exponent === 0) return '1';
+            if (exponent < 0) {
+                // For negative exponents, ensure base is properly formatted
+                let absBase = base.match(/^\(.+\)$/) || base.match(/^[a-zA-Z]$|^[0-9]+$/) ? base : `(${base})`;
+                return `\\frac{1}{${absBase}}^{${-exponent}}`;
+            }
+            // Use base as-is for single variables or numbers, otherwise add parentheses
+            let displayBase = base.match(/^\(.+\)$/) ? base : base.match(/^[a-zA-Z]$|^[0-9]+$/) ? base : `(${base})`;
+            if (Math.abs(exponent) <= 5) {
+                return Array(Math.abs(exponent)).fill(displayBase).join(' \\cdot ');
+            } else {
+                return `${displayBase} \\cdot ${displayBase} \\cdot \\ldots \\cdot ${displayBase}`;
+            }
+        }
+
+        function formatVisualLatex(str) {
+            // Split on terms, only add parentheses for complex expressions
+            let terms = str.split(' \\cdot ');
+            if (terms.length <= 1) return str;
+            return terms.map(term => term.match(/^\(.+\)$/) || term.match(/^[a-zA-Z]$|^[0-9]+$/) ? term : `(${term})`).join(' \\cdot ');
+        }
+
+        function calculatePowerMultiplication() {
+            let base1 = document.getElementById('base1').value;
+            let base2 = document.getElementById('base2').value;
+            if (!base1 || !base2) {
+                alert('請輸入兩個冪！');
+                return;
+            }
+
+            try {
+                let power1 = parsePower(base1);
+                let power2 = parsePower(base2);
+
+                if (power1.base !== power2.base) {
+                    alert('底數必須相同！');
+                    return;
+                }
+
+                let base = power1.base;
+                let exponentSum = power1.exponent + power2.exponent;
+                let visual1 = visualizePower(base, power1.exponent);
+                let visual2 = visualizePower(base, power2.exponent);
+                let visualResult = visualizePower(base, exponentSum);
+
+                // Prepare display strings with proper LaTeX formatting
+                let displayBase = base.match(/^\(.+\)$/) || base.match(/^[a-zA-Z]$|^[0-9]+$/) ? base : `(${base})`;
+                let latexBase1 = base1.replace(/\^(\d+)/g, '^{$1}');
+                let latexBase2 = base2.replace(/\^(\d+)/g, '^{$1}');
+                let latexBase = displayBase.replace(/\^(\d+)/g, '^{$1}');
+                let absExponent1 = Math.abs(power1.exponent);
+                let absExponent2 = Math.abs(power2.exponent);
+                let absExponentSum = Math.abs(exponentSum);
+
+                // Prepare expansion string for step 2
+                let expansionStr = visual1 + ' \\cdot ' + visual2;
+
+                let steps = `
+                    <div class="step-container">
+                        <h3>計算過程</h3>
+                        <div class="step">
+                            <p><strong>步驟 1：表示冪</strong></p>
+                            <p>\\[ ${latexBase1} = \\underset{${absExponent1}個${displayBase}}{${visual1}} \\]</p>
+                            <p>\\[ ${latexBase2} = \\underset{${absExponent2}個${displayBase}}{${visual2}} \\]</p>
+                        </div>
+                        <div class="step">
+                            <p><strong>步驟 2：相乘</strong></p>
+                            <p>\\[ ${latexBase1} \\cdot ${latexBase2} = \\underset{${absExponent1}個${displayBase}}{(${visual1})} \\cdot \\underset{${absExponent2}個${displayBase}}{(${visual2})} = \\underset{${absExponentSum}個${displayBase}}{${visualResult}} \\]</p>
+                        </div>
+                        <div class="step">
+                            <p><strong>步驟 3：指數相加</strong></p>
+                            <p>\\[ ${latexBase1} \\cdot ${latexBase2} = ${latexBase}^{${power1.exponent} + ${power2.exponent}} = ${latexBase}^{${exponentSum}} \\]</p>
+                        </div>
+                    </div>
+                    <p><strong>最終結果</strong>：\\[ ${latexBase}^{${exponentSum}} \\]</p>
+                `;
+
+                document.getElementById('result-container').innerHTML = steps;
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            } catch (e) {
+                alert(e.message || '輸入格式不正確，請檢查冪格式！');
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>
