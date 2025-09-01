@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>繡曲線生成器</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    canvas {
+      border: 1px solid #000;
+      margin-top: 20px;
+    }
+    .controls {
+      margin: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    label {
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    .control-group {
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    input[type="color"] {
+      width: 50px;
+      height: 30px;
+      padding: 2px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>繡曲線生成器</h1>
+  <div class="controls">
+    <div class="control-group">
+      <label for="lineCount">線條數量: </label>
+      <input type="range" id="lineCount" min="1" max="50" value="5">
+      <span id="lineCountValue">5</span>
+    </div>
+    <div class="control-group">
+      <label for="axisCount">軸數量: </label>
+      <input type="range" id="axisCount" min="3" max="10" value="3">
+      <span id="axisCountValue">3</span>
+    </div>
+    <div class="control-group">
+      <label for="zoom">縮放: </label>
+      <input type="range" id="zoom" min="0.5" max="2" step="0.1" value="1">
+      <span id="zoomValue">1</span>
+    </div>
+    <div class="control-group">
+      <label for="rotation">旋轉: </label>
+      <input type="range" id="rotation" min="0" max="360" value="0">
+      <span id="rotationValue">0</span>
+    </div>
+    <div class="control-group">
+      <label for="lineColor">線條顏色: </label>
+      <input type="color" id="lineColor" value="#0000ff">
+    </div>
+    <div class="control-group">
+      <button id="toggleAxes">隱藏數軸</button>
+      <button id="download">下載圖案</button>
+      <button id="toggleMode">切換為多邊形模式</button>
+    </div>
+  </div>
+
+  <script>
+    // 禁用右鍵
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      alert('右鍵功能已被禁用！');
+    });
+
+    // 禁用 F12、Ctrl+U、Ctrl+S 等快捷鍵
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'F12' || 
+          (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S'))) {
+        e.preventDefault();
+        alert('此快捷鍵已被禁用！');
+      }
+    });
+
+    let lineCount = 5;
+    let axisCount = 3;
+    const maxValue = 10; // 固定最大值為 10
+    let showAxes = true; // 控制數軸顯示狀態
+    let lineColor = [0, 0, 255]; // 初始藍色
+    let polygonMode = false; // 控制數軸模式（false: 輻射, true: 多邊形）
+    let zoomLevel = 1; // 初始縮放級別
+    let rotationAngle = 0; // 初始旋轉角度
+
+    function setup() {
+      // 創建畫布並設置透明背景
+      let canvas = createCanvas(600, 600);
+      canvas.style('background-color', 'transparent'); // 確保畫布背景透明
+      // 線條數量滑條
+      let lineSlider = document.getElementById('lineCount');
+      let lineSliderValue = document.getElementById('lineCountValue');
+      lineSlider.oninput = function() {
+        lineCount = parseInt(this.value);
+        lineSliderValue.textContent = lineCount;
+      };
+      // 軸數量滑條
+      let axisSlider = document.getElementById('axisCount');
+      let axisSliderValue = document.getElementById('axisCountValue');
+      axisSlider.oninput = function() {
+        axisCount = parseInt(this.value);
+        axisSliderValue.textContent = axisCount;
+      };
+      // 縮放滑條
+      let zoomSlider = document.getElementById('zoom');
+      let zoomSliderValue = document.getElementById('zoomValue');
+      zoomSlider.oninput = function() {
+        zoomLevel = parseFloat(this.value);
+        zoomSliderValue.textContent = zoomLevel.toFixed(1);
+      };
+      // 旋轉滑條
+      let rotationSlider = document.getElementById('rotation');
+      let rotationSliderValue = document.getElementById('rotationValue');
+      rotationSlider.oninput = function() {
+        rotationAngle = parseFloat(this.value);
+        rotationSliderValue.textContent = rotationAngle.toFixed(0);
+      };
+      // 線條顏色選擇器
+      let colorPicker = document.getElementById('lineColor');
+      colorPicker.oninput = function() {
+        let hex = this.value;
+        lineColor = [
+          parseInt(hex.substr(1, 2), 16),
+          parseInt(hex.substr(3, 2), 16),
+          parseInt(hex.substr(5, 2), 16)
+        ];
+      };
+      // 顯示/隱藏數軸按鈕
+      let toggleButton = document.getElementById('toggleAxes');
+      toggleButton.onclick = function() {
+        showAxes = !showAxes;
+        toggleButton.textContent = showAxes ? '隱藏數軸' : '顯示數軸';
+      };
+      // 下載圖案按鈕
+      let downloadButton = document.getElementById('download');
+      downloadButton.onclick = function() {
+        saveCanvas('繡曲線圖案', 'png'); // 下載畫布為 PNG，保留透明背景
+      };
+      // 切換數軸模式按鈕
+      let modeButton = document.getElementById('toggleMode');
+      modeButton.onclick = function() {
+        polygonMode = !polygonMode;
+        modeButton.textContent = polygonMode ? '切換為輻射模式' : '切換為多邊形模式';
+      };
+    }
+
+    function draw() {
+      // 清除畫布但不填充背景，保持透明
+      clear();
+      // 計算畫布邊界
+      let padding = 50;
+      let canvasSize = 500 * zoomLevel; // 應用縮放
+      let scale = canvasSize / maxValue; // 固定縮放比例
+      let centerX = width / 2;
+      let centerY = height / 2;
+      let radius = canvasSize / 2; // 多邊形半徑
+
+      // 應用旋轉
+      push();
+      translate(centerX, centerY);
+      rotate(radians(rotationAngle));
+      translate(-centerX, -centerY);
+
+      // 繪製數軸（如果 showAxes 為 true）
+      if (showAxes) {
+        stroke(0);
+        strokeWeight(2);
+        let vertices = []; // 儲存多邊形頂點
+        for (let i = 0; i < axisCount; i++) {
+          let angle = (i / axisCount) * TWO_PI - PI / 2; // 從頂部開始
+          let x = centerX + cos(angle) * radius;
+          let y = centerY + sin(angle) * radius;
+          vertices.push([x, y]);
+        }
+
+        if (polygonMode) {
+          // 多邊形模式：每條數軸為多邊形的一條邊
+          for (let i = 0; i < axisCount; i++) {
+            let startX = vertices[i][0];
+            let startY = vertices[i][1];
+            let endX = vertices[(i + 1) % axisCount][0];
+            let endY = vertices[(i + 1) % axisCount][1];
+            line(startX, startY, endX, endY); // 繪製多邊形邊作為數軸
+
+            // 繪製刻度和標籤
+            for (let j = 1; j <= maxValue; j++) {
+              let t = j / maxValue;
+              let tickX = lerp(startX, endX, t);
+              let tickY = lerp(startY, endY, t);
+              let tickSize = 5;
+              let angle = atan2(endY - startY, endX - startX);
+              let tickAngle = angle + PI / 2; // 垂直於軸
+              line(
+                tickX + cos(tickAngle) * tickSize,
+                tickY + sin(tickAngle) * tickSize,
+                tickX - cos(tickAngle) * tickSize,
+                tickY - sin(tickAngle) * tickSize
+              );
+              // 標籤
+              textAlign(CENTER, CENTER);
+              textSize(12);
+              text(j, tickX + cos(tickAngle) * 15, tickY + sin(tickAngle) * 15);
+            }
+          }
+        } else {
+          // 輻射模式：數軸從中心輻射
+          for (let i = 0; i < axisCount; i++) {
+            let angle = (i / axisCount) * TWO_PI;
+            let x2 = centerX + cos(angle) * radius;
+            let y2 = centerY + sin(angle) * radius;
+            line(centerX, centerY, x2, y2); // 從中心點繪製軸
+
+            // 繪製刻度和標籤
+            for (let j = 1; j <= maxValue; j++) {
+              let t = j / maxValue;
+              let tickX = centerX + cos(angle) * t * radius;
+              let tickY = centerY + sin(angle) * t * radius;
+              let tickSize = 5;
+              let tickAngle = angle + PI / 2;
+              line(
+                tickX + cos(tickAngle) * tickSize,
+                tickY + sin(tickAngle) * tickSize,
+                tickX - cos(tickAngle) * tickSize,
+                tickY - sin(tickAngle) * tickSize
+              );
+              textAlign(CENTER, CENTER);
+              textSize(12);
+              text(j, tickX + cos(tickAngle) * 15, tickY + sin(tickAngle) * 15);
+            }
+          }
+        }
+      }
+
+      // 繪製繡曲線（始終顯示）
+      stroke(lineColor[0], lineColor[1], lineColor[2]);
+      strokeWeight(1);
+      let vertices = []; // 儲存多邊形頂點（用於繡曲線計算）
+      for (let i = 0; i < axisCount; i++) {
+        let angle = (i / axisCount) * TWO_PI - PI / 2;
+        let x = centerX + cos(angle) * radius;
+        let y = centerY + sin(angle) * radius;
+        vertices.push([x, y]);
+      }
+
+      for (let i = 0; i < lineCount; i++) {
+        let t = i / (lineCount - 1 || 1); // 均勻插值
+        if (polygonMode) {
+          // 多邊形模式：點1連點1，點2連點2
+          for (let j = 0; j < axisCount; j++) {
+            let startAxis = j;
+            let endAxis = (j + 1) % axisCount;
+            let startX = vertices[startAxis][0];
+            let startY = vertices[startAxis][1];
+            let endX = vertices[endAxis][0];
+            let endY = vertices[endAxis][1];
+            // 計算當前邊上的插值點
+            let x1 = lerp(startX, endX, t);
+            let y1 = lerp(startY, endY, t);
+            // 計算下一邊上的相同插值點
+            let nextStartAxis = (j + 1) % axisCount;
+            let nextEndAxis = (j + 2) % axisCount;
+            let nextStartX = vertices[nextStartAxis][0];
+            let nextStartY = vertices[nextStartAxis][1];
+            let nextEndX = vertices[nextEndAxis][0];
+            let nextEndY = vertices[nextEndAxis][1];
+            let x2 = lerp(nextStartX, nextEndX, t);
+            let y2 = lerp(nextStartY, nextEndY, t);
+            // 連線相同插值點
+            line(x1, y1, x2, y2);
+          }
+        } else {
+          // 輻射模式：保持原邏輯
+          for (let j = 0; j < axisCount; j++) {
+            let startAxis = j;
+            let endAxis = (j + 1) % axisCount;
+            let startAngle = (startAxis / axisCount) * TWO_PI;
+            let endAngle = (endAxis / axisCount) * TWO_PI;
+            let value = maxValue * (1 - t);
+            let x1 = centerX + cos(startAngle) * value * scale / 2;
+            let y1 = centerY + sin(startAngle) * value * scale / 2;
+            let x2 = centerX + cos(endAngle) * (maxValue - value) * scale / 2;
+            let y2 = centerY + sin(endAngle) * (maxValue - value) * scale / 2;
+            line(x1, y1, x2, y2);
+          }
+        }
+      }
+      pop();
+    }
+  </script>
+</body>
+</html>
