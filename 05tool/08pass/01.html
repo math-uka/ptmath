@@ -159,8 +159,14 @@
         // 下載JSON文件
         function downloadJSON(filename, data) {
             const today = new Date();
-            const dateComment = `<!-- 生成密碼的日期: ${today.toISOString()} -->\n`;
-            const blob = new Blob([dateComment, JSON.stringify(data, null, 2)], { type: 'application/json' });
+            // 格式化時間為 "YYYY年MM月DD日HH:MM"
+            const timeString = `${today.getFullYear()}年${String(today.getMonth() + 1).padStart(2, '0')}月${String(today.getDate()).padStart(2, '0')}日${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
+            // 創建包含 time 字段的 JSON 對象
+            const jsonData = {
+                time: timeString,
+                ...data
+            };
+            const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
