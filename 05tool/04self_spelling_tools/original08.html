@@ -176,25 +176,6 @@
         .saved-text-button:hover {
             background-color: #bdc3c7;
         }
-        #jsonButtonsContainer {
-            margin: 20px 0;
-        }
-        .json-button {
-            padding: 10px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-            text-align: left;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        .json-button:hover {
-            background-color: #2980b9;
-        }
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em;
@@ -240,7 +221,6 @@
                 <button id="loadButton" onclick="showSavedTexts()">讀取</button>
             </div>
             <div id="savedTextContainer"></div>
-            <div id="jsonButtonsContainer"></div>
             <div id="tableContainer"></div>
         </div>
         
@@ -286,7 +266,6 @@
         window.onload = () => {
             loadVoices().then(() => {
                 loadPreviousInput();
-                loadJsonFiles();
             });
         };
 
@@ -531,43 +510,6 @@
                 localStorage.setItem('savedInputText', text);
                 generateTable();
             }
-        }
-
-        // 新增功能：讀取 JSON 文件並生成按鈕
-        async function loadJsonFiles() {
-            const container = document.getElementById('jsonButtonsContainer');
-            let index = 1;
-            let html = '<h3>預載課題：</h3>';
-
-            while (true) {
-                const fileName = `${index.toString().padStart(3, '0')}.json`;
-                try {
-                    const response = await fetch(fileName);
-                    if (!response.ok) {
-                        break; // 如果文件不存在，停止
-                    }
-                    const data = await response.json();
-                    const buttonText = `年級: ${data.grade} - 課題: ${data.topic}`;
-                    html += `<button class="json-button" onclick='loadJsonWords(${JSON.stringify(data.words)})'>${buttonText}</button>`;
-                    index++;
-                } catch (error) {
-                    break; // 任何錯誤（如文件不存在）都停止
-                }
-            }
-
-            if (index > 1) {
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = '<p>未找到任何 JSON 文件。</p>';
-            }
-        }
-
-        function loadJsonWords(words) {
-            const inputText = words.join('.');
-            document.getElementById('inputText').value = inputText;
-            originalInput = inputText;
-            localStorage.setItem('savedInputText', inputText);
-            generateTable();
         }
     </script>
     <footer>
