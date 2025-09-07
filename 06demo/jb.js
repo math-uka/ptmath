@@ -1,11 +1,4 @@
-/**
- * Modified JavaScript code with added fireworks effect for correct answers and red flash effect for incorrect answers.
- * Fireworks use a dynamically created canvas for particle animation.
- * Red flash effect uses CSS animation applied to the quiz container or body for 1.2 seconds.
- * No changes to the HTML file are required.
- */
 
-// 標準模式的預設題目數量和允許錯誤數
 let STANDARD_MODE_QUESTION_COUNT = 10;
 let STANDARD_MODE_MAX_WRONG = 1;
 
