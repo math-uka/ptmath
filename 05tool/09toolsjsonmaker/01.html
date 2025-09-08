@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-HK">
 <head>
   <meta charset="UTF-8">
@@ -57,7 +18,7 @@
       display: block;
       margin-bottom: 5px;
     }
-    input[type="text"] {
+    input[type="text"], select {
       width: 100%;
       padding: 8px;
       font-size: 16px;
@@ -79,15 +40,22 @@
   <h1>生字JSON生成器</h1>
   <div class="input-group">
     <label for="grade">年級:</label>
-    <input type="text" id="grade" placeholder="輸入年級，例如 1">
+    <input type="text" id="grade" placeholder="輸入年級，例如 小一">
   </div>
   <div class="input-group">
     <label for="topic">課題:</label>
-    <input type="text" id="topic" placeholder="輸入課題，例如 基本動物">
+    <input type="text" id="topic" placeholder="輸入課題，例如 靜夜思">
+  </div>
+  <div class="input-group">
+    <label for="lang">語言:</label>
+    <select id="lang">
+      <option value="zh">中文</option>
+      <option value="en">英文</option>
+    </select>
   </div>
   <div class="input-group">
     <label for="words">生字 (以逗號或句號分隔):</label>
-    <input type="text" id="words" placeholder="輸入生字，例如 貓,狗,鳥,魚">
+    <input type="text" id="words" placeholder="輸入生字，例如 床前明月光,疑是地上霜,舉頭望明月,低頭思故鄉">
   </div>
   <div class="input-group">
     <label for="filename">文件名 (不含.json):</label>
@@ -95,32 +63,60 @@
   </div>
   <button onclick="generateJSON()">生成並下載JSON</button>
 
-  <script>
+  <script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+          var firstSheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[firstSheetName];
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+          var filteredData = jsonData.filter(row => row.some(filledCell));
+          var headerRowIndex = filteredData.findIndex((row, index) =>
+            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+          );
+          if (headerRowIndex === -1 || headerRowIndex > 25) {
+            headerRowIndex = 0;
+          }
+          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+          return csv;
+        } catch (e) {
+          console.error(e);
+          return "";
+        }
+      }
+      return gk_fileData[filename] || "";
+    }
+
     function generateJSON() {
       const grade = document.getElementById('grade').value.trim();
       const topic = document.getElementById('topic').value.trim();
+      const lang = document.getElementById('lang').value;
       const wordsInput = document.getElementById('words').value.trim();
       const filename = document.getElementById('filename').value.trim() || 'output';
 
-      if (!grade || !topic || !wordsInput) {
+      if (!grade || !topic || !wordsInput || !lang) {
         alert('請填寫所有欄位！');
         return;
       }
 
-      // Split words by comma or period (supports both Chinese and English punctuation)
       const words = wordsInput.split(/[,，.。]/).map(word => word.trim()).filter(word => word);
 
-      // Create JSON object
       const jsonData = {
         grade: grade,
         topic: topic,
+        lang: lang,
         words: words
       };
 
-      // Convert to JSON string with proper formatting
       const jsonString = JSON.stringify(jsonData, null, 2);
-
-      // Create and trigger download
       const blob = new Blob([jsonString], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
