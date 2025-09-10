@@ -12,11 +12,15 @@
   <script>
     // 動態加載 JS 文件
     const script = document.createElement('script');
-    script.src = 'https://f2-theta.vercel.app/api/get-js.js'; // 使用你的 Vercel 專案 URL
+    script.src = 'https://f2-theta.vercel.app/api/get-js.js'; // 確保這是你的 Vercel 專案 URL
     script.onload = function() {
       // JS 文件加載完成後，調用其中的函數
-      const result = sayHello();
-      document.getElementById('output').textContent = result;
+      try {
+        const result = sayHello();
+        document.getElementById('output').textContent = result;
+      } catch (e) {
+        document.getElementById('output').textContent = 'Error: Function not found';
+      }
     };
     script.onerror = function() {
       document.getElementById('output').textContent = 'Failed to load JS file';
