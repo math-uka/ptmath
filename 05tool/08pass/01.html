@@ -56,6 +56,23 @@
         h1 {
             color: #333;
         }
+        .input-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            padding: 8px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +83,15 @@
     <button id="downloadBtn3" class="download-btn">下載XYYYZ密碼 (xyyyz.json)</button>
     <button id="downloadBtn4" class="download-btn">下載YXZYY密碼 (yxzyy.json)</button>
     <button id="downloadBtn5" class="download-btn">下載文件密碼 (classpw.json)</button>
+    
+    <div class="input-group">
+        <label for="random1Input">輸入隨機密碼1 (pass.json) 的密碼內容:</label>
+        <input type="text" id="random1Input" placeholder="如 abc123">
+    </div>
+    <div class="input-group">
+        <label for="random2Input">輸入隨機密碼2 (pass2.json) 的密碼內容:</label>
+        <input type="text" id="random2Input" placeholder="如 xyz789">
+    </div>
     
     <div id="passwordDisplay">
         <div class="password-group">點擊"生成新密碼"按鈕開始</div>
@@ -134,7 +160,6 @@
             const jsonPassword = generateRandomThreeDigits();
             const htmlPassword = generateRandomAlphanumeric();
             const toolsPassword = generateRandomAlphanumeric();
-            // 確保三組密碼不同
             while (htmlPassword === toolsPassword || htmlPassword === jsonPassword || toolsPassword === jsonPassword) {
                 if (htmlPassword === toolsPassword) {
                     toolsPassword = generateRandomAlphanumeric();
@@ -164,16 +189,20 @@
         function generatePasswords() {
             const today = new Date();
             const dayOfMonth = today.getDate();
+            const random1Input = document.getElementById('random1Input').value.trim();
+            const random2Input = document.getElementById('random2Input').value.trim();
             const random1Data = {};
             const random2Data = {};
             const xyyyzData = {};
             const yxzyyData = {};
+            
             for (let i = 1; i <= 50; i++) {
-                random1Data[i] = generateRandomFiveDigits();
-                random2Data[i] = generateRandomFiveDigits();
+                random1Data[i] = random1Input || generateRandomFiveDigits();
+                random2Data[i] = random2Input || generateRandomFiveDigits();
                 xyyyzData[i] = generateXYYYZPassword(i, dayOfMonth);
                 yxzyyData[i] = generateYXZYYPassword(i, dayOfMonth);
             }
+            
             passwordData.random1 = random1Data;
             passwordData.random2 = random2Data;
             passwordData.xyyyz = xyyyzData;
@@ -272,6 +301,16 @@
                 return;
             }
             downloadJSON('classpw.json', passwordData.files);
+        });
+        
+        // 當輸入框內容改變時自動生成並更新
+        document.getElementById('random1Input').addEventListener('input', () => {
+            generatePasswords();
+            updateDisplay();
+        });
+        document.getElementById('random2Input').addEventListener('input', () => {
+            generatePasswords();
+            updateDisplay();
         });
     </script>
 </body>
