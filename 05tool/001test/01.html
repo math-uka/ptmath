@@ -1,31 +1,1111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Vercel JS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數學作業中心</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true
+            },
+            chtml: {
+                scale: 1.0,
+                mtextInheritFont: true
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    MathJax.startup.promise.then(() => {
+                        console.log('MathJax is ready');
+                    });
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@0.11.0/dist/js-confetti.browser.js"></script>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --secondary-color: #43a047;
+            --accent-color: #e53935;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: #fafafa;
+        }
+
+        body.challenge-mode {
+            --primary-color: #e53935;
+            --secondary-color: #d32f2f;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-container {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .input-subgroup {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input {
+            padding: 12px;
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .input-button {
+            padding: 8px 16px;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .input-button:hover {
+            background-color: #2e7d32;
+        }
+
+        .factor-button {
+            padding: 8px 16px;
+            background-color: #0288d1;
+            color: white;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .factor-button:hover {
+            background-color: #0277bd;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--light-gray);
+            border-radius: 6px;
+            font-size: 1.1em;
+        }
+
+        .help-container {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            padding: 15px;
+        }
+
+        .tutorial-container {
+            background-color: #fff3e0;
+            border-left: 4px solid #f57c00;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .star {
+            font-size: 30px;
+            color: #ccc;
+            margin: 0 5px;
+            transition: all 0.3s;
+        }
+
+        .star.active {
+            color: #f1c40f;
+            transform: scale(1.2);
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+            20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+
+        .error-message {
+            color: #e74c3c;
+            background-color: #fdedec;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .countdown {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .preview-container {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 4px;
+            min-height: 30px;
+        }
+
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: block;
+        }
+
+        .image-error {
+            color: #e74c3c;
+            font-style: italic;
+            margin: 10px 0;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content p {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: var(--accent-color);
+        }
+
+        .modal-content button {
+            background-color: var(--primary-color);
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+
+        .modal-content button:hover {
+            background-color: #1565c0;
+        }
+    </style>
 </head>
 <body>
-  <h1>Test JS from Vercel</h1>
-  <p id="output">Loading...</p>
+    <header>
+        <h1 id="practiceTitle">載入中...</h1>
+        <p id="headerText">通過互動練習和詳細教學，輕鬆掌握解題技巧！</p>
+    </header>
 
-  <script>
-    // 動態加載 JS 文件
-    const script = document.createElement('script');
-    script.src = 'https://f2-theta.vercel.app/api/get-js';
-    script.onload = function() {
-      try {
-        const result = sayHello();
-        document.getElementById('output').textContent = result;
-      } catch (e) {
-        document.getElementById('output').textContent = 'Error: Function not found - ' + e.message;
-      }
-    };
-    script.onerror = function(error) {
-      document.getElementById('output').textContent = 'Failed to load JS file: Check console for details';
-      console.error('Script load error:', error);
-    };
-    document.head.appendChild(script);
-  </script>
+    <div class="card" id="rules" style="display:none;">
+        <h2>答題規則介紹</h2>
+        <div class="help-container" id="rulesContent">載入中...</div>
+    </div>
+
+    <div class="card" id="quiz">
+        <h2>練習題目 <span id="levelNumber"></span><span id="questionNumber">1</span>/<span id="totalQuestions">3</span></h2>
+        <div class="stars-container" id="starsContainer"></div>
+        <p id="questionText">載入中...</p>
+        <div id="questionImageContainer"></div>
+        <div class="preview-container" id="previewContainer" style="display:none;"></div>
+        <div class="input-container" id="answerContainer"></div>
+        <div class="button-group" id="factorButtons" style="display:none;">
+            <button class="factor-button" onclick="addFactorInput()">新增答案</button>
+            <button class="factor-button" onclick="removeFactorInput()">刪除答案</button>
+        </div>
+        <button id="submit-btn" onclick="checkAnswer()">提交答案</button>
+        <button id="next-btn" style="display:none;" onclick="nextQuestion()">下一題</button>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="card" id="completion-message" style="display:none;">
+        <h2>恭喜成功完成所有挑戰！</h2>
+        <div id="student-id-section" style="display:none;">
+            <p>請輸入您的學號 (1-50)：</p>
+            <input type="number" id="student-id" min="1" max="50" autocomplete="off">
+            <button id="get-password-btn" onclick="getPassword()">獲取密碼</button>
+            <div id="password-display" style="display:none;"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>教學指南</h2>
+        <div class="help-container" id="helpContent">載入中...</div>
+    </div>
+
+    <div class="card">
+        <h2>操作指南</h2>
+        <div class="help-container" id="operationGuide">
+            <ul>
+                <li><strong>輸入分數</strong>：點擊「分數」按鈕，輸入框中會插入 <code>/</code>，然後輸入分子和分母，例如 <code>1/2</code> 表示 \(\frac{1}{2}\)。 </li>
+                <li><strong>輸入「無解」</strong>：點擊「無解」按鈕，輸入框中會直接插入「無解」，表示方程無解。</li>
+                <li><strong>輸入帶根號的數</strong>：先輸入數字部分（常數或係數），然後點擊「根號」按鈕，再輸入根號下的數字，例如輸入 <code>2+√3</code> 表示 \(2 + \sqrt{3}\)。 </li>
+                <li><strong>輸入指數</strong>：點擊「幂^」按鈕，輸入框中會插入 <code>^</code>，然後輸入底數和指數，例如 <code>x^2</code> 表示 \(x^2\)。 </li>
+                <li><strong>輸入變數</strong>：點擊「x」或「y」按鈕，輸入框中會插入 <code>x</code> 或 <code>y</code>，例如輸入 <code>2x+3y</code> 表示 \(2x + 3y\)。 </li>
+                <li><strong>輸入多項式</strong>：輸入多項式，例如 <code>x^2+4y^2+xy</code> 或 <code>x^2 + 4y^2 + xy</code> 表示 \(x^2 + 4y^2 + xy\)。</li>
+                <li><strong>輸入因式分解</strong>：輸入因式分解形式，例如 <code>(x+a)(x+b)</code> 表示 \((x+a)(x+b)\)，請包含括號以明確表示因式。點擊「新增因式」增加輸入框，點擊「刪除因式」減少輸入框。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <p id="warningMessage"></p>
+            <button onclick="closeWarning()">確定</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 NokIn</p>
+    </footer>
+
+    <script>
+        const jsConfetti = new JSConfetti();
+        let levels = [
+            { file: 'hw.json', questions: [], usedQuestions: JSON.parse(localStorage.getItem('usedQuestions1')) || [], storageKey: 'usedQuestions1' },
+            { file: 'hw2.json', questions: [], usedQuestions: JSON.parse(localStorage.getItem('usedQuestions2')) || [], storageKey: 'usedQuestions2' },
+            { file: 'hw3.json', questions: [], usedQuestions: JSON.parse(localStorage.getItem('usedQuestions3')) || [], storageKey: 'usedQuestions3' }
+        ];
+        let hwhQuestions = [];
+        let usedHwhQuestions = JSON.parse(localStorage.getItem('usedHwhQuestions')) || [];
+        let currentLevel = 0;
+        let currentQuestion = null;
+        let questionCount = 3;
+        let iawaku = 0;
+        let correctCount = 0;
+        let currentQuestionNumber = 1;
+        let passData = null;
+        let isChallengeMode = false;
+        let hasEnteredChallengeMode = false;
+        let hasHwh = false;
+        let totalLevels = 1;
+        let factorInputCount = 2;
+        let maxWrong = null;
+        let apiConfig = {};
+        let fileSources = {};
+
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (
+                e.key === 'F12' ||
+                (e.ctrlKey && (e.key === 's' || e.key === 'u'))
+            ) {
+                e.preventDefault();
+            }
+        });
+
+        function showWarning(message) {
+            document.getElementById('warningMessage').innerText = message;
+            document.getElementById('warningModal').style.display = 'flex';
+            console.log(`違規行為：${message}`);
+        }
+
+        function closeWarning() {
+            document.getElementById('warningModal').style.display = 'none';
+            if (document.getElementById('quiz').style.display !== 'none') {
+                location.reload();
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden' && document.getElementById('quiz').style.display !== 'none') {
+                showWarning('請勿切換標籤或視窗，專注於測驗！現在重新開始練習，請勿使用其他工具協助');
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (document.getElementById('quiz').style.display === 'none') return;
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            if (event.key === 'PrintScreen' ||
+                (isMac && event.metaKey && event.shiftKey && (event.key === '3' || event.key === '4')) ||
+                (!isMac && event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 's')) {
+                event.preventDefault();
+                showWarning('請勿嘗試截圖，違規行為已記錄！');
+            }
+        });
+
+        document.addEventListener('copy', (event) => {
+            if (document.getElementById('quiz').style.display !== 'none') {
+                event.preventDefault();
+                showWarning('請勿複製題目內容，違規行為已記錄！');
+            }
+        });
+
+        function initializeStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < questionCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.textContent = '★';
+                starsContainer.appendChild(star);
+            }
+            updateStars();
+        }
+
+        async function loadApiConfig() {
+            try {
+                console.log('開始檢查 api.json');
+                const apiResponse = await fetch('api.json');
+                if (!apiResponse.ok) {
+                    console.warn(`無法載入 api.json：HTTP 狀態 ${apiResponse.status}，將僅使用本地文件`);
+                    return false;
+                }
+                apiConfig = await apiResponse.json();
+                if (apiConfig && apiConfig.useApi === true && apiConfig.endpoints && typeof apiConfig.endpoints === 'object') {
+                    console.log('api.json 載入成功，將在本地文件失敗時從 API 獲取 hw 系列數據');
+                    return true;
+                } else {
+                    console.warn('api.json 格式錯誤或未設置 useApi 為 true，將僅使用本地文件');
+                    return false;
+                }
+            } catch (error) {
+                console.warn('api.json 載入失敗，將僅使用本地文件：', error.message);
+                return false;
+            }
+        }
+
+        async function loadFile(filename, target) {
+            let source = `local_${filename}`;
+            try {
+                console.log(`開始載入本地 ${filename}`);
+                const response = await fetch(filename);
+                if (!response.ok) {
+                    console.warn(`無法載入本地 ${filename}：HTTP 狀態 ${response.status}，嘗試從 API 加載`);
+                    throw new Error(`Local fetch failed for ${filename}`);
+                }
+                const data = await response.json();
+                fileSources[filename] = source;
+                return data;
+            } catch (error) {
+                console.warn(`本地 ${filename} 載入失敗：`, error.message);
+                if (apiConfig.useApi && apiConfig.endpoints[filename]) {
+                    try {
+                        console.log(`開始從 API 獲取 ${filename}`);
+                        const { url, headers } = apiConfig.endpoints[filename];
+                        const response = await fetch(url, { headers });
+                        if (!response.ok) {
+                            console.warn(`無法從 API 載入 ${filename}：HTTP 狀態 ${response.status}`);
+                            throw new Error(`API fetch failed for ${filename}`);
+                        }
+                        const apiData = await response.json();
+                        source = `API_${filename}`;
+                        fileSources[filename] = source;
+                        return apiData.record || apiData;
+                    } catch (apiError) {
+                        console.warn(`API 載入 ${filename} 失敗：`, apiError.message);
+                        throw apiError;
+                    }
+                } else {
+                    console.warn(`無 API 配置或 api.json 不可用，無法加載 ${filename}`);
+                    throw error;
+                }
+            }
+        }
+
+        async function loadData() {
+            const useApi = await loadApiConfig();
+            try {
+                const data = await loadFile('total2.json') || await loadFile('total.json');
+                questionCount = data.questionCount || 3;
+                maxWrong = data.maxWrong !== undefined ? data.maxWrong : null;
+                document.getElementById('totalQuestions').textContent = questionCount;
+                initializeStars();
+            } catch (error) {
+                console.warn('total2.json 和 total.json 均載入失敗，使用預設值：', error.message);
+                document.getElementById('totalQuestions').textContent = questionCount;
+                initializeStars();
+            }
+
+            try {
+                passData = await loadFile('pass2.json') || await loadFile('pass.json');
+            } catch (error) {
+                console.warn('pass2.json 和 pass.json 均載入失敗，無密碼數據：', error.message);
+                passData = null;
+            }
+
+            try {
+                const data = await loadFile('hwh.json');
+                hasHwh = true;
+                hwhQuestions = data.questions || [];
+                console.log(`hwh.json 加載成功，題目數：${hwhQuestions.length}，來源：${fileSources['hwh.json']}`);
+            } catch (error) {
+                console.warn('hwh.json 載入失敗，挑戰模式不可用：', error.message);
+                hasHwh = false;
+            }
+
+            const results = await Promise.all(levels.map(async (level, index) => {
+                try {
+                    const data = await loadFile(level.file);
+                    levels[index].questions = data.questions || [];
+                    if (index === 0 && data.title) {
+                        document.getElementById('practiceTitle').textContent = data.title;
+                    }
+                    console.log(`${level.file} 加載成功，題目數：${levels[index].questions.length}，來源：${fileSources[level.file]}`);
+                    return true;
+                } catch (error) {
+                    console.warn(`${level.file} 載入失敗：`, error.message);
+                    levels[index].questions = [];
+                    return false;
+                }
+            }));
+
+            totalLevels = results.filter(Boolean).length;
+            if (totalLevels === 0) {
+                document.getElementById('practiceTitle').textContent = '錯誤：無可用題庫';
+                document.getElementById('questionText').textContent = '無法載入題目，請檢查題庫檔案。';
+                return;
+            }
+            if (totalLevels > 1) {
+                document.getElementById('levelNumber').textContent = `第 ${currentLevel + 1} 關 `;
+            } else {
+                document.getElementById('levelNumber').textContent = '';
+            }
+            loadNewQuestion();
+        }
+
+        async function loadHelp() {
+            try {
+                const data = await loadFile('help.json');
+                document.getElementById('helpContent').innerHTML = data.content || '無教學指南內容';
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            } catch (error) {
+                console.warn('help.json 載入失敗：', error.message);
+                document.getElementById('helpContent').innerHTML = '無教學指南內容';
+            }
+        }
+
+        async function loadRules() {
+            try {
+                const data = await loadFile('rule.json');
+                document.getElementById('rules').style.display = 'block';
+                document.getElementById('rulesContent').innerHTML = data.content || '無規則內容';
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            } catch (error) {
+                console.warn('rule.json 載入失敗，規則卡片將隱藏：', error.message);
+                document.getElementById('rules').style.display = 'none';
+            }
+        }
+
+        function updatePreview() {
+            const previewContainer = document.getElementById('previewContainer');
+            if (currentQuestion?.factorization === 'true') {
+                previewContainer.style.display = 'block';
+                let previewLatex = '\\text{ }';
+                for (let i = 1; i <= factorInputCount; i++) {
+                    const input = document.getElementById(`answerInput${i}`);
+                    if (input && input.value.trim()) {
+                        let latexValue = input.value.trim();
+                        previewLatex += latexValue;
+                    }
+                }
+                previewContainer.innerHTML = previewLatex ? `\\(${previewLatex}\\)` : '';
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            } else {
+                previewContainer.style.display = 'none';
+                let previewLatex = '';
+                for (let i = 1; i <= factorInputCount; i++) {
+                    const input = document.getElementById(`answerInput${i}`);
+                    if (input && input.value.trim()) {
+                        previewLatex += input.value.trim();
+                        if (i < factorInputCount) previewLatex += ', ';
+                    }
+                }
+                previewContainer.innerHTML = previewLatex ? `\\(${previewLatex}\\)` : '';
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            }
+        }
+
+        function loadNewQuestion() {
+            if (questionCount < 4) {
+                isChallengeMode = false;
+                document.body.classList.remove('challenge-mode');
+                document.getElementById('headerText').textContent = totalLevels > 1 ? `第 ${currentLevel + 1} 關：通過互動練習和詳細教學，輕鬆掌握解題技巧！` : '通過互動練習和詳細教學，輕鬆掌握解題技巧！';
+            }
+
+            let currentQuestions = isChallengeMode ? hwhQuestions : levels[currentLevel].questions;
+            let currentUsedQuestions = isChallengeMode ? usedHwhQuestions : levels[currentLevel].usedQuestions;
+            let currentStorageKey = isChallengeMode ? 'usedHwhQuestions' : levels[currentLevel].storageKey;
+
+            if (!currentQuestions || currentQuestions.length === 0) {
+                document.getElementById('questionText').textContent = `第 ${currentLevel + 1} 關題庫無效或無題目`;
+                document.getElementById('answerContainer').innerHTML = '';
+                document.getElementById('submit-btn').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('feedback').textContent = '無法載入題目，請檢查題庫檔案。';
+                return;
+            }
+
+            if (questionCount >= 4 && hasHwh && !hasEnteredChallengeMode && iawaku === questionCount - 3) {
+                isChallengeMode = true;
+                hasEnteredChallengeMode = true;
+                document.body.classList.add('challenge-mode');
+                document.getElementById('headerText').textContent = `你已進入第 ${currentLevel + 1} 關挑戰模式`;
+                currentQuestions = hwhQuestions;
+                currentUsedQuestions = usedHwhQuestions;
+                currentStorageKey = 'usedHwhQuestions';
+            }
+
+            let availableQuestions = currentQuestions.filter((q, index) => !currentUsedQuestions.includes(index));
+            if (availableQuestions.length === 0) {
+                currentUsedQuestions.length = 0;
+                localStorage.setItem(currentStorageKey, JSON.stringify(currentUsedQuestions));
+                availableQuestions = currentQuestions;
+            }
+            const index = Math.floor(Math.random() * availableQuestions.length);
+            currentQuestion = availableQuestions[index];
+            currentUsedQuestions.push(currentQuestions.indexOf(currentQuestion));
+            localStorage.setItem(currentStorageKey, JSON.stringify(currentUsedQuestions));
+
+            document.getElementById('questionText').innerHTML = currentQuestion.question || '題目內容缺失';
+
+            const imageContainer = document.getElementById('questionImageContainer');
+            imageContainer.innerHTML = '';
+            if (currentQuestion.image) {
+                const img = document.createElement('img');
+                img.src = currentQuestion.image;
+                img.className = 'question-image';
+                img.alt = '題目圖片';
+                img.onerror = () => {
+                    img.style.display = 'none';
+                    const errorText = document.createElement('p');
+                    errorText.className = 'image-error';
+                    errorText.textContent = '無法載入圖片，請檢查圖片路徑或聯繫管理員';
+                    imageContainer.appendChild(errorText);
+                };
+                imageContainer.appendChild(img);
+            }
+
+            const answerContainer = document.getElementById('answerContainer');
+            const factorButtons = document.getElementById('factorButtons');
+            const prefixes = Array.isArray(currentQuestion.prefix) ? currentQuestion.prefix : [currentQuestion.prefix || ''];
+
+            factorInputCount = currentQuestion.factorization === 'true' ? 1 : (currentQuestion.answers?.length || 1);
+            let inputGroupsHtml = '<div class="input-group">';
+            for (let i = 0; i < factorInputCount; i++) {
+                const prefix = prefixes[i] || prefixes[0] || '';
+                const placeholderText = currentQuestion.factorization === 'true' ? `輸入第${i + 1}個答案` : `輸入第${i + 1}個答案`;
+                inputGroupsHtml += `
+                    <div class="input-subgroup">
+                        <span id="answerPrefix${i + 1}">${prefix}</span>
+                        <input type="text" id="answerInput${i + 1}" placeholder="${placeholderText}" oninput="updatePreview()" autocomplete="off">
+                        <div class="button-group">
+                            <button class="input-button" onclick="insertText('(', 'answerInput${i + 1}')">(</button>
+                            <button class="input-button" onclick="insertText('√', 'answerInput${i + 1}')">\\( \\sqrt{根號} \\)</button>
+                            <button class="input-button" onclick="insertText('/', 'answerInput${i + 1}')">\\( \\frac{a}{b} \\)</button>
+                            <button class="input-button" onclick="insertText('+', 'answerInput${i + 1}')">\\(+\\)</button>
+                            <button class="input-button" onclick="insertText('-', 'answerInput${i + 1}')">\\(-\\)</button>
+                            <button class="input-button" onclick="insertText('^', 'answerInput${i + 1}')">幂^</button>
+                            <button class="input-button" onclick="insertText('^2', 'answerInput${i + 1}')">\\(平方^2 \\)</button>
+                            <button class="input-button" onclick="insertText('無解', 'answerInput${i + 1}')">無解</button>
+                            <button class="input-button" onclick="insertText('x', 'answerInput${i + 1}')">\\(x\\)</button>
+                            <button class="input-button" onclick="insertText('y', 'answerInput${i + 1}')">\\(y\\)</button>
+                            <button class="input-button" onclick="insertText(')', 'answerInput${i + 1}')">)</button>
+                        </div>
+                    </div>
+                `;
+            }
+            inputGroupsHtml += '</div>';
+            answerContainer.innerHTML = inputGroupsHtml;
+            factorButtons.style.display = currentQuestion.factorization === 'true' ? 'flex' : 'none';
+            document.getElementById('previewContainer').style.display = currentQuestion.factorization === 'true' ? 'block' : 'none';
+            setTimeout(() => {
+                MathJax.typesetPromise().then(() => {
+                    if (imageContainer.querySelector('img')) {
+                        imageContainer.querySelector('img').style.display = 'block';
+                    }
+                }).catch(err => console.error('MathJax typesetting error:', err));
+                updatePreview();
+            }, 100);
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = false;
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('feedback').textContent = '';
+        }
+
+        function insertText(text, inputId) {
+            const targetInput = document.getElementById(inputId);
+            if (!targetInput) return;
+            if (text === '無解') {
+                targetInput.value = text;
+            } else {
+                targetInput.value += text;
+            }
+            targetInput.focus();
+            updatePreview();
+        }
+
+        function addFactorInput() {
+            factorInputCount++;
+            const answerContainer = document.getElementById('answerContainer');
+            const inputGroup = answerContainer.querySelector('.input-group');
+            const prefix = currentQuestion.prefix || '';
+            const placeholderText = currentQuestion.factorization === 'true' ? `輸入第${factorInputCount}個答案` : `輸入第${factorInputCount}個答案`;
+            const newInputHtml = `
+                <div class="input-subgroup">
+                    <span id="answerPrefix${factorInputCount}">${prefix}</span>
+                    <input type="text" id="answerInput${factorInputCount}" placeholder="${placeholderText}" oninput="updatePreview()" autocomplete="off">
+                    <div class="button-group">
+                        <button class="input-button" onclick="insertText('(', 'answerInput${factorInputCount}')">(</button>
+                        <button class="input-button" onclick="insertText('√', 'answerInput${factorInputCount}')">\\( \\sqrt{根號} \\)</button>
+                        <button class="input-button" onclick="insertText('/', 'answerInput${factorInputCount}')">\\( \\frac{a}{b} \\)</button>
+                        <button class="input-button" onclick="insertText('+', 'answerInput${factorInputCount}')">\\(+\\)</button>
+                        <button class="input-button" onclick="insertText('-', 'answerInput${factorInputCount}')">\\(-\\)</button>
+                        <button class="input-button" onclick="insertText('^', 'answerInput${factorInputCount}')">幂^</button>
+                        <button class="input-button" onclick="insertText('^2', 'answerInput${factorInputCount}')">\\(平方^2 \\)</button>
+                        <button class="input-button" onclick="insertText('無解', 'answerInput${factorInputCount}')">無解</button>
+                        <button class="input-button" onclick="insertText('x', 'answerInput${factorInputCount}')">\\(x\\)</button>
+                        <button class="input-button" onclick="insertText('y', 'answerInput${factorInputCount}')">\\(y\\)</button>
+                        <button class="input-button" onclick="insertText(')', 'answerInput${factorInputCount}')">)</button>
+                    </div>
+                </div>
+            `;
+            inputGroup.insertAdjacentHTML('beforeend', newInputHtml);
+            setTimeout(() => {
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+                updatePreview();
+            }, 100);
+        }
+
+        function removeFactorInput() {
+            if (factorInputCount <= 1) return;
+            const inputGroup = document.querySelector('.input-group');
+            const lastInput = inputGroup.querySelector(`.input-subgroup:last-child`);
+            if (lastInput) {
+                lastInput.remove();
+                factorInputCount--;
+                updatePreview();
+            }
+        }
+
+        function parseAnswer(answer) {
+            answer = answer.trim();
+            if (answer === '無解') return answer;
+
+            if (answer.match(/^[A-Za-z](,\s*[A-Za-z])*$/)) {
+                const cleanedAnswer = answer.replace(/\s+/g, '').replace(/，/g, ',').toLowerCase();
+                return { type: 'choices', choices: cleanedAnswer.split(',').sort() };
+            }
+
+            if (answer.includes('+') || answer.includes('-')) {
+                const noSpaces = answer.replace(/\s+/g, '');
+                const terms = noSpaces.split(/(?=[-+])/).map(term => term.trim()).filter(term => term);
+                return { type: 'polynomial', terms: terms.sort() };
+            }
+
+            if (answer.includes('/')) {
+                const [num, denom] = answer.split('/').map(Number);
+                if (denom === 0) return NaN;
+                return num / denom;
+            }
+
+            const sqrtMatch = answer.match(/^([+-]?\d*\.?\d*)?\s*([+-])\s*√(\d+)$/);
+            if (sqrtMatch) {
+                const constant = sqrtMatch[1] ? parseFloat(sqrtMatch[1]) : 0;
+                const sign = sqrtMatch[2] === '+' ? 1 : -1;
+                const sqrtValue = Math.sqrt(parseFloat(sqrtMatch[3]));
+                return constant + sign * sqrtValue;
+            }
+
+            return Number(answer);
+        }
+
+        function checkAnswer() {
+            if (!currentQuestion || !currentQuestion.answers) {
+                document.getElementById('feedback').textContent = '無效題目，無法檢查答案';
+                return;
+            }
+
+            const feedback = document.getElementById('feedback');
+            const quizDiv = document.getElementById('quiz');
+            const submitBtn = document.getElementById('submit-btn');
+            const nextBtn = document.getElementById('next-btn');
+            let userAnswers = [];
+            for (let i = 1; i <= factorInputCount; i++) {
+                const input = document.getElementById(`answerInput${i}`);
+                if (input) {
+                    userAnswers.push(input.value.trim());
+                }
+            }
+
+            // 收集所有可能的答案集
+            const answerSets = [];
+         if (currentQuestion.answers) answerSets.push(currentQuestion.answers);
+if (currentQuestion.answers2) answerSets.push(currentQuestion.answers2);
+if (currentQuestion.answers3) answerSets.push(currentQuestion.answers3);
+if (currentQuestion.answers4) answerSets.push(currentQuestion.answers4);
+if (currentQuestion.answers5) answerSets.push(currentQuestion.answers5);
+if (currentQuestion.answers6) answerSets.push(currentQuestion.answers6);
+
+            let isCorrect = false;
+            let correctAnswerSet = null;
+
+            // 逐一檢查每個答案集
+            for (let answers of answerSets) {
+                if (currentQuestion.factorization === 'true') {
+                    const userFactors = userAnswers.map(answer => answer.replace(/\s+/g, '').trim()).filter(f => f).sort();
+                    const correctFactors = answers.map(answer => answer.replace(/\s+/g, '').trim()).sort();
+                    if (userFactors.length === correctFactors.length &&
+                        userFactors.every((factor, i) => factor === correctFactors[i])) {
+                        isCorrect = true;
+                        correctAnswerSet = answers;
+                        break;
+                    }
+                } else if (answers.length === 1) {
+                    const userAnswer = parseAnswer(userAnswers[0]);
+                    const correctAnswer = parseAnswer(answers[0]);
+
+                    if (userAnswer === '無解' && correctAnswer === '無解') {
+                        isCorrect = true;
+                        correctAnswerSet = answers;
+                        break;
+                    } else if (typeof userAnswer === 'object' && typeof correctAnswer === 'object') {
+                        if (userAnswer.type === 'polynomial' && correctAnswer.type === 'polynomial') {
+                            if (userAnswer.terms.length === correctAnswer.terms.length &&
+                                userAnswer.terms.every((term, i) => term === correctAnswer.terms[i])) {
+                                isCorrect = true;
+                                correctAnswerSet = answers;
+                                break;
+                            }
+                        } else if (userAnswer.type === 'choices' && correctAnswer.type === 'choices') {
+                            if (userAnswer.choices.length === correctAnswer.choices.length &&
+                                userAnswer.choices.every((choice, i) => choice === correctAnswer.choices[i])) {
+                                isCorrect = true;
+                                correctAnswerSet = answers;
+                                break;
+                            }
+                        }
+                    } else if (userAnswer === correctAnswer ||
+                              userAnswers[0].replace(/\s+/g, '') === answers[0].replace(/\s+/g, '') ||
+                              (typeof userAnswer === 'number' && typeof correctAnswer === 'number' &&
+                               Math.abs(userAnswer - correctAnswer) < 1e-10)) {
+                        isCorrect = true;
+                        correctAnswerSet = answers;
+                        break;
+                    }
+                } else {
+                    const userValues = userAnswers.map(parseAnswer).sort((a, b) => {
+                        if (typeof a === 'string' || typeof b === 'string') return 0;
+                        if (typeof a === 'number' && typeof b === 'number') return a - b;
+                        if (typeof a === 'object' && typeof b === 'object' && a.type === 'choices' && b.type === 'choices') {
+                            return a.choices.join(',').localeCompare(b.choices.join(','));
+                        }
+                        return JSON.stringify(a).localeCompare(JSON.stringify(b));
+                    });
+                    const correctValues = answers.map(parseAnswer).sort((a, b) => {
+                        if (typeof a === 'string' || typeof b === 'string') return 0;
+                        if (typeof a === 'number' && typeof b === 'number') return a - b;
+                        if (typeof a === 'object' && typeof b === 'object' && a.type === 'choices' && b.type === 'choices') {
+                            return a.choices.join(',').localeCompare(b.choices.join(','));
+                        }
+                        return JSON.stringify(a).localeCompare(JSON.stringify(b));
+                    });
+
+                    if (userValues.length === correctValues.length &&
+                        userValues.every((val, i) => {
+                            if (typeof val === 'string' && typeof correctValues[i] === 'string') {
+                                return val === correctValues[i];
+                            } else if (typeof val === 'number' && typeof correctValues[i] === 'number') {
+                                return Math.abs(val - correctValues[i]) < 1e-10;
+                            } else if (typeof val === 'object' && typeof correctValues[i] === 'object') {
+                                if (val.type === 'polynomial' && correctValues[i].type === 'polynomial') {
+                                    return val.terms.length === correctValues[i].terms.length &&
+                                           val.terms.every((term, j) => term === correctValues[i].terms[j]);
+                                } else if (val.type === 'choices' && correctValues[i].type === 'choices') {
+                                    return val.choices.length === correctValues[i].choices.length &&
+                                           val.choices.every((choice, j) => choice === correctValues[i].choices[j]);
+                                }
+                                return false;
+                            }
+                            return false;
+                        })) {
+                        isCorrect = true;
+                        correctAnswerSet = answers;
+                        break;
+                    }
+                }
+            }
+
+            submitBtn.disabled = true;
+            if (isCorrect) {
+                iawaku++;
+                updateStars();
+                jsConfetti.addConfetti({
+                    confettiColors: ['#f1c40f'],
+                    confettiNumber: 30,
+                    confettiRadius: 6,
+                });
+                feedback.textContent = '正確！';
+                feedback.style.color = 'green';
+                correctCount++;
+                if (isChallengeMode || iawaku >= questionCount) {
+                    if (currentLevel < totalLevels - 1) {
+                        currentLevel++;
+                        iawaku = 0;
+                        correctCount = 0;
+                        currentQuestionNumber = 1;
+                        isChallengeMode = false;
+                        hasEnteredChallengeMode = false;
+                        document.body.classList.remove('challenge-mode');
+                        document.getElementById('headerText').textContent = `恭喜進入第 ${currentLevel + 1} 關！`;
+                        document.getElementById('questionNumber').textContent = currentQuestionNumber;
+                        if (totalLevels > 1) {
+                            document.getElementById('levelNumber').textContent = `第 ${currentLevel + 1} 關 `;
+                        }
+                        updateStars();
+                        loadNewQuestion();
+                        return;
+                    } else {
+                        jsConfetti.addConfetti({
+                            confettiNumber: 500,
+                            confettiRadius: 6,
+                        });
+                        document.getElementById('quiz').style.display = 'none';
+                        document.getElementById('completion-message').style.display = 'block';
+                        if (passData) {
+                            setTimeout(() => {
+                                document.getElementById('student-id-section').style.display = 'block';
+                            }, 2000);
+                        }
+                        return;
+                    }
+                }
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1500);
+            } else {
+                const displayAnswers = currentQuestion.answerlatex && currentQuestion.answerlatex.length > 0
+                    ? currentQuestion.answerlatex
+                    : (correctAnswerSet || currentQuestion.answers).map(a => '$' + a + '$');
+                const answerFormat = (correctAnswerSet || currentQuestion.answers).join(' 和 ');
+                const tutorialContent = currentQuestion.tutorial ? `<div class="tutorial-container"><h3>解題教學</h3>${currentQuestion.tutorial}</div>` : '';
+                quizDiv.classList.add('shake');
+                let countdown = 5;
+                feedback.innerHTML = `
+                    <div class="error-message">
+                        <span style="font-size:24px">✖</span><br>
+                        請檢查答案，<span id="countdown">${countdown}</span>秒後公佈答案及跳轉下一題
+                    </div>
+                `;
+                setTimeout(() => {
+                    MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+                }, 100);
+                const countdownElement = document.getElementById('countdown');
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        let starMessage = '';
+                        if (isChallengeMode && questionCount >= 4) {
+                            isChallengeMode = false;
+                            document.body.classList.remove('challenge-mode');
+                            document.getElementById('headerText').textContent = `第 ${currentLevel + 1} 關：通過互動練習和詳細教學，輕鬆掌握解題技巧！`;
+                            starMessage = '<small>已退出挑戰模式</small>';
+                        } else {
+                            if (maxWrong !== null) {
+                                const starsToDeduct = maxWrong + 1;
+                                iawaku = Math.max(0, iawaku - starsToDeduct);
+                                starMessage = `<small>扣減 ${starsToDeduct} 顆星星，剩餘 ${iawaku} 顆星星</small>`;
+                            } else {
+                                iawaku = 0;
+                                starMessage = `<small>第 ${currentLevel + 1} 關星星已重置</small>`;
+                            }
+                            updateStars();
+                        }
+                        feedback.innerHTML = `
+                            <div class="error-message">
+                                <span style="font-size:24px">✖</span><br>
+                                答案錯誤！正確答案是 ${displayAnswers.join(' 和 ')}。<br>
+                                答案格式：${answerFormat}<br>
+                                ${starMessage}
+                            </div>
+                            ${tutorialContent}
+                        `;
+                        setTimeout(() => {
+                            MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+                        }, 100);
+                        quizDiv.classList.remove('shake');
+                        nextBtn.style.display = 'inline-block';
+                    }
+                }, 1000);
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionNumber++;
+            document.getElementById('questionNumber').textContent = currentQuestionNumber;
+            loadNewQuestion();
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function updateStars() {
+            const starElements = document.querySelectorAll('.star');
+            starElements.forEach((star, index) => {
+                if (index < iawaku) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function getPassword() {
+            const studentId = document.getElementById('student-id').value;
+            const passwordDisplay = document.getElementById('password-display');
+            if (!studentId || studentId < 1 || studentId > 50) {
+                alert('請輸入有效的學號 (1-50)');
+                return;
+            }
+            const password = passData ? passData[studentId] : null;
+            if (password) {
+                passwordDisplay.textContent = `您的密碼是: ${password}`;
+                passwordDisplay.style.display = 'block';
+                document.getElementById('student-id').disabled = true;
+                document.getElementById('get-password-btn').disabled = true;
+            } else {
+                alert('找不到對應的密碼');
+            }
+        }
+
+        function resetQuiz() {
+            levels.forEach(level => {
+                level.usedQuestions = [];
+                localStorage.setItem(level.storageKey, JSON.stringify(level.usedQuestions));
+            });
+            usedHwhQuestions = [];
+            localStorage.setItem('usedHwhQuestions', JSON.stringify(usedHwhQuestions));
+            iawaku = 0;
+            correctCount = 0;
+            currentQuestionNumber = 1;
+            currentLevel = 0;
+            isChallengeMode = false;
+            hasEnteredChallengeMode = false;
+            document.body.classList.remove('challenge-mode');
+            document.getElementById('headerText').textContent = '通過互動練習和詳細教學，輕鬆掌握解題技巧！';
+            document.getElementById('questionNumber').textContent = currentQuestionNumber;
+            if (totalLevels > 1) {
+                document.getElementById('levelNumber').textContent = `第 ${currentLevel + 1} 關 `;
+            } else {
+                document.getElementById('levelNumber').textContent = '';
+            }
+            updateStars();
+            loadNewQuestion();
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('completion-message').style.display = 'none';
+            document.getElementById('student-id-section').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            loadHelp();
+            loadRules();
+            setTimeout(() => {
+                MathJax.typesetPromise().catch(err => console.error('MathJax initial typesetting error:', err));
+            }, 100);
+        });
+    </script>
 </body>
 </html>

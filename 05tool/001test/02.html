@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Vercel JS</title>
+</head>
+<body>
+  <h1>Test JS from Vercel</h1>
+  <p id="output">Loading...</p>
+
+  <script>
+    // 動態加載 JS 文件
+    const script = document.createElement('script');
+    script.src = 'https://f2-theta.vercel.app/api/get-js';
+    script.onload = function() {
+      try {
+        const result = sayHello();
+        document.getElementById('output').textContent = result;
+      } catch (e) {
+        document.getElementById('output').textContent = 'Error: Function not found - ' + e.message;
+      }
+    };
+    script.onerror = function(error) {
+      document.getElementById('output').textContent = 'Failed to load JS file: Check console for details';
+      console.error('Script load error:', error);
+    };
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>
