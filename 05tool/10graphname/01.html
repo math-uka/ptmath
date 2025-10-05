@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>圖片上傳與重新命名</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+    <h1 class="text-2xl font-bold mb-6 text-center">圖片上傳與重新命名</h1>
+    
+    <!-- 檔案頭部輸入 -->
+    <div class="mb-4">
+      <label for="prefix" class="block text-sm font-medium text-gray-700">檔案名稱頭部</label>
+      <input type="text" id="prefix" class="mt-1 p-2 w-full border rounded-md" placeholder="例如：0">
+    </div>
+    
+    <!-- 文字輸入區域 -->
+    <div class="mb-4">
+      <label for="textInput" class="block text-sm font-medium text-gray-700">貼上題目文字</label>
+      <textarea id="textInput" class="mt-1 p-2 w-full border rounded-md" rows="5" placeholder="貼上題目文字，例如：第 3 題：題目包含“如圖”，image 設為 images/003.png..."></textarea>
+      <button id="generateFilenames" class="mt-2 bg-green-500 text-white p-2 rounded-md hover:bg-green-600">生成檔案名稱</button>
+    </div>
+    
+    <!-- 圖片上傳 -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700">上傳圖片（可拖曳圖片至下方區域或點擊選擇）</label>
+      <div id="dropZone" class="mt-1 p-4 w-full border-2 border-dashed border-gray-400 rounded-md text-center hover:bg-gray-50">
+        <input type="file" id="imageUpload" multiple accept="image/*" class="hidden">
+        <p class="text-gray-500">拖曳圖片至此或點擊選擇圖片</p>
+      </div>
+    </div>
+    
+    <!-- 圖片預覽與序號輸入 -->
+    <div id="imageList" class="space-y-4 mb-4"></div>
+    
+    <!-- 下載按鈕 -->
+    <button id="downloadAll" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 disabled:bg-gray-400" disabled>下載所有圖片</button>
+  </div>
+
+  <script>
+    const imageUpload = document.getElementById('imageUpload');
+    const dropZone = document.getElementById('dropZone');
+    const imageList = document.getElementById('imageList');
+    const prefixInput = document.getElementById('prefix');
+    const textInput = document.getElementById('textInput');
+    const generateFilenamesBtn = document.getElementById('generateFilenames');
+    const downloadAllBtn = document.getElementById('downloadAll');
+    let images = [];
+
+    // 處理圖片上傳（通過文件選擇）
+    imageUpload.addEventListener('change', (e) => {
+      handleFiles(e.target.files);
+    });
+
+    // 處理拖曳上傳
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('bg-gray-100');
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('bg-gray-100');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('bg-gray-100');
+      const files = e.dataTransfer.files;
+      handleFiles(files);
+    });
+
+    // 點擊掉放區觸發文件選擇
+    dropZone.addEventListener('click', () => {
+      imageUpload.click();
+    });
+
+    // 提取文字中的檔案名稱（不含 images/ 前綴，確保不重複）
+    function extractFilenames(text) {
+      const regex = /images\/([0-9a-zA-Z]+\.png)/g;
+      const matches = [];
+      let match;
+      const seenFilenames = new Set();
+
+      while ((match = regex.exec(text)) !== null) {
+        const filename = match[1]; // 提取 003.png, q004.png 等
+        if (!seenFilenames.has(filename)) {
+          seenFilenames.add(filename);
+          const number = filename.match(/(\d+|[a-z]\d+)/)[0]; // 提取數字或字母+數字
+          matches.push({ filename, number });
+        }
+      }
+      return matches;
+    }
+
+    // 檢查文字輸入框是否為檔案名稱列表
+    function isFilenameList(text) {
+      const lines = text.trim().split('\n');
+      // 允許空行，非空行必須符合檔案名稱格式
+      return lines.every(line => line.trim() === '' || /^[0-9a-zA-Z]+\.png$/.test(line.trim()));
+    }
+
+    // 解析文字輸入框中的檔案名稱
+    function parseInputFilenames(text) {
+      const lines = text.trim().split('\n');
+      const matches = [];
+      const seenFilenames = new Set();
+
+      lines.forEach(line => {
+        const filename = line.trim();
+        if (filename && /^[0-9a-zA-Z]+\.png$/.test(filename) && !seenFilenames.has(filename)) {
+          seenFilenames.add(filename);
+          const number = filename.match(/(\d+|[a-z]\d+)/)[0];
+          matches.push({ filename, number });
+        }
+      });
+      return matches;
+    }
+
+    // 處理生成按鈕點擊
+    generateFilenamesBtn.addEventListener('click', () => {
+      let filenames = [];
+      const text = textInput.value.trim();
+
+      if (isFilenameList(text)) {
+        // 如果輸入框是檔案名稱列表，解析並保留
+        filenames = parseInputFilenames(text);
+        // 保留原始輸入框內容（包括空行）
+        textInput.value = text;
+      } else {
+        // 否則提取原始文字中的檔案名稱
+        filenames = extractFilenames(text);
+        // 更新輸入框為檔案名稱列表
+        textInput.value = filenames.map(item => item.filename).join('\n');
+      }
+
+      // 更新圖片檔案名稱
+      if (images.length > 0) {
+        images = images.map((img, index) => {
+          const matchedFile = filenames[index] || { number: img.number, filename: '' };
+          return { ...img, number: matchedFile.number, filename: matchedFile.filename };
+        });
+        renderImageList();
+      }
+    });
+
+    // 處理文件並匹配文字中的檔案名稱
+    function handleFiles(files) {
+      const text = textInput.value.trim();
+      let filenames = [];
+      if (isFilenameList(text)) {
+        filenames = parseInputFilenames(text);
+      } else {
+        filenames = extractFilenames(text);
+      }
+
+      const newImages = Array.from(files).filter(file => file.type.startsWith('image/')).map((file, index) => {
+        const matchedFile = filenames[index] || { number: '', filename: '' };
+        return {
+          file,
+          number: matchedFile.number || '',
+          preview: URL.createObjectURL(file),
+          filename: matchedFile.filename || ''
+        };
+      });
+      images = [...images, ...newImages];
+      renderImageList();
+    }
+
+    // 移除圖片
+    window.removeImage = (index) => {
+      images.splice(index, 1); // 移除指定索引的圖片
+      renderImageList();
+    };
+
+    // 格式化序號為2位數
+    function formatNumber(num) {
+      if (num === '') return '';
+      const n = parseInt(num.replace(/[^0-9]/g, ''), 10); // 移除非數字字符
+      if (isNaN(n) || n < 0) return '';
+      return n.toString().padStart(2, '0').slice(-2); // 確保正好2位數
+    }
+
+    // 渲染圖片列表
+    function renderImageList() {
+      imageList.innerHTML = '';
+      images.forEach((img, index) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center space-x-4 p-2 border rounded-md';
+        const displayName = img.filename || `${prefixInput.value || '0'}${formatNumber(img.number)}.png`;
+        div.innerHTML = `
+          <img src="${img.preview}" class="w-20 h-20 object-cover rounded">
+          <input type="number" min="0" placeholder="序號" class="p-2 border rounded-md w-24" value="${img.number}" oninput="updateNumber(${index}, this.value)">
+          <span class="text-gray-600">${displayName}</span>
+          <button onclick="removeImage(${index})" class="bg-red-500 text-white p-2 rounded-md hover:bg-red-600">移除</button>
+        `;
+        imageList.appendChild(div);
+      });
+      updateDownloadButton();
+    }
+
+    // 更新序號
+    window.updateNumber = (index, value) => {
+      images[index].number = value;
+      images[index].filename = ''; // 清空自動提取的檔案名稱，允許手動序號優先
+      renderImageList();
+    };
+
+    // 更新下載按鈕狀態
+    function updateDownloadButton() {
+      const allNumbersFilled = images.every(img => img.number !== '' && !isNaN(parseInt(img.number.replace(/[^0-9]/g, ''), 10)));
+      const filenames = images.map(img => img.filename || `${prefixInput.value || '0'}${formatNumber(img.number)}.png`);
+      const uniqueFilenames = new Set(filenames);
+      const allUnique = filenames.length === uniqueFilenames.size;
+      downloadAllBtn.disabled = !allNumbersFilled || images.length === 0 || !allUnique;
+    }
+
+    // 監聽頭部輸入
+    prefixInput.addEventListener('input', renderImageList);
+
+    // 監聽文字輸入（僅在生成按鈕點擊時更新）
+    textInput.addEventListener('input', () => {
+      // 移除即時更新邏輯，改為由生成按鈕控制
+    });
+
+    // 下載所有圖片（分別下載）
+    downloadAllBtn.addEventListener('click', () => {
+      images.forEach((img, index) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const image = new Image();
+        image.src = img.preview;
+        image.onload = () => {
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx.drawImage(image, 0, 0);
+          canvas.toBlob((blob) => {
+            const filename = img.filename || `${prefixInput.value || '0'}${formatNumber(img.number)}.png`;
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+          }, 'image/png');
+        };
+      });
+    });
+  </script>
+</body>
+</html>
