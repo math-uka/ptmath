@@ -1,0 +1,175 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON題目編號修改器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        textarea {
+            resize: none;
+        }
+        #inputArea, #outputArea {
+            width: 100%;
+            height: 400px;
+            font-family: monospace;
+        }
+        #dropZone {
+            border: 2px dashed #ccc;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #dropZone.dragover {
+            border-color: #4a90e2;
+            background-color: #f0f8ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-bold mb-4 text-center">JSON題目編號修改器</h1>
+        
+        <div class="mb-4">
+            <label class="block text-lg font-medium mb-2">輸入JSON代碼或拖放JSON文件</label>
+            <div id="dropZone" class="mb-2">拖放JSON文件到此處</div>
+            <textarea id="inputArea" class="border rounded p-2" placeholder="在此輸入JSON代碼或拖放JSON文件"></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-lg font-medium mb-2">起始題號</label>
+            <input id="startNumber" type="number" min="1" class="border rounded p-2 w-32" placeholder="例如 24">
+        </div>
+
+        <div class="mb-4">
+            <button id="processButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">處理</button>
+            <button id="downloadButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 ml-2" disabled>下載 hw.json</button>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-lg font-medium mb-2">輸出JSON代碼</label>
+            <textarea id="outputArea" class="border rounded p-2" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        const inputArea = document.getElementById('inputArea');
+        const startNumberInput = document.getElementById('startNumber');
+        const outputArea = document.getElementById('outputArea');
+        const processButton = document.getElementById('processButton');
+        const downloadButton = document.getElementById('downloadButton');
+        const dropZone = document.getElementById('dropZone');
+
+        // 處理拖放事件
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/json') {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    inputArea.value = event.target.result;
+                };
+                reader.readAsText(file);
+            } else {
+                alert('請拖放有效的JSON文件！');
+            }
+        });
+
+        // 處理按鈕點擊
+        processButton.addEventListener('click', () => {
+            try {
+                const jsonInput = inputArea.value;
+                const startNumber = parseInt(startNumberInput.value);
+                
+                if (!jsonInput || isNaN(startNumber) || startNumber < 1) {
+                    alert('請輸入有效的JSON代碼和起始題號！');
+                    return;
+                }
+
+                const jsonData = JSON.parse(jsonInput);
+                if (!jsonData.questions || !Array.isArray(jsonData.questions)) {
+                    alert('JSON格式不正確，缺少questions陣列！');
+                    return;
+                }
+
+                // 修改題號
+                jsonData.questions.forEach((question, index) => {
+                    question.annotation = `第${startNumber + index}題`;
+                });
+
+                // 輸出格式化JSON
+                outputArea.value = JSON.stringify(jsonData, null, 2);
+                downloadButton.disabled = false;
+            } catch (error) {
+                alert('處理失敗，請檢查JSON格式！\n錯誤：' + error.message);
+            }
+        });
+
+        // 下載JSON文件
+        downloadButton.addEventListener('click', () => {
+            const outputJson = outputArea.value;
+            if (!outputJson) {
+                alert('無可下載的內容！');
+                return;
+            }
+
+            const blob = new Blob([outputJson], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'hw.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
