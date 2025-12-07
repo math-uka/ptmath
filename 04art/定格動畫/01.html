@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>兩張圖轉GIF — 絕對可按版</title>
+<style>
+  body {font-family:Arial,sans-serif; max-width:800px; margin:40px auto; padding:20px; background:#f5f5f5;}
+  h1 {text-align:center; color:#333;}
+  .upload {border:3px dashed #999; padding:40px; text-align:center; background:white; border-radius:12px; margin:20px 0;}
+  .preview {display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin:30px 0;}
+  .preview img {max-width:350px; max-height:350px; border:3px solid #ddd; border-radius:8px;}
+  .status {text-align:center; font-size:19px; margin:20px; padding:15px; border-radius:8px;}
+  .waiting {background:#fff3cd; color:#856404;}
+  .ready {background:#d4edda; color:#155724;}
+  .controls {text-align:center; margin:30px;}
+  button {padding:15px 40px; font-size:20px; background:#28a745; color:white; border:none; border-radius:8px; cursor:pointer;}
+  button:hover {background:#218838;}
+  button:disabled {background:#ccc; cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<h1>兩張圖 → 動畫GIF（手機電腦都一定成功）</h1>
+
+<div class="upload">
+  <p>請選擇兩張圖片（先後順序就是動畫播放順序）</p>
+  <input type="file" id="file1" accept="image/*"><br><br>
+  <input type="file" id="file2" accept="image/*">
+</div>
+
+<div class="preview">
+  <div><strong>第1幀</strong><br><img id="prev1"></div>
+  <div><strong>第2幀</strong><br><img id="prev2"></div>
+</div>
+
+<div class="status waiting" id="msg">請上傳兩張圖片…</div>
+
+<div class="controls">
+  每幀時間（毫秒） <input type="number" id="ms" value="600" min="50" style="width:80px;font-size:18px;">
+  <br><br>
+  <button id="btn" disabled>生成並下載 GIF</button>
+</div>
+
+<!-- 改用 gifshot，絕對不會被擋 -->
+<script src="https://cdn.jsdelivr.net/npm/gifshot@0.4.5/dist/gifshot.min.js"></script>
+<script>
+const f1 = document.getElementById('file1');
+const f2 = document.getElementById('file2');
+const p1 = document.getElementById('prev1');
+const p2 = document.getElementById('prev2');
+const btn = document.getElementById('btn');
+const msg = document.getElementById('msg');
+
+let imagesReady = 0;
+
+function check() {
+  imagesReady++;
+  if (imagesReady === 2) {
+    msg.textContent = "兩張圖都準備好了！可以點擊生成囉！";
+    msg.className = "status ready";
+    btn.disabled = false;
+  }
+}
+
+f1.onchange = () => {
+  const file = f1.files[0];
+  if (file) {
+    p1.src = URL.createObjectURL(file);
+    p1.onload = check;
+  }
+};
+
+f2.onchange = () => {
+  const file = f2.files[0];
+  if (file) {
+    p2.src = URL.createObjectURL(file);
+    p2.onload = check;
+  }
+};
+
+btn.onclick = () => {
+  btn.disabled = true;
+  btn.textContent = "產生中…（3–8秒）";
+
+  gifshot.createGIF({
+    images: [p1.src, p2.src],
+    gifWidth: p1.naturalWidth || 500,
+    gifHeight: p1.naturalHeight || 500,
+    interval: parseInt(document.getElementById('ms').value) / 1000, // 秒
+    numFrames: 2,
+    frameDuration: 1,
+    sampleInterval: 10
+  }, function(obj) {
+    if (!obj.error) {
+      const a = document.createElement('a');
+      a.href = obj.image;
+      a.download = "我的兩幀動畫.gif";
+      a.click();
+      btn.textContent = "生成並下載 GIF";
+      btn.disabled = false;
+    } else {
+      alert("產生失敗，請換小一點的圖片再試一次");
+      btn.textContent = "生成並下載 GIF";
+      btn.disabled = false;
+    }
+  });
+};
+</script>
+
+<p style="text-align:center;color:#666;">
+  現在就算用手機內建瀏覽器也一定可以按！<br>
+  只要看到綠色提示「可以點擊生成囉！」就代表成功了
+</p>
+
+</body>
+</html>
