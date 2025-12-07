@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>多張圖轉GIF — 真正所見即所得（2025終極無敵版）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{font-family:Arial,"Microsoft JhengHei",sans-serif;max-width:940px;margin:40px auto;padding:20px;background:#f5f5f5;line-height:1.6}
+  h1{text-align:center;color:#333}
+  .upload{border:3px dashed #999;padding:40px;text-align:center;background:white;border-radius:12px;margin:20px 0}
+  .thumbs{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin:30px 0}
+  .thumb-wrapper{
+    text-align:center;width:140px;background:#fff;padding:10px;border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);cursor:move;user-select:none;
+    transition:all 0.2s;border:2px solid transparent;
+  }
+  .thumb-wrapper.dragging{border:2px dashed #28a745;opacity:0.7}
+  .thumb-wrapper img{max-width:120px;max-height:120px;border-radius:8px;background:#fff}
+  .thumb-wrapper input{width:80px;margin-top:6px}
+  .status{text-align:center;font-size:19px;margin:20px;padding:15px;border-radius:8px}
+  .waiting{background:#fff3cd;color:#856404}
+  .ready{background:#d4edda;color:#155724}
+  .controls{text-align:center;margin:30px}
+  button{padding:15px 40px;font-size:20px;background:#28a745;color:white;border:none;border-radius:8px;cursor:pointer}
+  button:hover{background:#218838}
+  button:disabled{background:#ccc;cursor:not-allowed}
+  #gifPreview{max-width:100%;border:5px solid #28a745;border-radius:12px;background:#000;cursor:pointer;box-shadow:0 8px 25px rgba(0,0,0,.3)}
+  #error{display:none;background:#f8d7da;color:#721c24;padding:10px;border-radius:5px;margin:10px;text-align:center}
+</style>
+</head>
+<body>
+<h1>多張圖轉GIF — 真正所見即所得（2025終極無敵版）</h1>
+<div class="upload">
+  <p>一次選多張圖片（建議最多30張）<br>自動等比＋淡入淡出＋每張獨立時間＋<strong>可拖曳調整順序！</strong></p>
+  <input type="file" id="files" accept="image/*" multiple>
+  <br><br><button id="clear">清空重來</button>
+</div>
+
+<div id="error"></div>
+<div class="thumbs" id="thumbs"></div>
+
+<div style="text-align:center;margin:40px auto">
+  <h3>即時預覽（點擊播放／暫停）</h3>
+  <img id="gifPreview" style="display:none">
+  <p id="tip" style="color:#666;font-size:18px">上傳後這裡會出現跟最終檔一模一樣的動畫</p>
+</div>
+
+<div class="status waiting" id="msg">請上傳圖片…</div>
+
+<div class="controls">
+  全域時間 <input type="number" id="ms" value="600" min="50" max="10000" style="width:100px"> ms<br><br>
+  <label><input type="checkbox" id="loop" checked> 循環播放</label>
+  <label style="margin-left:20px"><input type="checkbox" id="trans" checked> 透明補白（實驗性）</label>
+  <label style="margin-left:20px"><input type="checkbox" id="crossfade" checked> 淡入淡出（超推薦）</label>
+  <br><br>
+  <button id="btn" disabled>生成並下載 最高品質 GIF</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.min.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+let rawImages = [], delays = [], canvasSize = {w:900, h:900}, workerBlob = null, currentGif = null;
+
+// 載入 Worker（避開 CORS）
+async function loadWorker() {
+  if (workerBlob) return workerBlob;
+  const res = await fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js');
+  const blob = await res.blob();
+  workerBlob = URL.createObjectURL(blob);
+  return workerBlob;
+}
+
+function showError(msg) {
+  $('#error').textContent = msg;
+  $('#error').style.display = 'block';
+}
+
+// === 上傳與拖曳排序 ===
+let draggedItem = null;
+
+$('#files').onchange = async e => {
+  const files = Array.from(e.target.files);
+  if (files.length < 2) return alert('至少要 2 張喔！');
+  rawImages = []; delays = []; $('#thumbs').innerHTML = ''; $('#error').style.display = 'none';
+  $('#gifPreview').style.display = 'none'; currentGif = null;
+  $('#msg').textContent = '處理中…'; $('#msg').className = 'status waiting';
+
+  // 計算畫布
+  let mw = 0, mh = 0;
+  for (const f of files) {
+    const url = URL.createObjectURL(f);
+    const img = await new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = url; });
+    mw = Math.max(mw, img.width); mh = Math.max(mh, img.height);
+    URL.revokeObjectURL(url);
+  }
+  const target = 900;
+  canvasSize = mw > mh ? {w: target, h: Math.round(target * mh / mw)} : {w: Math.round(target * mw / mh), h: target};
+
+  const defaultMs = $('#ms').valueAsNumber || 600;
+  files.forEach((file, i) => {
+    const url = URL.createObjectURL(file);
+    rawImages.push(url);
+    delays.push(defaultMs);
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'thumb-wrapper';
+    wrapper.draggable = true;
+    wrapper.dataset.index = i;
+
+    wrapper.innerHTML = `
+      <img src="${url}">
+      <input type="number" value="${defaultMs}" min="50" max="10000">
+      <div style="font-size:12px;color:#666">ms</div>
+    `;
+
+    // 拖曳事件
+    wrapper.addEventListener('dragstart', e => {
+      draggedItem = wrapper;
+      setTimeout(() => wrapper.classList.add('dragging'), 0);
+    });
+    wrapper.addEventListener('dragend', () => {
+      wrapper.classList.remove('dragging');
+      draggedItem = null;
+    });
+    wrapper.addEventListener('dragover', e => e.preventDefault());
+    wrapper.addEventListener('drop', e => {
+      e.preventDefault();
+      if (draggedItem && draggedItem !== wrapper) {
+        const all = $$('.thumb-wrapper');
+        const from = Array.from(all).indexOf(draggedItem);
+        const to = Array.from(all).indexOf(wrapper);
+        // 交換陣列
+        [rawImages[from], rawImages[to]] = [rawImages[to], rawImages[from]];
+        [delays[from], delays[to]] = [delays[to], delays[from]];
+        // 重新插入 DOM
+        if (from < to) {
+          wrapper.after(draggedItem);
+        } else {
+          wrapper.before(draggedItem);
+        }
+        remake(); // 立即更新預覽
+      }
+    });
+
+    wrapper.querySelector('input').oninput = function() {
+      delays[i] = this.valueAsNumber || defaultMs;
+    };
+    wrapper.querySelector('input').onchange = remake;
+
+    $('#thumbs').appendChild(wrapper);
+  });
+
+  await remake();
+  $('#btn').disabled = false;
+};
+
+// 全域時間同步
+$('#ms').onchange = () => {
+  const v = $('#ms').valueAsNumber || 600;
+  $$('.thumb-wrapper input').forEach((inp, i) => {
+    if (delays[i] === (+inp.value || 600)) {
+      inp.value = v;
+      delays[i] = v;
+    }
+  });
+  remake();
+};
+
+['crossfade','loop','trans'].forEach(id => $('#'+id).onchange = () => remake());
+$('#clear').onclick = () => location.reload();
+$('#gifPreview').onclick = () => $('#gifPreview').src += '?t=' + Date.now();
+
+// === 核心：產生 GIF ===
+async function remake(isFinal = false) {
+  if (rawImages.length === 0) return;
+  $('#msg').textContent = isFinal ? '最終渲染中…' : '產生預覽中…';
+  $('#msg').className = 'status waiting';
+  $('#error').style.display = 'none';
+
+  try {
+    await loadWorker();
+    const useTrans = $('#trans').checked;
+    const bgColor = '#ffffff'; // 固定白色背景，完美避免黑屏
+
+    const canvases = await Promise.all(rawImages.map(async url => {
+      const img = await new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = url; });
+      const c = document.createElement('canvas');
+      c.width = canvasSize.w; c.height = canvasSize.h;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, c.width, c.height);
+      const scale = Math.min(c.width / img.width, c.height / img.height);
+      const w = img.width * scale, h = img.height * scale;
+      ctx.drawImage(img, (c.width - w) / 2, (c.height - h) / 2, w, h);
+      return c;
+    }));
+
+    currentGif = new GIF({
+      workers: isFinal ? 4 : 2,
+      quality: isFinal ? 5 : 10,
+      width: canvasSize.w,
+      height: canvasSize.h,
+      workerScript: workerBlob,
+      background: bgColor
+    });
+
+    if (isFinal) currentGif.on('progress', p => $('#msg').textContent = `最終渲染中…${Math.round(p*100)}%`);
+
+    currentGif.on('finished', blob => {
+      $('#gifPreview').src = URL.createObjectURL(blob);
+      $('#gifPreview').style.display = 'block';
+      $('#tip').innerHTML = '<strong style="color:#28a745;">預覽完成！可拖曳調整順序</strong>';
+      if (!isFinal) {
+        $('#msg').textContent = '預覽完成！拖曳縮圖可調整順序';
+        $('#msg').className = 'status ready';
+      }
+    });
+
+    const useCrossfade = $('#crossfade').checked;
+    const steps = useCrossfade ? (isFinal ? 12 : 8) : 0;
+
+    for (let i = 0; i < canvases.length; i++) {
+      currentGif.addFrame(canvases[i], {delay: delays[i]});
+      if (useCrossfade && i < canvases.length - 1) {
+        const trans = await crossfade(canvases[i], canvases[i+1], steps);
+        const d = Math.floor(delays[i] / (steps + 1));
+        trans.forEach(c => currentGif.addFrame(c, {delay: d}));
+      }
+    }
+    if (useCrossfade && $('#loop').checked && canvases.length > 1) {
+      const back = await crossfade(canvases[canvases.length-1], canvases[0], steps);
+      const d = Math.floor(delays[delays.length-1] / (steps + 1));
+      back.forEach(c => currentGif.addFrame(c, {delay: d}));
+    }
+
+    currentGif.render();
+  } catch (e) {
+    showError('產生失敗：' + e.message);
+    console.error(e);
+  }
+}
+
+async function crossfade(c1, c2, steps) {
+  const list = [];
+  for (let i = 1; i <= steps; i++) {
+    const c = document.createElement('canvas');
+    c.width = canvasSize.w; c.height = canvasSize.h;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.globalAlpha = 1 - i/steps;
+    ctx.drawImage(c1, 0, 0);
+    ctx.globalAlpha = i/steps;
+    ctx.drawImage(c2, 0, 0);
+    ctx.globalAlpha = 1;
+    list.push(c);
+  }
+  return list;
+}
+
+// 最終下載
+$('#btn').onclick = () => {
+  $('#btn').disabled = true;
+  $('#btn').textContent = '最終渲染中…0%';
+  remake(true);
+  currentGif.on('finished', blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = $('#crossfade').checked 
+      ? `淡入淡出_自訂順序_${rawImages.length}張.gif`
+      : `完美GIF_可拖曳排序_${rawImages.length}張.gif`;
+    a.click();
+    $('#btn').textContent = '下載完成！再做一個？';
+    setTimeout(() => { $('#btn').disabled = false; $('#btn').textContent = '生成並下載 最高品質 GIF'; }, 3000);
+  });
+};
+</script>
+
+<p style="text-align:center;color:#28a745;font-size:22px;margin-top:60px;font-weight:bold">
+  2025 終極無敵版<br>
+  可拖曳調整順序｜每張獨立時間｜淡入淡出超順｜預覽 = 最終檔<br>
+  <a href="https://gif.aoaoao.me" style="color:#28a745">線上即時版（點我直接用）</a>
+</p>
+</body>
+</html>
