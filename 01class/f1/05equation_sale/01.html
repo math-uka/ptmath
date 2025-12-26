@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>利潤率四公式計算器（田字格版）</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: "Microsoft JhengHei", Arial, sans-serif; 
+            background: #f0f8ff; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px;
+        }
+        header { 
+            background: #2c3e50; 
+            color: white; 
+            text-align: center; 
+            padding: 15px; 
+            font-size: 24px; 
+            font-weight: bold; 
+            width: 100%; 
+            max-width: 1200px;
+        }
+        .note { 
+            text-align: center; 
+            padding: 10px; 
+            background: #fff2f2; 
+            color: #c0392b; 
+            font-weight: bold; 
+            font-size: 16px; 
+            width: 100%; 
+            max-width: 1200px;
+            margin-bottom: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px 0;
+        }
+        .formula-section {
+            background: #90ee90;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .formula-section h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .formula {
+            display: inline-flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .input {
+            width: 120px;
+            height: 50px;
+            border: 3px solid #2c3e50;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            background: white;
+        }
+        .input:disabled {
+            background: #eee;
+            color: #777;
+            opacity: 0.8;
+        }
+        .fraction-line {
+            width: 120px;
+            height: 5px;
+            background: black;
+            margin: 8px auto;
+            border-radius: 2px;
+        }
+        .fraction-line-long {
+            width: 300px;
+            height: 5px;
+            background: black;
+            margin: 8px auto;
+            border-radius: 2px;
+        }
+        .btn-group {
+            text-align: center;
+            margin: 15px 0 5px 0;
+        }
+        button {
+            padding: 10px 30px;
+            font-size: 18px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .calc-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        .calc-btn:hover { background: #c0392b; }
+        .reset-btn {
+            background: #3498db;
+            color: white;
+        }
+        .reset-btn:hover { background: #2980b9; }
+        .result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #27ae60;
+            min-height: 60px;
+            padding: 10px;
+            line-height: 1.5;
+        }
+        input::-webkit-inner-spin-button, input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input { -moz-appearance: textfield; }
+    </style>
+</head>
+<body>
+    <header>利潤率・售價・利潤 四公式計算器（田字格版）</header>
+    <div class="note">每格獨立計算，任一格計算完成後，<strong>全部輸入框都會鎖定</strong><br>按任一格的「重置」按鈕即可解鎖全部並清空</div>
+    
+    <div class="grid-container">
+        <!-- 公式一 -->
+        <div class="formula-section">
+            <h3>公式一：利潤 = 售價 - 進價</h3>
+            <div class="formula">
+                <input type="text" id="profit1" class="input" placeholder="利潤">
+                <span>=</span>
+                <input type="text" id="price1" class="input" placeholder="售價">
+                <span>-</span>
+                <input type="text" id="cost1" class="input" placeholder="進價">
+            </div>
+            <div class="btn-group">
+                <button class="calc-btn" onclick="calc1()">計算</button>
+                <button class="reset-btn" onclick="globalReset()">重置</button>
+            </div>
+            <div class="result" id="result1"></div>
+        </div>
+        
+        <!-- 公式二（已修正顯示） -->
+        <div class="formula-section">
+            <h3>公式二：售價 = 進價 × (1 + 利潤率%)</h3>
+            <div class="formula">
+                <input type="text" id="price2" class="input" placeholder="售價">
+                <span>=</span>
+                <input type="text" id="cost2" class="input" placeholder="進價">
+                <span>×</span>
+                <span>(</span>
+                <span>1 +</span>
+                <input type="text" id="rate2" class="input" style="width:100px;" placeholder="利潤率">
+                <span>%</span>
+                <span>)</span>
+            </div>
+            <div class="btn-group">
+                <button class="calc-btn" onclick="calc2()">計算</button>
+                <button class="reset-btn" onclick="globalReset()">重置</button>
+            </div>
+            <div class="result" id="result2"></div>
+        </div>
+        
+        <!-- 公式三 -->
+        <div class="formula-section">
+            <h3>公式三：利潤率% = (利潤 / 進價) × 100%</h3>
+            <div class="formula">
+                <input type="text" id="rate3" class="input" style="width:100px;" placeholder="利潤率">
+                <span>%=</span>
+                <div style="text-align:center;">
+                    <input type="text" id="profit3" class="input" placeholder="利潤">
+                    <div class="fraction-line"></div>
+                    <input type="text" id="cost3" class="input" placeholder="進價">
+                </div>
+                <span>×100</span>
+            </div>
+            <div class="btn-group">
+                <button class="calc-btn" onclick="calc3()">計算</button>
+                <button class="reset-btn" onclick="globalReset()">重置</button>
+            </div>
+            <div class="result" id="result3"></div>
+        </div>
+        
+        <!-- 公式四 -->
+        <div class="formula-section">
+            <h3>公式四：利潤率% = ((售價 - 進價) / 進價) × 100%</h3>
+            <div class="formula">
+                <input type="text" id="rate4" class="input" style="width:100px;" placeholder="利潤率">
+                <span>%=</span>
+                <div style="text-align:center;">
+                    <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
+                        <span>(</span>
+                        <input type="text" id="price4" class="input" placeholder="售價">
+                        <span>-</span>
+                        <input type="text" id="cost4" class="input" placeholder="進價">
+                        <span>)</span>
+                    </div>
+                    <div class="fraction-line-long"></div>
+                    <input type="text" id="cost4_bottom" class="input" placeholder="進價">
+                </div>
+                <span>×100</span>
+            </div>
+            <div class="btn-group">
+                <button class="calc-btn" onclick="calc4()">計算</button>
+                <button class="reset-btn" onclick="globalReset()">重置</button>
+            </div>
+            <div class="result" id="result4"></div>
+        </div>
+    </div>
+
+    <script>
+        function fmt(n) { return Number.isInteger(n) ? n : n.toFixed(2); }
+        function get(id) { 
+            const v = document.getElementById(id).value.trim(); 
+            return (v === "" || v.toLowerCase() === "x") ? null : parseFloat(v); 
+        }
+
+        // 鎖定所有輸入框
+        function lockAllInputs() {
+            document.querySelectorAll('.input').forEach(input => {
+                input.disabled = true;
+            });
+        }
+
+        // 全部重置（解鎖 + 清空）
+        function globalReset() {
+            document.querySelectorAll('.input').forEach(input => {
+                input.value = '';
+                input.disabled = false;
+            });
+            document.querySelectorAll('.result').forEach(result => {
+                result.innerHTML = '';
+            });
+        }
+
+        // 公式一
+        function calc1() {
+            const p = get('profit1'), s = get('price1'), c = get('cost1');
+            const res = document.getElementById('result1');
+            if (!p && !s && !c) { res.innerHTML = '<span style="color:#e74c3c;">請至少輸入一個數值</span>'; return; }
+            let out = "";
+            if (!p && s && c) out += `利潤 = <span style="color:#e74c3c;">${fmt(s - c)}</span> 元<br>`;
+            if (!s && p && c) out += `售價 = <span style="color:#e74c3c;">${fmt(p + c)}</span> 元<br>`;
+            if (!c && p && s) out += `進價 = <span style="color:#e74c3c;">${fmt(s - p)}</span> 元<br>`;
+            if (p && s && c) out = `利潤 = ${fmt(s - c)} 元 (驗證正確)`;
+            res.innerHTML = out;
+            lockAllInputs();
+        }
+
+        // 公式二（計算邏輯不變，僅顯示修正）
+        function calc2() {
+            const s = get('price2'), c = get('cost2'), r = get('rate2');
+            const res = document.getElementById('result2');
+            if (!s && !c && !r) { res.innerHTML = '<span style="color:#e74c3c;">請至少輸入一個數值</span>'; return; }
+            let out = "";
+            if (!s && c && r) out += `售價 = <span style="color:#e74c3c;">${fmt(c * (1 + r / 100))}</span> 元<br>`;
+            if (!c && s && r) out += `進價 = <span style="color:#e74c3c;">${fmt(s / (1 + r / 100))}</span> 元<br>`;
+            if (!r && s && c) out += `利潤率 = <span style="color:#e74c3c;">${fmt((s / c - 1) * 100)}</span> %<br>`;
+            if (s && c && r) out = `驗證正確`;
+            res.innerHTML = out;
+            lockAllInputs();
+        }
+
+        // 公式三
+        function calc3() {
+            const r = get('rate3'), p = get('profit3'), c = get('cost3');
+            const res = document.getElementById('result3');
+            if (!r && !p && !c) { res.innerHTML = '<span style="color:#e74c3c;">請至少輸入一個數值</span>'; return; }
+            let out = "";
+            if (!r && p && c) out += `利潤率 = <span style="color:#e74c3c;">${fmt((p / c) * 100)}</span> %<br>`;
+            if (!p && r && c) out += `利潤 = <span style="color:#e74c3c;">${fmt(c * r / 100)}</span> 元<br>`;
+            if (!c && r && p) out += `進價 = <span style="color:#e74c3c;">${fmt(p / (r / 100))}</span> 元<br>`;
+            if (r && p && c) out = `驗證正確`;
+            res.innerHTML = out;
+            lockAllInputs();
+        }
+
+        // 公式四
+        function calc4() {
+            const r = get('rate4'), s = get('price4'), cTop = get('cost4'), cBot = get('cost4_bottom');
+            const res = document.getElementById('result4');
+            if (!r && !s && !cTop && !cBot) { res.innerHTML = '<span style="color:#e74c3c;">請至少輸入一個數值</span>'; return; }
+            if (cTop && cBot && cTop !== cBot) { 
+                res.innerHTML = '<span style="color:#e74c3c;">錯誤：分子與分母進價必須相同！</span>'; 
+                return; 
+            }
+            const cost = cTop || cBot;
+            let out = "";
+            if (!r && s && cost) out += `利潤率 = <span style="color:#e74c3c;">${fmt(((s - cost) / cost) * 100)}</span> %<br>`;
+            if (!s && r && cost) out += `售價 = <span style="color:#e74c3c;">${fmt(cost * (1 + r / 100))}</span> 元<br>`;
+            if ((!cTop || !cBot) && r && s) out += `進價 = <span style="color:#e74c3c;">${fmt(s / (1 + r / 100))}</span> 元<br>`;
+            if (r && s && cost) out = `驗證正確`;
+            res.innerHTML = out || "無法計算";
+            lockAllInputs();
+        }
+    </script>
+</body>
+</html>
