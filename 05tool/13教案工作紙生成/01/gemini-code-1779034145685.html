@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>教案生成工具</title>
+    <script>
+        window.MathJax = { 
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
+                processEscapes: true 
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #e2e6e9; font-family: 'Times New Roman', '宋體', 'SimSun', serif; padding: 30px 20px; display: flex; flex-direction: row; align-items: flex-start; justify-content: center; min-height: 100vh; }
+        .input-panel { width: 100%; max-width: 210mm; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 0 auto; }
+        .input-panel h2 { font-size: 20px; color: #1e466e; margin-bottom: 20px; text-align: center; font-weight: bold; }
+        .input-panel textarea { width: 100%; height: 380px; padding: 12px; border: 1px solid #c8d1d9; border-radius: 6px; font-family: monospace; font-size: 13px; resize: vertical; background-color: #f8f9fa; color: #333; }
+        .generate-btn-container { text-align: center; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .btn-generate { background-color: #1e466e; color: white; font-size: 16px; padding: 12px 35px; border-radius: 40px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 3px 8px rgba(0,0,0,0.2); transition: 0.2s; }
+        .btn-generate:hover { background-color: #15324f; transform: scale(1.02); }
+        .btn-link { display: inline-block; background-color: #4a627a; color: white; font-size: 14px; padding: 11px 22px; border-radius: 40px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: 0.2s; }
+        .btn-link:hover { background-color: #2c3e4e; transform: scale(1.02); }
+        .button-bar { display: none; flex-direction: column; gap: 15px; width: 240px; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0; position: fixed; left: 30px; top: 30px; z-index: 999; }
+        .btn { width: 100%; color: white; border: none; padding: 12px 16px; font-size: 15px; font-weight: bold; font-family: inherit; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: 0.2s; text-align: center; }
+        .btn-pdf { background-color: #b4432c; }
+        .btn-pdf:hover { background-color: #8f3522; }
+        .btn-image { background-color: #2a9d8f; }
+        .btn-image:hover { background-color: #1e7167; }
+        .btn-refresh { background-color: #2c7da0; }
+        .btn-refresh:hover { background-color: #1f5e7e; }
+        .btn-reset { background-color: #6c757d; }
+        .btn-reset:hover { background-color: #5a6268; }
+        .btn:hover { transform: scale(1.02); }
+        [contenteditable="true"] { background-color: #ffffff; border: 1px solid transparent; padding: 6px 8px; border-radius: 4px; transition: 0.1s; cursor: text; }
+        .free-content-editor[contenteditable="true"] { border: 1px dashed #c8d1d9; padding: 20px; min-height: 200px; background: #fff; }
+        [contenteditable="true"]:focus { background-color: #ffffff; border-color: #f5a623; outline: none; box-shadow: 0 0 0 2px rgba(245,166,35,0.2); }
+        .resizable-img-wrapper { display: inline-block; position: relative; margin: 12px 0; max-width: 100%; cursor: grab; page-break-inside: avoid; vertical-align: middle; }
+        .resizable-img-wrapper:active { cursor: grabbing; }
+        .resizable-img-wrapper img { max-width: 100%; width: 100%; height: auto; display: block; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); user-select: none; pointer-events: none; }
+        .resizable-img-wrapper.active { outline: 2px dashed #f5a623; }
+        .resizable-img-wrapper.active::after { content: ''; position: absolute; right: -4px; bottom: -4px; width: 12px; height: 12px; background-color: #f5a623; border: 2px solid white; border-radius: 50%; cursor: nwse-resize; z-index: 100; }
+        .lesson-container { width: 210mm; background: white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-radius: 4px; padding: 20mm 15mm; box-sizing: border-box; display: none; flex-direction: column; margin-left: 280px; }
+        .pdf-sandbox-page { width: 180mm; background: white; box-sizing: border-box; padding: 0; margin: 0; display: flex; flex-direction: column; overflow: hidden; }
+        .pdf-sandbox-page.free-style { font-size: 14px; line-height: 1.6; }
+        .pdf-sandbox-page.free-style h2, .pdf-sandbox-page.free-style h3, .pdf-sandbox-page.free-style h4 { color: #1e466e; margin-top: 12px; margin-bottom: 8px; }
+        .pdf-sandbox-page.free-style p { margin-bottom: 8px; }
+        .lesson-row { display: flex; width: 100%; border: 1px solid #2c3e4e; margin-top: -1px; background: #fff; word-break: break-all; }
+        .row-header { background-color: #e9edf4; width: 100%; text-align: center; font-size: 1.35rem; font-weight: bold; padding: 14px; border: 1px solid #2c3e4e; }
+        .row-label { width: 120px; background-color: #f0f2f5; font-weight: 600; font-size: 14px; padding: 12px; border-right: 1px solid #2c3e4e; display: flex; align-items: flex-start; flex-shrink: 0; }
+        .row-content { flex-grow: 1; padding: 12px; font-size: 14px; line-height: 1.6; min-height: 45px; }
+        .row-content ul, .row-content ol, .free-content-editor ul, .free-content-editor ol { margin: 4px 0 4px 18px; }
+        .row-content li, .free-content-editor li { margin: 6px 0; }
+        .free-content-editor h2 { font-size: 22px; color: #1e466e; margin: 15px 0 10px 0; text-align: center; font-weight: bold;}
+        .free-content-editor h3 { font-size: 18px; color: #1e466e; margin: 15px 0 8px 0; border-bottom: 1px solid #1e466e; padding-bottom: 3px;}
+        .free-content-editor h4 { font-size: 16px; color: #2c7da0; margin: 12px 0 6px 0;}
+        .free-content-editor p { margin-bottom: 8px;}
+        mjx-container { display: inline-block; vertical-align: middle; }
+        .input-mode-active { justify-content: center !important; }
+    </style>
+</head>
+<body class="input-mode-active">
+
+<div class="input-panel" id="inputPanel">
+    <h2>集體備課教案生成系統</h2>
+    <div class="generate-btn-container">
+        <button class="btn-generate" id="generateSystemBtn">解析並生成可編輯教案</button>
+        <a href="https://chat.deepseek.com/share/loyjw7m2qrgo3zrod7" target="_blank" class="btn-link">DeepSeek 快速連結</a>
+        <a href="https://gemini.google.com/share/ac1dafaef4ca" target="_blank" class="btn-link">Gemini 快速連結</a>
+    </div>
+    <textarea id="lessonHtmlInput" placeholder="請在此貼入教案網頁代碼...（支持原生 &lt;img&gt; 標籤）"></textarea>
+</div>
+
+<div class="button-bar" id="systemButtonBar">
+    <button class="btn btn-pdf" id="downloadPdfBtn">📄 下載教案 PDF</button>
+    <button class="btn btn-image" id="insertImageBtn">🖼️ 插入圖片</button>
+    <button class="btn btn-refresh" id="rerenderMathBtn">🔁 重新渲染公式</button>
+    <button class="btn btn-reset" id="resetSystemBtn">↩️ 重新生成</button>
+    <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+</div>
+
+<div class="lesson-container" id="lessonPages"></div>
+<div id="pdfSandbox" style="position: absolute; left: -9999px; top: -9999px; width: 180mm;"></div>
+
+<script>
+    let pdfGenerating = false;
+    let savedRange = null; 
+    let savedActiveElement = null; 
+    let isTableMode = false; 
+
+    // 🎯 核心升級：精準雙向清洗器。導出時把可拉伸外殼剝掉，還原成標準 <img> 供 TXT 備份
+    function sanitizeMathJaxHTML(htmlString, forTxtBackup = false) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+        const innerEditor = doc.querySelector('.free-content-editor');
+        let targetDoc = doc;
+        if (innerEditor) {
+            const tempDoc = parser.parseFromString(innerEditor.innerHTML, 'text/html');
+            targetDoc = tempDoc;
+        }
+
+        // 1. 先還原公式
+        const containers = targetDoc.querySelectorAll('mjx-container, .MathJax, script[id*="MathJax"]');
+        containers.forEach(container => {
+            let formula = "";
+            const mml = container.querySelector('mjx-assistive-mml math, math');
+            if (mml) {
+                const altText = mml.getAttribute('alttext');
+                if (altText) { formula = altText; } else {
+                    const ann = mml.querySelector('annotation');
+                    if (ann) { formula = ann.textContent; }
+                }
+            }
+            if (!formula) {
+                const script = container.querySelector('script');
+                if (script) formula = script.textContent;
+            }
+            if (!formula) { formula = container.textContent.trim(); } else {
+                formula = formula.replace(/\n/g, ' ').trim();
+                if (!formula.startsWith('$')) { formula = '$' + formula + '$'; }
+            }
+            if (container.parentNode) {
+                const textNode = targetDoc.createTextNode(formula);
+                container.parentNode.replaceChild(textNode, container);
+            }
+        });
+        
+        // 2. 處理圖片組件還原：如果是為了生成備份 TXT，必須把 .resizable-img-wrapper 裡面的原生 img 提取出來
+        if (forTxtBackup) {
+            targetDoc.querySelectorAll('.resizable-img-wrapper').forEach(wrapper => {
+                const innerImg = wrapper.querySelector('img');
+                if (innerImg && wrapper.parentNode) {
+                    const cleanImg = document.createElement('img');
+                    cleanImg.src = innerImg.getAttribute('src') || '';
+                    if(innerImg.getAttribute('alt')) cleanImg.setAttribute('alt', innerImg.getAttribute('alt'));
+                    // 保留當前調整後的寬度樣式，防止寬度丟失
+                    if(wrapper.style.width) cleanImg.style.width = wrapper.style.width;
+                    wrapper.parentNode.replaceChild(cleanImg, wrapper);
+                } else if (wrapper.parentNode) {
+                    wrapper.parentNode.removeChild(wrapper);
+                }
+            });
+        }
+        
+        return targetDoc.body ? targetDoc.body.innerHTML.trim() : targetDoc.documentElement.innerHTML.trim();
+    }
+
+    // 🎯 核心功能：當用戶輸入自帶的 <img> 標籤時，自動為其包覆可編輯調整大小的外殼
+    function wrapNativeImagesWithEditorShell(container) {
+        // 尋找非封裝狀態的原生 img
+        container.querySelectorAll('img').forEach(img => {
+            if (img.parentNode && img.parentNode.classList.contains('resizable-img-wrapper')) {
+                return; // 已經被包覆過了，跳過
+            }
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'resizable-img-wrapper';
+            wrapper.contentEditable = 'false';
+            wrapper.draggable = true;
+            
+            // 讀取原圖可能設定好的寬度，預設 350px
+            wrapper.style.width = img.style.width || img.getAttribute('width') || '350px';
+            
+            const newImg = img.cloneNode(true);
+            newImg.style.width = '100%'; // 強制撐滿外殼
+            
+            wrapper.appendChild(newImg);
+            if (img.parentNode) {
+                img.parentNode.replaceChild(wrapper, img);
+                initResizableImage(wrapper);
+            }
+        });
+    }
+
+    document.getElementById('generateSystemBtn').addEventListener('click', async () => {
+        let rawInput = document.getElementById('lessonHtmlInput').value.trim();
+        if (!rawInput) { alert("請先輸入或貼入教案內容代碼！"); return; }
+
+        // 清洗 MathJax，但保留原生 img（此處 forTxtBackup 為 false）
+        let processedHtml = sanitizeMathJaxHTML(rawInput, false);
+        if(!processedHtml) { processedHtml = rawInput; }
+
+        const container = document.getElementById('lessonPages');
+        container.innerHTML = '';
+
+        if (processedHtml.includes('lesson-row')) {
+            isTableMode = true;
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(processedHtml, 'text/html');
+            const extractedRows = doc.querySelectorAll('.lesson-row');
+            if (extractedRows.length > 0) {
+                extractedRows.forEach(row => container.appendChild(row.cloneNode(true)));
+            } else { container.innerHTML = processedHtml; }
+            container.querySelectorAll('.row-content').forEach(cell => { cell.setAttribute('contenteditable', 'true'); });
+        } else {
+            isTableMode = false;
+            const wrapperEditor = document.createElement('div');
+            wrapperEditor.className = 'free-content-editor';
+            wrapperEditor.setAttribute('contenteditable', 'true');
+            wrapperEditor.innerHTML = processedHtml;
+            container.appendChild(wrapperEditor);
+        }
+
+        // 🎯 自動掃描並封裝貼入的圖片標籤
+        wrapNativeImagesWithEditorShell(container);
+
+        document.getElementById('inputPanel').style.display = 'none';
+        document.body.classList.remove('input-mode-active'); 
+        document.getElementById('systemButtonBar').style.display = 'flex';
+        container.style.display = 'flex';
+
+        bindDynamicEvents();
+        await rerenderMath(container);
+    });
+
+    document.getElementById('resetSystemBtn').addEventListener('click', () => {
+        if (confirm("確定要退回輸入框狀態嗎？這將會遺失目前在畫面上修改的內容。")) {
+            document.getElementById('inputPanel').style.display = 'block';
+            document.body.classList.add('input-mode-active');
+            document.getElementById('systemButtonBar').style.display = 'none';
+            const container = document.getElementById('lessonPages');
+            container.innerHTML = ''; container.style.display = 'none';
+            savedRange = null; savedActiveElement = null;
+        }
+    });
+
+    async function rerenderMath(targetContainer) {
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            try { await MathJax.typesetPromise([targetContainer]); } catch (err) { console.warn("MathJax 重新渲染出錯", err); }
+        }
+    }
+
+    function atomizeContent(node) {
+        let atoms = [];
+        if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] === '\n' || text[i] === '\r') continue;
+                atoms.push(document.createTextNode(text[i]));
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const tagName = node.tagName.toLowerCase();
+            if (tagName === 'mjx-container' || (node.classList && node.classList.contains('resizable-img-wrapper')) || tagName === 'br' || tagName === 'hr') {
+                atoms.push(node.cloneNode(true));
+            } else if (['p', 'li', 'span', 'div', 'ul', 'ol', 'strong', 'b', 'h1', 'h2', 'h3', 'h4', 'h5'].includes(tagName)) {
+                let containerClone = node.cloneNode(false);
+                let subAtoms = [];
+                Array.from(node.childNodes).forEach(child => { subAtoms = subAtoms.concat(atomizeContent(child)); });
+                atoms.push({ isContainer: true, shell: containerClone, children: subAtoms });
+            } else { atoms.push(node.cloneNode(true)); }
+        }
+        return atoms;
+    }
+
+    function appendAtom(target, atom) {
+        if (atom instanceof Node) { 
+            const appended = target.appendChild(atom); 
+            // 如果分頁重組時遇到了圖片組件，需要為新節點重新初始化縮放監聽
+            if (atom.classList && atom.classList.contains('resizable-img-wrapper')) {
+                initResizableImage(appended);
+            }
+            return appended; 
+        }
+        else if (atom && atom.isContainer) {
+            let activeShell = atom.shell.cloneNode(false);
+            target.appendChild(activeShell);
+            atom.children.forEach(child => { appendAtom(activeShell, child); });
+            return activeShell;
+        }
+    }
+
+    function downloadTxtBackup(fileName, containerClone) {
+        // 🎯 這裡設定 forTxtBackup = true，完美將外殼還原為乾淨的 <img> 標籤寫入 TXT 備份
+        let txtContent = sanitizeMathJaxHTML(containerClone.innerHTML, true);
+        const blob = new Blob([txtContent], { type: 'text/plain;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName.replace('.pdf', '.txt'); 
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    async function exportMultiPagePDF() {
+        if (pdfGenerating) return;
+        if (typeof html2canvas === 'undefined') { alert("組件尚未加載完成，請稍候。"); return; }
+
+        pdfGenerating = true;
+        const container = document.getElementById('lessonPages');
+
+        let gradeText = "未知班級", subjectText = "未知課題", teacherText = "未知教師";
+        const fullTextContext = container.textContent;
+        const gradeMatch = fullTextContext.match(/(?:班級|年級)[:：]\s*([^\s\n<]+)/);
+        const subjectMatch = fullTextContext.match(/課題[:：]\s*([^\s\n<]+)/); 
+        const teacherMatch = fullTextContext.match(/(?:執教|老師|教師|人名)[:：]\s*([^\s\n<]+)/);
+
+        if (gradeMatch) gradeText = gradeMatch[1].trim();
+        if (subjectMatch) { subjectText = subjectMatch[1].trim(); } 
+        else {
+            const fallbackMatch = fullTextContext.match(/科目[:：]\s*([^\s\n<]+)/);
+            if (fallbackMatch) subjectText = fallbackMatch[1].trim();
+        }
+        if (teacherMatch) teacherText = teacherMatch[1].trim();
+
+        const now = new Date();
+        const formattedDate = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+        const finalFileName = `${gradeText}_${subjectText}_${teacherText}_${formattedDate}.pdf`;
+
+        const containerCopyForTxt = container.cloneNode(true);
+        downloadTxtBackup(finalFileName, containerCopyForTxt);
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.textContent = '正在進行 300 DPI 高清多頁排版並壓縮體積...';
+        loadingDiv.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.85); color:white; padding:16px 28px; border-radius:32px; z-index:10000; font-size:16px; font-weight:bold; text-align:center;';
+        document.body.appendChild(loadingDiv);
+
+        try {
+            document.querySelectorAll('.resizable-img-wrapper').forEach(w => w.classList.remove('active'));
+            const sandbox = document.getElementById('pdfSandbox');
+            sandbox.innerHTML = '';
+            
+            const mmToPx = 3.77952;
+            const maxPageHeightPx = Math.floor(266 * mmToPx); 
+
+            let pagePagesNode = [];
+            let currentPageNode = document.createElement('div');
+            currentPageNode.className = isTableMode ? 'pdf-sandbox-page' : 'pdf-sandbox-page free-style';
+            sandbox.appendChild(currentPageNode);
+            pagePagesNode.push(currentPageNode);
+
+            if (isTableMode) {
+                const rows = container.querySelectorAll('.lesson-row');
+                for (let i = 0; i < rows.length; i++) {
+                    const originalRow = rows[i];
+                    if (originalRow.querySelector('.row-header')) {
+                        const rowClone = originalRow.cloneNode(true);
+                        currentPageNode.appendChild(rowClone);
+                        if (currentPageNode.offsetHeight > maxPageHeightPx) {
+                            currentPageNode.removeChild(rowClone);
+                            currentPageNode = document.createElement('div');
+                            currentPageNode.className = 'pdf-sandbox-page';
+                            sandbox.appendChild(currentPageNode);
+                            pagePagesNode.push(currentPageNode);
+                            currentPageNode.appendChild(rowClone);
+                        }
+                        continue;
+                    }
+
+                    const labelText = originalRow.querySelector('.row-label').innerHTML;
+                    const contentCell = originalRow.querySelector('.row-content');
+                    
+                    let currentRowClone = document.createElement('div');
+                    currentRowClone.className = 'lesson-row';
+                    currentRowClone.innerHTML = `<div class="row-label">${labelText}</div><div class="row-content"></div>`;
+                    currentPageNode.appendChild(currentRowClone);
+                    let currentContentCellClone = currentRowClone.querySelector('.row-content');
+
+                    let allAtoms = [];
+                    Array.from(contentCell.childNodes).forEach(childNode => { allAtoms = allAtoms.concat(atomizeContent(childNode)); });
+
+                    for (let j = 0; j < allAtoms.length; j++) {
+                        const atom = allAtoms[j];
+                        let appended = appendAtom(currentContentCellClone, atom);
+
+                        if (currentPageNode.offsetHeight > maxPageHeightPx) {
+                            if (appended && appended.parentNode) appended.parentNode.removeChild(appended);
+                            currentPageNode = document.createElement('div');
+                            currentPageNode.className = 'pdf-sandbox-page';
+                            sandbox.appendChild(currentPageNode);
+                            pagePagesNode.push(currentPageNode);
+
+                            currentRowClone = document.createElement('div');
+                            currentRowClone.className = 'lesson-row';
+                            currentRowClone.innerHTML = `<div class="row-label">${labelText}</div><div class="row-content"></div>`;
+                            currentPageNode.appendChild(currentRowClone);
+                            currentContentCellClone = currentRowClone.querySelector('.row-content');
+                            appendAtom(currentContentCellClone, atom);
+                        }
+                    }
+                }
+            } else {
+                const srcEditor = container.querySelector('.free-content-editor');
+                let allAtoms = [];
+                Array.from(srcEditor.childNodes).forEach(childNode => { allAtoms = allAtoms.concat(atomizeContent(childNode)); });
+
+                for (let j = 0; j < allAtoms.length; j++) {
+                    const atom = allAtoms[j];
+                    let appended = appendAtom(currentPageNode, atom);

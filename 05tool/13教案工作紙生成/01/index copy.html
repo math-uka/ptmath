@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NOKIN 生成器 - 完整版</title>
+    <link rel="icon" type="image/x-icon" href="https://nokin.vercel.app/main.ico">
+    <script>
+        window.MathJax = { 
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
+                processEscapes: true 
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <script src="https://nokin.vercel.app/app/papermaker/min.js"></script>
+    <script src="https://nokin.vercel.app/app/papermaker/umd.min.js"></script>
+
+
+
+
+      <!--     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>-->
+   
+
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="input-mode-active">
+
+<div class="input-panel" id="inputPanel">
+    <h2>教案 /功課/ 練習紙自動化生成系統</h2>
+    <div class="generate-btn-container">
+        <button class="btn-generate" id="generateSystemBtn">解析輸入並執行</button>
+        <a href="https://chat.deepseek.com/share/8jpqvzzzkmtsezwfq3" target="_blank" class="btn-link">判判用-快速連結</a>
+        <a href="https://chat.deepseek.com/share/loyjw7m2qrgo3zrod7" target="_blank" class="btn-link">教案-快速連結</a>
+        <a href="https://chat.deepseek.com/share/p3o82ml63t90ipxkx0" target="_blank" class="btn-link">工作紙-快速連結</a>
+    </div>
+    <textarea id="lessonHtmlInput" placeholder="點擊所需任務連結, 並描述你的課題, 內容, 要求, 將生成的代碼貼於此處並執行任務"></textarea>
+</div>
+
+<div class="button-bar" id="systemButtonBar">
+    <button class="btn btn-pdf" id="downloadPdfBtn">📄 下載PDF</button>
+    <button class="btn btn-image" id="insertImageBtn">🖼️ 插入新圖片</button>
+    <button class="btn btn-refresh" id="rerenderMathBtn">🔁 重新渲染公式</button>
+    <button class="btn btn-reset" id="resetSystemBtn">↩️ 重新生成</button>
+    <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+    
+    <div class="height-control-section" id="heightControlSection">
+        <div class="height-control-title">
+            <span>↕️ 調整表格最低高度</span>
+            <span class="height-value" id="heightValue">45px</span>
+        </div>
+        <div class="height-slider-container">
+            <input type="range" class="height-slider" id="heightSlider" min="45" max="350" value="45">
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <div class="gallery-title">📁 常用圖片庫 (點擊快速重用)</div>
+        <div class="image-gallery" id="imageGallery"></div>
+    </div>
+</div>
+
+<div class="lesson-container" id="lessonPages"></div>
+
+<div id="pdfSandbox" style="position: absolute; left: -9999px; top: -9999px; width: 180mm;"></div>
+
+<script src="https://nokin.vercel.app/app/papermaker/iawaku.js"></script>
+</body>
+</html>

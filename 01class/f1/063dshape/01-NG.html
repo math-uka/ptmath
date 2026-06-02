@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 物件編輯器 - 多選 & 複製功能</title>
+    <style>
+        body { margin:0; background:#fff; font-family:Arial,sans-serif; overflow:hidden; }
+        canvas { display:block; }
+        .controls {
+            position: absolute;
+            top: 15px; left: 15px;
+            display: flex; flex-direction: column; gap: 8px;
+            z-index: 100; background: rgba(255,255,255,0.94);
+            padding: 12px; border-radius: 8px;
+            border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        button {
+            padding: 8px 16px;
+            background: #f8f9fa; border: 1px solid #888; border-radius: 6px;
+            cursor: pointer; font-size: 14px; min-width: 150px;
+        }
+        button:hover { background: #e9ecef; }
+        button.active { background: #a5d8ff; border-color: #1c7ed6; }
+        button.danger { background: #ffebee; border-color: #c62828; color: #c62828; }
+        .counter { text-align:center; font-weight:bold; padding:8px; background:#e3f2fd; border-radius:6px; }
+        .instructions {
+            position: absolute; top:15px; right:15px;
+            background: rgba(255,255,255,0.94); padding:12px 16px;
+            border-radius:8px; border:1px solid #ccc; max-width:460px;
+            font-size:13.5px; line-height:1.5; box-shadow:0 2px 10px rgba(0,0,0,0.15);
+        }
+        .hidden { opacity:0; pointer-events:none; }
+        .status-message {
+            position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+            background:rgba(0,0,0,0.85); color:white; padding:18px 28px;
+            border-radius:10px; z-index:2000; display:none; min-width:220px;
+            text-align:center; font-size:16px;
+        }
+        .status-message.active { display:block; animation:fadeOut 2.8s forwards; animation-delay:1.2s; }
+        @keyframes fadeOut { to { opacity:0; } }
+        .color-picker {
+            position: absolute;
+            top: 480px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border: 1px solid #888;
+            border-radius: 6px;
+            padding: 12px;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            width: 220px;
+        }
+        .color-picker label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .color-input {
+            width: 100%;
+            height: 34px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .color-presets {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .color-preset {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #888;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+        .color-preset:hover { transform: scale(1.15); }
+        .color-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #555;
+            text-align: center;
+        }
+        .color-history {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .color-history-item {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #888;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+        .color-history-item:hover { transform: scale(1.15); }
+    </style>
+</head>
+<body>
+<div class="controls">
+    <div class="counter">物件數量： <span id="count">0</span></div>
+    <button id="addCube">新增方塊</button>
+    <button id="addSphere">新增球體</button>
+    <button id="addCone">新增圓錐</button>
+    <button id="addPyramid">新增四棱錐</button>
+    <button id="addCylinder">新增圓柱</button>
+    <button id="addHalfCylinder">新增半圓柱</button>
+    <button id="addTriPrism">新增三棱柱</button>
+    <button id="addFloor">新增地板</button>
+    <button id="generateWalls">生成牆壁</button>
+    <button id="addPlayerModel">新增玩家角色</button>
+    <button id="removeSelected" class="danger">刪除選中</button>
+    <button id="removeLast">刪除最後一個</button>
+    <button id="flipVertical">上下翻轉 90°</button>
+    <button id="flipHorizontal">左右翻轉 90°</button>
+    <button id="toggleDisplayMode">不透明表面 + 線框</button>
+    <button id="toggleGrid">隱藏地面格線</button>
+    <button id="toggleDiagonals">顯示對角線</button>
+    <button id="toggleShadows">隱藏陰影</button>
+    <button id="toggleWireframe">隱藏線框</button>
+</div>
+<div class="instructions">
+    <strong>操作說明</strong><br>
+    • 點擊物件 → 選取（變紅）<br>
+    • <strong>Shift + 點擊</strong> → 多選/取消多選<br>
+    • W A S D → 前 左 後 右（半格）<br>
+    • R F → 上 下（F 不低於地面）<br>
+    • Q → 新增方塊並選取<br>
+    • G → 新增地板<br>
+    • H → 生成牆壁<br>
+    • <strong>L</strong> → 往右（X+）複製選中物件（可多選）<br>
+    • <strong>K</strong> → 向後（Z+）複製選中物件（可多選）<br>
+    • <strong>J</strong> → 往左（X-）複製選中物件（可多選）<br>
+    • <strong>I</strong> → 向前（Z-）複製選中物件（可多選）<br>
+    • <strong>O</strong> → 向上（Y+）複製選中物件（可多選）<br>
+    • <strong>Z</strong> → 還原上一步<br>
+    • <strong>X</strong> → 退回下一步<br>
+    • <strong>V</strong> → 刪除所有選中物件<br>
+    • <strong>P</strong> → 整層複製<br>
+    • Delete / Backspace → 刪除最後一個<br>
+    • 上下/左右翻轉 90° → 只作用於單選<br>
+    • 顯示模式：不透明 → 半透明 → 純線框<br>
+    • 1 → 隱藏/顯示介面　　2 → 下載 PNG　　3 → 儲存 JSON　　4 → 載入 JSON<br>
+</div>
+<input type="file" id="fileInput" style="display:none" accept=".json">
+<div class="status-message" id="statusMessage"></div>
+<div class="color-picker" id="colorPicker">
+    <label for="colorInput">選取顏色:</label>
+    <input type="color" id="colorInput" class="color-input" value="#3366ff">
+    <div class="color-note">新物件使用此顏色；選中物件可即時改變</div>
+    <div class="color-presets">
+        <div class="color-preset" style="background:#000000;" data-color="#000000"></div>
+        <div class="color-preset" style="background:#666666;" data-color="#666666"></div>
+        <div class="color-preset" style="background:#aaaaaa;" data-color="#aaaaaa"></div>
+        <div class="color-preset" style="background:#ffffff;border:1px solid #ccc;" data-color="#ffffff"></div>
+        <div class="color-preset" style="background:#ff0000;" data-color="#ff0000"></div>
+        <div class="color-preset" style="background:#ffff00;" data-color="#ffff00"></div>
+        <div class="color-preset" style="background:#00ff00;" data-color="#00ff00"></div>
+        <div class="color-preset" style="background:#0000ff;" data-color="#0000ff"></div>
+    </div>
+    <div class="color-note">顏色記錄（最近使用）:</div>
+    <div class="color-history">
+        <div class="color-history-item" id="history0" style="background:#3366ff;" data-color="#3366ff"></div>
+        <div class="color-history-item" id="history1" style="background:#ffffff;" data-color="#ffffff"></div>
+        <div class="color-history-item" id="history2" style="background:#ffffff;" data-color="#ffffff"></div>
+        <div class="color-history-item" id="history3" style="background:#ffffff;" data-color="#ffffff"></div>
+    </div>
+</div>
+
+<!-- 第三方庫 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.min.js"></script>
+<!-- 主要應用程式邏輯 -->
+<script src="https://nokin.vercel.app/app/3dshape/app.js"></script>
+</body>
+</html>

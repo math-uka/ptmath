@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>幾何畫板 - 智能形狀約束 | 自動直角 | 平移 | 動態中線角平分線</title>
+    <style>
+        * {
+            user-select: none;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: #eef2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .toolbar {
+            background: #fef7e0;
+            border-radius: 24px;
+            padding: 16px;
+            width: 320px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 改為一行三個按鈕 */
+            gap: 6px;
+            align-content: start;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .tool-btn {
+            background: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 2px;
+            font-size: 11px; /* 微調字型以適應三列排版 */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column; /* 讓圖標與文字上下排列更美觀 */
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 100%;
+        }
+        .full-width-btn {
+            grid-column: span 3;
+        }
+        .two-thirds-btn {
+            grid-column: span 2;
+        }
+        .tool-btn.active {
+            background: #2c6e9e;
+            color: white;
+            box-shadow: 0 4px 10px rgba(44,110,158,0.3);
+            border: 1px solid #1f4d6e;
+        }
+        .tool-btn.delete-active {
+            background: #dc2626;
+            color: white;
+            box-shadow: 0 4px 10px rgba(220,38,38,0.3);
+            border: 1px solid #991b1b;
+        }
+        .tool-btn:hover {
+            background: #e6f0fa;
+            transform: scale(0.97);
+        }
+        .separator {
+            grid-column: span 3;
+            height: 2px;
+            background: #ddd;
+            margin: 4px 0;
+        }
+        .slider-container {
+            grid-column: span 3;
+            background: #ffffffcc;
+            border-radius: 40px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        input[type="range"] {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: #cbd5e1;
+            border-radius: 5px;
+        }
+        input[type="range"]:focus {
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2c6e9e;
+            cursor: pointer;
+        }
+        .info-panel {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 14px;
+            width: 260px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .angle-list {
+            background: white;
+            border-radius: 18px;
+            padding: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .angle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+        .angle-name {
+            font-weight: bold;
+            background: #eef2ff;
+            padding: 4px 8px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .edit-btn {
+            background: #d9e2ef;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            padding: 2px 10px;
+            font-size: 11px;
+        }
+        .clear-btn, .undo-btn, .download-btn {
+            grid-column: span 3;
+            border: none;
+            border-radius: 40px;
+            padding: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2px;
+            text-align: center;
+        }
+        .clear-btn { background: #fee2e2; color: #b91c1c; }
+        .undo-btn { background: #e2e3ff; color: #3730a3; }
+        .download-btn { background: #dcfce7; color: #15803d; }
+        .grid-toggle { grid-column: span 3; background: #cbd5e1; }
+        
+        /* 畫布尺寸按鈕樣式 */
+        .size-btn-group {
+            grid-column: span 3;
+            display: flex;
+            gap: 4px;
+        }
+        .size-btn {
+            flex: 1;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 6px 2px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .size-btn.active {
+            background: #475569;
+            color: white;
+            border-color: #334155;
+        }
+
+        .status {
+            grid-column: span 3;
+            background: #e9f0f9;
+            border-radius: 40px;
+            padding: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .canvas-container {
+            background: #cbd5e1;
+            border-radius: 24px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 2px solid #cbd5e1;
+            overflow: hidden; /* 保證裁切時不會溢出 */
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+        canvas {
+            display: block;
+            background: white;
+            cursor: crosshair;
+        }
+        h4 {
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            color: #1e293b;
+        }
+        footer {
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="toolbar">
+        <button id="undoBtn" class="undo-btn">↩️ 復原/上一步</button>
+        <button id="downloadBtn" class="download-btn">📸 下載PNG(白底)</button>
+        
+        <div class="separator"></div>
+        
+        <div class="size-btn-group">
+            <button id="sizeLargeBtn" class="size-btn active">大 (800x600)</button>
+            <button id="sizeMediumBtn" class="size-btn">中 (400x300)</button>
+            <button id="sizeSmallBtn" class="size-btn">小 (200x150)</button>
+        </div>
+        
+        <div class="separator"></div>
+        
+        <button id="translateBtn" class="tool-btn" title="整體移動相連的圖形">✋平移</button>
+        <button id="moveTextToolBtn" class="tool-btn" title="拖拽文字標籤">✍️移動文字</button>
+        <button id="deleteToolBtn" class="tool-btn" style="color:#b91c1c;" title="點擊刪除畫板上的點及其連帶線段">🗑️刪除</button>
+        
+        <div class="separator"></div>
+        
+        <button id="textInputToolBtn" class="tool-btn" title="在畫板插入自定義文字">✍️插入文字</button>
+        <button id="rightAngleToolBtn" class="tool-btn" title="保證畫出直角">📐直角(L)</button>
+        <button id="pointToolBtn" class="tool-btn">🔘點</button>
+        
+        <div class="separator"></div>
+        
+        <button id="segmentToolBtn" class="tool-btn">📐線段</button>
+        <button id="lineToolBtn" class="tool-btn">📏直線</button>
+        <button id="rayToolBtn" class="tool-btn">✨射線</button>
+        <button id="dashedBtn" class="tool-btn">➖虛線</button>
+        <button id="circleBtn" class="tool-btn">⭕圓形</button>
+        <button id="midpointBtn" class="tool-btn">📍中點</button>
+        
+        <div class="separator"></div>
+        
+        <button id="bisectorBtn" class="tool-btn">✂️角分線</button>
+        <button id="angleToolBtn" class="tool-btn two-thirds-btn">📐自定義角標記</button>
+        
+        <div class="separator"></div>
+        
+        <button id="squareToolBtn" class="tool-btn">⬛正方形</button>
+        <button id="rectangleToolBtn" class="tool-btn">🧩矩形</button>
+        <button id="equilateralToolBtn" class="tool-btn">🔺等邊△</button>
+        <button id="isoscelesToolBtn" class="tool-btn full-width-btn">📐等腰△(約束)</button>
+        
+        <div class="separator"></div>
+        
+        <div class="slider-container">
+            <span>🔤 字大小</span>
+            <input type="range" id="fontSizeSlider" min="12" max="50" step="1" value="25">
+            <span id="fontSizeValue">25</span>
+        </div>
+        
+        <div class="slider-container">
+            <span>線粗細</span>
+            <input type="range" id="lineWidthSlider" min="1" max="10" step="0.5" value="4">
+            <span id="lineWidthValue">4</span>
+        </div>
+        
+        <div class="separator"></div>
+        
+        <button id="toggleGridBtn" class="tool-btn grid-toggle full-width-btn">🔲 隱藏網格</button>
+        <button id="clearAllBtn" class="clear-btn">🗑️ 清空全部</button>
+        
+        <div class="status" id="statusMsg">準備就緒 (預設可拖動點)</div>
+    </div>
+
+    <div class="canvas-container" id="canvasWrapper" style="width:800px; height:600px;">
+        <canvas id="geometryCanvas" width="800" height="600" style="width:800px;height:600px;"></canvas>
+    </div>
+
+    <div class="info-panel">
+        <div>
+            <h4>✏️ 操作提示</h4>
+            <ul style="margin: 4px 0 0 16px; padding-left: 0; font-size: 12px;">
+                <li>• <strong>無縫拖動</strong>: 無需切換工具，隨時按住點即可自由拖動。</li>
+                <li>• <strong>二次點擊</strong>: 再次點擊已選中的工具按鈕可取消選擇，返回拖拽模式。</li>
+                <li>• <strong>裁切模式</strong>: 切換大中小尺寸為畫布可視區裁切，圖形比例不變。</li>
+            </ul>
+        </div>
+        <div>
+            <h4>📐 自定義角標記</h4>
+            <div id="angleListPanel" class="angle-list"><div style="color:#aaa;">暫無角度</div></div>
+        </div>
+        <div>
+            <h4>📍 已有點</h4>
+            <div id="pointListInfo" class="angle-list"></div>
+        </div>
+        <footer>智能形狀 · 動態依賴 · 實時自動直角</footer>
+    </div>
+</div>
+
+<script>
+    (function(){
+        const canvas = document.getElementById('geometryCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvasWrapper = document.getElementById('canvasWrapper');
+        
+        // ---------- 數據結構 ----------
+        let points = [];            
+        let lines = [];
+        let segments = [];
+        let rays = [];
+        let angles = [];            
+        let circles = [];           
+        let shapeGroups = [];       
+        let dependencies = [];      
+        let customTexts = [];       
+        
+        let nextPointCode = 65;
+        let nextAngleIndex = 1;
+        
+        // 交互
+        let currentTool = '';
+        let tempPoints = [];
+        let selectedPointId = null;
+        let isDragging = false;
+        let hasDragged = false;
+        let dragStartMouse = { x: 0, y: 0 };
+        let originalPointsState = null;
+        let connectedPointsToDrag = [];
+        
+        let isDraggingText = false;
+        let draggedTextType = null;
+        let draggedTargetId = null;
+        let dragTextStart = { x: 0, y: 0 };
+        let originalOffset = { x: 0, y: 0 };
+        let highlightedPointId = null;
+        let gridVisible = true;
+        
+        // 新增與修改的變數：字體與線條粗細
+        let fontSize = 25;       // 起始尺寸為最大（50）的一半
+        let baseLineWidth = 4;   // 起始加粗線條
+        
+        // 直角工具即時動態座標鎖定
+        let rightAngleMousePos = { x: 0, y: 0 };
+        
+        // 撤銷歷史
+        let historyStack = [];
+        let historyIndex = -1;
+        
+        // UI元素
+        const undoBtn = document.getElementById('undoBtn');
+        const translateBtn = document.getElementById('translateBtn');
+        const moveTextBtn = document.getElementById('moveTextToolBtn');
+        const deleteToolBtn = document.getElementById('deleteToolBtn');
+        const textInputToolBtn = document.getElementById('textInputToolBtn');
+        const rightAngleToolBtn = document.getElementById('rightAngleToolBtn');
+        const pointBtn = document.getElementById('pointToolBtn');
+        const lineBtn = document.getElementById('lineToolBtn');
+        const segmentBtn = document.getElementById('segmentToolBtn');
+        const rayBtn = document.getElementById('rayToolBtn');
+        const dashedBtn = document.getElementById('dashedBtn');
+        const circleBtn = document.getElementById('circleBtn');
+        const midpointBtn = document.getElementById('midpointBtn');
+        const bisectorBtn = document.getElementById('bisectorBtn');
+        const angleBtn = document.getElementById('angleToolBtn');
+        const squareBtn = document.getElementById('squareToolBtn');
+        const rectangleBtn = document.getElementById('rectangleToolBtn');
+        const equilateralBtn = document.getElementById('equilateralToolBtn');
+        const isoscelesBtn = document.getElementById('isoscelesToolBtn');
+        const clearBtn = document.getElementById('clearAllBtn');
+        const toggleGridBtn = document.getElementById('toggleGridBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const statusDiv = document.getElementById('statusMsg');
+        const angleListPanel = document.getElementById('angleListPanel');
+        const pointListInfo = document.getElementById('pointListInfo');
+        const fontSizeSlider = document.getElementById('fontSizeSlider');
+        const fontSizeSpan = document.getElementById('fontSizeValue');
+        const lineWidthSlider = document.getElementById('lineWidthSlider');
+        const lineWidthSpan = document.getElementById('lineWidthValue');
+        
+        // 畫布尺寸按鈕
+        const sizeLargeBtn = document.getElementById('sizeLargeBtn');
+        const sizeMediumBtn = document.getElementById('sizeMediumBtn');
+        const sizeSmallBtn = document.getElementById('sizeSmallBtn');
+        
+        // ---------- 歷史管理 ----------
+        function saveState() {
+            const state = {
+                points: JSON.parse(JSON.stringify(points)),
+                lines: JSON.parse(JSON.stringify(lines)),
+                segments: JSON.parse(JSON.stringify(segments)),
+                rays: JSON.parse(JSON.stringify(rays)),
+                angles: JSON.parse(JSON.stringify(angles)),
+                circles: JSON.parse(JSON.stringify(circles)),
+                shapeGroups: JSON.parse(JSON.stringify(shapeGroups)),
+                dependencies: JSON.parse(JSON.stringify(dependencies)),
+                customTexts: JSON.parse(JSON.stringify(customTexts)),
+                nextPointCode, nextAngleIndex
+            };
+            historyStack = historyStack.slice(0, historyIndex + 1);
+            historyStack.push(state);
+            historyIndex++;
+            if (historyStack.length > 30) {
+                historyStack.shift();
+                historyIndex--;
+            }
+        }
+        
+        function undo() {
+            if (historyIndex <= 0) {
+                statusDiv.innerText = "沒有更早的操作";
+                setTimeout(()=> updateStatusText(), 1000);
+                return;
+            }
+            historyIndex--;
+            const state = historyStack[historyIndex];
+            points = state.points.map(p => ({ ...p }));
+            lines = state.lines.map(l => ({ ...l }));
+            segments = state.segments.map(s => ({ ...s }));
+            rays = state.rays.map(r => ({ ...r }));
+            angles = state.angles.map(a => ({ ...a }));
+            circles = state.circles.map(c => ({ ...c }));
+            shapeGroups = state.shapeGroups.map(g => ({ ...g, pointIds: [...g.pointIds] }));
+            dependencies = state.dependencies.map(d => ({ ...d }));
+            customTexts = state.customTexts ? state.customTexts.map(t => ({ ...t })) : [];
+            nextPointCode = state.nextPointCode;
+            nextAngleIndex = state.nextAngleIndex;
+            tempPoints = [];
+            selectedPointId = null;
+            isDragging = false;
+            isDraggingText = false;
+            renderCanvas();
+            updateAngleList();
+            updatePointList();
+            statusDiv.innerText = "已復原";
+            setTimeout(()=> updateStatusText(), 1000);
+        }
+        
+        function recordAndRender() {
+            saveState();
+            renderCanvas();
+            updateAngleList();
+            updatePointList();
+        }
+
+        // ---------- 刪除點及其相關元素 ----------
+        function deletePoint(pointId) {
+            points = points.filter(p => p.id !== pointId);
+            segments = segments.filter(s => s.p1Id !== pointId && s.p2Id !== pointId);
+            lines = lines.filter(l => l.p1Id !== pointId && l.p2Id !== pointId);
+            rays = rays.filter(r => r.originId !== pointId && r.dirId !== pointId);
+            angles = angles.filter(a => a.vertexId !== pointId && a.arm1Id !== pointId && a.arm2Id !== pointId);
+            circles = circles.filter(c => c.centerId !== pointId && c.edgePointId !== pointId);
+            shapeGroups = shapeGroups.filter(g => !g.pointIds.includes(pointId));
+            dependencies = dependencies.filter(d => d.pointId !== pointId && d.p1Id !== pointId && d.p2Id !== pointId && d.endPointId !== pointId && d.vId !== pointId && d.a1Id !== pointId && d.a2Id !== pointId);
+            
+            recordAndRender();
+        }
+
+        // ---------- 動態依賴更新 ----------
+        function updateDependencies() {
+            dependencies.forEach(dep => {
+                if(dep.type === 'midpoint') {
+                    let m = getPointById(dep.pointId);
+                    let p1 = getPointById(dep.p1Id);
+                    let p2 = getPointById(dep.p2Id);
+                    if(m && p1 && p2) {
+                        m.x = (p1.x + p2.x) / 2;
+                        m.y = (p1.y + p2.y) / 2;
+                    }
+                } else if(dep.type === 'bisector') {
+                    let m = getPointById(dep.endPointId);
+                    let v = getPointById(dep.vId);
+                    let a1 = getPointById(dep.a1Id);
+                    let a2 = getPointById(dep.a2Id);
+                    if(m && v && a1 && a2) {
+                        let ang1 = Math.atan2(a1.y - v.y, a1.x - v.x);
+                        let ang2 = Math.atan2(a2.y - v.y, a2.x - v.x);
+                        let diff = ang2 - ang1;
+                        while(diff <= -Math.PI) diff += 2 * Math.PI;
+                        while(diff > Math.PI) diff -= 2 * Math.PI;
+                        let midAng = ang1 + diff / 2;
+                        
+                        let currentDist = Math.hypot(m.x - v.x, m.y - v.y);
+                        if(currentDist < 10) currentDist = dep.initialDist || 100;
+                        
+                        m.x = v.x + currentDist * Math.cos(midAng);
+                        m.y = v.y + currentDist * Math.sin(midAng);
+                        dep.initialDist = currentDist; 
+                    }
+                }
+            });
+        }
+        
+        // ---------- 連通圖遍歷 ----------
+        function getConnectedPoints(startId) {
+            let visited = new Set();
+            let queue = [startId];
+            visited.add(startId);
+            
+            const adj = {};
+            points.forEach(p => adj[p.id] = new Set());
+            segments.forEach(seg => { adj[seg.p1Id].add(seg.p2Id); adj[seg.p2Id].add(seg.p1Id); });
+            lines.forEach(l => { adj[l.p1Id].add(l.p2Id); adj[l.p2Id].add(l.p1Id); });
+            rays.forEach(r => { adj[r.originId].add(r.dirId); adj[r.dirId].add(r.originId); });
+            circles.forEach(c => { adj[c.centerId].add(c.edgePointId); adj[c.edgePointId].add(c.centerId); }); 
+            
+            shapeGroups.forEach(g => {
+                for(let i=0; i<g.pointIds.length; i++) {
+                    for(let j=i+1; j<g.pointIds.length; j++) {
+                        adj[g.pointIds[i]].add(g.pointIds[j]);
+                        adj[g.pointIds[j]].add(g.pointIds[i]);
+                    }
+                }
+            });
+            dependencies.forEach(d => {
+                if(d.type === 'midpoint') {
+                    adj[d.pointId].add(d.p1Id); adj[d.pointId].add(d.p2Id);
+                    adj[d.p1Id].add(d.pointId); adj[d.p2Id].add(d.pointId);
+                }
+                if(d.type === 'bisector') {
+                    adj[d.endPointId].add(d.vId); adj[d.vId].add(d.endPointId);
+                    adj[d.vId].add(d.a1Id); adj[d.a1Id].add(d.vId);
+                    adj[d.vId].add(d.a2Id); adj[d.a2Id].add(d.vId);
+                }
+            });
+
+            while(queue.length > 0) {
+                let curr = queue.shift();
+                if(adj[curr]) {
+                    adj[curr].forEach(neighbor => {
+                        if(!visited.has(neighbor)) {
+                            visited.add(neighbor);
+                            queue.push(neighbor);
+                        }
+                    });
+                }
+            }
+            return Array.from(visited);
+        }
+
+        // ---------- 智能形狀約束算法 ----------
+        function applyShapeConstraints(movedPointId, originalPointsState) {
+            const group = shapeGroups.find(g => g.pointIds.includes(movedPointId));
+            if (!group) return false;
+
+            const ids = group.pointIds;
+            const origPts = ids.map(id => originalPointsState.find(p => p.id === id));
+            const movedPtNow = points.find(p => p.id === movedPointId);
+            
+            const movedIdx = ids.indexOf(movedPointId);
+            const anchorIdx = (movedIdx + 2) % ids.length; 
+            const anchorId = ids[anchorIdx];
+            const anchorPt = points.find(p => p.id === anchorId);
+
+            const pA_orig = origPts[anchorIdx];
+            const pB_orig = origPts[movedIdx];
+            const pA_now = anchorPt;
+            const pB_now = movedPtNow;
+
+            const dx_orig = pB_orig.x - pA_orig.x;
+            const dy_orig = pB_orig.y - pA_orig.y;
+            const len_orig_sq = dx_orig * dx_orig + dy_orig * dy_orig;
+            if (len_orig_sq < 0.01) return false;
+
+            const dx_now = pB_now.x - pA_now.x;
+            const dy_now = pB_now.y - pA_now.y;
+
+            const s = (dx_now * dx_orig + dy_now * dy_orig) / len_orig_sq;
+            const c = (dy_now * dx_orig - dx_now * dy_orig) / len_orig_sq;
+
+            ids.forEach((id, index) => {
+                if (id === anchorId || id === movedPointId) return;
+                const p_now = points.find(p => p.id === id);
+                const p_orig = origPts[index];
+                if (p_now && p_orig) {
+                    const rx = p_orig.x - pA_orig.x;
+                    const ry = p_orig.y - pA_orig.y;
+                    p_now.x = pA_now.x + rx * s - ry * c;
+                    p_now.y = pA_now.y + rx * c + ry * s;
+                }
+            });
+            return true;
+        }
+        
+        // ---------- 幾何輔助函式 ----------
+        function getNextPointName(){
+            let usedNames = points.map(p => p.name);
+            let candidate = String.fromCharCode(nextPointCode);
+            while(usedNames.includes(candidate)){
+                nextPointCode++;
+                if(nextPointCode > 90) nextPointCode = 65;
+                candidate = String.fromCharCode(nextPointCode);
+                if(usedNames.length >= 26) break;
+            }
+            let base = candidate.charCodeAt(0);
+            nextPointCode = base + 1;
+            if(nextPointCode > 90) nextPointCode = 65;
+            return candidate;
+        }
+        
+        function addPoint(x, y, customName = null){
+            let name = customName !== null ? customName : getNextPointName();
+            if(customName && customName !== ""){
+                let exists = points.some(p => p.name === customName);
+                if(exists){
+                    let counter = 1;
+                    let newName = customName + counter;
+                    while(points.some(p => p.name === newName)){ counter++; newName = customName + counter; }
+                    name = newName;
+                }
+            } else if (customName === null) {
+                while(points.some(p => p.name === name)) name = getNextPointName();
+            }
+            const newId = Date.now() + Math.random() * 10000;
+            const point = { id: newId, x, y, name, labelOffsetX: 10, labelOffsetY: -8 };
+            points.push(point);
+            recordAndRender();
+            return point;
+        }
+        
+        function getPointById(id){ return points.find(p => p.id == id); }
+        
+        function addShapeGroup(type, pointIds){
+            shapeGroups.push({ type, pointIds: [...pointIds] });
+        }
+        
+        // ---------- 建立約束圖形 ----------
+        function generateSquareWithGroup(pA, pB){
+            const dx = pB.x - pA.x, dy = pB.y - pA.y;
+            const pC = addPoint(pB.x - dy, pB.y + dx, null);
+            const pD = addPoint(pA.x - dy, pA.y + dx, null);
+            segments.push({ p1Id: pA.id, p2Id: pB.id, isDashed: false });
+            segments.push({ p1Id: pB.id, p2Id: pC.id, isDashed: false });
+            segments.push({ p1Id: pC.id, p2Id: pD.id, isDashed: false });
+            segments.push({ p1Id: pD.id, p2Id: pA.id, isDashed: false });
+            addShapeGroup('square', [pA.id, pB.id, pC.id, pD.id]);
+            recordAndRender();
+        }
+        
+        function generateRectangleWithGroup(pA, pB){
+            const x1 = pA.x, y1 = pA.y, x2 = pB.x, y2 = pB.y;
+            const pC = addPoint(x2, y1, null);
+            const pD = addPoint(x1, y2, null);
+            segments.push({ p1Id: pA.id, p2Id: pC.id, isDashed: false });
+            segments.push({ p1Id: pC.id, p2Id: pB.id, isDashed: false });
+            segments.push({ p1Id: pB.id, p2Id: pD.id, isDashed: false });
+            segments.push({ p1Id: pA.id, p2Id: pD.id, isDashed: false });
+            addShapeGroup('rectangle', [pA.id, pC.id, pB.id, pD.id]);
+            recordAndRender();
+        }
+        
+        function generateEquilateralWithGroup(pA, pB){
+            const dx = pB.x - pA.x, dy = pB.y - pA.y;
+            const len = Math.hypot(dx, dy);
+            if(len < 0.1) return;
+            const angle = Math.atan2(dy, dx);
+            const newAngle = angle + Math.PI/3;
+            const x3 = pA.x + len * Math.cos(newAngle);
+            const y3 = pA.y + len * Math.sin(newAngle);
+            const pC = addPoint(x3, y3, null);
+            segments.push({ p1Id: pA.id, p2Id: pB.id, isDashed: false });
+            segments.push({ p1Id: pB.id, p2Id: pC.id, isDashed: false });
+            segments.push({ p1Id: pC.id, p2Id: pA.id, isDashed: false });
+            addShapeGroup('equilateral', [pA.id, pB.id, pC.id]);
+            recordAndRender();
+        }
+        
+        function generateIsosceles(pA, pB){
+            const mx = (pA.x + pB.x)/2, my = (pA.y + pB.y)/2;
+            const dx = pB.x - pA.x, dy = pB.y - pA.y;
+            const len = Math.hypot(dx, dy);
+            if(len < 0.1) return;
+            const perpX = -dy/len, perpY = dx/len;
+            const height = len * 0.9;
+            const vx = mx + perpX * height, vy = my + perpY * height;
+            const pC = addPoint(vx, vy, null);
+            segments.push({ p1Id: pA.id, p2Id: pB.id, isDashed: false });
+            segments.push({ p1Id: pB.id, p2Id: pC.id, isDashed: false });
+            segments.push({ p1Id: pC.id, p2Id: pA.id, isDashed: false });
+            addShapeGroup('isosceles', [pA.id, pB.id, pC.id]); 
+            recordAndRender();
+        }
+        
+        // ---------- 角標記與直角檢測 ----------
+        function addAngle(vertexId, arm1Id, arm2Id){
+            if(vertexId === arm1Id || vertexId === arm2Id || arm1Id === arm2Id) return;
+            if(angles.some(a => (a.vertexId === vertexId && ((a.arm1Id === arm1Id && a.arm2Id === arm2Id) || (a.arm1Id === arm2Id && a.arm2Id === arm1Id))))) return;
+            let name = `${nextAngleIndex++}`;
+            angles.push({ id: Date.now()+Math.random(), vertexId, arm1Id, arm2Id, name, radius: 45, labelOffsetX: 0, labelOffsetY: 0 });
+            recordAndRender();
+        }
+        
+        function renameAngle(angleId, newName){
+            let angle = angles.find(a => a.id === angleId);
+            if(angle){ angle.name = newName.trim() || angle.name; recordAndRender(); }
+        }
+        
+        function renamePoint(pointId, newName){
+            let point = points.find(p => p.id === pointId);
+            if(point){
+                let finalName = newName.trim().toUpperCase();
+                if(finalName.length > 0 && points.some(p => p.name === finalName && p.id !== pointId)){ 
+                    alert("名字已存在"); 
+                    return false; 
+                }
+                point.name = finalName; 
+                recordAndRender();
+                return true;
+            }
+            return false;
+        }
+        
+        function drawRightAngleMark(vertex, arm1, arm2) {
+            const vx = vertex.x, vy = vertex.y;
+            const vec1 = { x: arm1.x - vx, y: arm1.y - vy };
+            const vec2 = { x: arm2.x - vx, y: arm2.y - vy };
+            const len1 = Math.hypot(vec1.x, vec1.y);
+            const len2 = Math.hypot(vec2.x, vec2.y);
+            if(len1 < 0.01 || len2 < 0.01) return;
+            
+            const u1 = { x: vec1.x/len1, y: vec1.y/len1 };
+            const u2 = { x: vec2.x/len2, y: vec2.y/len2 };
+            const size = 18;
+            
+            const p1 = { x: vx + u1.x * size, y: vy + u1.y * size };
+            const p2 = { x: vx + u2.x * size, y: vy + u2.y * size };
+            const corner = { x: p1.x + u2.x * size, y: p1.y + u2.y * size };
+            
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(corner.x, corner.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineWidth = baseLineWidth; // 使用自定義線條粗細
+            ctx.strokeStyle = "#dc2626";
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function autoDetectAndDrawRightAngles() {
+            if (points.length < 3) return;
+            
+            const adj = {};
+            points.forEach(p => adj[p.id] = new Set());
+            segments.forEach(seg => { if(adj[seg.p1Id]) adj[seg.p1Id].add(seg.p2Id); if(adj[seg.p2Id]) adj[seg.p2Id].add(seg.p1Id); });
+            lines.forEach(l => { if(adj[l.p1Id]) adj[l.p1Id].add(l.p2Id); if(adj[l.p2Id]) adj[l.p2Id].add(l.p1Id); });
+            rays.forEach(r => { if(adj[r.originId]) adj[r.originId].add(r.dirId); if(adj[r.dirId]) adj[r.dirId].add(r.originId); });
+
+            const renderedKeys = new Set();
+            points.forEach(v => {
+                const neighbors = Array.from(adj[v.id] || []);
+                if (neighbors.length < 2) return;
+                
+                for (let i = 0; i < neighbors.length; i++) {
+                    for (let j = i + 1; j < neighbors.length; j++) {
+                        const p1 = getPointById(neighbors[i]);
+                        const p2 = getPointById(neighbors[j]);
+                        if (!p1 || !p2) continue;
+                        
+                        const vec1 = { x: p1.x - v.x, y: p1.y - v.y };
+                        const vec2 = { x: p2.x - v.x, y: p2.y - v.y };
+                        const dot = vec1.x * vec2.x + vec1.y * vec2.y;
+                        const len1 = Math.hypot(vec1.x, vec1.y);
+                        const len2 = Math.hypot(vec2.x, vec2.y);
+                        if (len1 < 0.1 || len2 < 0.1) continue;
+                        
+                        const cosTheta = dot / (len1 * len2);
+                        const angleRad = Math.acos(Math.min(1, Math.max(-1, cosTheta)));
+                        const angleDeg = angleRad * 180 / Math.PI;
+                        
+                        if (Math.abs(angleDeg - 90) < 2) {
+                            const key = [v.id, Math.min(p1.id, p2.id), Math.max(p1.id, p2.id)].join('-');
+                            if (!renderedKeys.has(key)) {
+                                drawRightAngleMark(v, p1, p2);
+                                renderedKeys.add(key);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function drawAngleArc(angleObj){
+            const v = getPointById(angleObj.vertexId);
+            const a1 = getPointById(angleObj.arm1Id);
+            const a2 = getPointById(angleObj.arm2Id);
+            if(!v || !a1 || !a2) return;
+            const vec1 = { x: a1.x - v.x, y: a1.y - v.y };
+            const vec2 = { x: a2.x - v.x, y: a2.y - v.y };
+            let angle1 = Math.atan2(vec1.y, vec1.x);
+            let angle2 = Math.atan2(vec2.y, vec2.x);
+            let sweep = angle2 - angle1;
+            if(sweep > Math.PI) sweep -= 2*Math.PI;
+            if(sweep < -Math.PI) sweep += 2*Math.PI;
+            const deg = Math.abs(sweep * 180 / Math.PI);
+            
+            if(Math.abs(deg - 90) < 2){
+                drawRightAngleMark(v, a1, a2);
+                return;
+            }
+            let startAngle = angle1, endAngle = angle2, anticlockwise = sweep < 0;
+            if(Math.abs(sweep) > Math.PI){
+                startAngle = angle2; endAngle = angle1;
+                anticlockwise = !anticlockwise;
+            }
+            const radius = angleObj.radius || 45;
+            ctx.beginPath();
+            ctx.arc(v.x, v.y, radius, startAngle, endAngle, anticlockwise);
+            ctx.lineWidth = baseLineWidth * 0.7; // 按比例調整角度弧線粗細
+            ctx.strokeStyle = "#d97706";
+            ctx.stroke();
+            let midAngle = startAngle + (anticlockwise ? -1 : 1) * Math.abs(sweep)/2;
+            let baseX = v.x + (radius+8)*Math.cos(midAngle);
+            let baseY = v.y + (radius+5)*Math.sin(midAngle);
+            let textX = baseX + (angleObj.labelOffsetX||0);
+            let textY = baseY + (angleObj.labelOffsetY||0);
+            ctx.font = `bold ${fontSize}px 'Segoe UI'`;
+            ctx.fillStyle = "#b45309";
+            ctx.fillText(angleObj.name, textX-6, textY-4);
+            angleObj._lastDrawX = textX;
+            angleObj._lastDrawY = textY;
+        }
+        
+        // ---------- 畫布核心渲染流程 ----------
+        function drawGrid(){
+            if(!gridVisible) return;
+            ctx.save();
+            ctx.strokeStyle = "#dee4ed";
+            ctx.lineWidth = 0.6;
+            for(let i=0; i<canvas.width; i+=30){
+                ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,canvas.height); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(canvas.width,i); ctx.stroke();
+            }
+            ctx.restore();
+        }
+        
+        function renderCanvas(){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            drawGrid();
+            
+            circles.forEach(c => {
+                let p1 = getPointById(c.centerId);
+                let p2 = getPointById(c.edgePointId);
+                if(p1 && p2) {
+                    let r = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+                    ctx.beginPath();
+                    ctx.arc(p1.x, p1.y, r, 0, 2 * Math.PI);
+                    ctx.strokeStyle = "#475569";
+                    ctx.lineWidth = baseLineWidth; // 套用自定義粗細
+                    ctx.stroke();
+                }
+            });
+
+            lines.forEach(l=>{ let p1=getPointById(l.p1Id),p2=getPointById(l.p2Id); if(p1&&p2) drawLine(p1,p2); });
+            segments.forEach(s=>{ let p1=getPointById(s.p1Id),p2=getPointById(s.p2Id); if(p1&&p2) drawSegment(p1,p2,s.isDashed); });
+            rays.forEach(r=>{ let o=getPointById(r.originId),d=getPointById(r.dirId); if(o&&d) drawRay(o,d); });
+            
+            // 直角工具即時動態虛線
+            if(currentTool==='rightAngle' && tempPoints.length===2) {
+                let p1 = getPointById(tempPoints[0]);
+                let p2 = getPointById(tempPoints[1]);
+                if(p1 && p2) {
+                    let vx = p2.x - p1.x;
+                    let vy = p2.y - p1.y;
+                    let len = Math.hypot(vx, vy);
+                    if(len > 0.01) {
+                        let nx = -vy / len;
+                        let ny = vx / len;
+                        let dx = rightAngleMousePos.x - p2.x;
+                        let dy = rightAngleMousePos.y - p2.y;
+                        let proj = dx * nx + dy * ny;
+                        let lockedX = p2.x + nx * proj;
+                        let lockedY = p2.y + ny * proj;
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.moveTo(p2.x, p2.y);
+                        ctx.lineTo(lockedX, lockedY);
+                        ctx.strokeStyle = "#ea580c";
+                        ctx.setLineDash([4, 4]);
+                        ctx.lineWidth = baseLineWidth * 0.6;
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                }
+            }
+
+            autoDetectAndDrawRightAngles();
+            angles.forEach(a=>drawAngleArc(a));
+            
+            if(customTexts) {
+                customTexts.forEach(t => {
+                    ctx.save();
+                    ctx.font = `bold ${fontSize}px 'Segoe UI'`;
+                    ctx.fillStyle = "#1e293b";
+                    let lx = t.x + (t.labelOffsetX || 0);
+                    let ly = t.y + (t.labelOffsetY || 0);
+                    ctx.fillText(t.text, lx, ly);
+                    t._lastLabelX = lx;
+                    t._lastLabelY = ly;
+                    ctx.restore();
+                });
+            }
+
+            points.forEach(p=>{
+                let isDerived = dependencies.some(d => d.pointId === p.id || d.endPointId === p.id);
+                ctx.beginPath(); ctx.arc(p.x,p.y,6 + baseLineWidth * 0.2,0,2*Math.PI); // 點的大小稍微跟隨線粗細變化
+                ctx.fillStyle = isDerived ? "#10b981" : "#3b82f6"; 
+                ctx.fill();
+                ctx.strokeStyle="white"; ctx.lineWidth=2; ctx.stroke();
+                
+                if(highlightedPointId===p.id){
+                    ctx.beginPath(); ctx.arc(p.x,p.y,12 + baseLineWidth * 0.2,0,2*Math.PI);
+                    ctx.strokeStyle="#f97316"; ctx.lineWidth=3; ctx.stroke();
+                }
+                
+                let lx=p.x+(p.labelOffsetX||10), ly=p.y+(p.labelOffsetY||-8);
+                ctx.font=`bold ${fontSize}px 'Segoe UI'`;
+                ctx.fillStyle="#1e293b"; 
+                if(p.name) ctx.fillText(p.name,lx,ly);
+                p._lastLabelX=lx; p._lastLabelY=ly;
+            });
+        }
+        
+        function drawLine(p1,p2){ let ends=extendLine(p1,p2); if(ends){ ctx.beginPath(); ctx.moveTo(ends[0].x,ends[0].y); ctx.lineTo(ends[1].x,ends[1].y); ctx.strokeStyle="#2c5f8a"; ctx.lineWidth=baseLineWidth; ctx.stroke(); } }
+        
+        function drawSegment(p1,p2, isDashed=false){ 
+            ctx.save();
+            ctx.beginPath(); 
+            ctx.moveTo(p1.x,p1.y); 
+            ctx.lineTo(p2.x,p2.y); 
+            ctx.strokeStyle="#2b6e4f"; 
+            ctx.lineWidth=baseLineWidth; 
+            if(isDashed) {
+                ctx.setLineDash([8, 8]);
+                ctx.strokeStyle="#64748b"; 
+            }
+            ctx.stroke(); 
+            ctx.restore();
+        }
+
+        function drawRay(origin,dir){
+            let dx=dir.x-origin.x, dy=dir.y-origin.y;
+            if(dx===0 && dy===0) return;
+            let bounds={left:0,right:canvas.width,top:0,bottom:canvas.height};
+            let candidates=[];
+            if(dx!==0){ let tL=(bounds.left-origin.x)/dx; if(tL>0) candidates.push(tL); let tR=(bounds.right-origin.x)/dx; if(tR>0) candidates.push(tR); }
+            if(dy!==0){ let tT=(bounds.top-origin.y)/dy; if(tT>0) candidates.push(tT); let tB=(bounds.bottom-origin.y)/dy; if(tB>0) candidates.push(tB); }
+            let t=candidates.length?Math.min(...candidates):10000;
+            if(isFinite(t) && t>0){
+                let endX=origin.x+dx*t, endY=origin.y+dy*t;
+                ctx.beginPath(); ctx.moveTo(origin.x,origin.y); ctx.lineTo(endX,endY); ctx.strokeStyle="#c2410c"; ctx.lineWidth=baseLineWidth; ctx.stroke();
+                let angle=Math.atan2(dy,dx), as=8 + baseLineWidth * 0.5; // 箭頭跟隨粗細
+                let ax=endX-as*Math.cos(angle), ay=endY-as*Math.sin(angle);
+                ctx.fillStyle="#c2410c";
+                ctx.beginPath(); ctx.moveTo(endX,endY); ctx.lineTo(ax-as*0.4*Math.sin(angle),ay+as*0.4*Math.cos(angle)); ctx.lineTo(ax+as*0.4*Math.sin(angle),ay-as*0.4*Math.cos(angle)); ctx.fill();
+            }
+        }
+        
+        function extendLine(p1,p2){
+            let x1=p1.x,y1=p1.y,x2=p2.x,y2=p2.y,dx=x2-x1,dy=y2-y1;
+            const b={left:0,right:canvas.width,top:0,bottom:canvas.height};
+            let tL=dx!==0?(b.left-x1)/dx:-Infinity, tR=dx!==0?(b.right-x1)/dx:-Infinity;
+            let tT=dy!==0?(b.top-y1)/dy:-Infinity, tB=dy!==0?(b.bottom-y1)/dy:-Infinity;
+            let ts=[tL,tR,tT,tB].filter(t=>isFinite(t));
+            let pts=[];
+            ts.forEach(t=>{ let px=x1+t*dx,py=y1+t*dy; if(px>=b.left-0.01 && px<=b.right+0.01 && py>=b.top-0.01 && py<=b.bottom+0.01) pts.push({x:Math.min(b.right,Math.max(b.left,px)),y:Math.min(b.bottom,Math.max(b.top,py))}); });
+            if(pts.length>=2) return [pts[0],pts[1]];
+            return null;
+        }
+        
+        // ---------- 鼠標/觸控事件處理 ----------
+        function findPointAt(px,py){ for(let p of points) if(Math.hypot(p.x-px, p.y-py)<14) return p; return null; } // 擴大判定適應線條加粗
+        function findTextAt(mx,my){
+            for(let p of points){
+                let lx=p._lastLabelX, ly=p._lastLabelY;
+                if(lx!==undefined && ly!==undefined && p.name){
+                    ctx.font=`bold ${fontSize}px 'Segoe UI'`;
+                    let w=ctx.measureText(p.name).width;
+                    if(mx>=lx-5 && mx<=lx+w+5 && my>=ly-fontSize && my<=ly+5) return {type:'point', id:p.id};
+                }
+            }
+            for(let a of angles){
+                let lx=a._lastDrawX, ly=a._lastDrawY;
+                if(lx!==undefined && ly!==undefined){
+                    ctx.font=`bold ${fontSize}px 'Segoe UI'`;
+                    let w=ctx.measureText(a.name).width;
+                    if(mx>=lx-8 && mx<=lx+w+8 && my>=ly-fontSize && my<=ly+6) return {type:'angle', id:a.id};
+                }
+            }
+            if(customTexts) {
+                for(let t of customTexts) {
+                    let lx = t._lastLabelX, ly = t._lastLabelY;
+                    if(lx!==undefined && ly!==undefined) {
+                        ctx.font = `bold ${fontSize}px 'Segoe UI'`;
+                        let w = ctx.measureText(t.text).width;
+                        if(mx>=lx-5 && mx<=lx+w+5 && my>=ly-fontSize && my<=ly+5) return {type:'customText', id:t.id};
+                    }
+                }
+            }
+            return null;
+        }
+
+        function onMouseDown(e){
+            const rect=canvas.getBoundingClientRect();
+            // 由於縮放（裁切）會使 boundingClientRect 的尺寸改變，需要使用 canvas 實際屬性計算座標
+            let mx=(e.clientX-rect.left)*canvas.width/rect.width;
+            let my=(e.clientY-rect.top)*canvas.height/rect.height;
+            mx=Math.min(canvas.width,Math.max(0,mx)); my=Math.min(canvas.height,Math.max(0,my));
+            
+            hasDragged = false;
+            dragStartMouse = {x: mx, y: my};
+            
+            if(currentTool=== 'delete') return; 
+            
+            if(currentTool=== 'moveText'){
+                let hit=findTextAt(mx,my);
+                if(hit){
+                    isDraggingText=true; draggedTextType=hit.type; draggedTargetId=hit.id;
+                    if(hit.type==='point'){ let p=points.find(pt=>pt.id===hit.id); if(p){ originalOffset={x:p.labelOffsetX||0,y:p.labelOffsetY||0}; dragTextStart={x:mx,y:my}; } }
+                    else if(hit.type==='angle'){ let a=angles.find(an=>an.id===hit.id); if(a){ originalOffset={x:a.labelOffsetX||0,y:a.labelOffsetY||0}; dragTextStart={x:mx,y:my}; } }
+                    else if(hit.type==='customText'){ let t=customTexts.find(txt=>txt.id===hit.id); if(t){ originalOffset={x:t.labelOffsetX||0,y:t.labelOffsetY||0}; dragTextStart={x:mx,y:my}; } }
+                    e.preventDefault(); canvas.style.cursor='grabbing';
+                }
+                return;
+            }
+            
+            let point=findPointAt(mx,my);
+            if(point){
+                let isFullyLocked = dependencies.some(d => d.type === 'midpoint' && d.pointId === point.id);
+                if (isFullyLocked && currentTool !== 'translate') {
+                    statusDiv.innerText="中點受約束，不可直接拖動";
+                    return; 
+                }
+
+                isDragging=true; 
+                selectedPointId=point.id;
+                originalPointsState = JSON.parse(JSON.stringify(points));
+                
+                if(currentTool === 'translate') {
+                    connectedPointsToDrag = getConnectedPoints(point.id);
+                }
+                e.preventDefault(); canvas.style.cursor='grabbing';
+            }
+        }
+        
+        function onMouseMove(e){
+            const rect=canvas.getBoundingClientRect();
+            let mx=(e.clientX-rect.left)*canvas.width/rect.width;
+            let my=(e.clientY-rect.top)*canvas.height/rect.height;
+
+            rightAngleMousePos = { x: mx, y: my };
+            if(currentTool==='rightAngle' && tempPoints.length===2) {
+                renderCanvas();
+            }
+
+            if(isDraggingText && currentTool==='moveText'){
+                let deltaX=mx-dragTextStart.x, deltaY=my-dragTextStart.y;
+                if(draggedTextType==='point'){
+                    let p=points.find(pt=>pt.id===draggedTargetId);
+                    if(p){ p.labelOffsetX=originalOffset.x+deltaX; p.labelOffsetY=originalOffset.y+deltaY; renderCanvas(); }
+                }else if(draggedTextType==='angle'){
+                    let a=angles.find(an=>an.id===draggedTargetId);
+                    if(a){ a.labelOffsetX=originalOffset.x+deltaX; a.labelOffsetY=originalOffset.y+deltaY; renderCanvas(); }
+                }else if(draggedTextType==='customText'){
+                    let t=customTexts.find(txt=>txt.id===draggedTargetId);
+                    if(t){ t.labelOffsetX=originalOffset.x+deltaX; t.labelOffsetY=originalOffset.y+deltaY; renderCanvas(); }
+                }
+                return;
+            }
+            
+            if(isDragging && selectedPointId){
+                if(Math.hypot(mx - dragStartMouse.x, my - dragStartMouse.y) > 3) {
+                    hasDragged = true; 
+                }
+                
+                if(hasDragged) {
+                    if(currentTool === 'translate') {
+                        let dx = mx - dragStartMouse.x;
+                        let dy = my - dragStartMouse.y;
+                        connectedPointsToDrag.forEach(id => {
+                            let pNow = points.find(p => p.id === id);
+                            let pOrig = originalPointsState.find(p => p.id === id);
+                            if(pNow && pOrig) {
+                                pNow.x = pOrig.x + dx;
+                                pNow.y = pOrig.y + dy;
+                            }
+                        });
+                    } else {
+                        let point = getPointById(selectedPointId);
+                        let pOrig = originalPointsState.find(p => p.id === selectedPointId);
+                        if(point && pOrig) {
+                            let newX = mx;
+                            let newY = my;
+                            point.x = Math.min(canvas.width-4, Math.max(4, newX));
+                            point.y = Math.min(canvas.height-4, Math.max(4, newY));
+                            applyShapeConstraints(selectedPointId, originalPointsState);
+                        }
+                    }
+                    updateDependencies(); 
+                    renderCanvas();
+                }
+            }
+        }
+        
+        function onMouseUp(e){
+            if(isDraggingText){
+                isDraggingText=false; draggedTextType=null; draggedTargetId=null;
+                canvas.style.cursor='crosshair';
+                saveState();  
+                updateAngleList(); updatePointList();
+                return;
+            }
+            if(isDragging){
+                isDragging=false; 
+                canvas.style.cursor='crosshair';
+                if(hasDragged){
+                    originalPointsState=null;
+                    saveState(); 
+                    renderCanvas(); updatePointList(); updateAngleList();
+                }
+                selectedPointId=null;
+            }
+        }
+
+        function handleCanvasClick(e){
+            if(hasDragged) return;
+            if(isDragging||isDraggingText) return;
+
+            const rect=canvas.getBoundingClientRect();
+            let mx=(e.clientX-rect.left)*canvas.width/rect.width;
+            let my=(e.clientY-rect.top)*canvas.height/rect.height;
+            mx=Math.min(canvas.width,Math.max(0,mx)); my=Math.min(canvas.height,Math.max(0,my));
+            let point=findPointAt(mx,my);
+            
+            if(currentTool === 'delete') {
+                if(point) {
+                    deletePoint(point.id);
+                    statusDiv.innerText = `已刪除點及其相關元素`;
+                }
+                return;
+            }
+
+            if(point){ highlightedPointId=point.id; statusDiv.innerText=`✨ 選中點 ${point.name || '隱藏點'}`; renderCanvas(); setTimeout(()=>{ if(highlightedPointId===point.id){ highlightedPointId=null; renderCanvas(); }},600); }
+            else if(highlightedPointId){ highlightedPointId=null; renderCanvas(); }
+            
+            if(currentTool==='textInput'){
+                let txt = prompt("請輸入要插入的文字：");
+                if(txt && txt.trim() !== "") {
+                    customTexts.push({
+                        id: Date.now() + Math.random(),
+                        x: mx,
+                        y: my,
+                        text: txt.trim(),
+                        labelOffsetX: 0,
+                        labelOffsetY: 0
+                    });
+                    recordAndRender();
+                }
+                return;
+            }
+
+            if(currentTool==='rightAngle') {
+                let p = point || addPoint(mx,my);
+                tempPoints.push(p.id);
+                
+                if(tempPoints.length === 1) {
+                    statusDiv.innerText = `直角: 請點擊【直角頂點】`;
+                } else if(tempPoints.length === 2) {
+                    statusDiv.innerText = `直角: 請點擊第三個點 (自動約束直角)`;
+                } else if(tempPoints.length === 3) {
+                    let p1 = getPointById(tempPoints[0]); 
+                    let p2 = getPointById(tempPoints[1]); 
+                    let p3 = getPointById(tempPoints[2]); 
+                    
+                    if(p1 && p2 && p3) {
+                        let vx = p2.x - p1.x;
+                        let vy = p2.y - p1.y;
+                        let len = Math.hypot(vx, vy);
+                        
+                        if(len > 0.01) {
+                            let nx = -vy / len;
+                            let ny = vx / len;
+                            let dx = p3.x - p2.x;
+                            let dy = p3.y - p2.y;
+                            let proj = dx * nx + dy * ny;
+                            
+                            p3.x = p2.x + nx * proj;
+                            p3.y = p2.y + ny * proj;
+                            
+                            segments.push({ p1Id: p1.id, p2Id: p2.id, isDashed: false });
+                            segments.push({ p1Id: p2.id, p2Id: p3.id, isDashed: false });
+                        }
+                    }
+                    tempPoints = [];
+                    recordAndRender();
+                    statusDiv.innerText = `工具: 直角(L形)`;
+                }
+                return;
+            }
+
+            if(currentTool==='point'){ addPoint(mx,my); return; }
+            
+            if(['line','segment','ray','dashed'].includes(currentTool)){
+                let p=point||addPoint(mx,my);
+                tempPoints.push(p.id);
+                if(tempPoints.length===2){
+                    let [id1,id2]=tempPoints;
+                    if(currentTool==='line') lines.push({p1Id:id1,p2Id:id2});
+                    else if(currentTool==='segment') {
+                        let existing = segments.find(s => (s.p1Id === id1 && s.p2Id === id2) || (s.p1Id === id2 && s.p2Id === id1));
+                        if (existing) existing.isDashed = false;
+                        else segments.push({p1Id:id1,p2Id:id2, isDashed: false});
+                    }
+                    else if(currentTool==='dashed') {
+                        let existing = segments.find(s => (s.p1Id === id1 && s.p2Id === id2) || (s.p1Id === id2 && s.p2Id === id1));
+                        if (existing) existing.isDashed = true;
+                        else segments.push({p1Id:id1,p2Id:id2, isDashed: true});
+                    }
+                    else rays.push({id: Date.now()+Math.random(), originId:id1, dirId:id2});
+                    recordAndRender(); tempPoints=[];
+                }else statusDiv.innerText=`請點擊第二個點`;
+                return;
+            }
+            
+            if(currentTool==='circle'){
+                let p=point||addPoint(mx,my);
+                tempPoints.push(p.id);
+                if(tempPoints.length===1) statusDiv.innerText=`圓形: 請點擊【圓周上的點】`;
+                else if(tempPoints.length===2){
+                    circles.push({id: Date.now()+Math.random(), centerId: tempPoints[0], edgePointId: tempPoints[1]});
+                    recordAndRender(); tempPoints=[];
+                    statusDiv.innerText=`工具: 圓形`;
+                }
+                return;
+            }
+
+            if(currentTool==='midpoint'){
+                let p = point;
+                if(!p) return;
+                tempPoints.push(p.id);
+                if(tempPoints.length===1) statusDiv.innerText=`中點: 請點擊【第二個點】`;
+                else if(tempPoints.length===2){
+                    let p1 = getPointById(tempPoints[0]);
+                    let p2 = getPointById(tempPoints[1]);
+                    if(p1 && p2){
+                        let m = addPoint((p1.x+p2.x)/2, (p1.y+p2.y)/2, null);
+                        dependencies.push({ type: 'midpoint', pointId: m.id, p1Id: p1.id, p2Id: p2.id });
+                        updateDependencies();
+                        recordAndRender();
+                    }
+                    tempPoints=[];
+                    statusDiv.innerText=`工具: 中點`;
+                }
+                return;
+            }
+            if(currentTool==='bisector'){
+                let p = point;
+                if(!p) return;
+                tempPoints.push(p.id);
+                if(tempPoints.length===1) statusDiv.innerText=`角平分線: 請點擊【頂點】`;
+                else if(tempPoints.length===2) statusDiv.innerText=`角平分線: 請點擊【另一邊上的點】`;
+                else if(tempPoints.length===3){
+                    let a1 = getPointById(tempPoints[0]); 
+                    let v = getPointById(tempPoints[1]);  
+                    let a2 = getPointById(tempPoints[2]); 
+                    if(v && a1 && a2){
+                        let dirPoint = addPoint(v.x, v.y, ""); 
+                        segments.push({ p1Id: v.id, p2Id: dirPoint.id, isDashed: false });
+                        dependencies.push({ type: 'bisector', endPointId: dirPoint.id, vId: v.id, a1Id: a1.id, a2Id: a2.id, initialDist: 100 });
+                        updateDependencies();
+                        recordAndRender();
+                    }
+                    tempPoints=[];
+                    statusDiv.innerText=`工具: 角平分線`;
+                }
+                return;
+            }
+            if(currentTool==='angle'){
+                let p=point;
+                if(!p) return;
+                tempPoints.push(p.id);
+                if(tempPoints.length===1) statusDiv.innerText=`角標記: 請點擊【頂點】`;
+                else if(tempPoints.length===2) statusDiv.innerText=`角標記: 請點擊【另一邊上的點】`;
+                else if(tempPoints.length===3){
+                    addAngle(tempPoints[1], tempPoints[0], tempPoints[2]);
+                    tempPoints=[];
+                    statusDiv.innerText=`工具: 自定義角標記`;
+                }
+                return;
+            }
+            if(['square','rectangle','equilateral','isosceles'].includes(currentTool)){
+                let p=point||addPoint(mx,my);
+                tempPoints.push(p.id);
+                if(tempPoints.length===2){
+                    let p1=getPointById(tempPoints[0]), p2=getPointById(tempPoints[1]);
+                    if(p1&&p2){
+                        if(currentTool==='square') generateSquareWithGroup(p1,p2);
+                        else if(currentTool==='rectangle') generateRectangleWithGroup(p1,p2);
+                        else if(currentTool==='equilateral') generateEquilateralWithGroup(p1,p2);
+                        else if(currentTool==='isosceles') generateIsosceles(p1,p2);
+                    }
+                    tempPoints=[];
+                }else statusDiv.innerText=`請點擊第二個點`;
+                return;
+            }
+        }
+        
+        function onDoubleClick(e){
+            const rect=canvas.getBoundingClientRect();
+            let mx=(e.clientX-rect.left)*canvas.width/rect.width;
+            let my=(e.clientY-rect.top)*canvas.height/rect.height;
+            let p=findPointAt(mx,my);
+            if(p && currentTool !== 'delete'){
+                let newName=prompt("新名稱(大寫字母，留空則隱藏)", p.name);
+                if(newName !== null) renamePoint(p.id, newName.toUpperCase());
+            }
+        }
+        
+        function updateAngleList(){
+            if(angles.length===0){ angleListPanel.innerHTML='<div style="color:#aaa;">暫無角度</div>'; return; }
+            let html='';
+            angles.forEach(ang=>{
+                html+=`<div class="angle-item"><span class="angle-name" data-id="${ang.id}">${ang.name}</span><button class="edit-btn" data-id="${ang.id}">改名</button></div>`;
+            });
+            angleListPanel.innerHTML=html;
+            document.querySelectorAll('#angleListPanel .angle-name, #angleListPanel .edit-btn').forEach(el=>{
+                el.addEventListener('click',(e)=>{ 
+                    let id=parseFloat(el.dataset.id); 
+                    let a=angles.find(an=>an.id===id); 
+                    if(a){ 
+                        let nn=prompt("新角度名",a.name); 
+                        if(nn) renameAngle(a.id,nn); 
+                    } 
+                    e.stopPropagation(); 
+                });
+            });
+        }
+
+        function updatePointList(){
+            if(points.length===0) {
+                pointListInfo.innerHTML='<div style="color:#aaa;">無點</div>';
+                return;
+            }
+            let html='';
+            points.forEach(p => {
+                let dispName = p.name ? p.name : '(隱藏)';
+                html+=`<div class="angle-item">
+                        <span class="angle-name point-name" data-id="${p.id}">${dispName} (${Math.round(p.x)},${Math.round(p.y)})</span>
+                        <button class="edit-btn point-edit" data-id="${p.id}">改名</button>
+                      </div>`;
+            });
+            pointListInfo.innerHTML = html;
+            
+            document.querySelectorAll('.point-name, .point-edit').forEach(el=>{
+                el.addEventListener('click',(e)=>{ 
+                    let id=parseFloat(el.dataset.id); 
+                    let p=points.find(pt=>pt.id===id); 
+                    if(p){ 
+                        let nn=prompt("新名稱(大寫字母，留空則隱藏)", p.name); 
+                        if(nn !== null) renamePoint(p.id, nn.toUpperCase()); 
+                    } 
+                    e.stopPropagation(); 
+                });
+            });
+        }
+
+        function clearAll(){
+            points=[]; lines=[]; segments=[]; rays=[]; angles=[]; circles=[]; shapeGroups=[]; dependencies=[]; customTexts=[];
+            tempPoints=[]; selectedPointId=null; nextPointCode=65; nextAngleIndex=1;
+            saveState(); renderCanvas(); updateAngleList(); updatePointList();
+            statusDiv.innerText="已清空";
+        }
+        function toggleGrid(){ gridVisible=!gridVisible; toggleGridBtn.textContent=gridVisible?"🔲 隱藏網格":"⬚ 顯示網格"; renderCanvas(); }
+        
+        // 修改下載功能：按照當前裁切的外框尺寸進行完美精確導出
+        function downloadPNG(){ 
+            let targetWidth = parseInt(canvasWrapper.style.width);
+            let targetHeight = parseInt(canvasWrapper.style.height);
+            
+            // 建立一塊臨時畫布用來導出實際大小
+            let tempCanvas = document.createElement('canvas');
+            tempCanvas.width = targetWidth;
+            tempCanvas.height = targetHeight;
+            let tempCtx = tempCanvas.getContext('2d');
+            
+            // 將原畫布內容按1:1不拉伸裁切到臨時畫布上
+            tempCtx.drawImage(canvas, 0, 0, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
+            
+            let link=document.createElement('a'); 
+            link.download='geometry.png'; 
+            link.href=tempCanvas.toDataURL(); 
+            link.click(); 
+            statusDiv.innerText="下載完成"; 
+            setTimeout(()=>updateStatusText(),1000); 
+        }
+        
+        function setFontSize(val){ fontSize=val; fontSizeSpan.innerText=val; renderCanvas(); }
+        function setLineWidth(val){ baseLineWidth=val; lineWidthSpan.innerText=val; renderCanvas(); }
+        
+        // 畫布外框裁切控制邏輯（不改變 Canvas 本身大小，僅做外框 Crop）
+        function setCanvasCropSize(size) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            if(size === 'large') {
+                canvasWrapper.style.width = "800px";
+                canvasWrapper.style.height = "600px";
+                sizeLargeBtn.classList.add('active');
+            } else if(size === 'medium') {
+                canvasWrapper.style.width = "400px";
+                canvasWrapper.style.height = "300px";
+                sizeMediumBtn.classList.add('active');
+            } else if(size === 'small') {
+                canvasWrapper.style.width = "200px";
+                canvasWrapper.style.height = "150px";
+                sizeSmallBtn.classList.add('active');
+            }
+            statusDiv.innerText = `畫布顯示區域已切換`;
+            setTimeout(()=>updateStatusText(),1000);
+        }
+
+        function setTool(tool){
+            if(currentTool === tool) {
+                currentTool = '';
+            } else {
+                currentTool = tool;
+            }
+            tempPoints = [];
+            
+            document.querySelectorAll('.tool-btn').forEach(btn=>btn.classList.remove('active', 'delete-active'));
+            
+            if(!currentTool) {
+                updateStatusText();
+                renderCanvas();
+                return;
+            }
+            
+            if(currentTool==='translate') translateBtn.classList.add('active');
+            if(currentTool==='moveText') moveTextBtn.classList.add('active');
+            if(currentTool==='delete') deleteToolBtn.classList.add('delete-active');
+            if(currentTool==='textInput') textInputToolBtn.classList.add('active');
+            if(currentTool==='rightAngle') rightAngleToolBtn.classList.add('active');
+            if(currentTool==='point') pointBtn.classList.add('active');
+            if(currentTool==='line') lineBtn.classList.add('active');
+            if(currentTool==='segment') segmentBtn.classList.add('active');
+            if(currentTool==='ray') rayBtn.classList.add('active');
+            if(currentTool==='dashed') dashedBtn.classList.add('active');
+            if(currentTool==='circle') circleBtn.classList.add('active');
+            if(currentTool==='midpoint') midpointBtn.classList.add('active');
+            if(currentTool==='bisector') bisectorBtn.classList.add('active');
+            if(currentTool==='angle') angleBtn.classList.add('active');
+            if(currentTool==='square') squareBtn.classList.add('active');
+            if(currentTool==='rectangle') rectangleBtn.classList.add('active');
+            if(currentTool==='equilateral') equilateralBtn.classList.add('active');
+            if(currentTool==='isosceles') isoscelesBtn.classList.add('active');
+            updateStatusText();
+            renderCanvas();
+        }
+        
+        function updateStatusText(){
+            let name=toolName(currentTool);
+            statusDiv.innerText= currentTool ? `工具: ${name}` : "準備就緒 (預設可拖動點)";
+        }
+        function toolName(t){
+            if(t==='translate') return '平移';
+            if(t==='moveText') return '移動文字';
+            if(t==='delete') return '刪除 (點擊點)';
+            if(t==='textInput') return '插入文字';
+            if(t==='rightAngle') return '直角(L)';
+            if(t==='point') return '點';
+            if(t==='line') return '直線';
+            if(t==='segment') return '線段';
+            if(t==='ray') return '射線';
+            if(t==='dashed') return '虛線';
+            if(t==='circle') return '圓形';
+            if(t==='midpoint') return '中點';
+            if(t==='bisector') return '角平分線';
+            if(t==='angle') return '角標記';
+            if(t==='square') return '正方形';
+            if(t==='rectangle') return '矩形';
+            if(t==='equilateral') return '等邊△';
+            if(t==='isosceles') return '等腰△';
+            return t;
+        }
+        
+        canvas.addEventListener('click',handleCanvasClick);
+        canvas.addEventListener('mousedown',onMouseDown);
+        window.addEventListener('mousemove',onMouseMove);
+        window.addEventListener('mouseup',onMouseUp);
+        canvas.addEventListener('dblclick',onDoubleClick);
+        
+        translateBtn.onclick=()=>setTool('translate');
+        moveTextBtn.onclick=()=>setTool('moveText');
+        deleteToolBtn.onclick=()=>setTool('delete');
+        textInputToolBtn.onclick=()=>setTool('textInput');
+        rightAngleToolBtn.onclick=()=>setTool('rightAngle');
+        pointBtn.onclick=()=>setTool('point');
+        lineBtn.onclick=()=>setTool('line');
+        segmentBtn.onclick=()=>setTool('segment');
+        rayBtn.onclick=()=>setTool('ray');
+        dashedBtn.onclick=()=>setTool('dashed');
+        circleBtn.onclick=()=>setTool('circle');
+        midpointBtn.onclick=()=>setTool('midpoint');
+        bisectorBtn.onclick=()=>setTool('bisector');
+        angleBtn.onclick=()=>setTool('angle');
+        squareBtn.onclick=()=>setTool('square');
+        rectangleBtn.onclick=()=>setTool('rectangle');
+        equilateralBtn.onclick=()=>setTool('equilateral');
+        isoscelesBtn.onclick=()=>setTool('isosceles');
+        clearBtn.onclick=clearAll;
+        toggleGridBtn.onclick=toggleGrid;
+        downloadBtn.onclick=downloadPNG;
+        fontSizeSlider.oninput=e=>setFontSize(parseInt(e.target.value));
+        lineWidthSlider.oninput=e=>setLineWidth(parseFloat(e.target.value));
+        undoBtn.onclick=undo;
+        
+        // 綁定畫布尺寸點擊事件
+        sizeLargeBtn.onclick=()=>setCanvasCropSize('large');
+        sizeMediumBtn.onclick=()=>setCanvasCropSize('medium');
+        sizeSmallBtn.onclick=()=>setCanvasCropSize('small');
+        
+        saveState();
+        setTool(''); 
+        renderCanvas();
+    })();
+</script>
+</body>
+</html>

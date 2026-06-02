@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>答案解析</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .button-container {
+            margin-bottom: 20px;
+        }
+        .question-container,
+        .fib-container {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .question-item,
+        .fib-question-item {
+            margin-bottom: 36px;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fafbfc;
+            position: relative;
+        }
+        .source-badge {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            background: #e2e6ea;
+            color: #2c3e50;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid #bdc3c7;
+            opacity: 0.9;
+            z-index: 10;
+        }
+        .question-image,
+        .answer-image {
+            margin: 12px auto;
+            max-width: 360px;
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .option-image {
+            max-width: 180px;
+            height: auto;
+            vertical-align: middle;
+            margin: 4px 0;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .answer,
+        .explanation {
+            display: none;
+            margin-top: 12px;
+            padding: 10px;
+        }
+        .answer.show,
+        .explanation.show {
+            display: block;
+        }
+        .answer {
+            color: #1e8449;
+            background: #e8f5e9;
+            border-left: 4px solid #28a745;
+        }
+        .explanation {
+            color: #2c3e50;
+            background: #ebf5fb;
+            border-left: 4px solid #2c7be5;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 6px 4px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin: 10px 0 6px;
+            font-size: 1.7em;
+        }
+        .fixed-top-bar {
+            position: sticky;
+            top: 0;
+            background: #f8f9fa;
+            z-index: 1000;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .title-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 8px 0 12px;
+        }
+        #base-title-input {
+            width: 100%;
+            max-width: 420px;
+            padding: 8px 14px;
+            font-size: 1.05em;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .date-checkbox-label {
+            white-space: nowrap;
+            font-size: 0.98em;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .date-checkbox-label input[type="checkbox"] {
+            transform: scale(1.3);
+        }
+        .button-bar {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            justify-content: center;
+            gap: 8px;
+            margin: 8px 0;
+            padding: 8px 0;
+        }
+        .primary-btn {
+            background: #2c7be5;
+            color: white;
+            font-weight: 600;
+        }
+        .primary-btn:hover {
+            background: #1a68d1;
+        }
+        .toggle-all-btn {
+            background: #28a745;
+            color: white;
+        }
+        .toggle-all-btn:hover {
+            background: #218838;
+        }
+        .answer-toggle-all {
+            background: #fd7e14;
+            color: white;
+        }
+        .answer-toggle-all:hover {
+            background: #e06c00;
+        }
+        .quick-select-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .quick-select-btn {
+            background: #6f42c1;
+            color: white;
+            min-width: 50px;
+            padding: 7px 12px;
+        }
+        .quick-select-btn:hover {
+            background: #5a32a3;
+        }
+        .fib-question-item label {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .fib-question-item input[type="checkbox"] {
+            margin-top: 8px;
+            transform: scale(1.5);
+        }
+        .question-text {
+            flex: 1;
+        }
+        .toggle-btn {
+            margin: 10px 12px 10px 0;
+            padding: 7px 14px;
+            font-size: 0.94em;
+            background: #6c757d;
+            color: white;
+        }
+        .toggle-btn:hover {
+            background: #5a6268;
+        }
+        #generated-code-container {
+            margin-top: 48px;
+            display: none;
+        }
+        #generated-code {
+            width: 100%;
+            height: 520px;
+            font-family: Consolas, monospace;
+            font-size: 0.95em;
+            padding: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            background: #fdfefe;
+            resize: vertical;
+        }
+        .selection-counter {
+            background: #ffc107;
+            color: #212529;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+        }
+        .counter-number {
+            background: white;
+            color: #2c3e50;
+            padding: 2px 12px;
+            border-radius: 30px;
+            margin-left: 6px;
+            font-size: 1.2rem;
+        }
+        .source-jump-sidebar {
+            position: fixed;
+            top: 220px;
+            width: 170px;
+            background: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 12px;
+            z-index: 1050;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-height: 65vh;
+            overflow-y: auto;
+            font-size: 0.9em;
+        }
+        .source-jump-sidebar.left {
+            left: 20px;
+        }
+        .source-jump-sidebar.right {
+            right: 20px;
+        }
+        .source-jump-sidebar h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.05em;
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .source-jump-sidebar button {
+            display: block;
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 9px 12px;
+            text-align: left;
+            background: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.88em;
+            transition: background 0.2s;
+        }
+        .source-jump-sidebar button:hover {
+            background: #5a32a3;
+        }
+        .source-jump-sidebar button.all-btn {
+            background: #dc3545;
+        }
+        .source-jump-sidebar button.all-btn:hover {
+            background: #c82333;
+        }
+
+        /* 333模式：左右側邊欄不遮擋題目內容 */
+        #selection-mode>*:not(.fixed-top-bar):not(.source-jump-sidebar) {
+            margin-left: 195px;
+            margin-right: 195px;
+        }
+
+        /* 分頁樣式 */
+        .pagination {
+            text-align: center;
+            margin: 30px 0 40px;
+            padding: 12px;
+        }
+        .pagination button {
+            padding: 8px 16px;
+            margin: 0 4px;
+            background: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: #5a32a3;
+        }
+        .pagination button.active {
+            background: #28a745;
+            font-weight: bold;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pagination span {
+            padding: 0 8px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- 答案解析模式 -->
+    <div id="answers-mode">
+        <h1 id="quiz-title">答案解析 </h1>
+        <div class="loading-message" id="loading-message-answers">正在載入題庫 (01,02,03…子資料夾)...</div>
+        <div class="error-message" id="error-message-answers" style="display: none;"></div>
+        <div class="button-container">
+            <button id="show-mc">顯示選擇題</button>
+            <button id="show-fib">顯示填空題</button>
+            <button id="toggle-all-answers-answersmode" class="answer-toggle-all">全部顯示答案</button>
+            <button id="toggle-all-explanations-answersmode" class="toggle-all-btn">全部顯示解析</button>
+        </div>
+        <div class="question-container" id="question" style="display: none;"></div>
+        <div class="fib-container" id="fib-answers" style="display: none;"></div>
+        <footer><p>© 2025 NokIn </p></footer>
+    </div>
+
+    <!-- 選題生成模式（已深度優化切換速度） -->
+    <div id="selection-mode" style="display: none;">
+        <div class="fixed-top-bar">
+            <div class="title-row">
+                <input type="text" id="base-title-input" value="練習" placeholder="請輸入試卷標題">
+                <label class="date-checkbox-label">
+                    <input type="checkbox" id="include-date-checkbox">
+                    在試卷上顯示日期（當前日期）
+                </label>
+                <div class="selection-counter" id="selected-counter">
+                    ✅ 已勾選 <span id="selected-count" class="counter-number">0</span> 題
+                </div>
+            </div>
+            <div class="button-bar">
+                <button id="generate-btn" class="primary-btn">生成</button>
+                <button id="toggle-all-explanation" class="toggle-all-btn">過程</button>
+                <button id="toggle-all-answer" class="answer-toggle-all">答案</button>
+                <div class="quick-select-container">
+                    <span style="font-size:0.96em; color:#555;">快速選：</span>
+                    <button class="quick-select-btn" data-count="4">4</button>
+                    <button class="quick-select-btn" data-count="6">6</button>
+                    <button class="quick-select-btn" data-count="10">10</button>
+                    <button class="quick-select-btn" data-count="12">12</button>
+                    <button class="quick-select-btn" data-count="20">20</button>
+                    <button class="quick-select-btn" data-count="22">22</button>
+                    <button id="clear-selection-btn" style="background: #dc3545; color: white; padding: 7px 12px; border: none; border-radius: 4px; font-size: 0.95em; cursor: pointer;">清除</button>
+                </div>
+            </div>
+        </div>
+        <h1>填空題答案解析 - 選題生成 (來源標註)</h1>
+        <div class="loading-message" id="loading-message-selection" style="display: none;">正在載入填空題題庫...</div>
+        <div class="error-message" id="error-message-selection" style="display: none;"></div>
+        <div class="fib-container" id="fib-selection"></div>
+        <div id="pagination" class="pagination" style="display: none;"></div>
+        <div id="source-jump-left" class="source-jump-sidebar left" style="display: none;">
+            <h3>左側：檔案資料夾</h3>
+        </div>
+        <div id="source-jump-right" class="source-jump-sidebar right" style="display: none;">
+            <h3>右側：題目集名稱</h3>
+        </div>
+        <div id="generated-code-container">
+            <h2>已選取題目的 JavaScript 資料陣列（已複製到剪貼簿）</h2>
+            <textarea id="generated-code" readonly></textarea>
+        </div>
+        <footer><p>© 2025 NokIn</p></footer>
+    </div>
+
+    <!-- 引入外部 JS -->
+    <script src="https://nokin.vercel.app/mainjs/apps/tools9.js"></script>
+</body>
+</html>

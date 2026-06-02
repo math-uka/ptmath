@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>終極平面直角座標系生成器 (銳利箭頭美化版)</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f5f7fa; 
+            display: flex; 
+            justify-content: center; 
+        }
+        .container { 
+            display: flex; 
+            flex-direction: row; 
+            gap: 25px; 
+            max-width: 1600px; 
+            width: 100%; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        }
+        .sidebar { 
+            flex: 0 0 340px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            border-right: 1px solid #eef2f5; 
+            padding-right: 20px; 
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            background: #fafbfc;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        h3 { margin: 0 0 10px 0; color: #333; font-size: 15px; border-bottom: 2px solid #007aff; padding-bottom: 5px; }
+        .control-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
+        .row-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin: 5px 0 10px 0; }
+        .checkbox-group input { width: auto; cursor: pointer; }
+        .checkbox-group label { cursor: pointer; user-select: none; color: #007aff; font-weight: bold; }
+        label { font-size: 13px; color: #555; font-weight: 500; }
+        input, select { padding: 8px; border: 1px solid #ccd4dc; border-radius: 6px; font-size: 14px; width: 100%; }
+        input[type="color"] { padding: 2px; height: 35px; cursor: pointer; }
+        
+        .btn-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; position: sticky; bottom: 0; background: white; padding-top: 10px; }
+        .btn-download { background: #34c759; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-align: center;}
+        .btn-download:hover { background: #28a745; }
+        
+        .canvas-container {
+            max-width: 100%;
+            max-height: 85vh;
+            overflow: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            background: white;
+            border-radius: 6px;
+        }
+        canvas { display: block; background: white; }
+
+        @media (max-width: 850px) {
+            .container { flex-direction: column; }
+            .sidebar { border-right: none; padding-right: 0; border-bottom: 1px solid #eef2f5; padding-bottom: 20px; flex: none; max-height: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+        <div>
+            <h3>1. 座標範圍設定</h3>
+            <div class="row-group">
+                <div class="control-group">
+                    <label>X 軸最小值</label>
+                    <input type="number" id="minX" value="-10" step="any">
+                </div>
+                <div class="control-group">
+                    <label>X 軸最大值</label>
+                    <input type="number" id="maxX" value="10" step="any">
+                </div>
+            </div>
+            <div class="row-group">
+                <div class="control-group">
+                    <label>Y 軸最小值</label>
+                    <input type="number" id="minY" value="-10" step="any">
+                </div>
+                <div class="control-group">
+                    <label>Y 軸最大值</label>
+                    <input type="number" id="maxY" value="10" step="any">
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>2. 間距與字型</h3>
+            <div class="control-group">
+                <label>刻度頻率 (可小數)</label>
+                <input type="number" id="step" value="1" step="any" min="0.001">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="textMask" checked>
+                <label for="textMask" style="color: #555; font-weight: 500;">數字加上白底遮罩 (避免格線干擾)</label>
+            </div>
+            <div class="row-group">
+                <div class="control-group">
+                    <label>數字大小 (px)</label>
+                    <input type="number" id="fontSize" value="16" min="6" max="40">
+                </div>
+                <div class="control-group">
+                    <label>數字字體樣式</label>
+                    <select id="fontWeight">
+                        <option value="normal">標準 (Regular)</option>
+                        <option value="bold" selected>粗體 (Bold)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>3. 座標軸樣式</h3>
+            <div class="row-group">
+                <div class="control-group">
+                    <label>座標軸/數字顯示</label>
+                    <select id="axisStyle">
+                        <option value="show">顯示座標軸與數字</option>
+                        <option value="hide">隱藏座標軸與數字 (純格線)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>軸線粗細 (px)</label>
+                    <input type="number" id="axisWidth" value="3" min="1" max="10">
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>4. 背景格線樣式</h3>
+            <div class="row-group">
+                <div class="control-group">
+                    <label>格線型態</label>
+                    <select id="gridStyle">
+                        <option value="solid">實線 (Solid)</option>
+                        <option value="dashed" selected>虛線 (Dashed)</option>
+                        <option value="none">沒有格線 (None)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>格線粗細 (px)</label>
+                    <input type="number" id="gridWidth" value="1" min="1" max="10">
+                </div>
+            </div>
+            <div class="control-group">
+                <label>格線顏色</label>
+                <input type="color" id="gridColor" value="#000000">
+            </div>
+        </div>
+
+        <div>
+            <h3>5. 畫布尺寸與形狀</h3>
+            <div class="checkbox-group">
+                <input type="checkbox" id="lockSquare" checked>
+                <label for="lockSquare">鎖定為正方形 (等比例同步)</label>
+            </div>
+            <div class="row-group">
+                <div class="control-group">
+                    <label>螢幕顯示寬度 (px)</label>
+                    <input type="number" id="canvasWidth" value="800" min="200" max="2000">
+                </div>
+                <div class="control-group">
+                    <label>螢幕顯示高度 (px)</label>
+                    <input type="number" id="canvasHeight" value="800" min="200" max="2000">
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>6. 輸出清晰度 (防模糊)</h3>
+            <div class="control-group">
+                <label style="color: #e63946; font-weight: bold;">下載圖片放大倍率</label>
+                <select id="exportScale">
+                    <option value="1">1倍 (普通標準)</option>
+                    <option value="2">2倍 (網頁清晰)</option>
+                    <option value="4" selected>4倍 (極致高清 - 推薦印刷)</option>
+                    <option value="8">8倍 (論文印刷級)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-download" onclick="downloadHighResCanvas()">下載超清白底圖片 (PNG)</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="canvas-container">
+            <canvas id="coordCanvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    function handleSync(e) {
+        const lockSquare = document.getElementById('lockSquare').checked;
+        if (!lockSquare) return;
+        const targetId = e.target.id;
+
+        if (targetId === 'canvasWidth') document.getElementById('canvasHeight').value = e.target.value;
+        else if (targetId === 'canvasHeight') document.getElementById('canvasWidth').value = e.target.value;
+
+        if (targetId === 'minX') document.getElementById('minY').value = e.target.value;
+        else if (targetId === 'maxX') document.getElementById('maxY').value = e.target.value;
+        else if (targetId === 'minY') document.getElementById('minX').value = e.target.value;
+        else if (targetId === 'maxY') document.getElementById('maxX').value = e.target.value;
+    }
+
+    function drawTextWithMask(ctx, text, x, y, fontSize, isXAxis) {
+        const showMask = document.getElementById('textMask').checked;
+        
+        if (showMask) {
+            ctx.save();
+            const textWidth = ctx.measureText(text).width;
+            
+            ctx.fillStyle = '#ffffff'; 
+            
+            if (isXAxis) {
+                const bgWidth = textWidth + 6;  
+                const bgHeight = fontSize + 4; 
+                ctx.fillRect(x - bgWidth / 2, y - fontSize + 2, bgWidth, bgHeight);
+            } else {
+                const paddingLR = 3; 
+                const bgWidth = textWidth + paddingLR * 2;  
+                const bgHeight = fontSize + 4; 
+                ctx.fillRect(x - textWidth - paddingLR, y - fontSize + 4, bgWidth, bgHeight);
+            }
+            ctx.restore();
+        }
+        ctx.fillText(text, x, y);
+    }
+
+    function renderCoordinates(canvas, targetWidth, targetHeight, renderScale) {
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = targetWidth * renderScale;
+        canvas.height = targetHeight * renderScale;
+        ctx.scale(renderScale, renderScale);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+        const minX = parseFloat(document.getElementById('minX').value);
+        const maxX = parseFloat(document.getElementById('maxX').value);
+        const minY = parseFloat(document.getElementById('minY').value);
+        const maxY = parseFloat(document.getElementById('maxY').value);
+        const step = parseFloat(document.getElementById('step').value) || 1;
+        const fontSize = parseInt(document.getElementById('fontSize').value) || 16;
+        const fontWeight = document.getElementById('fontWeight').value;
+        
+        const axisStyle = document.getElementById('axisStyle').value;
+        const axisWidth = parseFloat(document.getElementById('axisWidth').value) || 2;
+        const gridWidth = parseFloat(document.getElementById('gridWidth').value) || 1;
+        const gridStyle = document.getElementById('gridStyle').value;
+        const gridColor = document.getElementById('gridColor').value;
+        
+        const padding = (axisStyle === 'show') ? 65 : 15;
+        const width = targetWidth - 2 * padding;
+        const height = targetHeight - 2 * padding;
+
+        const getX = (val) => padding + (val - minX) * (width / (maxX - minX));
+        const getY = (val) => padding + height - (val - minY) * (height / (maxY - minY));
+        const formatNum = (num) => parseFloat(num.toFixed(4));
+
+        const gridOffset = (Math.round(gridWidth) % 2 === 1) ? 0.5 : 0;
+        const axisOffset = (Math.round(axisWidth) % 2 === 1) ? 0.5 : 0;
+
+        // 1. 背景格線
+        if (gridStyle !== 'none' && maxX > minX && maxY > minY) {
+            ctx.strokeStyle = gridColor;
+            ctx.lineWidth = gridWidth;
+            ctx.beginPath();
+            if (gridStyle === 'dashed') ctx.setLineDash([4, 4]);
+            else ctx.setLineDash([]);
+
+            let startX = Math.ceil(minX / step) * step;
+            for (let x = startX; x <= maxX; x += step) {
+                let snapX = Math.round(getX(x)) + gridOffset;
+                ctx.moveTo(snapX, Math.round(getY(minY)));
+                ctx.lineTo(snapX, Math.round(getY(maxY)));
+            }
+            let startY = Math.ceil(minY / step) * step;
+            for (let y = startY; y <= maxY; y += step) {
+                let snapY = Math.round(getY(y)) + gridOffset;
+                ctx.moveTo(Math.round(getX(minX)), snapY);
+                ctx.lineTo(Math.round(getX(maxX)), snapY);
+            }
+            ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        const xAxisY = getY(0);
+        const yAxisX = getX(0);
+        
+        const hasXAxis = xAxisY >= getY(maxY) && xAxisY <= getY(minY);
+        const hasYAxis = yAxisX >= getX(minX) && yAxisX <= getX(maxX);
+
+        // 2. 座標軸與標籤
+        if (axisStyle === 'show' && maxX > minX && maxY > minY) {
+            ctx.strokeStyle = '#222222';
+            ctx.lineWidth = axisWidth;
+            ctx.lineCap = 'square'; 
+            
+            const offset = 18; 
+
+            // 繪製 X 軸
+            if (hasXAxis) {
+                let snapAxisY = Math.round(xAxisY) + axisOffset;
+                ctx.beginPath();
+                ctx.moveTo(Math.round(getX(minX) - offset), snapAxisY); 
+                ctx.lineTo(Math.round(getX(maxX) + offset - 9), snapAxisY);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(Math.round(getX(maxX) + offset - 10), snapAxisY - 5); 
+                ctx.lineTo(Math.round(getX(maxX) + offset), snapAxisY); 
+                ctx.lineTo(Math.round(getX(maxX) + offset - 10), snapAxisY + 5);
+                ctx.stroke();
+            }
+
+            // 繪製 Y 軸
+            if (hasYAxis) {
+                let snapAxisX = Math.round(yAxisX) + axisOffset;
+                ctx.beginPath();
+                ctx.moveTo(snapAxisX, Math.round(getY(minY) + offset)); 
+                ctx.lineTo(snapAxisX, Math.round(getY(maxY) - offset + 9));
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(snapAxisX - 5, Math.round(getY(maxY) - offset + 10)); 
+                ctx.lineTo(snapAxisX, Math.round(getY(maxY) - offset)); 
+                ctx.lineTo(snapAxisX + 5, Math.round(getY(maxY) - offset + 10));
+                ctx.stroke();
+            }
+
+            ctx.fillStyle = '#333333';
+            ctx.font = `${fontWeight} ${fontSize}px sans-serif`;
+            
+            const textY = hasXAxis ? xAxisY : getY(minY);
+            const textX = hasYAxis ? yAxisX : getX(minX);
+
+            // X 軸刻度數字
+            ctx.textAlign = 'center';
+            let startTickX = Math.ceil(minX / step) * step;
+            for (let x = startTickX; x <= maxX; x += step) {
+                if (formatNum(x) === 0) continue;
+                const currentX = getX(x);
+                if (hasXAxis) {
+                    let snapTickX = Math.round(currentX) + axisOffset;
+                    let snapAxisY = Math.round(xAxisY) + axisOffset;
+                    ctx.beginPath(); 
+                    ctx.moveTo(snapTickX, snapAxisY - 3); 
+                    ctx.lineTo(snapTickX, snapAxisY + 3); 
+                    ctx.stroke();
+                }
+                drawTextWithMask(ctx, formatNum(x).toString(), currentX, textY + fontSize + 4, fontSize, true);
+            }
+
+            // Y 軸刻度數字
+            ctx.textAlign = 'right';
+            let startTickY = Math.ceil(minY / step) * step;
+            for (let y = startTickY; y <= maxY; y += step) {
+                if (formatNum(y) === 0) continue;
+                const currentY = getY(y);
+                if (hasYAxis) {
+                    let snapTickY = Math.round(currentY) + axisOffset;
+                    let snapAxisX = Math.round(yAxisX) + axisOffset;
+                    ctx.beginPath(); 
+                    ctx.moveTo(snapAxisX - 3, snapTickY); 
+                    ctx.lineTo(snapAxisX + 3, snapTickY); 
+                    ctx.stroke();
+                }
+                drawTextWithMask(ctx, formatNum(y).toString(), textX - 8, currentY + (fontSize / 3), fontSize, false);
+            }
+            
+            // 原點 0（任何時候都絕對無白底）
+            if (formatNum(minX) <= 0 && formatNum(maxX) >= 0 && formatNum(minY) <= 0 && formatNum(maxY) >= 0) {
+                ctx.textAlign = 'center';
+                ctx.fillText('0', yAxisX - 8, xAxisY + fontSize + 2);
+            }
+            
+            ctx.font = `bold ${fontSize + 2}px sans-serif`;
+            ctx.textAlign = 'center';
+            if (hasXAxis) ctx.fillText('x', getX(maxX) + offset + 12, xAxisY + 5);
+            if (hasYAxis) ctx.fillText('y', yAxisX, getY(maxY) - offset - 12);
+        }
+    }
+
+    function drawPreview() {
+        const canvas = document.getElementById('coordCanvas');
+        const cWidth = parseInt(document.getElementById('canvasWidth').value) || 800;
+        const cHeight = parseInt(document.getElementById('canvasHeight').value) || 800;
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.style.width = cWidth + 'px';
+        canvas.style.height = cHeight + 'px';
+
+        renderCoordinates(canvas, cWidth, cHeight, dpr);
+    }
+
+    function downloadHighResCanvas() {
+        const cWidth = parseInt(document.getElementById('canvasWidth').value) || 800;
+        const cHeight = parseInt(document.getElementById('canvasHeight').value) || 800;
+        const exportScale = parseInt(document.getElementById('exportScale').value) || 4;
+
+        const tempCanvas = document.createElement('canvas');
+        renderCoordinates(tempCanvas, cWidth, cHeight, exportScale);
+
+        const link = document.createElement('a');
+        link.download = `完工美化_超清座標系_${cWidth * exportScale}x${cHeight * exportScale}.png`;
+        link.href = tempCanvas.toDataURL('image/png');
+        link.click();
+    }
+
+    window.onload = function() {
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('input', (e) => { handleSync(e); drawPreview(); });
+            input.addEventListener('change', (e) => { handleSync(e); drawPreview(); });
+        });
+
+        document.getElementById('lockSquare').addEventListener('change', function(e) {
+            if (this.checked) {
+                document.getElementById('canvasHeight').value = document.getElementById('canvasWidth').value;
+                document.getElementById('minY').value = document.getElementById('minX').value;
+                document.getElementById('maxY').value = document.getElementById('maxX').value;
+                drawPreview();
+            }
+        });
+
+        drawPreview(); 
+    };
+</script>
+
+</body>
+</html>

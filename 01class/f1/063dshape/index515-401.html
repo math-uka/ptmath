@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>3D 物件編輯器 - 觸控移動 / 視角切換 / OBJ 匯入匯出</title>
+    <link rel="icon" type="image/x-icon" href="https://nokin.vercel.app/main.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #111;
+            overflow: hidden;
+            color: #1e293b;
+        }
+        canvas {
+            display: block;
+        }
+        .sidebar {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            width: 360px;
+            max-height: calc(100% - 32px);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            border-radius: 28px;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .sidebar-header {
+            padding: 18px 20px 10px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .sidebar-header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1f4870, #2c7a6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .counter-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 12px;
+            background: #f1f5f9;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .counter-badge span:first-child {
+            font-size: 0.85rem;
+            color: #334155;
+        }
+        #count {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1a5d5c;
+            line-height: 1;
+        }
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 18px 20px 18px;
+            scrollbar-width: thin;
+        }
+        .sidebar-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: #c0c8d4;
+            border-radius: 10px;
+        }
+        .tool-section {
+            margin-bottom: 22px;
+        }
+        .section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: #5b6e8c;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 6px;
+        }
+        .btn {
+            background: #ffffffcc;
+            border: 1px solid #dce3ec;
+            padding: 7px 8px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #1e2a3a;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            text-align: center;
+            font-family: inherit;
+            backdrop-filter: blur(2px);
+            white-space: nowrap;
+        }
+        .btn:hover {
+            background: white;
+            border-color: #9aaebf;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 14px -8px rgba(0, 0, 0, 0.15);
+        }
+        .btn-danger {
+            background: #fff2f0;
+            border-color: #ffc9c2;
+            color: #c2410c;
+        }
+        .btn-danger:hover {
+            background: #ffe4e0;
+            border-color: #f97316;
+        }
+        .btn-active {
+            background: #a5d8ff;
+            border-color: #1c7ed6;
+            color: #0b3d6b;
+        }
+        .card-panel {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 12px;
+            margin: 8px 0 6px;
+            border: 1px solid #eef2f8;
+        }
+        .flex-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .slider-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            color: #334155;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 4px 0;
+            accent-color: #2c7a6e;
+        }
+        .color-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        #colorInput {
+            width: 44px;
+            height: 36px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            background: white;
+        }
+        .preset-grid,
+        .history-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .color-preset,
+        .color-history-item {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .color-preset:hover,
+        .color-history-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .help-content {
+            background: #fefce8;
+            border-radius: 18px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .help-inner {
+            padding: 10px 12px;
+            font-size: 0.68rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 10px;
+            color: #444;
+        }
+        .help-inner div {
+            padding: 2px 0;
+        }
+        .status-message {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293bdd;
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 60px;
+            z-index: 2000;
+            display: none;
+            font-weight: 500;
+            pointer-events: none;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        .status-message.active {
+            display: block;
+            animation: fadeUp 2.6s forwards;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(12px);
+            }
+            12% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            78% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        .hidden-sidebar {
+            display: none !important;
+        }
+        .move-buttons-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(30, 30, 40, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            z-index: 1500;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: opacity 0.2s;
+        }
+        .move-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1e2a3a;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .move-btn:active {
+            transform: scale(0.92);
+            background: #ffaa44;
+        }
+        @media (max-width: 700px) {
+            .move-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            .move-buttons-panel {
+                gap: 8px;
+                padding: 8px;
+                bottom: 12px;
+                right: 12px;
+            }
+            .sidebar {
+                width: 290px;
+                top: 8px;
+                left: 8px;
+                max-height: calc(100% - 16px);
+            }
+            .button-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .help-inner {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-header h1 {
+                font-size: 1.3rem;
+            }
+        }
+        .move-buttons-panel.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>✧ 立體建構器</h1>
+            <div class="counter-badge">
+                <span>📦 場景物件</span>
+                <span id="count">0</span>
+            </div>
+        </div>
+        <div class="sidebar-content">
+            <!-- 操作介面區塊 (無隱藏側欄按鈕) -->
+            <div class="tool-section">
+                <div class="section-title">🕹️ 操作介面</div>
+                <div class="button-grid">
+                    <button id="toggleMoveButtonsBtn" class="btn">🔘 隱藏移動按鈕</button>
+                    <button id="viewFront" class="btn">📐 正視圖</button>
+                    <button id="viewLeft" class="btn">👈 左視圖</button>
+                    <button id="viewTop" class="btn">🔽 俯視圖</button>
+                </div>
+                <div class="card-panel" style="margin-top:8px; font-size:0.7rem; color:#556;">
+                    💡 按數字 <kbd>1</kbd> 可隱藏/顯示側欄
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">📐 基本體</div>
+                <div class="button-grid">
+                    <button id="addCube" class="btn">🧊 立方體</button>
+                    <button id="addSphere" class="btn">⚪ 球體</button>
+                    <button id="addCone" class="btn">🔺 圓錐</button>
+                    <button id="addPyramid" class="btn">🔶 四棱錐</button>
+                    <button id="addCylinder" class="btn">🧴 圓柱</button>
+                    <button id="addHalfCylinder" class="btn">🌗 半圓柱</button>
+                    <button id="addTriPrism" class="btn">📐 三棱柱</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🏗️ 場景元件</div>
+                <div class="button-grid">
+                    <button id="addFloor" class="btn">🪞 地板</button>
+                    <button id="generateWalls" class="btn">🧱 生成牆壁</button>
+                    <button id="addPlayerModel" class="btn">🧑‍🎮 玩家角色</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">✂️ 編輯</div>
+                <div class="button-grid">
+                    <button id="removeSelected" class="btn btn-danger">🗑️ 刪除選中</button>
+                    <button id="removeLast" class="btn btn-danger">⏪ 刪除最後</button>
+                    <button id="flipVertical" class="btn">↕️ 上下翻轉90°</button>
+                    <button id="flipHorizontal" class="btn">🔄 左右翻轉90°</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">👁️ 視覺</div>
+                <div class="button-grid">
+                    <button id="toggleDisplayMode" class="btn">✨ 不透明+線框</button>
+                    <button id="toggleGrid" class="btn">📏 隱藏格線</button>
+                    <button id="toggleDiagonals" class="btn">📐 顯示對角線</button>
+                    <button id="toggleShadows" class="btn">🌓 隱藏陰影</button>
+                    <button id="toggleWireframe" class="btn">🔲 隱藏線框</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">✏️ 自由繪畫</div>
+                <div class="card-panel">
+                    <div class="flex-row">
+                        <button id="drawTriangleBtn" class="btn" style="background:#e9f0ff;">△ 畫三角形</button>
+                        <button id="drawQuadBtn" class="btn" style="background:#e9f0ff;">□ 畫四邊形</button>
+                        <button id="cancelDrawBtn" class="btn">❌ 取消繪製</button>
+                    </div>
+                    <div style="font-size:0.7rem;color:#475569;margin-top:6px;">👉 點擊地面設定頂點，自動生成多邊形底板</div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🖱️ 進階拖曳</div>
+                <button id="dragToggleBtn" class="btn" style="background:#d9f0ec;">🖱️ 啟用拖曳移動 (投影輔助)</button>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🔄 整體旋轉</div>
+                <div class="card-panel">
+                    <div class="slider-label">
+                        <span>水平旋轉 Y軸</span>
+                        <span id="rotateYValue">0°</span>
+                    </div>
+                    <input type="range" id="rotateYSlider" min="-180" max="180" step="1" value="0">
+                    <div class="slider-label" style="margin-top:10px;">
+                        <span>垂直傾斜 X軸</span>
+                        <span id="rotateXValue">0°</span>
+                    </div>
+                    <input type="range" id="rotateXSlider" min="-90" max="90" step="1" value="0">
+                    <div class="flex-row" style="margin-top:10px;">
+                        <button id="flipGroupHorizBtn" class="btn">↩ 水平翻轉90°</button>
+                        <button id="flipGroupVertBtn" class="btn">⬆️ 垂直翻轉90°</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🎨 材質顏色</div>
+                <div class="card-panel">
+                    <div class="color-preview">
+                        <label style="font-weight:600;font-size:0.8rem;">即時選色</label>
+                        <input type="color" id="colorInput" value="#3366ff">
+                    </div>
+                    <div style="font-size:0.68rem;color:#555;">新物件套用此色，選中物件即時更換</div>
+                    <div class="preset-grid" id="presetContainer"></div>
+                    <div style="font-size:0.68rem;margin-top:6px;color:#555;">📌 最近使用</div>
+                    <div class="history-grid" id="colorHistoryContainer"></div>
+                </div>
+            </div>
+
+            <!-- 快捷鍵操作指南 (直接顯示，無開關按鈕) -->
+            <div class="tool-section">
+                <div class="section-title">⌨️ 快捷鍵與操作指南</div>
+                <div class="help-content">
+                    <div class="help-inner">
+                        <div>🔹 點擊物件 → 選取</div><div>🔹 Shift+點擊 → 多選/取消</div>
+                        <div>🔹 W/A/S/D → 前/左/後/右 移動</div><div>🔹 R/F → 上/下移動</div>
+                        <div>🔹 Q → 新增方塊</div><div>🔹 G/H → 地板/牆壁</div>
+                        <div>🔹 L/K/J/I/O → 各方向複製</div><div>🔹 Z/X → 還原/重做</div>
+                        <div>🔹 V → 刪除所有選中</div><div>🔹 P → 整層複製</div>
+                        <div>🔹 Delete → 刪除最後</div><div>🔹 1 → 隱藏側欄 / 2 → PNG</div>
+                        <div>🔹 3 → 儲存JSON / 4 → 載入 (合併)</div><div>🔹 5 → 匯出 OBJ (彈窗倍率)</div>
+                        <div>🔹 6 → 匯入 OBJ (合併)</div><div>🔹 C → 恢復上次選取</div>
+                        <div>🔹 Ctrl+A → 全選物件</div><div>🔹 Enter → 玩家操控模式</div>
+                        <div>🔹 拖曳模式 → 點擊拖動</div><div>🔹 9 → 選全層 / 0 → 選上方</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 觸控移動按鈕組 -->
+    <div class="move-buttons-panel" id="moveButtonsPanel">
+        <button class="move-btn" data-move="w">⬆️</button>
+        <button class="move-btn" data-move="s">⬇️</button>
+        <button class="move-btn" data-move="a">⬅️</button>
+        <button class="move-btn" data-move="d">➡️</button>
+        <button class="move-btn" data-move="r">🔺</button>
+        <button class="move-btn" data-move="f">🔻</button>
+    </div>
+
+    <input type="file" id="fileInput" style="display:none" accept=".json">
+    <input type="file" id="objFileInput" style="display:none" accept=".obj">
+    <div class="status-message" id="statusMessage"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/OBJLoader.js"></script>
+
+    <script>
+        (function() {
+            // ================================================
+            // 基本設定
+            // ================================================
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf4f7f2);
+            scene.fog = new THREE.FogExp2(0xf4f7f2, 0.006);
+            const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 3000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+            renderer.setSize(innerWidth, innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            document.body.appendChild(renderer.domElement);
+            const orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+            orbitControls.enableDamping = true;
+            orbitControls.dampingFactor = 0.08;
+            orbitControls.minDistance = 6;
+            orbitControls.maxDistance = 180;
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            directionalLight.position.set(0, 20, 0);
+            directionalLight.target.position.set(0, 0, 0);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            directionalLight.shadow.camera.near = 0.5;
+            directionalLight.shadow.camera.far = 60;
+            directionalLight.shadow.camera.left = -30;
+            directionalLight.shadow.camera.right = 30;
+            directionalLight.shadow.camera.top = 30;
+            directionalLight.shadow.camera.bottom = -30;
+            directionalLight.shadow.bias = -0.0001;
+            directionalLight.shadow.normalBias = 0.05;
+            scene.add(directionalLight);
+            scene.add(directionalLight.target);
+
+            const fillLight = new THREE.PointLight(0xccddff, 0.4);
+            fillLight.position.set(5, 10, 7);
+            scene.add(fillLight);
+
+            const grid = new THREE.GridHelper(80, 40, 0x888888, 0xdddddd);
+            grid.position.y = 0.01;
+            grid.receiveShadow = false;
+            scene.add(grid);
+
+            const arrowX = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0.1, 0), 4, 0xff0000);
+            const arrowZ = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0.1, 0), 4, 0x00ff00);
+            scene.add(arrowX);
+            scene.add(arrowZ);
+            const directionArrows = [arrowX, arrowZ];
+
+            const shadowReceiver = new THREE.Mesh(
+                new THREE.PlaneGeometry(120, 120),
+                new THREE.ShadowMaterial({ opacity: 0.5, color: 0x000000, transparent: true, side: THREE.DoubleSide })
+            );
+            shadowReceiver.rotation.x = -Math.PI / 2;
+            shadowReceiver.position.y = 0;
+            shadowReceiver.receiveShadow = true;
+            scene.add(shadowReceiver);
+
+            camera.position.set(20, 16, 28);
+            orbitControls.update();
+            const clock = new THREE.Clock();
+
+            // ================================================
+            // 全域變數
+            // ================================================
+            const baseSize = 2;
+            const moveStep = baseSize / 2;
+            const objects = [];
+            let selected = null;
+            let selectedObjects = [];
+            let lastSelectedObjects = [];
+            let suppressLastSelectionUpdate = false;
+            let displayMode = 0;
+            let gridVisible = true;
+            let diagonalsVisible = false;
+            let uiVisible = true;
+            let shadowsEnabled = true;
+            let wireframeVisible = true;
+            let selectedColor = 0x3366ff;
+            const history = [];
+            let historyIndex = -1;
+            let playerModel = null;
+            let playerMode = 0;
+            let designCameraPos = new THREE.Vector3();
+            let designTarget = new THREE.Vector3();
+            const moveSpeed = 20;
+            const rotationSpeed = 0.05;
+            const keys = {};
+            let isPointerLocked = false;
+            const colorHistory = ['#3366ff', '#ffffff', '#ffffff', '#ffffff'];
+
+            let dragModeActive = false;
+            let isDragging = false;
+            let dragTargetObj = null;
+            let dragProxy = null;
+            let dragStartMouseWorld = new THREE.Vector3();
+            let dragStartObjPos = new THREE.Vector3();
+
+            let isDrawingMode = false;
+            let drawingPoints = [];
+            let drawingType = null;
+            let tempPointsVisual = [];
+
+            let freeRotateY = 0;
+            let freeRotateX = 0;
+            let multiGroupRotY = 0;
+            let multiGroupRotX = 0;
+            let groupRotationState = null;
+            let rotateTimeout;
+
+            const raycaster = new THREE.Raycaster();
+            const pointer = new THREE.Vector2();
+
+            let moveButtonsVisible = true;
+            const movePanel = document.getElementById('moveButtonsPanel');
+            const toggleMoveBtn = document.getElementById('toggleMoveButtonsBtn');
+
+            function getMouseGroundPosition(event) {
+                const rect = renderer.domElement.getBoundingClientRect();
+                const mouse = new THREE.Vector2();
+                mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                raycaster.setFromCamera(mouse, camera);
+                const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+                const targetPoint = new THREE.Vector3();
+                if (raycaster.ray.intersectPlane(groundPlane, targetPoint)) {
+                    return targetPoint;
+                }
+                return null;
+            }
+
+            function getGroupCenter(objectsList) {
+                if (objectsList.length === 0) return new THREE.Vector3(0, 0, 0);
+                const center = new THREE.Vector3();
+                objectsList.forEach(obj => center.add(obj.position));
+                center.divideScalar(objectsList.length);
+                return center;
+            }
+
+            function recordLastSelection() {
+                if (!suppressLastSelectionUpdate && selectedObjects.length > 0) {
+                    lastSelectedObjects = selectedObjects.slice();
+                }
+            }
+
+            function initGroupRotationState() {
+                if (selectedObjects.length === 0) {
+                    groupRotationState = null;
+                    return;
+                }
+                const center = getGroupCenter(selectedObjects);
+                const items = selectedObjects.map(obj => {
+                    let initRot;
+                    if (obj.type === 'player') initRot = obj.group.rotation.clone();
+                    else if (obj.type === 'objgroup') initRot = obj.group.rotation.clone();
+                    else initRot = obj.mesh.rotation.clone();
+                    const relPos = obj.position.clone().sub(center);
+                    return { obj, relPos, initRot };
+                });
+                groupRotationState = {
+                    center: center.clone(),
+                    items: items,
+                    currentY: 0,
+                    currentX: 0
+                };
+            }
+
+            function applyGroupRotation(targetY, targetX) {
+                if (!groupRotationState || groupRotationState.items.length !== selectedObjects.length) {
+                    initGroupRotationState();
+                }
+                if (!groupRotationState) return;
+                const state = groupRotationState;
+                targetX = Math.max(-90, Math.min(90, targetX));
+                const radY = targetY * Math.PI / 180;
+                const radX = targetX * Math.PI / 180;
+                const R = new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(radX, radY, 0, 'YXZ'));
+
+                for (let item of state.items) {
+                    const obj = item.obj;
+                    const rotatedRelPos = item.relPos.clone().applyMatrix4(R);
+                    const newPos = state.center.clone().add(rotatedRelPos);
+                    obj.position.copy(newPos);
+
+                    const M_init = new THREE.Matrix4().makeRotationFromEuler(item.initRot);
+                    const M_final = new THREE.Matrix4().multiplyMatrices(R, M_init);
+                    const finalEuler = new THREE.Euler().setFromRotationMatrix(M_final);
+
+                    if (obj.type === 'player') {
+                        obj.group.position.copy(newPos);
+                        obj.group.rotation.copy(finalEuler);
+                    } else if (obj.type === 'objgroup') {
+                        obj.group.position.copy(newPos);
+                        obj.group.rotation.copy(finalEuler);
+                        if (obj.boundingWire) {
+                            obj.boundingWire.position.copy(newPos);
+                            obj.boundingWire.rotation.copy(finalEuler);
+                        }
+                    } else {
+                        obj.mesh.position.copy(newPos);
+                        obj.mesh.rotation.copy(finalEuler);
+                        obj.wire.position.copy(newPos);
+                        obj.wire.rotation.copy(finalEuler);
+                        if (obj.diagWire) {
+                            obj.diagWire.position.copy(newPos);
+                            obj.diagWire.rotation.copy(finalEuler);
+                        }
+                        if (obj.type === 'polygon' && obj.vertices) {
+                            const newVerts = obj.vertices.map(v => {
+                                const offsetV = v.clone().sub(state.center);
+                                offsetV.applyMatrix4(R);
+                                return state.center.clone().add(offsetV);
+                            });
+                            obj.vertices = newVerts;
+                        }
+                    }
+                    obj.rotation = finalEuler.clone();
+                }
+                state.currentY = targetY;
+                state.currentX = targetX;
+                multiGroupRotY = targetY;
+                multiGroupRotX = targetX;
+            }
+
+            function clearGroupRotationState() {
+                groupRotationState = null;
+                multiGroupRotY = 0;
+                multiGroupRotX = 0;
+            }
+
+            function getSurfaceMaterial(color, mode, isSelected = false) {
+                if (mode === 0) {
+                    return new THREE.MeshPhongMaterial({
+                        color: isSelected ? 0xff4444 : color,
+                        shininess: 60,
+                        emissive: isSelected ? 0x440000 : 0x000000,
+                        specular: 0x888888,
+                        transparent: false
+                    });
+                }
+                if (mode === 1) {
+                    return new THREE.MeshPhongMaterial({
+                        color: isSelected ? 0xff4444 : color,
+                        transparent: true,
+                        opacity: isSelected ? 0.88 : 0.68,
+                        shininess: 35,
+                        specular: 0x888888
+                    });
+                }
+                return new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 });
+            }
+
+            function getWireframeMaterial() {
+                const mat = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 8 });
+                mat.depthTest = true;
+                mat.polygonOffset = true;
+                mat.polygonOffsetFactor = -1.0;
+                mat.polygonOffsetUnits = -4.0;
+                return mat;
+            }
+
+            function saveToHistory() {
+                const state = objects.map(o => {
+                    const base = {
+                        type: o.type,
+                        position: { x: o.position.x, y: o.position.y, z: o.position.z },
+                        rotation: {
+                            x: o.rotation ? o.rotation.x : (o.mesh ? o.mesh.rotation.x : 0),
+                            y: o.rotation ? o.rotation.y : (o.mesh ? o.mesh.rotation.y : 0),
+                            z: o.rotation ? o.rotation.z : (o.mesh ? o.mesh.rotation.z : 0)
+                        },
+                        color: o.color
+                    };
+                    if (o.type === 'polygon' && o.vertices) {
+                        base.vertices = o.vertices.map(v => ({ x: v.x, y: v.y, z: v.z }));
+                    }
+                    if (o.type === 'objgroup') {
+                        base.type = 'objgroup_warning';
+                    }
+                    return base;
+                });
+                history.splice(historyIndex + 1);
+                history.push(state);
+                historyIndex = history.length - 1;
+            }
+
+            function loadFromHistory(index) {
+                if (index < 0 || index >= history.length) return;
+                historyIndex = index;
+                const data = history[index];
+                while (objects.length) {
+                    const obj = objects.pop();
+                    if (obj.type === 'player') scene.remove(obj.group);
+                    else if (obj.type === 'objgroup') { scene.remove(obj.group); if (obj.boundingWire) scene.remove(obj.boundingWire); }
+                    else if (obj.type === 'polygon') { scene.remove(obj.mesh); scene.remove(obj.wire); }
+                    else { scene.remove(obj.mesh); scene.remove(obj.wire); if (obj.diagWire) scene.remove(obj.diagWire); }
+                }
+                clearAllSelection();
+                data.forEach(d => {
+                    if (d.type === 'objgroup_warning') return;
+                    const pos = new THREE.Vector3(d.position.x, d.position.y, d.position.z);
+                    const rotation = { x: d.rotation.x, y: d.rotation.y, z: d.rotation.z };
+                    if (d.type === 'player') createPlayerModel(pos, d.color, rotation, false);
+                    else if (d.type === 'polygon' && d.vertices) {
+                        const verts = d.vertices.map(v => new THREE.Vector3(v.x, v.y, v.z));
+                        const newPoly = createPolygon(verts, d.color, false);
+                        if (newPoly) { newPoly.mesh.rotation.set(rotation.x, rotation.y, rotation.z); newPoly.wire.rotation.set(rotation.x, rotation.y, rotation.z); }
+                    } else createShape(d.type, pos, d.color, rotation, false);
+                });
+                updateCount();
+                recordLastSelection();
+                showStatus(`已${index < historyIndex ? '還原上一步' : '退回下一步'}`);
+            }
+
+            function undo() { if (historyIndex > 0) loadFromHistory(historyIndex - 1); else showStatus("沒有上一步可還原"); }
+            function redo() { if (historyIndex < history.length - 1) loadFromHistory(historyIndex + 1); else showStatus("沒有下一步可退回"); }
+
+            function createPolygon(worldVertices, color = selectedColor, saveHistoryFlag = true) {
+                if (worldVertices.length < 3) return null;
+                const flatVerts = worldVertices.map(v => new THREE.Vector3(v.x, 0, v.z));
+                const center = new THREE.Vector3();
+                flatVerts.forEach(v => center.add(v));
+                center.divideScalar(flatVerts.length);
+                const localVerts = flatVerts.map(v => v.clone().sub(center));
+                const shape = new THREE.Shape();
+                shape.moveTo(localVerts[0].x, localVerts[0].z);
+                for (let i = 1; i < localVerts.length; i++) shape.lineTo(localVerts[i].x, localVerts[i].z);
+                shape.closePath();
+                const extrudeSettings = { steps: 1, depth: 0.2, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 3 };
+                const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+                geometry.computeVertexNormals();
+                geometry.rotateX(-Math.PI / 2);
+                geometry.translate(0, 0.1, 0);
+                const mesh = new THREE.Mesh(geometry, getSurfaceMaterial(color, displayMode));
+                mesh.position.copy(center);
+                mesh.position.y = 0.1;
+                mesh.castShadow = shadowsEnabled;
+                mesh.receiveShadow = shadowsEnabled;
+                mesh.visible = displayMode !== 2;
+                mesh.rotation.set(0, 0, 0);
+                const edgesGeo = new THREE.EdgesGeometry(geometry);
+                const wire = new THREE.LineSegments(edgesGeo, getWireframeMaterial());
+                wire.position.copy(mesh.position);
+                wire.rotation.set(0, 0, 0);
+                wire.visible = wireframeVisible;
+                scene.add(mesh);
+                scene.add(wire);
+                const obj = { type: 'polygon', mesh, wire, position: mesh.position.clone(), color, isSelected: false,
+                    vertices: flatVerts, rotation: new THREE.Euler(0, 0, 0) };
+                objects.push(obj);
+                updateCount();
+                if (saveHistoryFlag) saveToHistory();
+                return obj;
+            }
+
+            function clearDrawingTemp() { tempPointsVisual.forEach(p => scene.remove(p)); tempPointsVisual = []; }
+
+            function finishDrawing() {
+                if (!isDrawingMode) return;
+                if ((drawingType === 'triangle' && drawingPoints.length === 3) || (drawingType === 'quad' && drawingPoints.length === 4)) {
+                    createPolygon(drawingPoints, selectedColor, true);
+                    showStatus(`已建立${drawingType === 'triangle' ? '三角形' : '四邊形'}`);
+                } else showStatus(`繪製失敗，需要${drawingType === 'triangle' ? 3 : 4}個頂點`);
+                isDrawingMode = false;
+                drawingPoints = [];
+                drawingType = null;
+                clearDrawingTemp();
+                document.getElementById('drawTriangleBtn').textContent = '△ 畫三角形';
+                document.getElementById('drawQuadBtn').textContent = '□ 畫四邊形';
+            }
+
+            function createShape(type, pos = null, color = selectedColor, rotation = { x: 0, y: 0, z: 0 }, saveHistory = true) {
+                let geo;
+                if (type === 'cube') geo = new THREE.BoxGeometry(baseSize, baseSize, baseSize);
+                else if (type === 'sphere') geo = new THREE.SphereGeometry(baseSize * 0.5, 28, 20);
+                else if (type === 'cone') geo = new THREE.ConeGeometry(baseSize * 0.5, baseSize * 1.4, 28, 1);
+                else if (type === 'pyramid') { const r = baseSize / Math.sqrt(2); geo = new THREE.ConeGeometry(r, baseSize, 4); geo.rotateY(Math.PI / 4); }
+                else if (type === 'cylinder') geo = new THREE.CylinderGeometry(baseSize * 0.5, baseSize * 0.5, baseSize, 28, 1);
+                else if (type === 'halfCylinder') geo = new THREE.CylinderGeometry(baseSize * 0.5, baseSize * 0.5, baseSize, 28, 1, false, 0, Math.PI);
+                else if (type === 'triPrism') {
+                    const side = baseSize * Math.sqrt(4 / 3);
+                    const shp = new THREE.Shape();
+                    shp.moveTo(-side / 2, 0);
+                    shp.lineTo(side / 2, 0);
+                    shp.lineTo(0, (side * Math.sqrt(3)) / 2);
+                    geo = new THREE.ExtrudeGeometry(shp, { depth: baseSize, bevelEnabled: false });
+                    geo.rotateX(-Math.PI / 2);
+                    geo.translate(0, baseSize / 2, 0);
+                } else if (type === 'floor') {
+                    geo = new THREE.BoxGeometry(baseSize, 0.2, baseSize);
+                    if (!pos) pos = getNextPosition();
+                    pos.y = 0.1;
+                    color = 0xcccccc;
+                }
+                if (!pos) pos = getNextPosition();
+                const mesh = new THREE.Mesh(geo, getSurfaceMaterial(color, displayMode));
+                mesh.position.copy(pos);
+                mesh.rotation.set(rotation.x, rotation.y, rotation.z);
+                mesh.castShadow = shadowsEnabled;
+                mesh.receiveShadow = shadowsEnabled;
+                mesh.visible = displayMode !== 2;
+                const wire = new THREE.LineSegments(new THREE.EdgesGeometry(geo), getWireframeMaterial());
+                wire.position.copy(pos);
+                wire.rotation.set(rotation.x, rotation.y, rotation.z);
+                wire.visible = wireframeVisible;
+                let diag = null;
+                if (type === 'cube' && diagonalsVisible) {
+                    diag = new THREE.LineSegments(new THREE.WireframeGeometry(geo), getWireframeMaterial());
+                    diag.material.color.set(0x555555);
+                    diag.position.copy(pos);
+                    diag.rotation.copy(wire.rotation);
+                    diag.visible = wireframeVisible;
+                    scene.add(diag);
+                }
+                scene.add(mesh);
+                scene.add(wire);
+                const obj = { type, mesh, wire, diagWire: diag, position: pos.clone(), color, isSelected: false,
+                    rotation: new THREE.Euler(rotation.x, rotation.y, rotation.z) };
+                objects.push(obj);
+                updateCount();
+                if (saveHistory) saveToHistory();
+                return obj;
+            }
+
+            function getNextPosition() {
+                if (objects.length === 0) return new THREE.Vector3(0, baseSize / 2, 0);
+                for (let i = 0; i < 30; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = (Math.floor(Math.random() * 5) + 1) * moveStep;
+                    const x = Math.round(Math.cos(angle) * dist / moveStep) * moveStep;
+                    const z = Math.round(Math.sin(angle) * dist / moveStep) * moveStep;
+                    const p = new THREE.Vector3(x, baseSize / 2, z);
+                    if (!objects.some(o => o.position.distanceTo(p) < baseSize * 0.75)) return p;
+                }
+                return new THREE.Vector3((Math.random() - 0.5) * 40, baseSize / 2, (Math.random() - 0.5) * 40);
+            }
+
+            function createPlayerModel(pos = null, color = 0xff0000, rotation = { x: 0, y: 0, z: 0 }, saveHistory = true) {
+                if (!pos) pos = new THREE.Vector3(0, 0.75, 0);
+                const group = new THREE.Group();
+                const scale = 0.5;
+                const bodyGeo = new THREE.CylinderGeometry(0.8 * scale, 0.8 * scale, 2 * scale, 16);
+                const body = new THREE.Mesh(bodyGeo, getSurfaceMaterial(0x00ff00, displayMode));
+                body.position.y = 1 * scale;
+                group.add(body);
+                const headGeo = new THREE.SphereGeometry(0.6 * scale, 16, 16);
+                const head = new THREE.Mesh(headGeo, getSurfaceMaterial(0xff0000, displayMode));
+                head.position.y = 2.2 * scale;
+                group.add(head);
+                const armGeo = new THREE.CylinderGeometry(0.3 * scale, 0.3 * scale, 1.5 * scale, 16);
+                const leftArm = new THREE.Mesh(armGeo, getSurfaceMaterial(0x00ff00, displayMode));
+                leftArm.position.set(-1 * scale, 1.5 * scale, 0);
+                group.add(leftArm);
+                const rightArm = leftArm.clone();
+                rightArm.position.x = 1 * scale;
+                group.add(rightArm);
+                const legGeo = new THREE.CylinderGeometry(0.4 * scale, 0.4 * scale, 1.5 * scale, 16);
+                const leftLeg = new THREE.Mesh(legGeo, getSurfaceMaterial(0x00ff00, displayMode));
+                leftLeg.position.set(-0.5 * scale, 0.25 * scale, 0);
+                group.add(leftLeg);
+                const rightLeg = leftLeg.clone();
+                rightLeg.position.x = 0.5 * scale;
+                group.add(rightLeg);
+                group.position.copy(pos);
+                group.rotation.set(rotation.x, rotation.y, rotation.z);
+                group.traverse(child => { if (child.isMesh) { child.castShadow = shadowsEnabled; child.receiveShadow = shadowsEnabled; } });
+                scene.add(group);
+                const player = { type: 'player', group, position: pos.clone(), rotation: new THREE.Euler(rotation.x, rotation.y, rotation.z), color, isSelected: false };
+                objects.push(player);
+                updateCount();
+                if (saveHistory) saveToHistory();
+                return player;
+            }
+
+            function addPlayerModel() {
+                if (playerModel) { showStatus("只能有一個玩家角色"); return; }
+                playerModel = createPlayerModel(new THREE.Vector3(0, 0.75, 0));
+                showStatus("已新增玩家角色，按 Enter 進入操控模式");
+            }
+
+            function togglePlayerMode() {
+                if (!playerModel) { showStatus("請先新增玩家角色"); return; }
+                playerMode = (playerMode + 1) % 3;
+                if (playerMode === 0) {
+                    document.exitPointerLock();
+                    orbitControls.enabled = true;
+                    camera.position.copy(designCameraPos);
+                    orbitControls.target.copy(designTarget);
+                    orbitControls.update();
+                    playerModel.group.visible = true;
+                    showStatus("返回設計模式");
+                } else {
+                    if (playerMode === 1) {
+                        designCameraPos.copy(camera.position);
+                        designTarget.copy(orbitControls.target);
+                        orbitControls.enabled = false;
+                        renderer.domElement.requestPointerLock();
+                        playerModel.group.visible = true;
+                        showStatus("進入越肩視角模式：W S 前後移動, F 上升, Space 下降, A 左轉, D 右轉, 鼠標控制視角，按 Enter 切換");
+                    } else if (playerMode === 2) {
+                        playerModel.group.visible = false;
+                        showStatus("進入第一人稱視角模式：W S 前後移動, F 上升, Space 下降, A 左轉, D 右轉, 鼠標控制視角，按 Enter 切換");
+                    }
+                }
+            }
+
+            function updatePlayer(delta) {
+                if (playerMode === 0 || !playerModel) return;
+                const forward = new THREE.Vector3(0, 0, -1).applyEuler(playerModel.rotation);
+                forward.y = 0;
+                forward.normalize();
+                const right = new THREE.Vector3(1, 0, 0).applyEuler(playerModel.rotation);
+                right.y = 0;
+                right.normalize();
+                const direction = new THREE.Vector3();
+                if (keys['w']) direction.add(forward);
+                if (keys['s']) direction.sub(forward);
+                if (keys['f']) direction.y += 1;
+                if (keys[' ']) direction.y -= 1;
+                if (keys['a']) playerModel.rotation.y += rotationSpeed;
+                if (keys['d']) playerModel.rotation.y -= rotationSpeed;
+                if (direction.lengthSq() > 0) {
+                    const velocity = direction.normalize().multiplyScalar(moveSpeed * delta);
+                    let proposed = playerModel.position.clone();
+                    proposed.x += velocity.x;
+                    if (!checkCollision(proposed)) playerModel.position.x += velocity.x;
+                    proposed = playerModel.position.clone();
+                    proposed.y += velocity.y;
+                    if (!checkCollision(proposed)) playerModel.position.y += velocity.y;
+                    proposed = playerModel.position.clone();
+                    proposed.z += velocity.z;
+                    if (!checkCollision(proposed)) playerModel.position.z += velocity.z;
+                    playerModel.group.position.copy(playerModel.position);
+                }
+                playerModel.group.rotation.y = playerModel.rotation.y;
+                if (playerMode === 1) {
+                    const shoulderOffset = new THREE.Vector3(0, 1.5, 3);
+                    const rotatedOffset = shoulderOffset.clone().applyEuler(playerModel.rotation);
+                    camera.position.copy(playerModel.position).add(rotatedOffset);
+                    const lookAtPos = playerModel.position.clone().add(new THREE.Vector3(0, 1, 0));
+                    camera.lookAt(lookAtPos);
+                } else if (playerMode === 2) {
+                    const headOffset = new THREE.Vector3(0, 1.1, 0);
+                    camera.position.copy(playerModel.position).add(headOffset);
+                    camera.rotation.copy(playerModel.rotation);
+                }
+            }
+
+            function checkCollision(proposedPos) {
+                const playerBox = new THREE.Box3();
+                playerBox.setFromCenterAndSize(proposedPos, new THREE.Vector3(0.75, 1.5, 0.75));
+                for (let obj of objects) {
+                    if (obj === playerModel || obj.type === 'floor') continue;
+                    let objBox;
+                    if (obj.type === 'player') objBox = new THREE.Box3().setFromObject(obj.group);
+                    else if (obj.type === 'objgroup') objBox = new THREE.Box3().setFromObject(obj.group);
+                    else objBox = new THREE.Box3().setFromObject(obj.mesh);
+                    if (playerBox.intersectsBox(objBox)) return true;
+                }
+                return false;
+            }
+
+            function selectObject(obj, multi = false) {
+                if (!multi) {
+                    clearAllSelection();
+                    obj.isSelected = true;
+                    if (obj.type === 'player') {
+                        obj.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(obj.color, displayMode, true); });
+                    } else if (obj.type === 'objgroup') {
+                        obj.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(obj.color, displayMode, true); });
+                        if (obj.boundingWire) obj.boundingWire.material.color.setHex(0xff4444);
+                    } else {
+                        obj.mesh.material = getSurfaceMaterial(obj.color, displayMode, true);
+                    }
+                    selected = obj;
+                    selectedObjects = [obj];
+                    if (obj.mesh) {
+                        freeRotateY = obj.mesh.rotation.y * 180 / Math.PI;
+                        freeRotateX = obj.mesh.rotation.x * 180 / Math.PI;
+                    } else if (obj.type === 'player') {
+                        freeRotateY = obj.group.rotation.y * 180 / Math.PI;
+                        freeRotateX = obj.group.rotation.x * 180 / Math.PI;
+                    } else if (obj.type === 'objgroup') {
+                        freeRotateY = obj.group.rotation.y * 180 / Math.PI;
+                        freeRotateX = obj.group.rotation.x * 180 / Math.PI;
+                    }
+                    updateRotationSliders();
+                    clearGroupRotationState();
+                } else {
+                    const idx = selectedObjects.indexOf(obj);
+                    if (idx === -1) {
+                        obj.isSelected = true;
+                        if (obj.type === 'player') {
+                            obj.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(obj.color, displayMode, true); });
+                        } else if (obj.type === 'objgroup') {
+                            obj.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(obj.color, displayMode, true); });
+                            if (obj.boundingWire) obj.boundingWire.material.color.setHex(0xff4444);
+                        } else {
+                            obj.mesh.material = getSurfaceMaterial(obj.color, displayMode, true);
+                        }
+                        selectedObjects.push(obj);
+                        selected = obj;
+                    } else {
+                        obj.isSelected = false;
+                        if (obj.type === 'player') {
+                            obj.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(obj.color, displayMode); });
+                        } else if (obj.type === 'objgroup') {
+                            obj.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(obj.color, displayMode); });
+                            if (obj.boundingWire) obj.boundingWire.material.color.setHex(0x000000);
+                        } else {
+                            obj.mesh.material = getSurfaceMaterial(obj.color, displayMode);
+                        }
+                        selectedObjects.splice(idx, 1);
+                        if (selected === obj) selected = selectedObjects.length > 0 ? selectedObjects[selectedObjects.length - 1] : null;
+                    }
+                    if (selectedObjects.length > 1) {
+                        clearGroupRotationState();
+                        updateRotationSlidersToZero();
+                    } else if (selectedObjects.length === 1) {
+                        const sObj = selectedObjects[0];
+                        if (sObj.mesh) {
+                            freeRotateY = sObj.mesh.rotation.y * 180 / Math.PI;
+                            freeRotateX = sObj.mesh.rotation.x * 180 / Math.PI;
+                        } else if (sObj.type === 'player' || sObj.type === 'objgroup') {
+                            freeRotateY = sObj.group.rotation.y * 180 / Math.PI;
+                            freeRotateX = sObj.group.rotation.x * 180 / Math.PI;
+                        }
+                        updateRotationSliders();
+                        clearGroupRotationState();
+                    }
+                }
+                recordLastSelection();
+            }
+
+            function updateRotationSliders() {
+                const ySlider = document.getElementById('rotateYSlider');
+                const xSlider = document.getElementById('rotateXSlider');
+                const yVal = document.getElementById('rotateYValue');
+                const xVal = document.getElementById('rotateXValue');
+                if (ySlider) { ySlider.value = Math.round(freeRotateY); yVal.textContent = Math.round(freeRotateY) + '°'; }
+                if (xSlider) { xSlider.value = Math.round(freeRotateX); xVal.textContent = Math.round(freeRotateX) + '°'; }
+            }
+
+            function updateRotationSlidersToZero() {
+                const ySlider = document.getElementById('rotateYSlider');
+                const xSlider = document.getElementById('rotateXSlider');
+                const yVal = document.getElementById('rotateYValue');
+                const xVal = document.getElementById('rotateXValue');
+                if (ySlider) { ySlider.value = 0; yVal.textContent = '0°'; }
+                if (xSlider) { xSlider.value = 0; xVal.textContent = '0°'; }
+            }
+
+            function clearAllSelection() {
+                selectedObjects.forEach(o => {
+                    o.isSelected = false;
+                    if (o.type === 'player') {
+                        o.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(o.color, displayMode); });
+                    } else if (o.type === 'objgroup') {
+                        o.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(o.color, displayMode); });
+                        if (o.boundingWire) o.boundingWire.material.color.setHex(0x000000);
+                    } else {
+                        o.mesh.material = getSurfaceMaterial(o.color, displayMode);
+                    }
+                });
+                selectedObjects = [];
+                selected = null;
+                clearGroupRotationState();
+            }
+
+            function deselectAll() { clearAllSelection(); recordLastSelection(); }
+
+            function selectAll() {
+                if (objects.length === 0) { showStatus("場景中沒有物件"); return; }
+                suppressLastSelectionUpdate = true;
+                clearAllSelection();
+                objects.forEach(obj => selectObject(obj, true));
+                suppressLastSelectionUpdate = false;
+                lastSelectedObjects = selectedObjects.slice();
+                showStatus(`已選取全部 ${selectedObjects.length} 個物件`);
+            }
+
+            function selectLayer() {
+                if (!selected) { showStatus("請先選取至少一個物件"); return; }
+                const targetY = selected.position.y;
+                clearAllSelection();
+                objects.forEach(o => { if (Math.abs(o.position.y - targetY) < 0.1 && o.type !== 'floor') selectObject(o, true); });
+                recordLastSelection();
+                showStatus("已選擇全層");
+            }
+
+            function selectAbove() {
+                if (selectedObjects.length === 0) { showStatus("請先選取至少一個物件"); return; }
+                const toAdd = [];
+                selectedObjects.forEach(baseObj => {
+                    const baseX = baseObj.position.x, baseY = baseObj.position.y, baseZ = baseObj.position.z;
+                    objects.forEach(o => {
+                        if (Math.abs(o.position.x - baseX) < 0.1 && Math.abs(o.position.z - baseZ) < 0.1 && o.position.y >= baseY - 0.1 && o.type !== 'floor') {
+                            if (!selectedObjects.includes(o)) toAdd.push(o);
+                        }
+                    });
+                });
+                toAdd.forEach(o => selectObject(o, true));
+                recordLastSelection();
+                showStatus("已選擇選中物件及往上的所有物件");
+            }
+
+            function removeSelected() {
+                if (selectedObjects.length === 0) return;
+                for (let i = selectedObjects.length - 1; i >= 0; i--) {
+                    const obj = selectedObjects[i];
+                    if (obj.type === 'player') scene.remove(obj.group);
+                    else if (obj.type === 'objgroup') { scene.remove(obj.group); if (obj.boundingWire) scene.remove(obj.boundingWire); }
+                    else if (obj.type === 'polygon') { scene.remove(obj.mesh); scene.remove(obj.wire); }
+                    else { scene.remove(obj.mesh); scene.remove(obj.wire); if (obj.diagWire) scene.remove(obj.diagWire); }
+                    const idx = objects.indexOf(obj); if (idx !== -1) objects.splice(idx, 1);
+                    if (obj === playerModel) playerModel = null;
+                }
+                selected = null;
+                selectedObjects = [];
+                updateCount();
+                saveToHistory();
+                recordLastSelection();
+                showStatus("已刪除選中物件");
+            }
+
+            function removeLast() {
+                if (!objects.length) return;
+                const last = objects.pop();
+                if (last.type === 'player') scene.remove(last.group);
+                else if (last.type === 'objgroup') { scene.remove(last.group); if (last.boundingWire) scene.remove(last.boundingWire); }
+                else if (last.type === 'polygon') { scene.remove(last.mesh); scene.remove(last.wire); }
+                else { scene.remove(last.mesh); scene.remove(last.wire); if (last.diagWire) scene.remove(last.diagWire); }
+                const idx = selectedObjects.indexOf(last); if (idx !== -1) selectedObjects.splice(idx, 1);
+                if (selected === last) selected = (selectedObjects.length > 0) ? selectedObjects[selectedObjects.length - 1] : null;
+                if (last === playerModel) playerModel = null;
+                updateCount();
+                saveToHistory();
+                recordLastSelection();
+            }
+
+            function duplicate(dir) {
+                if (selectedObjects.length === 0) { showStatus("請先選取至少一個物件"); return; }
+                const newObjects = [];
+                let dx = 0, dy = 0, dz = 0;
+                switch (dir) {
+                    case 'right': dx = baseSize; break;
+                    case 'left': dx = -baseSize; break;
+                    case 'backward': dz = baseSize; break;
+                    case 'forward': dz = -baseSize; break;
+                    case 'upward': dy = baseSize; break;
+                }
+                selectedObjects.forEach(obj => {
+                    const newPos = obj.position.clone();
+                    newPos.x += dx; newPos.y += dy; newPos.z += dz;
+                    const blocking = objects.find(o => o.position.equals(newPos));
+                    if (blocking) {
+                        if (blocking.type === 'player') scene.remove(blocking.group);
+                        else if (blocking.type === 'objgroup') { scene.remove(blocking.group); if (blocking.boundingWire) scene.remove(blocking.boundingWire); }
+                        else if (blocking.type === 'polygon') { scene.remove(blocking.mesh); scene.remove(blocking.wire); }
+                        else { scene.remove(blocking.mesh); scene.remove(blocking.wire); if (blocking.diagWire) scene.remove(blocking.diagWire); }
+                        const idx = objects.indexOf(blocking); if (idx !== -1) objects.splice(idx, 1);
+                        const selIdx = selectedObjects.indexOf(blocking); if (selIdx !== -1) selectedObjects.splice(selIdx, 1);
+                    }
+                    let rotX = 0, rotY = 0, rotZ = 0;
+                    if (obj.type === 'player') {
+                        rotX = obj.group.rotation.x;
+                        rotY = obj.group.rotation.y;
+                        rotZ = obj.group.rotation.z;
+                    } else if (obj.type === 'objgroup') {
+                        rotX = obj.group.rotation.x;
+                        rotY = obj.group.rotation.y;
+                        rotZ = obj.group.rotation.z;
+                    } else {
+                        rotX = obj.mesh.rotation.x;
+                        rotY = obj.mesh.rotation.y;
+                        rotZ = obj.mesh.rotation.z;
+                    }
+                    const rotation = { x: rotX, y: rotY, z: rotZ };
+                    let newObj;
+                    if (obj.type === 'player') {
+                        newObj = createPlayerModel(newPos, obj.color, rotation, false);
+                    } else if (obj.type === 'objgroup') {
+                        const clonedGroup = obj.group.clone();
+                        clonedGroup.position.copy(newPos);
+                        clonedGroup.rotation.set(rotX, rotY, rotZ);
+                        scene.add(clonedGroup);
+                        const boundingWire = createBoundingWire(clonedGroup);
+                        if (boundingWire) scene.add(boundingWire);
+                        newObj = { type: 'objgroup', group: clonedGroup, boundingWire: boundingWire, position: newPos.clone(), color: obj.color, isSelected: false, rotation: new THREE.Euler(rotX, rotY, rotZ) };
+                    } else if (obj.type === 'polygon' && obj.vertices) {
+                        const offsetVec = new THREE.Vector3(dx, dy, dz);
+                        const newVerts = obj.vertices.map(v => v.clone().add(offsetVec));
+                        newObj = createPolygon(newVerts, obj.color, false);
+                        if (newObj) {
+                            newObj.mesh.rotation.set(rotX, rotY, rotZ);
+                            newObj.wire.rotation.set(rotX, rotY, rotZ);
+                        }
+                    } else {
+                        newObj = createShape(obj.type, newPos, obj.color, rotation, false);
+                    }
+                    if (newObj) newObjects.push(newObj);
+                });
+                clearAllSelection();
+                newObjects.forEach(o => selectObject(o, true));
+                recordLastSelection();
+                saveToHistory();
+            }
+
+            function duplicateLayer() {
+                if (objects.length === 0) { showStatus("場景中沒有物件"); return; }
+                let maxY = -Infinity;
+                objects.forEach(obj => { if (obj.position.y > maxY && obj.type !== 'floor') maxY = obj.position.y; });
+                const currentLayerObjects = objects.filter(obj => Math.abs(obj.position.y - maxY) < 0.1 && obj.type !== 'floor');
+                if (currentLayerObjects.length === 0) { showStatus("沒有找到任何物件在當前層"); return; }
+                const newObjects = [];
+                const offsetY = baseSize;
+                currentLayerObjects.forEach(obj => {
+                    const newPos = obj.position.clone();
+                    newPos.y += offsetY;
+                    const blocking = objects.find(o => o.position.equals(newPos));
+                    if (blocking) {
+                        if (blocking.type === 'player') scene.remove(blocking.group);
+                        else if (blocking.type === 'objgroup') { scene.remove(blocking.group); if (blocking.boundingWire) scene.remove(blocking.boundingWire); }
+                        else if (blocking.type === 'polygon') { scene.remove(blocking.mesh); scene.remove(blocking.wire); }
+                        else { scene.remove(blocking.mesh); scene.remove(blocking.wire); if (blocking.diagWire) scene.remove(blocking.diagWire); }
+                        const idx = objects.indexOf(blocking); if (idx !== -1) objects.splice(idx, 1);
+                        const selIdx = selectedObjects.indexOf(blocking); if (selIdx !== -1) selectedObjects.splice(selIdx, 1);
+                    }
+                    let rotX = 0, rotY = 0, rotZ = 0;
+                    if (obj.type === 'player') {
+                        rotX = obj.group.rotation.x;
+                        rotY = obj.group.rotation.y;
+                        rotZ = obj.group.rotation.z;
+                    } else if (obj.type === 'objgroup') {
+                        rotX = obj.group.rotation.x;
+                        rotY = obj.group.rotation.y;
+                        rotZ = obj.group.rotation.z;
+                    } else {
+                        rotX = obj.mesh.rotation.x;
+                        rotY = obj.mesh.rotation.y;
+                        rotZ = obj.mesh.rotation.z;
+                    }
+                    const rotation = { x: rotX, y: rotY, z: rotZ };
+                    let newObj;
+                    if (obj.type === 'player') {
+                        newObj = createPlayerModel(newPos, obj.color, rotation, false);
+                    } else if (obj.type === 'objgroup') {
+                        const clonedGroup = obj.group.clone();
+                        clonedGroup.position.copy(newPos);
+                        clonedGroup.rotation.set(rotX, rotY, rotZ);
+                        scene.add(clonedGroup);
+                        const boundingWire = createBoundingWire(clonedGroup);
+                        if (boundingWire) scene.add(boundingWire);
+                        newObj = { type: 'objgroup', group: clonedGroup, boundingWire: boundingWire, position: newPos.clone(), color: obj.color, isSelected: false, rotation: new THREE.Euler(rotX, rotY, rotZ) };
+                    } else if (obj.type === 'polygon' && obj.vertices) {
+                        const offsetVec = new THREE.Vector3(0, offsetY, 0);
+                        const newVerts = obj.vertices.map(v => v.clone().add(offsetVec));
+                        newObj = createPolygon(newVerts, obj.color, false);
+                        if (newObj) {
+                            newObj.mesh.rotation.set(rotX, rotY, rotZ);
+                            newObj.wire.rotation.set(rotX, rotY, rotZ);
+                        }
+                    } else {
+                        newObj = createShape(obj.type, newPos, obj.color, rotation, false);
+                    }
+                    if (newObj) newObjects.push(newObj);
+                });
+                clearAllSelection();
+                newObjects.forEach(o => selectObject(o, true));
+                recordLastSelection();
+                saveToHistory();
+            }
+
+            function move(dir) {
+                if (selectedObjects.length === 0) return;
+                let dx = 0, dz = 0, dy = 0;
+                switch (dir.toLowerCase()) {
+                    case 'w': dz = -moveStep; break;
+                    case 's': dz = moveStep; break;
+                    case 'a': dx = -moveStep; break;
+                    case 'd': dx = moveStep; break;
+                    case 'r': dy = moveStep; break;
+                    case 'f': dy = -moveStep; break;
+                    default: return;
+                }
+                let canMove = true;
+                for (let obj of selectedObjects) {
+                    const newPos = obj.position.clone().add(new THREE.Vector3(dx, dy, dz));
+                    if (dy !== 0 && newPos.y < (obj.type === 'polygon' ? 0.1 : baseSize / 2)) { canMove = false; break; }
+                    for (let other of objects) {
+                        if (selectedObjects.includes(other)) continue;
+                        if (Math.abs(newPos.x - other.position.x) < baseSize * 0.7 &&
+                            Math.abs(newPos.z - other.position.z) < baseSize * 0.7 &&
+                            Math.abs(newPos.y - other.position.y) < baseSize * 0.7) { canMove = false; break; }
+                    }
+                    if (!canMove) break;
+                }
+                if (!canMove) return;
+                for (let obj of selectedObjects) {
+                    obj.position.x += dx; obj.position.y += dy; obj.position.z += dz;
+                    if (obj.type === 'player') obj.group.position.copy(obj.position);
+                    else if (obj.type === 'objgroup') {
+                        obj.group.position.copy(obj.position);
+                        if (obj.boundingWire) obj.boundingWire.position.copy(obj.position);
+                    } else if (obj.type === 'polygon') {
+                        obj.mesh.position.copy(obj.position);
+                        obj.wire.position.copy(obj.position);
+                        if (obj.vertices) obj.vertices = obj.vertices.map(v => v.clone().add(new THREE.Vector3(dx, dy, dz)));
+                    } else {
+                        obj.mesh.position.copy(obj.position);
+                        obj.wire.position.copy(obj.position);
+                        if (obj.diagWire) obj.diagWire.position.copy(obj.position);
+                    }
+                }
+                saveToHistory();
+            }
+
+            function applyFreeRotationY(degrees) {
+                if (!selectedObjects.length) return;
+                if (selectedObjects.length === 1 && selected) {
+                    const rad = degrees * Math.PI / 180;
+                    if (selected.type === 'player') { selected.rotation.y = rad; selected.group.rotation.y = rad; }
+                    else if (selected.type === 'objgroup') { selected.rotation.y = rad; selected.group.rotation.y = rad; if (selected.boundingWire) selected.boundingWire.rotation.y = rad; }
+                    else { selected.mesh.rotation.y = rad; selected.wire.rotation.y = rad; if (selected.diagWire) selected.diagWire.rotation.y = rad; }
+                    freeRotateY = degrees;
+                    return;
+                }
+                if (!groupRotationState) initGroupRotationState();
+                if (groupRotationState) applyGroupRotation(degrees, groupRotationState.currentX);
+            }
+
+            function applyFreeRotationX(degrees) {
+                if (!selectedObjects.length) return;
+                if (selectedObjects.length === 1 && selected) {
+                    const rad = degrees * Math.PI / 180;
+                    if (selected.type === 'player') { selected.rotation.x = rad; selected.group.rotation.x = rad; }
+                    else if (selected.type === 'objgroup') { selected.rotation.x = rad; selected.group.rotation.x = rad; if (selected.boundingWire) selected.boundingWire.rotation.x = rad; }
+                    else { selected.mesh.rotation.x = rad; selected.wire.rotation.x = rad; if (selected.diagWire) selected.diagWire.rotation.x = rad; }
+                    freeRotateX = degrees;
+                    return;
+                }
+                if (!groupRotationState) initGroupRotationState();
+                if (groupRotationState) applyGroupRotation(groupRotationState.currentY, degrees);
+            }
+
+            function finalizeRotation() {
+                if (rotateTimeout) clearTimeout(rotateTimeout);
+                rotateTimeout = setTimeout(() => { if (selectedObjects.length) saveToHistory(); }, 300);
+            }
+
+            function flipGroupHorizontal() {
+                if (selectedObjects.length === 0) { showStatus("請先選取物件"); return; }
+                for (let obj of selectedObjects) {
+                    if (obj.type === 'player') { showStatus("玩家角色不支援翻轉"); return; }
+                    if (obj.type === 'polygon') { showStatus("多邊形不支援翻轉 (可使用旋轉)"); return; }
+                }
+                if (!groupRotationState) initGroupRotationState();
+                if (!groupRotationState) return;
+                const newY = groupRotationState.currentY + 90;
+                applyGroupRotation(newY, groupRotationState.currentX);
+                updateRotationSlidersForGroup();
+                saveToHistory();
+                showStatus("整體水平翻轉 90°");
+            }
+
+            function flipGroupVertical() {
+                if (selectedObjects.length === 0) { showStatus("請先選取物件"); return; }
+                for (let obj of selectedObjects) {
+                    if (obj.type === 'player' || obj.type === 'polygon') { showStatus("此物件類型不支援垂直翻轉"); return; }
+                }
+                if (!groupRotationState) initGroupRotationState();
+                if (!groupRotationState) return;
+                const newX = groupRotationState.currentX + 90;
+                applyGroupRotation(groupRotationState.currentY, newX);
+                updateRotationSlidersForGroup();
+                saveToHistory();
+                showStatus("整體垂直翻轉 90°");
+            }
+
+            function updateRotationSlidersForGroup() {
+                const ySlider = document.getElementById('rotateYSlider');
+                const xSlider = document.getElementById('rotateXSlider');
+                const yVal = document.getElementById('rotateYValue');
+                const xVal = document.getElementById('rotateXValue');
+                if (ySlider) { ySlider.value = Math.round(multiGroupRotY); yVal.textContent = Math.round(multiGroupRotY) + '°'; }
+                if (xSlider) { xSlider.value = Math.round(multiGroupRotX); xVal.textContent = Math.round(multiGroupRotX) + '°'; }
+            }
+
+            function flipVerticalOld() { if (selectedObjects.length) flipGroupVertical(); else showStatus("請先選取物件"); }
+            function flipHorizontalOld() { if (selectedObjects.length) flipGroupHorizontal(); else showStatus("請先選取物件"); }
+
+            function addFloor() { createShape('floor'); }
+
+            function generateWalls() {
+                const floorPositions = new Set();
+                objects.filter(o => o.type === 'floor').forEach(o => {
+                    const key = `${Math.round(o.position.x / baseSize)},${Math.round(o.position.z / baseSize)}`;
+                    floorPositions.add(key);
+                });
+                const directions = [
+                    new THREE.Vector3(baseSize, 0, 0), new THREE.Vector3(-baseSize, 0, 0),
+                    new THREE.Vector3(0, 0, baseSize), new THREE.Vector3(0, 0, -baseSize),
+                ];
+                const newWalls = [];
+                objects.filter(o => o.type === 'floor').forEach(floor => {
+                    directions.forEach(dir => {
+                        const neighborPos = floor.position.clone().add(dir);
+                        const neighborKey = `${Math.round(neighborPos.x / baseSize)},${Math.round(neighborPos.z / baseSize)}`;
+                        if (!floorPositions.has(neighborKey)) {
+                            const wallPos = neighborPos.clone();
+                            wallPos.y = baseSize / 2;
+                            if (!objects.some(o => o.position.equals(wallPos))) {
+                                const newWall = createShape('cube', wallPos, 0x888888, { x: 0, y: 0, z: 0 }, false);
+                                newWalls.push(newWall);
+                            }
+                        }
+                    });
+                });
+                saveToHistory();
+                showStatus(`已生成 ${newWalls.length} 個牆壁`);
+            }
+
+            function updateDisplayMode() {
+                displayMode = (displayMode + 1) % 3;
+                const texts = ['不透明表面 + 線框', '半透明表面 + 線框', '純線框'];
+                document.getElementById('toggleDisplayMode').textContent = '✨ ' + texts[displayMode];
+                objects.forEach(o => {
+                    if (o.type === 'player') {
+                        o.group.traverse(child => { if (child.isMesh) { child.material = getSurfaceMaterial(o.color, displayMode, o.isSelected); child.visible = displayMode !== 2; } });
+                    } else if (o.type === 'objgroup') {
+                        o.group.traverse(child => { if (child.isMesh) { child.material = getSurfaceMaterial(o.color, displayMode, o.isSelected); child.visible = displayMode !== 2; } });
+                        if (o.boundingWire) o.boundingWire.visible = wireframeVisible;
+                    } else {
+                        o.mesh.material = getSurfaceMaterial(o.color, displayMode, o.isSelected);
+                        o.mesh.visible = displayMode !== 2;
+                        o.wire.visible = wireframeVisible;
+                        if (o.diagWire) o.diagWire.visible = wireframeVisible;
+                    }
+                });
+            }
+
+            function toggleGrid() { gridVisible = !gridVisible; grid.visible = gridVisible; directionArrows.forEach(a => a.visible = gridVisible); document.getElementById('toggleGrid').textContent = gridVisible ? '📏 隱藏格線' : '📏 顯示格線'; }
+            function toggleDiagonals() {
+                diagonalsVisible = !diagonalsVisible;
+                objects.forEach(o => {
+                    if (o.type !== 'cube') return;
+                    if (o.diagWire) scene.remove(o.diagWire);
+                    o.diagWire = null;
+                    if (diagonalsVisible) {
+                        const geo = new THREE.BoxGeometry(baseSize, baseSize, baseSize);
+                        o.diagWire = new THREE.LineSegments(new THREE.WireframeGeometry(geo), getWireframeMaterial());
+                        o.diagWire.material.color.set(0x555555);
+                        o.diagWire.position.copy(o.position);
+                        o.diagWire.rotation.copy(o.wire.rotation);
+                        o.diagWire.visible = wireframeVisible;
+                        scene.add(o.diagWire);
+                    }
+                });
+                document.getElementById('toggleDiagonals').textContent = diagonalsVisible ? '📐 隱藏對角線' : '📐 顯示對角線';
+            }
+            function toggleShadows() {
+                shadowsEnabled = !shadowsEnabled;
+                directionalLight.castShadow = shadowsEnabled;
+                objects.forEach(o => {
+                    if (o.type === 'player') o.group.traverse(child => { if (child.isMesh) { child.castShadow = shadowsEnabled; child.receiveShadow = shadowsEnabled; } });
+                    else if (o.type === 'objgroup') o.group.traverse(child => { if (child.isMesh) { child.castShadow = shadowsEnabled; child.receiveShadow = shadowsEnabled; } });
+                    else { o.mesh.castShadow = shadowsEnabled; o.mesh.receiveShadow = shadowsEnabled; }
+                });
+                document.getElementById('toggleShadows').textContent = shadowsEnabled ? '🌓 隱藏陰影' : '🌓 顯示陰影';
+            }
+            function toggleWireframe() {
+                wireframeVisible = !wireframeVisible;
+                document.getElementById('toggleWireframe').textContent = wireframeVisible ? '🔲 隱藏線框' : '🔲 顯示線框';
+                objects.forEach(o => { 
+                    if (o.type !== 'player' && o.type !== 'objgroup') { 
+                        o.wire.visible = wireframeVisible; 
+                        if (o.diagWire) o.diagWire.visible = wireframeVisible; 
+                    } else if (o.type === 'objgroup' && o.boundingWire) {
+                        o.boundingWire.visible = wireframeVisible;
+                    }
+                });
+            }
+            function toggleUI() { 
+                uiVisible = !uiVisible; 
+                const sidebar = document.getElementById('sidebar'); 
+                if (uiVisible) sidebar.classList.remove('hidden-sidebar');
+                else sidebar.classList.add('hidden-sidebar');
+            }
+            function showStatus(msg) { const el = document.getElementById('statusMessage'); el.textContent = msg; el.classList.add('active'); setTimeout(() => el.classList.remove('active'), 2600); }
+            function updateCount() { document.getElementById('count').textContent = objects.length; }
+
+            function toggleMoveButtons() {
+                moveButtonsVisible = !moveButtonsVisible;
+                if (movePanel) {
+                    if (moveButtonsVisible) movePanel.classList.remove('hidden');
+                    else movePanel.classList.add('hidden');
+                }
+                if (toggleMoveBtn) toggleMoveBtn.textContent = moveButtonsVisible ? '🔘 隱藏移動按鈕' : '🔘 顯示移動按鈕';
+            }
+
+            function setFrontView() {
+                camera.position.set(0, 5, 20);
+                orbitControls.target.set(0, 0, 0);
+                orbitControls.update();
+                showStatus("正視圖 (前視)");
+            }
+            function setLeftView() {
+                camera.position.set(-20, 5, 0);
+                orbitControls.target.set(0, 0, 0);
+                orbitControls.update();
+                showStatus("左視圖");
+            }
+            function setTopView() {
+                camera.position.set(0, 20, 0.001);
+                orbitControls.target.set(0, 0, 0);
+                orbitControls.update();
+                showStatus("俯視圖 (上視)");
+            }
+
+            function saveJSON() {
+                const data = objects.map(o => {
+                    const base = { type: o.type, position: { x: o.position.x, y: o.position.y, z: o.position.z }, rotation: { x: o.rotation ? o.rotation.x : (o.mesh ? o.mesh.rotation.x : 0), y: o.rotation ? o.rotation.y : (o.mesh ? o.mesh.rotation.y : 0), z: o.rotation ? o.rotation.z : (o.mesh ? o.mesh.rotation.z : 0) }, color: o.color };
+                    if (o.type === 'polygon' && o.vertices) base.vertices = o.vertices.map(v => ({ x: v.x, y: v.y, z: v.z }));
+                    if (o.type === 'objgroup') base.type = 'objgroup_warning';
+                    return base;
+                });
+                const json = JSON.stringify(data, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.download = `scene_${Date.now()}.json`;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                showStatus('已儲存 JSON');
+            }
+
+            function mergeFromJSON(data) {
+                const newObjects = [];
+                data.forEach(d => {
+                    if (d.type === 'objgroup_warning') return;
+                    const pos = new THREE.Vector3(d.position.x, d.position.y, d.position.z);
+                    const rotation = { x: d.rotation.x, y: d.rotation.y, z: d.rotation.z };
+                    let newObj = null;
+                    if (d.type === 'player') {
+                        newObj = createPlayerModel(pos, d.color, rotation, false);
+                    } else if (d.type === 'polygon' && d.vertices) {
+                        const verts = d.vertices.map(v => new THREE.Vector3(v.x, v.y, v.z));
+                        newObj = createPolygon(verts, d.color, false);
+                        if (newObj) {
+                            newObj.mesh.rotation.set(rotation.x, rotation.y, rotation.z);
+                            newObj.wire.rotation.set(rotation.x, rotation.y, rotation.z);
+                        }
+                    } else {
+                        newObj = createShape(d.type, pos, d.color, rotation, false);
+                    }
+                    if (newObj) newObjects.push(newObj);
+                });
+                if (newObjects.length > 0) {
+                    clearAllSelection();
+                    newObjects.forEach(obj => selectObject(obj, true));
+                    saveToHistory();
+                    showStatus(`已合併載入 ${newObjects.length} 個新物件`);
+                } else {
+                    showStatus("檔案中沒有可合併的物件");
+                }
+            }
+
+            function loadJSON() { document.getElementById('fileInput').click(); }
+
+            function exportOBJFor3DPrint() {
+                let scaleFactor = 1.0;
+                const input = prompt("請輸入匯出縮放倍率 (1 = 1單位 = 1公分)\n例如：\n- 1.0 → 原尺寸 (邊長2的方塊輸出2cm)\n- 0.5 → 縮小一半 (邊長2的方塊輸出1cm)\n- 2.0 → 放大一倍 (邊長2的方塊輸出4cm)", "1.0");
+                if (input === null) return;
+                scaleFactor = parseFloat(input);
+                if (isNaN(scaleFactor) || scaleFactor <= 0) {
+                    showStatus("無效的倍率，使用預設 1.0");
+                    scaleFactor = 1.0;
+                }
+                scene.updateMatrixWorld(true);
+                let objContent = "";
+                let vertexOffset = 1;
+                let objectIndex = 0;
+
+                function processMesh(mesh, objectName) {
+                    if (!mesh.isMesh) return;
+                    const geometry = mesh.geometry;
+                    if (!geometry) return;
+                    const positionAttr = geometry.attributes.position;
+                    if (!positionAttr) return;
+                    const indices = geometry.index;
+                    const worldMatrix = mesh.matrixWorld;
+
+                    const verticesWorld = [];
+                    for (let i = 0; i < positionAttr.count; i++) {
+                        const localVertex = new THREE.Vector3().fromBufferAttribute(positionAttr, i);
+                        const worldVertex = localVertex.clone().applyMatrix4(worldMatrix);
+                        worldVertex.multiplyScalar(scaleFactor);
+                        verticesWorld.push(worldVertex);
+                    }
+
+                    if (verticesWorld.length === 0) return;
+                    objContent += `o ${objectName}_${objectIndex++}\n`;
+                    for (let v of verticesWorld) {
+                        objContent += `v ${v.x} ${v.y} ${v.z}\n`;
+                    }
+
+                    if (indices) {
+                        for (let i = 0; i < indices.count; i += 3) {
+                            const i1 = indices.getX(i) + vertexOffset;
+                            const i2 = indices.getX(i+1) + vertexOffset;
+                            const i3 = indices.getX(i+2) + vertexOffset;
+                            objContent += `f ${i1} ${i2} ${i3}\n`;
+                        }
+                    } else {
+                        for (let i = 0; i < verticesWorld.length; i += 3) {
+                            if (i+2 < verticesWorld.length) {
+                                objContent += `f ${vertexOffset+i} ${vertexOffset+i+1} ${vertexOffset+i+2}\n`;
+                            }
+                        }
+                    }
+                    vertexOffset += verticesWorld.length;
+                }
+
+                for (let obj of objects) {
+                    if (obj.type === 'player') {
+                        obj.group.children.forEach(child => {
+                            if (child.isMesh) processMesh(child, 'player');
+                        });
+                    } else if (obj.type === 'objgroup') {
+                        obj.group.children.forEach(child => {
+                            if (child.isMesh) processMesh(child, 'imported');
+                        });
+                    } else if (obj.mesh && obj.mesh.isMesh) {
+                        processMesh(obj.mesh, obj.type);
+                    }
+                }
+
+                if (objContent === "") {
+                    showStatus("場景中沒有可匯出的幾何物件");
+                    return;
+                }
+
+                const blob = new Blob([objContent], {type: 'text/plain'});
+                const link = document.createElement('a');
+                link.download = `3dprint_${Date.now()}.obj`;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                showStatus(`已匯出 OBJ (縮放倍率: ${scaleFactor})`);
+            }
+
+            function importOBJFile(file) {
+                const loader = new THREE.OBJLoader();
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const objContent = e.target.result;
+                        const group = loader.parse(objContent);
+                        const box = new THREE.Box3().setFromObject(group);
+                        const minY = box.min.y;
+                        const offsetY = -minY;
+                        const centerX = (box.min.x + box.max.x) / 2;
+                        const centerZ = (box.min.z + box.max.z) / 2;
+                        group.position.set(-centerX, offsetY, -centerZ);
+                        group.updateMatrixWorld(true);
+                        group.traverse(child => {
+                            if (child.isMesh) {
+                                child.material = getSurfaceMaterial(selectedColor, displayMode);
+                                child.castShadow = shadowsEnabled;
+                                child.receiveShadow = shadowsEnabled;
+                                child.visible = displayMode !== 2;
+                            }
+                        });
+                        scene.add(group);
+                        const boundingWire = createBoundingWire(group);
+                        if (boundingWire) scene.add(boundingWire);
+                        const objWrapper = {
+                            type: 'objgroup',
+                            group: group,
+                            boundingWire: boundingWire,
+                            position: group.position.clone(),
+                            color: selectedColor,
+                            isSelected: false,
+                            rotation: group.rotation.clone()
+                        };
+                        objects.push(objWrapper);
+                        updateCount();
+                        clearAllSelection();
+                        selectObject(objWrapper, false);
+                        saveToHistory();
+                        showStatus(`已合併匯入 OBJ，共 ${group.children.filter(c => c.isMesh).length} 個網格，已自動選取`);
+                    } catch(err) {
+                        console.error(err);
+                        showStatus("OBJ 解析失敗：" + err.message);
+                    }
+                };
+                reader.onerror = () => { showStatus("讀取 OBJ 檔案失敗"); };
+                reader.readAsText(file);
+            }
+
+            function openOBJFileDialog() {
+                document.getElementById('objFileInput').click();
+            }
+
+            function createBoundingWire(group) {
+                const box = new THREE.Box3().setFromObject(group);
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
+                const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+                const wire = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color: 0x000000 }));
+                wire.position.copy(center);
+                wire.scale.set(1,1,1);
+                wire.visible = wireframeVisible;
+                return wire;
+            }
+
+            function updateSelectedColor(hex) {
+                const color = parseInt(hex.replace('#', '0x'), 16);
+                selectedColor = color;
+                document.getElementById('colorInput').value = hex;
+                colorHistory.unshift(hex); if (colorHistory.length > 4) colorHistory.pop();
+                updateColorHistoryUI();
+                selectedObjects.forEach(o => {
+                    o.color = color;
+                    if (o.type === 'player') {
+                        o.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(color, displayMode, o.isSelected); });
+                    } else if (o.type === 'objgroup') {
+                        o.group.traverse(child => { if (child.isMesh) child.material = getSurfaceMaterial(color, displayMode, o.isSelected); });
+                    } else {
+                        o.mesh.material = getSurfaceMaterial(color, displayMode, o.isSelected);
+                    }
+                });
+                if (selectedObjects.length > 0) saveToHistory();
+            }
+
+            function updateColorHistoryUI() {
+                for (let i = 0; i < 4; i++) {
+                    const el = document.getElementById(`history${i}`);
+                    if (el && colorHistory[i]) { el.style.background = colorHistory[i]; el.dataset.color = colorHistory[i]; }
+                    else if (el) { el.style.background = '#ffffff'; el.dataset.color = '#ffffff'; }
+                }
+            }
+
+            function startDragObject(obj, mouseWorldPos) {
+                if (!obj || isDragging) return;
+                isDragging = true;
+                dragTargetObj = obj;
+                dragStartObjPos.copy(obj.position);
+                dragStartMouseWorld.copy(mouseWorldPos);
+                if (dragProxy) scene.remove(dragProxy);
+                if (obj.type === 'polygon') {
+                    const cloneGeo = obj.mesh.geometry.clone();
+                    dragProxy = new THREE.Mesh(cloneGeo, new THREE.MeshPhongMaterial({ color: 0x888888, transparent: true, opacity: 0.4, depthTest: true }));
+                    dragProxy.position.copy(obj.position);
+                    dragProxy.position.y = 0.02;
+                    dragProxy.scale.copy(obj.mesh.scale);
+                    dragProxy.rotation.copy(obj.mesh.rotation);
+                    scene.add(dragProxy);
+                } else if (obj.type === 'player') {
+                    const circleGeo = new THREE.CylinderGeometry(0.7, 0.7, 0.05, 16);
+                    dragProxy = new THREE.Mesh(circleGeo, new THREE.MeshPhongMaterial({ color: 0x888888, transparent: true, opacity: 0.5 }));
+                    dragProxy.position.copy(obj.position);
+                    dragProxy.position.y = 0.02;
+                    scene.add(dragProxy);
+                } else if (obj.type === 'objgroup') {
+                    const box = new THREE.Box3().setFromObject(obj.group);
+                    const size = box.getSize(new THREE.Vector3());
+                    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+                    dragProxy = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x888888, transparent: true, opacity: 0.3 }));
+                    dragProxy.position.copy(obj.position);
+                    dragProxy.position.y = obj.position.y;
+                    scene.add(dragProxy);
+                } else {
+                    const edgesGeo = new THREE.EdgesGeometry(obj.mesh.geometry);
+                    dragProxy = new THREE.LineSegments(edgesGeo, new THREE.LineBasicMaterial({ color: 0x666666 }));
+                    dragProxy.position.copy(obj.position);
+                    dragProxy.position.y = 0.02;
+                    dragProxy.rotation.copy(obj.mesh.rotation);
+                    scene.add(dragProxy);
+                }
+                orbitControls.enabled = false;
+            }
+
+            function updateDrag(mouseWorldPos) {
+                if (!isDragging || !dragTargetObj) return;
+                const delta = mouseWorldPos.clone().sub(dragStartMouseWorld);
+                const newPos = dragStartObjPos.clone().add(delta);
+                if (dragTargetObj.type === 'polygon') newPos.y = 0.1;
+                else if (dragTargetObj.type === 'player') newPos.y = dragTargetObj.position.y;
+                else if (dragTargetObj.type === 'objgroup') newPos.y = dragTargetObj.position.y;
+                else newPos.y = dragTargetObj.position.y;
+                dragTargetObj.position.copy(newPos);
+                if (dragTargetObj.type === 'player') dragTargetObj.group.position.copy(newPos);
+                else if (dragTargetObj.type === 'objgroup') {
+                    dragTargetObj.group.position.copy(newPos);
+                    if (dragTargetObj.boundingWire) dragTargetObj.boundingWire.position.copy(newPos);
+                } else if (dragTargetObj.type === 'polygon') {
+                    dragTargetObj.mesh.position.copy(newPos);
+                    dragTargetObj.wire.position.copy(newPos);
+                    const deltaVec = newPos.clone().sub(dragStartObjPos);
+                    if (dragTargetObj.vertices) dragTargetObj.vertices = dragTargetObj.vertices.map(v => v.clone().add(deltaVec));
+                } else {
+                    dragTargetObj.mesh.position.copy(newPos);
+                    dragTargetObj.wire.position.copy(newPos);
+                    if (dragTargetObj.diagWire) dragTargetObj.diagWire.position.copy(newPos);
+                }
+                if (dragProxy) { dragProxy.position.copy(newPos); dragProxy.position.y = newPos.y; }
+                dragStartObjPos.copy(newPos);
+                dragStartMouseWorld.copy(mouseWorldPos);
+            }
+
+            function endDrag() {
+                if (!isDragging) return;
+                if (dragProxy) { scene.remove(dragProxy); dragProxy = null; }
+                if (dragTargetObj) saveToHistory();
+                isDragging = false;
+                dragTargetObj = null;
+            }
+
+            function initColorUI() {
+                const presetColors = ['#000000', '#666666', '#aaaaaa', '#ffffff', '#ff0000', '#ffff00', '#00ff00', '#0000ff'];
+                const presetDiv = document.getElementById('presetContainer');
+                if (presetDiv) {
+                    presetDiv.innerHTML = '';
+                    presetColors.forEach(c => {
+                        const sw = document.createElement('div');
+                        sw.className = 'color-preset';
+                        sw.style.backgroundColor = c;
+                        if (c === '#ffffff') sw.style.border = '1px solid #ccc';
+                        sw.dataset.color = c;
+                        sw.addEventListener('click', () => updateSelectedColor(c));
+                        presetDiv.appendChild(sw);
+                    });
+                }
+                const historyDiv = document.getElementById('colorHistoryContainer');
+                if (historyDiv) {
+                    historyDiv.innerHTML = '';
+                    for (let i = 0; i < 4; i++) {
+                        const hist = document.createElement('div');
+                        hist.className = 'color-history-item';
+                        hist.id = `history${i}`;
+                        hist.style.backgroundColor = colorHistory[i] || '#ffffff';
+                        hist.dataset.color = colorHistory[i] || '#ffffff';
+                        hist.addEventListener('click', () => updateSelectedColor(hist.dataset.color));
+                        historyDiv.appendChild(hist);
+                    }
+                }
+            }
+
+            // ================================================
+            // 事件綁定
+            // ================================================
+            renderer.domElement.addEventListener('click', e => {
+                if (playerMode !== 0) return;
+                if (isDrawingMode) {
+                    const groundPoint = getMouseGroundPosition(e);
+                    if (groundPoint) {
+                        groundPoint.y = 0;
+                        if (drawingPoints.length > 0 && drawingPoints[drawingPoints.length - 1].distanceTo(groundPoint) < 0.3) { showStatus('點太近'); return; }
+                        drawingPoints.push(groundPoint);
+                        const marker = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), new THREE.MeshStandardMaterial({ color: 0xffaa00, emissive: 0x442200 }));
+                        marker.position.copy(groundPoint);
+                        scene.add(marker);
+                        tempPointsVisual.push(marker);
+                        showStatus(`已記錄點 ${drawingPoints.length}/${drawingType === 'triangle' ? 3 : 4}`);
+                        if ((drawingType === 'triangle' && drawingPoints.length === 3) || (drawingType === 'quad' && drawingPoints.length === 4)) finishDrawing();
+                    }
+                    return;
+                }
+                pointer.x = (e.clientX / innerWidth) * 2 - 1;
+                pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+                raycaster.setFromCamera(pointer, camera);
+                const meshes = [];
+                objects.forEach(o => {
+                    if (o.type === 'player') meshes.push(...o.group.children);
+                    else if (o.type === 'objgroup') meshes.push(...o.group.children);
+                    else meshes.push(o.mesh);
+                });
+                const hits = raycaster.intersectObjects(meshes);
+                if (hits.length) {
+                    const hitMesh = hits[0].object;
+                    let foundObj = null;
+                    for (let o of objects) {
+                        if (o.type === 'player' && o.group.children.includes(hitMesh)) { foundObj = o; break; }
+                        if (o.type === 'objgroup' && o.group.children.includes(hitMesh)) { foundObj = o; break; }
+                        if (o.mesh === hitMesh) { foundObj = o; break; }
+                    }
+                    if (foundObj) selectObject(foundObj, e.shiftKey);
+                } else if (!e.shiftKey) deselectAll();
+            });
+
+            renderer.domElement.addEventListener('mousedown', e => {
+                if (playerMode !== 0) return;
+                if (!dragModeActive) return;
+                if (e.button !== 0) return;
+                pointer.x = (e.clientX / innerWidth) * 2 - 1;
+                pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+                raycaster.setFromCamera(pointer, camera);
+                const meshes = [];
+                objects.forEach(o => {
+                    if (o.type === 'player') meshes.push(...o.group.children);
+                    else if (o.type === 'objgroup') meshes.push(...o.group.children);
+                    else meshes.push(o.mesh);
+                });
+                const hits = raycaster.intersectObjects(meshes);
+                if (hits.length) {
+                    const hitMesh = hits[0].object;
+                    let foundObj = null;
+                    for (let o of objects) {
+                        if (o.type === 'player' && o.group.children.includes(hitMesh)) { foundObj = o; break; }
+                        if (o.type === 'objgroup' && o.group.children.includes(hitMesh)) { foundObj = o; break; }
+                        if (o.mesh === hitMesh) { foundObj = o; break; }
+                    }
+                    if (foundObj) { e.stopPropagation(); const gp = getMouseGroundPosition(e); if (gp) startDragObject(foundObj, gp); }
+                }
+            });
+
+            window.addEventListener('mousemove', e => { if (dragModeActive && isDragging) { const gp = getMouseGroundPosition(e); if (gp) updateDrag(gp); } });
+            window.addEventListener('mouseup', e => { if (dragModeActive && isDragging) endDrag(); });
+
+            window.addEventListener('keydown', e => {
+                const k = e.key.toLowerCase();
+                keys[k] = true;
+                if (e.key === 'Enter') { if (isDrawingMode) finishDrawing(); togglePlayerMode(); return; }
+                if (playerMode === 0) {
+                    if (e.ctrlKey && k === 'a') { e.preventDefault(); selectAll(); }
+                    else if (k === 'c') {
+                        if (lastSelectedObjects.length > 0) {
+                            suppressLastSelectionUpdate = true;
+                            clearAllSelection();
+                            lastSelectedObjects.forEach(obj => { if (objects.includes(obj)) selectObject(obj, true); });
+                            suppressLastSelectionUpdate = false;
+                            lastSelectedObjects = selectedObjects.slice();
+                            showStatus('已恢復上次選取');
+                        } else { showStatus('沒有上次選取記錄'); }
+                    } else if (k === '1') toggleUI();
+                    else if (k === '2') { const link = document.createElement('a'); link.download = `capture_${Date.now()}.png`; link.href = renderer.domElement.toDataURL('image/png'); link.click(); }
+                    else if (k === '3') saveJSON();
+                    else if (k === '4') loadJSON();
+                    else if (k === '5') exportOBJFor3DPrint();
+                    else if (k === '6') openOBJFileDialog();
+                    else if (k === 'delete' || k === 'backspace') removeLast();
+                    else if (k === 'q') { if (isDrawingMode) finishDrawing(); const obj = createShape('cube'); clearAllSelection(); selectObject(obj); }
+                    else if (k === 'g') addFloor();
+                    else if (k === 'h') generateWalls();
+                    else if (k === 'l') duplicate('right');
+                    else if (k === 'k') duplicate('backward');
+                    else if (k === 'j') duplicate('left');
+                    else if (k === 'i') duplicate('forward');
+                    else if (k === 'o') duplicate('upward');
+                    else if (k === 'z') undo();
+                    else if (k === 'x') redo();
+                    else if (k === 'v') removeSelected();
+                    else if (k === 'p') duplicateLayer();
+                    else if (k === '9') selectLayer();
+                    else if (k === '0') selectAbove();
+                    else if ('wasdrf'.includes(k)) move(k);
+                    else if (e.key === 'ArrowUp') move('w');
+                    else if (e.key === 'ArrowDown') move('s');
+                    else if (e.key === 'ArrowLeft') move('a');
+                    else if (e.key === 'ArrowRight') move('d');
+                }
+            });
+            window.addEventListener('keyup', e => { const k = e.key.toLowerCase(); keys[k] = false; });
+            document.addEventListener('mousemove', e => {
+                if (playerMode !== 0 && isPointerLocked) {
+                    const dx = e.movementX || 0;
+                    const dy = e.movementY || 0;
+                    playerModel.rotation.y -= dx * rotationSpeed;
+                    camera.rotation.x -= dy * rotationSpeed;
+                    camera.rotation.x = Math.max(-Math.PI / 2 + 0.01, Math.min(Math.PI / 2 - 0.01, camera.rotation.x));
+                    playerModel.group.rotation.y = playerModel.rotation.y;
+                }
+            });
+            document.addEventListener('pointerlockchange', () => { isPointerLocked = document.pointerLockElement === renderer.domElement; });
+
+            // 按鈕綁定
+            document.getElementById('addCube').onclick = () => { if (isDrawingMode) finishDrawing(); clearAllSelection(); const obj = createShape('cube'); selectObject(obj); };
+            document.getElementById('addSphere').onclick = () => { if (isDrawingMode) finishDrawing(); createShape('sphere'); };
+            document.getElementById('addCone').onclick = () => { if (isDrawingMode) finishDrawing(); createShape('cone'); };
+            document.getElementById('addPyramid').onclick = () => { if (isDrawingMode) finishDrawing(); createShape('pyramid'); };
+            document.getElementById('addCylinder').onclick = () => { if (isDrawingMode) finishDrawing(); createShape('cylinder'); };
+            document.getElementById('addHalfCylinder').onclick = () => { if (isDrawingMode) finishDrawing(); createShape('halfCylinder'); };
+            document.getElementById('addTriPrism').onclick = () => { if (isDrawingMode) finishDrawing(); createShape('triPrism'); };
+            document.getElementById('addFloor').onclick = addFloor;
+            document.getElementById('generateWalls').onclick = generateWalls;
+            document.getElementById('addPlayerModel').onclick = addPlayerModel;
+            document.getElementById('removeSelected').onclick = removeSelected;
+            document.getElementById('removeLast').onclick = removeLast;
+            document.getElementById('flipVertical').onclick = flipVerticalOld;
+            document.getElementById('flipHorizontal').onclick = flipHorizontalOld;
+            document.getElementById('toggleDisplayMode').onclick = updateDisplayMode;
+            document.getElementById('toggleGrid').onclick = toggleGrid;
+            document.getElementById('toggleDiagonals').onclick = toggleDiagonals;
+            document.getElementById('toggleShadows').onclick = toggleShadows;
+            document.getElementById('toggleWireframe').onclick = toggleWireframe;
+            document.getElementById('viewFront').onclick = setFrontView;
+            document.getElementById('viewLeft').onclick = setLeftView;
+            document.getElementById('viewTop').onclick = setTopView;
+            document.getElementById('toggleMoveButtonsBtn').onclick = toggleMoveButtons;
+
+            document.getElementById('colorInput').addEventListener('input', e => updateSelectedColor(e.target.value));
+            document.getElementById('fileInput').addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => { try { mergeFromJSON(JSON.parse(ev.target.result)); } catch (err) { showStatus('載入失敗：' + err.message); } };
+                reader.readAsText(file);
+                e.target.value = '';
+            });
+            document.getElementById('objFileInput').addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                importOBJFile(file);
+                e.target.value = '';
+            });
+
+            document.getElementById('drawTriangleBtn').onclick = () => {
+                if (isDrawingMode) finishDrawing();
+                isDrawingMode = true;
+                drawingType = 'triangle';
+                drawingPoints = [];
+                clearDrawingTemp();
+                showStatus('點擊地面選擇3個頂點 (三角形)');
+                document.getElementById('drawTriangleBtn').textContent = '⏹️ 取消繪製';
+                document.getElementById('drawQuadBtn').textContent = '□ 畫四邊形';
+            };
+            document.getElementById('drawQuadBtn').onclick = () => {
+                if (isDrawingMode) finishDrawing();
+                isDrawingMode = true;
+                drawingType = 'quad';
+                drawingPoints = [];
+                clearDrawingTemp();
+                showStatus('點擊地面選擇4個頂點 (四邊形)');
+                document.getElementById('drawQuadBtn').textContent = '⏹️ 取消繪製';
+                document.getElementById('drawTriangleBtn').textContent = '△ 畫三角形';
+            };
+            document.getElementById('cancelDrawBtn').onclick = () => {
+                if (isDrawingMode) { isDrawingMode = false; drawingPoints = []; drawingType = null; clearDrawingTemp(); showStatus('已取消繪製'); document.getElementById('drawTriangleBtn').textContent = '△ 畫三角形'; document.getElementById('drawQuadBtn').textContent = '□ 畫四邊形'; }
+            };
+
+            document.getElementById('dragToggleBtn').onclick = () => {
+                dragModeActive = !dragModeActive;
+                const btn = document.getElementById('dragToggleBtn');
+                if (dragModeActive) {
+                    btn.textContent = '✅ 拖曳模式啟用中 (點擊物件拖曳)';
+                    btn.style.background = '#ff9800';
+                    btn.style.color = '#fff';
+                    orbitControls.enabled = false;
+                    showStatus('拖曳模式已啟用，點擊物件並拖動可移動，放開滑鼠完成');
+                } else {
+                    btn.textContent = '🖱️ 啟用拖曳移動 (投影輔助)';
+                    btn.style.background = '#d9f0ec';
+                    btn.style.color = '#1e2a3a';
+                    if (isDragging) endDrag();
+                    orbitControls.enabled = true;
+                    showStatus('拖曳模式已關閉');
+                }
+            };
+
+            document.getElementById('rotateYSlider').oninput = (e) => { if (!selectedObjects.length) return; applyFreeRotationY(parseInt(e.target.value)); document.getElementById('rotateYValue').textContent = e.target.value + '°'; };
+            document.getElementById('rotateYSlider').onchange = () => finalizeRotation();
+            document.getElementById('rotateXSlider').oninput = (e) => { if (!selectedObjects.length) return; applyFreeRotationX(parseInt(e.target.value)); document.getElementById('rotateXValue').textContent = e.target.value + '°'; };
+            document.getElementById('rotateXSlider').onchange = () => finalizeRotation();
+            document.getElementById('flipGroupHorizBtn').onclick = flipGroupHorizontal;
+            document.getElementById('flipGroupVertBtn').onclick = flipGroupVertical;
+
+            // 移動按鈕點擊綁定
+            const moveBtns = document.querySelectorAll('.move-btn');
+            moveBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const dir = btn.getAttribute('data-move');
+                    if (dir) move(dir);
+                });
+                btn.addEventListener('touchstart', (e) => { e.stopPropagation(); });
+            });
+
+            createShape('cube');
+            updateDisplayMode();
+            saveToHistory();
+            initColorUI();
+            updateColorHistoryUI();
+            moveButtonsVisible = true;
+            if (movePanel) movePanel.classList.remove('hidden');
+            if (toggleMoveBtn) toggleMoveBtn.textContent = '🔘 隱藏移動按鈕';
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const delta = clock.getDelta();
+                if (playerMode !== 0) updatePlayer(delta);
+                else orbitControls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+            window.addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+        })();
+    </script>
+</body>
+</html>

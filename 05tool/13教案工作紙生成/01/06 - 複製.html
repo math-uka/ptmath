@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NOKIN 生成器 - 完整版</title>
+    <script>
+        window.MathJax = { 
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
+                processEscapes: true 
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        /* 全局與輸入面板樣式 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #e2e6e9; font-family: 'Times New Roman', '宋體', 'SimSun', serif; padding: 30px 20px; display: flex; flex-direction: row; align-items: flex-start; justify-content: center; min-height: 100vh; }
+        .input-panel { width: 100%; max-width: 210mm; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 0 auto; }
+        .input-panel h2 { font-size: 20px; color: #1e466e; margin-bottom: 20px; text-align: center; font-weight: bold; }
+        .input-panel textarea { width: 100%; height: 420px; padding: 12px; border: 1px solid #c8d1d9; border-radius: 6px; font-family: monospace; font-size: 13px; resize: vertical; background-color: #f8f9fa; color: #333; }
+        
+        /* 按鈕容器 */
+        .generate-btn-container { text-align: center; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .btn-generate { background-color: #1e466e; color: white; font-size: 16px; padding: 12px 35px; border-radius: 40px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 3px 8px rgba(0,0,0,0.2); transition: 0.2s; }
+        .btn-generate:hover { background-color: #15324f; transform: scale(1.02); }
+        .btn-link { display: inline-block; background-color: #4a627a; color: white; font-size: 14px; padding: 11px 22px; border-radius: 40px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: 0.2s; }
+        .btn-link:hover { background-color: #2c3e4e; transform: scale(1.02); }
+        
+        /* 特殊高亮綠色按鈕樣式 - 判判用-工作紙 */
+        .btn-panpan { background-color: #2a9d8f; }
+        .btn-panpan:hover { background-color: #1e7167; }
+        
+        /* 左側固定控制欄 */
+        .button-bar { display: none; flex-direction: column; gap: 12px; width: 240px; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0; position: fixed; left: 30px; top: 30px; z-index: 1000; max-height: 95vh; overflow-y: auto; }
+        .btn { width: 100%; color: white; border: none; padding: 12px 16px; font-size: 15px; font-weight: bold; font-family: inherit; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: 0.2s; text-align: center; }
+        .btn-pdf { background-color: #b4432c; }
+        .btn-pdf:hover { background-color: #8f3522; }
+        .btn-image { background-color: #2a9d8f; }
+        .btn-image:hover { background-color: #1e7167; }
+        .btn-refresh { background-color: #2c7da0; }
+        .btn-refresh:hover { background-color: #1f5e7e; }
+        .btn-reset { background-color: #6c757d; }
+        .btn-reset:hover { background-color: #5a6268; }
+        
+        /* 高度手動調節面板樣式 */
+        .height-control-section { border-top: 1px solid #e9edf4; padding-top: 12px; margin-top: 5px; }
+        .height-control-title { font-size: 13px; font-weight: bold; color: #4a627a; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+        .height-slider-container { display: flex; align-items: center; gap: 8px; }
+        .height-slider { flex-grow: 1; cursor: pointer; height: 6px; border-radius: 3px; accent-color: #2c7da0; }
+        .height-value { font-size: 12px; font-weight: bold; color: #333; min-width: 40px; text-align: right; }
+
+        /* 圖片快取歷史面板 */
+        .gallery-section { margin-top: 5px; border-top: 1px solid #e9edf4; padding-top: 12px; }
+        .gallery-title { font-size: 13px; font-weight: bold; color: #4a627a; margin-bottom: 8px; display: flex; align-items: center; gap: 4px; }
+        .image-gallery { display: flex; flex-wrap: wrap; gap: 8px; max-height: 180px; overflow-y: auto; padding: 2px; }
+        .gallery-thumb { width: 46px; height: 46px; object-fit: cover; border: 2px solid #c8d1d9; border-radius: 6px; cursor: pointer; transition: 0.2s; background-color: #f8f9fa; }
+        .gallery-thumb:hover { border-color: #f5a623; transform: scale(1.08); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        
+        /* 編輯器與排版容器 */
+        [contenteditable="true"] { background-color: #ffffff; border: 1px solid transparent; padding: 4px 6px; border-radius: 4px; transition: 0.1s; cursor: text; }
+        .free-content-editor[contenteditable="true"] { border: 1px dashed #c8d1d9; padding: 0px; min-height: 100%; background: #fff; }
+        [contenteditable="true"]:focus { background-color: #ffffff; border-color: #f5a623; outline: none; box-shadow: 0 0 0 2px rgba(245,166,35,0.2); }
+        
+        /* 圖片可變更大小外殼 */
+        .resizable-img-wrapper { display: inline-block; position: relative; margin: 12px 0; max-width: 100%; cursor: grab; page-break-inside: avoid; vertical-align: middle; }
+        .resizable-img-wrapper img { max-width: 100%; width: 100%; height: auto; display: block; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); user-select: none; pointer-events: none; }
+        .resizable-img-wrapper.active { outline: 2px dashed #f5a623; }
+        .resizable-img-wrapper.active::after { content: ''; position: absolute; right: -4px; bottom: -4px; width: 12px; height: 12px; background-color: #f5a623; border: 2px solid white; border-radius: 50%; cursor: nwse-resize; z-index: 100; }
+        
+        /* A4 預覽容器與裁切線 */
+        .lesson-container { width: 210mm; min-height: 297mm; background: white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-radius: 4px; padding: 20mm 15mm; box-sizing: border-box; display: none; flex-direction: column; margin-left: 280px; position: relative; border: 1px solid #bdc3c7; }
+        .pdf-page-break-line { position: absolute; left: 0; width: 100%; text-align: center; color: #b4432c; font-size: 11px; font-family: sans-serif; font-weight: bold; border-bottom: 2px dashed #b4432c; opacity: 0.6; pointer-events: none; z-index: 9999; height: 20px; line-height: 20px; }
+        
+        /* 教案內容標準樣式同步 */
+        .pdf-sandbox-page { width: 180mm; background: white; box-sizing: border-box; padding: 0; margin: 0; display: flex; flex-direction: column; overflow: hidden; }
+        .free-content-editor, .pdf-sandbox-page { font-size: 14px; line-height: 1.6; font-family: 'Times New Roman', '宋體', 'SimSun', serif; color: #333; }
+        .free-content-editor h2, .pdf-sandbox-page h2 { font-size: 22px; color: #1e466e; margin: 15px 0 10px 0; text-align: center; font-weight: bold;}
+        .free-content-editor h3, .pdf-sandbox-page h3 { font-size: 18px; color: #1e466e; margin: 15px 0 8px 0; border-bottom: 1px solid #1e466e; padding-bottom: 3px;}
+        .free-content-editor h4, .pdf-sandbox-page h4 { font-size: 16px; color: #2c7da0; margin: 12px 0 6px 0;}
+        .free-content-editor p, .pdf-sandbox-page p { margin-bottom: 8px;}
+        .free-content-editor ul, .free-content-editor ol, .pdf-sandbox-page ul, .pdf-sandbox-page ol { margin: 4px 0 4px 18px; }
+        .free-content-editor li, .pdf-sandbox-page li { margin: 6px 0; }
+
+        /* 表格教案結構樣式 */
+        .lesson-row { display: flex; width: 100%; border: 1px solid #2c3e4e; margin-top: -1px; background: #fff; word-break: break-all; }
+        .row-header { background-color: #e9edf4; width: 100%; text-align: center; font-size: 1.35rem; font-weight: bold; padding: 14px; border: 1px solid #2c3e4e; }
+        .row-label { width: 120px; background-color: #f0f2f5; font-weight: 600; font-size: 14px; padding: 12px; border-right: 1px solid #2c3e4e; display: flex; align-items: flex-start; flex-shrink: 0; }
+        
+        .row-content, .lesson-container table td { padding: 12px; font-size: 14px; line-height: 1.6; min-height: 45px; transition: min-height 0.1s; }
+        
+        mjx-container { display: inline-block; vertical-align: middle; }
+        .input-mode-active { justify-content: center !important; }
+    </style>
+</head>
+<body class="input-mode-active">
+
+<div class="input-panel" id="inputPanel">
+    <h2>教案 /功課/ 練習紙自動化生成系統</h2>
+    <div class="generate-btn-container">
+        <button class="btn-generate" id="generateSystemBtn">解析輸入並執行</button>
+        <a href="https://chat.deepseek.com/share/8jpqvzzzkmtsezwfq3" target="_blank" class="btn-link">判判用-快速連結</a>
+        <a href="https://chat.deepseek.com/share/loyjw7m2qrgo3zrod7" target="_blank" class="btn-link">教案-快速連結</a>
+        <a href="https://chat.deepseek.com/share/515b9gaagf36hacajy" target="_blank" class="btn-link">工作紙-快速連結</a>
+    </div>
+    <textarea id="lessonHtmlInput" placeholder="點擊所需任務連結, 並描述你的課題, 內容, 要求, 將生成的代碼貼於此處並執行任務"></textarea>
+</div>
+
+<div class="button-bar" id="systemButtonBar">
+    <button class="btn btn-pdf" id="downloadPdfBtn">📄 下載PDF</button>
+    <button class="btn btn-image" id="insertImageBtn">🖼️ 插入新圖片</button>
+    <button class="btn btn-refresh" id="rerenderMathBtn">🔁 重新渲染公式</button>
+    <button class="btn btn-reset" id="resetSystemBtn">↩️ 重新生成</button>
+    <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+    
+    <div class="height-control-section" id="heightControlSection">
+        <div class="height-control-title">
+            <span>↕️ 調整表格最低高度</span>
+            <span class="height-value" id="heightValue">45px</span>
+        </div>
+        <div class="height-slider-container">
+            <input type="range" class="height-slider" id="heightSlider" min="45" max="350" value="45">
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <div class="gallery-title">📁 常用圖片庫 (點擊快速重用)</div>
+        <div class="image-gallery" id="imageGallery"></div>
+    </div>
+</div>
+
+<div class="lesson-container" id="lessonPages"></div>
+
+<div id="pdfSandbox" style="position: absolute; left: -9999px; top: -9999px; width: 180mm;"></div>
+
+<script>
+    let pdfGenerating = false;
+    let savedRange = null; 
+    let isTableMode = false; 
+
+    const TARGET_PAGE_HEIGHT_MM = 262; 
+
+    // ==========================================
+    //   Python 自動排考卷腳本內嵌前端邏輯核心
+    // ==========================================
+    const TEMPLATE_BASE_URL = "https://nokin.vercel.app/mainjs/mainhtml/auto";
+    const TEMPLATE_MAP = {
+        4:  "02", 5:  "03", 6:  "03", 7:  "05", 8:  "04",
+        9:  "05", 10: "05", 11: "11", 12: "06", 15: "06",
+        18: "09", 22: "11"
+    };
+    const DEFAULT_TEMPLATE_CODE = "09";
+
+    function getTemplateCode(qCount) {
+        return TEMPLATE_MAP[qCount] || DEFAULT_TEMPLATE_CODE;
+    }
+
+    async function fetchTemplate(templateCode) {
+        const url = `${TEMPLATE_BASE_URL}/${templateCode}.html`;
+        const resp = await fetch(url);
+        if (!resp.ok) {
+            throw new Error(`無法下載遠端工作紙模板: ${url}`);
+        }
+        return await resp.text();
+    }
+
+    function parseJsInfo(jsText) {
+        const titleMatch = jsText.match(/const\s+baseTitle\s*=\s*["']([^"']+)["'];/);
+        if (!titleMatch) return null; 
+
+        const baseTitle = titleMatch[1].trim();
+
+        const dateMatch = jsText.match(/const\s+dateStr\s*=\s*["']([^"']*)["'];/);
+        let ymd = "";
+        if (dateMatch && dateMatch[1].trim()) {
+            const dateStr = dateMatch[1].trim();
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                ymd = parts[0] + parts[1].padStart(2, '0') + parts[2].padStart(2, '0');
+            }
+        }
+
+        const qCount = (jsText.match(/\{\s*q\s*:/g) || []).length;
+
+        return { baseTitle, ymd, qCount, cleanJs: jsText.trim() };
+    }
+
+    function triggerDownload(filename, text) {
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    document.getElementById('generateSystemBtn').addEventListener('click', async () => {
+        let rawInput = document.getElementById('lessonHtmlInput').value.trim();
+        if (!rawInput) { alert("請先輸入或貼入教案內容代碼或工作紙 JS 程式！"); return; }
+
+        try {
+            const jsInfo = parseJsInfo(rawInput);
+            if (jsInfo) {
+                const { baseTitle, ymd, qCount, cleanJs } = jsInfo;
+                const templateCode = getTemplateCode(qCount);
+                
+                const loading = document.createElement('div');
+                loading.textContent = `偵測到工作紙程式碼！正在遠端下載模板 ${templateCode}.html (${qCount}題)...`;
+                loading.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(30,70,110,0.95); color:white; padding:20px 30px; border-radius:10px; z-index:10000; font-weight:bold;';
+                document.body.appendChild(loading);
+
+                try {
+                    let htmlTemplate = await fetchTemplate(templateCode);
+
+                    if (!htmlTemplate.includes("**********")) {
+                        throw new Error("遠端模板中找不到 ********** 標記，請檢查模板設定");
+                    }
+
+                    let newHtml = htmlTemplate.replace("**********", cleanJs);
+
+                    const pageTitle = ymd ? `${baseTitle}_${ymd}` : baseTitle;
+                    newHtml = newHtml.replace(/<title>.*?<\/title>/gi, `<title>${pageTitle}</title>`);
+
+                    let safeTitle = baseTitle.replace(/[^\w\u4e00-\u9fff-]/g, '_').replace(/_+/g, '_').replace(/^_+|_+$/g, '');
+                    const filename = ymd ? `${safeTitle}_${ymd}.html` : `${safeTitle}.html`;
+
+                    triggerDownload(filename, newHtml);
+                    alert(`工作紙 HTML 生成成功並已自動啟動下載！\n檔案名稱：${filename}`);
+                } catch (err) {
+                    alert("工作紙自動生成失敗：" + err.message);
+                } finally {
+                    document.body.removeChild(loading);
+                }
+                return; 
+            }
+        } catch (e) {
+            console.error("嘗試解析為工作紙時出錯，切換回常規教案解析模式", e);
+        }
+
+        const container = document.getElementById('lessonPages');
+        container.innerHTML = '';
+        document.getElementById('imageGallery').innerHTML = ''; 
+
+        if (rawInput.includes('lesson-row')) {
+            isTableMode = true;
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(rawInput, 'text/html');
+            doc.querySelectorAll('.lesson-row').forEach(row => container.appendChild(row.cloneNode(true)));
+            container.querySelectorAll('.row-content').forEach(cell => cell.setAttribute('contenteditable', 'true'));
+        } else {
+            isTableMode = false;
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(rawInput, 'text/html');
+            
+            doc.querySelectorAll('table td').forEach(td => {
+                td.setAttribute('contenteditable', 'true');
+            });
+            
+            const wrapperEditor = document.createElement('div');
+            wrapperEditor.className = 'free-content-editor';
+            wrapperEditor.setAttribute('contenteditable', 'true');
+            wrapperEditor.innerHTML = doc.body.innerHTML;
+            container.appendChild(wrapperEditor);
+        }
+
+        wrapNativeImagesWithEditorShell(container);
+        document.getElementById('inputPanel').style.display = 'none';
+        document.body.classList.remove('input-mode-active'); 
+        document.getElementById('systemButtonBar').style.display = 'flex';
+        container.style.display = 'flex';
+
+        document.getElementById('heightSlider').value = 45;
+        document.getElementById('heightValue').textContent = "45px";
+
+        bindDynamicEvents();
+        await rerenderMath(container);
+        setTimeout(refreshPageBreakLines, 600);
+    });
+
+    // ==========================================
+    //            其餘原教案系統邏輯
+    // ==========================================
+    function refreshPageBreakLines() {
+        const container = document.getElementById('lessonPages');
+        if (!container || container.style.display === 'none') return;
+        container.querySelectorAll('.pdf-page-break-line').forEach(line => line.remove());
+
+        const mmToPx = 3.77952;
+        const pageHeightPx = TARGET_PAGE_HEIGHT_MM * mmToPx; 
+        const containerPaddingTopPx = 20 * mmToPx; 
+        const totalHeightPx = container.scrollHeight;
+        const pageCount = Math.ceil(totalHeightPx / pageHeightPx);
+        
+        for (let i = 1; i <= pageCount; i++) {
+            const line = document.createElement('div');
+            line.className = 'pdf-page-break-line';
+            line.style.top = (i * pageHeightPx + containerPaddingTopPx - 20) + 'px';
+            line.innerHTML = `▲ 第 ${i} 頁 A4 裁剪邊界線（下方內容將切至下一頁）▲`;
+            container.appendChild(line);
+        }
+    }
+
+    function saveSelection() {
+        const sel = window.getSelection();
+        if (sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            const container = document.getElementById('lessonPages');
+            if (container.contains(range.commonAncestorContainer)) {
+                savedRange = range.cloneRange();
+            }
+        }
+    }
+
+    function addImageToGallery(src) {
+        if (!src) return;
+        const gallery = document.getElementById('imageGallery');
+        
+        const existingThumbs = gallery.querySelectorAll('img');
+        for (let thumb of existingThumbs) {
+            if (thumb.src === src) return; 
+        }
+
+        const thumbImg = document.createElement('img');
+        thumbImg.className = 'gallery-thumb';
+        thumbImg.src = src;
+        thumbImg.title = '點擊即可在目前游標處直接重用此圖';
+        
+        thumbImg.addEventListener('click', () => {
+            insertImageToEditor(src);
+        });
+        
+        gallery.appendChild(thumbImg);
+    }
+
+    function insertImageToEditor(src) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'resizable-img-wrapper';
+        wrapper.contentEditable = 'false';
+        wrapper.draggable = true;
+        wrapper.style.width = '350px';
+        
+        const img = document.createElement('img');
+        img.src = src;
+        wrapper.appendChild(img);
+        initResizableImage(wrapper);
+
+        const container = document.getElementById('lessonPages');
+        let targetCell = null;
+        if (savedRange && container.contains(savedRange.commonAncestorContainer)) {
+            let node = savedRange.commonAncestorContainer;
+            while (node && node !== container) {
+                if (node.nodeType === Node.ELEMENT_NODE && (node.classList.contains('row-content') || node.tagName.toLowerCase() === 'td')) {
+                    targetCell = node;
+                    break;
+                }
+                node = node.parentNode;
+            }
+        }
+        if (!targetCell) {
+            targetCell = document.activeElement && (document.activeElement.classList.contains('row-content') || document.activeElement.tagName.toLowerCase() === 'td')
+                         ? document.activeElement 
+                         : container.querySelector('.row-content, td[contenteditable="true"]');
+        }
+        
+        if (targetCell) {
+            insertAtSavedCursor(wrapper, targetCell);
+        } else {
+            const editor = container.querySelector('.free-content-editor') || container;
+            insertAtSavedCursor(wrapper, editor);
+        }
+
+        refreshPageBreakLines();
+    }
+
+    function insertAtSavedCursor(element, fallbackContainer) {
+        if (savedRange && fallbackContainer.contains(savedRange.commonAncestorContainer)) {
+            try {
+                savedRange.deleteContents();
+                savedRange.insertNode(element);
+                savedRange.setStartAfter(element);
+                savedRange.setEndAfter(element);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(savedRange);
+                return;
+            } catch (e) {
+                console.warn("游標插入不成功，改用追加模式插入", e);
+            }
+        }
+        fallbackContainer.appendChild(element);
+    }
+
+    function isEmptyNode(node) {
+        if (!node) return true;
+        if (node.nodeType === Node.TEXT_NODE) {
+            return node.textContent.replace(/[\s\u00a0\n\r]/g, '') === '';
+        }
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            const tagName = node.tagName.toLowerCase();
+            if (tagName === 'br') return true;
+            if (node.querySelectorAll('img, mjx-container, canvas, svg').length > 0) return false;
+            return node.textContent.replace(/[\s\u00a0\n\r]/g, '') === '';
+        }
+        return false;
+    }
+
+    function isNodeDeText(node) {
+        if (!node || node.nodeType !== Node.ELEMENT_NODE) return false;
+        let txt = node.textContent.trim();
+        return txt === '解：' || txt === '解' || txt.startsWith('解：');
+    }
+
+    function isNodeQuestion(node) {
+        if (!node || node.nodeType !== Node.ELEMENT_NODE) return false;
+        let txt = node.textContent.trim();
+        return /^\d+[\s\.\、\)]/.test(txt) || txt.includes('題目') || txt.includes('題：');
+    }
+
+    function sanitizeMathJaxHTML(htmlString) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+        const innerEditor = doc.querySelector('.free-content-editor');
+        let targetDoc = doc;
+        if (innerEditor) {
+            const tempDoc = parser.parseFromString(innerEditor.innerHTML, 'text/html');
+            targetDoc = tempDoc;
+        }
+
+        const containers = targetDoc.querySelectorAll('mjx-container, .MathJax, script[id*="MathJax"]');
+        containers.forEach(container => {
+            let formula = "";
+            const mml = container.querySelector('mjx-assistive-mml math, math');
+            if (mml) {
+                const altText = mml.getAttribute('alttext');
+                if (altText) { formula = altText; } else {
+                    const ann = mml.querySelector('annotation');
+                    if (ann) { formula = ann.textContent; }
+                }
+            }
+            if (!formula) { formula = container.textContent.trim(); } else {
+                formula = formula.replace(/\n/g, ' ').trim();
+                if (!formula.startsWith('$')) { formula = '$' + formula + '$'; }
+            }
+            if (container.parentNode) {
+                const textNode = targetDoc.createTextNode(formula);
+                container.parentNode.replaceChild(textNode, container);
+            }
+        });
+        return targetDoc.body ? targetDoc.body.innerHTML.trim() : targetDoc.documentElement.innerHTML.trim();
+    }
+
+    function wrapNativeImagesWithEditorShell(container) {
+        container.querySelectorAll('img').forEach(img => {
+            addImageToGallery(img.src);
+
+            if (img.parentNode && img.parentNode.classList.contains('resizable-img-wrapper')) return;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'resizable-img-wrapper';
+            wrapper.contentEditable = 'false';
+            wrapper.draggable = true;
+            wrapper.style.width = img.style.width || img.getAttribute('width') || '350px';
+            const newImg = img.cloneNode(true);
+            newImg.style.width = '100%';
+            wrapper.appendChild(newImg);
+            if (img.parentNode) {
+                img.parentNode.replaceChild(wrapper, img);
+                initResizableImage(wrapper);
+            }
+        });
+    }
+
+    document.getElementById('heightSlider').addEventListener('input', function() {
+        const val = this.value + 'px';
+        document.getElementById('heightValue').textContent = val;
+        const targets = document.querySelectorAll('#lessonPages .row-content, #lessonPages table td');
+        targets.forEach(el => {
+            el.style.minHeight = val;
+            if(el.tagName.toLowerCase() === 'td') { el.style.height = val; }
+        });
+        refreshPageBreakLines();
+    });
+
+    document.getElementById('insertImageBtn').addEventListener('click', () => {
+        document.getElementById('imageFileInput').click();
+    });
+
+    document.getElementById('imageFileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const base64Url = evt.target.result;
+            insertImageToEditor(base64Url); 
+            addImageToGallery(base64Url);   
+        };
+        reader.readAsDataURL(file);
+        this.value = ''; 
+    });
+
+    document.getElementById('resetSystemBtn').addEventListener('click', () => {
+        if (confirm("確定要退回輸入框狀態嗎？您的修改將會遺失。")) {
+            document.getElementById('inputPanel').style.display = 'block';
+            document.body.classList.add('input-mode-active');
+            document.getElementById('systemButtonBar').style.display = 'none';
+            document.getElementById('lessonPages').style.display = 'none';
+        }
+    });
+
+    async function rerenderMath(targetContainer) {
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            try { await MathJax.typesetPromise([targetContainer]); } catch (err) { console.warn(err); }
+        }
+    }
+
+    function downloadTxtBackup(fileName, containerClone) {
+        let txtContent = sanitizeMathJaxHTML(containerClone.innerHTML);
+        const blob = new Blob([txtContent], { type: 'text/plain;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName.replace('.pdf', '.txt'); 
+        link.style.display = 'none';
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    }
+
+    async function exportMultiPagePDF() {
+        if (pdfGenerating) return;
+        pdfGenerating = true;
+        const container = document.getElementById('lessonPages');
+
+        let nameParts = [];
+        const fullTextContext = container.textContent;
+        const gradeMatch = fullTextContext.match(/(?:班級|年級)[:：]\s*([^\s\n<]+)/);
+        const subjectMatch = fullTextContext.match(/(?:課題|科目)[:：]\s*([^\s\n<]+)/); 
+        const teacherMatch = fullTextContext.match(/(?:執教|老師|教師)[:：]\s*([^\s\n<]+)/);
+
+        if (gradeMatch) nameParts.push(gradeMatch[1].trim());
+        if (subjectMatch) nameParts.push(subjectMatch[1].trim());
+        if (teacherMatch) nameParts.push(teacherMatch[1].trim());
+
+        const now = new Date();
+        const formattedDate = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+        const finalFileName = nameParts.length > 0 ? `${nameParts.join('_')}_${formattedDate}.pdf` : `${formattedDate}.pdf`;
+
+        downloadTxtBackup(finalFileName, container.cloneNode(true));
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.textContent = '正在進行精準防孤行分頁排版中...';
+        loadingDiv.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.85); color:white; padding:16px 28px; border-radius:32px; z-index:10000; font-weight:bold;';
+        document.body.appendChild(loadingDiv);
+
+        try {
+            const sandbox = document.getElementById('pdfSandbox');
+            sandbox.innerHTML = '';
+            const mmToPx = 3.77952;
+            const maxPageHeightPx = Math.floor(TARGET_PAGE_HEIGHT_MM * mmToPx); 
+
+            let pagePagesNode = [];
+            let currentPageNode = document.createElement('div');
+            currentPageNode.className = 'pdf-sandbox-page';
+            sandbox.appendChild(currentPageNode);
+            pagePagesNode.push(currentPageNode);
+
+            if (isTableMode) {
+                const rows = container.querySelectorAll('.lesson-row');
+                for (let i = 0; i < rows.length; i++) {
+                    const originalRow = rows[i];
+                    if (originalRow.querySelector('.row-header')) {
+                        currentPageNode.appendChild(originalRow.cloneNode(true));
+                        continue;
+                    }
+                    const labelText = originalRow.querySelector('.row-label').innerHTML;
+                    const contentCell = originalRow.querySelector('.row-content');
+                    
+                    let currentRowClone = document.createElement('div');
+                    currentRowClone.className = 'lesson-row';
+                    currentRowClone.innerHTML = `<div class="row-label">${labelText}</div><div class="row-content"></div>`;
+                    currentPageNode.appendChild(currentRowClone);
+                    let currentContentCellClone = currentRowClone.querySelector('.row-content');
+
+                    let children = Array.from(contentCell.childNodes);
+                    for (let j = 0; j < children.length; j++) {
+                        let childClone = children[j].cloneNode(true);
+                        currentContentCellClone.appendChild(childClone);
+
+                        if (currentPageNode.offsetHeight > maxPageHeightPx) {
+                            currentContentCellClone.removeChild(childClone);
+                            currentPageNode = document.createElement('div');
+                            currentPageNode.className = 'pdf-sandbox-page';
+                            sandbox.appendChild(currentPageNode);
+                            pagePagesNode.push(currentPageNode);
+
+                            currentRowClone = document.createElement('div');
+                            currentRowClone.className = 'lesson-row';
+                            currentRowClone.innerHTML = `<div class="row-label">${labelText}</div><div class="row-content"></div>`;
+                            currentPageNode.appendChild(currentRowClone);
+                            currentContentCellClone = currentRowClone.querySelector('.row-content');
+                            currentContentCellClone.appendChild(childClone);
+                        }
+                    }
+                }
+            } else {
+                const srcEditor = container.querySelector('.free-content-editor') || container;
+                const topLevelNodes = Array.from(srcEditor.childNodes);
+                let isNewPage = true;
+
+                for (let j = 0; j < topLevelNodes.length; j++) {
+                    const node = topLevelNodes[j];
+                    if (isNewPage && isEmptyNode(node)) continue; 
+
+                    let nodeClone = node.cloneNode(true);
+                    currentPageNode.appendChild(nodeClone);
+
+                    if (currentPageNode.offsetHeight > maxPageHeightPx) {
+                        currentPageNode.removeChild(nodeClone);
+
+                        if (node.nodeType === Node.ELEMENT_NODE && node.childNodes.length > 1) {
+                            let partialShell = node.cloneNode(false);
+                            currentPageNode.appendChild(partialShell);
+                            
+                            let children = Array.from(node.childNodes);
+                            let splitIndex = 0;
+
+                            for (let c = 0; c < children.length; c++) {
+                                let childClone = children[c].cloneNode(true);
+                                partialShell.appendChild(childClone);
+                                if (currentPageNode.offsetHeight > maxPageHeightPx) {
+                                    partialShell.removeChild(childClone);
+                                    splitIndex = c;
+                                    break;
+                                } else {
+                                    splitIndex = c + 1;
+                                }
+                            }
+
+                            if (partialShell.childNodes.length === 0) {
+                                currentPageNode.removeChild(partialShell);
+                                splitIndex = 0;
+                            }
+
+                            currentPageNode = document.createElement('div');
+                            currentPageNode.className = 'pdf-sandbox-page';
+                            sandbox.appendChild(currentPageNode);
+                            pagePagesNode.push(currentPageNode);
+                            isNewPage = true;
+
+                            if (splitIndex < children.length) {
+                                let remainingShell = node.cloneNode(false);
+                                for (let c = splitIndex; c < children.length; c++) {
+                                    remainingShell.appendChild(children[c].cloneNode(true));
+                                }
+                                if (remainingShell.childNodes.length > 0) {
+                                    currentPageNode.appendChild(remainingShell);
+                                    isNewPage = false;
+                                }
+                            }
+                        } else {
+                            let pulledQuestion = null;
+                            if (isNodeDeText(node)) {
+                                let lastChild = currentPageNode.lastElementChild; 
+                                if (lastChild && isNodeQuestion(lastChild)) {
+                                    pulledQuestion = lastChild;
+                                    currentPageNode.removeChild(pulledQuestion);
+                                }
+                            }
+
+                            currentPageNode = document.createElement('div');
+                            currentPageNode.className = 'pdf-sandbox-page';
+                            sandbox.appendChild(currentPageNode);
+                            pagePagesNode.push(currentPageNode);
+                            isNewPage = true;
+
+                            if (pulledQuestion) {
+                                currentPageNode.appendChild(pulledQuestion);
+                                isNewPage = false;
+                            }
+
+                            if (!(isNewPage && isEmptyNode(node))) {
+                                currentPageNode.appendChild(node.cloneNode(true));
+                                isNewPage = false;
+                            }
+                        }
+                    } else {
+                        isNewPage = false;
+                    }
+                }
+            }
+
+            await new Promise(r => setTimeout(r, 400));
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4', true);
+
+            for (let p = 0; p < pagePagesNode.length; p++) {
+                if (p > 0) pdf.addPage();
+                const canvas = await html2canvas(pagePagesNode[p], { scale: 3.125, backgroundColor: '#ffffff', useCORS: true, allowTaint: true });
+                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                pdf.addImage(imgData, 'JPEG', 15, 15, 180, (canvas.height * 180) / canvas.width, undefined, 'FAST');
+            }
+            pdf.save(finalFileName);
+        } catch (err) {
+            alert("生成PDF錯誤: " + err.message);
+        } finally {
+            if (loadingDiv.parentNode) loadingDiv.parentNode.removeChild(loadingDiv);
+            pdfGenerating = false;
+            refreshPageBreakLines();
+        }
+    }
+
+    document.getElementById('downloadPdfBtn').addEventListener('click', (e) => { e.preventDefault(); exportMultiPagePDF(); });
+    document.getElementById('rerenderMathBtn').addEventListener('click', async () => { 
+        await rerenderMath(document.getElementById('lessonPages')); 
+        setTimeout(refreshPageBreakLines, 300);
+    });
+
+    function bindDynamicEvents() {
+        const container = document.getElementById('lessonPages');
+        container.addEventListener('keyup', () => { saveSelection(); refreshPageBreakLines(); });
+        container.addEventListener('mouseup', () => { saveSelection(); refreshPageBreakLines(); });
+        container.addEventListener('focusin', () => { saveSelection(); });
+        container.addEventListener('blur', () => { saveSelection(); }, true);
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.resizable-img-wrapper').forEach(w => w.classList.remove('active'));
+        });
+    }
+
+    function initResizableImage(wrapper) {
+        wrapper.addEventListener('click', function(e) { 
+            e.stopPropagation(); 
+            document.querySelectorAll('.resizable-img-wrapper').forEach(w => w.classList.remove('active')); 
+            this.classList.add('active'); 
+        });
+        
+        wrapper.addEventListener('mousedown', function(e) {
+            const rect = this.getBoundingClientRect();
+            if (!(e.clientX >= rect.right - 15 && e.clientY >= rect.bottom - 15)) return;
+            
+            e.preventDefault(); 
+            const startWidth = this.offsetWidth; 
+            const startX = e.clientX; 
+            const self = this;
+            
+            function doDrag(mEvent) { 
+                self.style.width = (startWidth + (mEvent.clientX - startX)) + 'px'; 
+                refreshPageBreakLines(); 
+            }
+            function stopDrag() { 
+                document.removeEventListener('mousemove', doDrag); 
+                document.removeEventListener('mouseup', stopDrag); 
+                refreshPageBreakLines(); 
+            }
+            document.addEventListener('mousemove', doDrag); 
+            document.addEventListener('mouseup', stopDrag);
+        });
+    }
+</script>
+</body>
+</html>

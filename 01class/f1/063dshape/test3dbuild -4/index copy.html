@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>3D 物件編輯器</title>
+    <link rel="icon" type="image/x-icon" href="https://nokin.vercel.app/main.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #111;
+            overflow: hidden;
+            color: #1e293b;
+        }
+        canvas {
+            display: block;
+        }
+        .sidebar {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            width: 360px;
+            max-height: calc(100% - 32px);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            border-radius: 28px;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .sidebar-header {
+            padding: 18px 20px 10px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .sidebar-header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1f4870, #2c7a6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .counter-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 12px;
+            background: #f1f5f9;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .counter-badge span:first-child {
+            font-size: 0.85rem;
+            color: #334155;
+        }
+        #count {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1a5d5c;
+            line-height: 1;
+        }
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 18px 20px 18px;
+            scrollbar-width: thin;
+        }
+        .sidebar-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: #c0c8d4;
+            border-radius: 10px;
+        }
+        .tool-section {
+            margin-bottom: 22px;
+        }
+        .section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: #5b6e8c;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 6px;
+        }
+        .btn {
+            background: #ffffffcc;
+            border: 1px solid #dce3ec;
+            padding: 7px 8px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #1e2a3a;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            text-align: center;
+            font-family: inherit;
+            backdrop-filter: blur(2px);
+            white-space: nowrap;
+        }
+        .btn:hover {
+            background: white;
+            border-color: #9aaebf;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 14px -8px rgba(0, 0, 0, 0.15);
+        }
+        .btn-danger {
+            background: #fff2f0;
+            border-color: #ffc9c2;
+            color: #c2410c;
+        }
+        .btn-danger:hover {
+            background: #ffe4e0;
+            border-color: #f97316;
+        }
+        .btn-active {
+            background: #a5d8ff;
+            border-color: #1c7ed6;
+            color: #0b3d6b;
+        }
+        .card-panel {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 12px;
+            margin: 8px 0 6px;
+            border: 1px solid #eef2f8;
+        }
+        .flex-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .slider-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            color: #334155;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 4px 0;
+            accent-color: #2c7a6e;
+        }
+        .color-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        #colorInput {
+            width: 44px;
+            height: 36px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            background: white;
+        }
+        .preset-grid,
+        .history-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .color-preset,
+        .color-history-item {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .color-preset:hover,
+        .color-history-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .help-content {
+            background: #fefce8;
+            border-radius: 18px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .help-inner {
+            padding: 10px 12px;
+            font-size: 0.68rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 10px;
+            color: #444;
+        }
+        .help-inner div {
+            padding: 2px 0;
+        }
+        .status-message {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293bdd;
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 60px;
+            z-index: 2000;
+            display: none;
+            font-weight: 500;
+            pointer-events: none;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        .status-message.active {
+            display: block;
+            animation: fadeUp 2.6s forwards;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(12px);
+            }
+            12% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            78% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        .hidden-sidebar {
+            display: none !important;
+        }
+        .move-buttons-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(30, 30, 40, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1500;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: opacity 0.2s;
+        }
+        .button-group {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .move-btn, .copy-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e2a3a;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .copy-btn {
+            background: rgba(255, 220, 150, 0.95);
+            color: #a45d2e;
+        }
+        .move-btn:active, .copy-btn:active {
+            transform: scale(0.92);
+            background: #ffaa44;
+        }
+        .group-label {
+            color: white;
+            font-size: 0.7rem;
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .move-btn, .copy-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+            .move-buttons-panel {
+                gap: 8px;
+                padding: 10px;
+                bottom: 12px;
+                right: 12px;
+            }
+            .sidebar {
+                width: 290px;
+                top: 8px;
+                left: 8px;
+                max-height: calc(100% - 16px);
+            }
+            .button-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .help-inner {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-header h1 {
+                font-size: 1.3rem;
+            }
+        }
+        .move-buttons-panel.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>✧ 立體建構器</h1>
+            <div class="counter-badge">
+                <span>📦 場景物件</span>
+                <span id="count">0</span>
+            </div>
+        </div>
+        <div class="sidebar-content">
+            <div class="tool-section">
+                <div class="section-title">🕹️ 操作介面</div>
+                <div class="button-grid">
+                    <button id="toggleMoveButtonsBtn" class="btn">🔘 隱藏移動按鈕</button>
+                    <button id="viewFront" class="btn">📐 正視圖</button>
+                    <button id="viewLeft" class="btn">👈 左視圖</button>
+                    <button id="viewTop" class="btn">🔽 俯視圖</button>
+                </div>
+                <div class="card-panel" style="margin-top:8px; font-size:0.7rem; color:#556;">
+                    💡 按數字 <kbd>1</kbd> 可隱藏/顯示側欄
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">📐 基本體</div>
+                <div class="button-grid">
+                    <button id="addCube" class="btn">🧊 立方體</button>
+                    <button id="addSphere" class="btn">⚪ 球體</button>
+                    <button id="addCone" class="btn">🔺 圓錐</button>
+                    <button id="addPyramid" class="btn">🔶 四棱錐</button>
+                    <button id="addCylinder" class="btn">🧴 圓柱</button>
+                    <button id="addHalfCylinder" class="btn">🌗 半圓柱</button>
+                    <button id="addTriPrism" class="btn">📐 三棱柱</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🏗️ 場景元件</div>
+                <div class="button-grid">
+                    <button id="addFloor" class="btn">🪞 地板</button>
+                    <button id="generateWalls" class="btn">🧱 生成牆壁</button>
+                    <button id="addPlayerModel" class="btn">🧑‍🎮 玩家角色</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">✂️ 編輯</div>
+                <div class="button-grid">
+                    <button id="removeSelected" class="btn btn-danger">🗑️ 刪除選中</button>
+                    <button id="removeLast" class="btn btn-danger">⏪ 刪除最後</button>
+                    <button id="flipVertical" class="btn">↕️ 上下翻轉90°</button>
+                    <button id="flipHorizontal" class="btn">🔄 左右翻轉90°</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">👁️ 視覺</div>
+                <div class="button-grid">
+                    <button id="toggleDisplayMode" class="btn">✨ 不透明+線框</button>
+                    <button id="toggleGrid" class="btn">📏 隱藏格線</button>
+                    <button id="toggleDiagonals" class="btn">📐 顯示對角線</button>
+                    <button id="toggleShadows" class="btn">🌓 隱藏陰影</button>
+                    <button id="toggleWireframe" class="btn">🔲 隱藏線框</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🎨 材質包</div>
+                <div class="button-grid" id="materialButtons">
+                    <button data-material="wood" class="btn" style="background:#b97f44;">🪵 木質</button>
+                    <button data-material="brick" class="btn" style="background:#b84c2c;">🧱 磚塊</button>
+                    <button data-material="metal" class="btn" style="background:#6f8f9f;">⚙️ 金屬</button>
+                    <button data-material="marble" class="btn" style="background:#dad0bc;">🪨 大理石</button>
+                    <button data-material="clear" class="btn" style="background:#dddddd;">🗑️ 清除材質</button>
+                </div>
+                <div class="card-panel" style="font-size:0.7rem; color:#556; margin-top:4px;">
+                    💡 選中物件後點擊材質，可套用紋理；清除材質恢復純色。
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">✏️ 自由繪畫</div>
+                <div class="card-panel">
+                    <div class="flex-row">
+                        <button id="drawTriangleBtn" class="btn" style="background:#e9f0ff;">△ 畫三角形</button>
+                        <button id="drawQuadBtn" class="btn" style="background:#e9f0ff;">□ 畫四邊形</button>
+                        <button id="cancelDrawBtn" class="btn">❌ 取消繪製</button>
+                    </div>
+                    <div style="font-size:0.7rem;color:#475569;margin-top:6px;">👉 點擊地面設定頂點，自動生成多邊形底板</div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🖱️ 進階拖曳</div>
+                <button id="dragToggleBtn" class="btn" style="background:#d9f0ec;">🖱️ 啟用拖曳移動 (投影輔助)</button>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🔄 整體旋轉</div>
+                <div class="card-panel">
+                    <div class="slider-label">
+                        <span>水平旋轉 Y軸</span>
+                        <span id="rotateYValue">0°</span>
+                    </div>
+                    <input type="range" id="rotateYSlider" min="-180" max="180" step="1" value="0">
+                    <div class="slider-label" style="margin-top:10px;">
+                        <span>垂直傾斜 X軸</span>
+                        <span id="rotateXValue">0°</span>
+                    </div>
+                    <input type="range" id="rotateXSlider" min="-90" max="90" step="1" value="0">
+                    <div class="flex-row" style="margin-top:10px;">
+                        <button id="flipGroupHorizBtn" class="btn">↩ 水平翻轉90°</button>
+                        <button id="flipGroupVertBtn" class="btn">⬆️ 垂直翻轉90°</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">🎨 材質顏色</div>
+                <div class="card-panel">
+                    <div class="color-preview">
+                        <label style="font-weight:600;font-size:0.8rem;">即時選色</label>
+                        <input type="color" id="colorInput" value="#3366ff">
+                    </div>
+                    <div style="font-size:0.68rem;color:#555;">新物件套用此色，選中物件即時更換</div>
+                    <div class="preset-grid" id="presetContainer"></div>
+                    <div style="font-size:0.68rem;margin-top:6px;color:#555;">📌 最近使用</div>
+                    <div class="history-grid" id="colorHistoryContainer"></div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="section-title">⌨️ 快捷鍵與操作指南</div>
+                <div class="help-content">
+                    <div class="help-inner">
+                        <div>🔹 點擊物件 → 選取</div><div>🔹 Shift+點擊 → 多選/取消</div>
+                        <div>🔹 W/A/S/D → 前/左/後/右 移動</div><div>🔹 R/F → 上/下移動</div>
+                        <div>🔹 Q → 新增方塊</div><div>🔹 G/H → 地板/牆壁</div>
+                        <div>🔹 L/K/J/I/O → 右/後/左/前/上 複製</div><div>🔹 ; → 向下複製</div>
+                        <div>🔹 Z/X → 還原/重做</div><div>🔹 V → 刪除所有選中</div>
+                        <div>🔹 P → 整層複製</div><div>🔹 Delete → 刪除最後</div>
+                        <div>🔹 1 → 隱藏側欄 / 2 → PNG</div>
+                        <div>🔹 3 → 儲存JSON / 4 → 載入 (合併)</div><div>🔹 5 → 匯出 OBJ (彈窗倍率)</div>
+                        <div>🔹 6 → 匯入 OBJ (合併)</div><div>🔹 C → 恢復上次選取</div>
+                        <div>🔹 Ctrl+A → 全選物件</div><div>🔹 Enter → 玩家操控模式</div>
+                        <div>🔹 拖曳模式 → 點擊拖動</div><div>🔹 9 → 選全層 / 0 → 選上方</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 觸控移動＋複製按鈕面板 -->
+    <div class="move-buttons-panel" id="moveButtonsPanel">
+        <div class="group-label">移動</div>
+        <div class="button-group">
+            <button class="move-btn" data-move="w">⬆️</button>
+            <button class="move-btn" data-move="s">⬇️</button>
+            <button class="move-btn" data-move="a">⬅️</button>
+            <button class="move-btn" data-move="d">➡️</button>
+            <button class="move-btn" data-move="r">🔺</button>
+            <button class="move-btn" data-move="f">🔻</button>
+        </div>
+        <div class="group-label" style="margin-top: 6px;">複製</div>
+        <div class="button-group">
+            <button class="copy-btn" data-copy="forward">⬆️</button>
+            <button class="copy-btn" data-copy="backward">⬇️</button>
+            <button class="copy-btn" data-copy="left">⬅️</button>
+            <button class="copy-btn" data-copy="right">➡️</button>
+            <button class="copy-btn" data-copy="upward">🔺</button>
+            <button class="copy-btn" data-copy="downward">🔻</button>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" style="display:none" accept=".json">
+    <input type="file" id="objFileInput" style="display:none" accept=".obj">
+    <div class="status-message" id="statusMessage"></div>
+
+    <script src="three.min.js"></script>
+
+    <script src="OrbitControls.min.js"></script>
+    <script src="OBJLoader.js"></script>
+    
+    <script src="editor_setup.js"></script>
+    <script src="editor_core.js"></script>
+    <script src="editor_materials.js"></script>
+    <script src="editor_ui.js"></script>
+</body>
+</html>

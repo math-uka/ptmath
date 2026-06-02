@@ -1,0 +1,78 @@
+/* 全局與輸入面板樣式 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #e2e6e9; font-family: 'Times New Roman', '宋體', 'SimSun', serif; padding: 30px 20px; display: flex; flex-direction: row; align-items: flex-start; justify-content: center; min-height: 100vh; }
+.input-panel { width: 100%; max-width: 210mm; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 0 auto; }
+.input-panel h2 { font-size: 20px; color: #1e466e; margin-bottom: 20px; text-align: center; font-weight: bold; }
+.input-panel textarea { width: 100%; height: 420px; padding: 12px; border: 1px solid #c8d1d9; border-radius: 6px; font-family: monospace; font-size: 13px; resize: vertical; background-color: #f8f9fa; color: #333; }
+
+/* 按鈕容器 */
+.generate-btn-container { text-align: center; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+.btn-generate { background-color: #1e466e; color: white; font-size: 16px; padding: 12px 35px; border-radius: 40px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 3px 8px rgba(0,0,0,0.2); transition: 0.2s; }
+.btn-generate:hover { background-color: #15324f; transform: scale(1.02); }
+.btn-link { display: inline-block; background-color: #4a627a; color: white; font-size: 14px; padding: 11px 22px; border-radius: 40px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: 0.2s; }
+.btn-link:hover { background-color: #2c3e4e; transform: scale(1.02); }
+
+/* 特殊高亮綠色按鈕樣式 - 判判用-工作紙 */
+.btn-panpan { background-color: #2a9d8f; }
+.btn-panpan:hover { background-color: #1e7167; }
+
+/* 左側固定控制欄 */
+.button-bar { display: none; flex-direction: column; gap: 12px; width: 240px; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0; position: fixed; left: 30px; top: 30px; z-index: 1000; max-height: 95vh; overflow-y: auto; }
+.btn { width: 100%; color: white; border: none; padding: 12px 16px; font-size: 15px; font-weight: bold; font-family: inherit; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: 0.2s; text-align: center; }
+.btn-pdf { background-color: #b4432c; }
+.btn-pdf:hover { background-color: #8f3522; }
+.btn-image { background-color: #2a9d8f; }
+.btn-image:hover { background-color: #1e7167; }
+.btn-refresh { background-color: #2c7da0; }
+.btn-refresh:hover { background-color: #1f5e7e; }
+.btn-reset { background-color: #6c757d; }
+.btn-reset:hover { background-color: #5a6268; }
+
+/* 高度手動調節面板樣式 */
+.height-control-section { border-top: 1px solid #e9edf4; padding-top: 12px; margin-top: 5px; }
+.height-control-title { font-size: 13px; font-weight: bold; color: #4a627a; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+.height-slider-container { display: flex; align-items: center; gap: 8px; }
+.height-slider { flex-grow: 1; cursor: pointer; height: 6px; border-radius: 3px; accent-color: #2c7da0; }
+.height-value { font-size: 12px; font-weight: bold; color: #333; min-width: 40px; text-align: right; }
+
+/* 圖片快取歷史面板 */
+.gallery-section { margin-top: 5px; border-top: 1px solid #e9edf4; padding-top: 12px; }
+.gallery-title { font-size: 13px; font-weight: bold; color: #4a627a; margin-bottom: 8px; display: flex; align-items: center; gap: 4px; }
+.image-gallery { display: flex; flex-wrap: wrap; gap: 8px; max-height: 180px; overflow-y: auto; padding: 2px; }
+.gallery-thumb { width: 46px; height: 46px; object-fit: cover; border: 2px solid #c8d1d9; border-radius: 6px; cursor: pointer; transition: 0.2s; background-color: #f8f9fa; }
+.gallery-thumb:hover { border-color: #f5a623; transform: scale(1.08); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+
+/* 編輯器與排版容器 */
+[contenteditable="true"] { background-color: #ffffff; border: 1px solid transparent; padding: 4px 6px; border-radius: 4px; transition: 0.1s; cursor: text; }
+.free-content-editor[contenteditable="true"] { border: 1px dashed #c8d1d9; padding: 0px; min-height: 100%; background: #fff; }
+[contenteditable="true"]:focus { background-color: #ffffff; border-color: #f5a623; outline: none; box-shadow: 0 0 0 2px rgba(245,166,35,0.2); }
+
+/* 圖片可變更大小外殼 */
+.resizable-img-wrapper { display: inline-block; position: relative; margin: 12px 0; max-width: 100%; cursor: grab; page-break-inside: avoid; vertical-align: middle; }
+.resizable-img-wrapper img { max-width: 100%; width: 100%; height: auto; display: block; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); user-select: none; pointer-events: none; }
+.resizable-img-wrapper.active { outline: 2px dashed #f5a623; }
+.resizable-img-wrapper.active::after { content: ''; position: absolute; right: -4px; bottom: -4px; width: 12px; height: 12px; background-color: #f5a623; border: 2px solid white; border-radius: 50%; cursor: nwse-resize; z-index: 100; }
+
+/* A4 預覽容器與裁切線 */
+.lesson-container { width: 210mm; min-height: 297mm; background: white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-radius: 4px; padding: 20mm 15mm; box-sizing: border-box; display: none; flex-direction: column; margin-left: 280px; position: relative; border: 1px solid #bdc3c7; }
+.pdf-page-break-line { position: absolute; left: 0; width: 100%; text-align: center; color: #b4432c; font-size: 11px; font-family: sans-serif; font-weight: bold; border-bottom: 2px dashed #b4432c; opacity: 0.6; pointer-events: none; z-index: 9999; height: 20px; line-height: 20px; }
+
+/* 教案內容標準樣式同步 */
+.pdf-sandbox-page { width: 180mm; background: white; box-sizing: border-box; padding: 0; margin: 0; display: flex; flex-direction: column; overflow: hidden; }
+.free-content-editor, .pdf-sandbox-page { font-size: 14px; line-height: 1.6; font-family: 'Times New Roman', '宋體', 'SimSun', serif; color: #333; }
+.free-content-editor h2, .pdf-sandbox-page h2 { font-size: 22px; color: #1e466e; margin: 15px 0 10px 0; text-align: center; font-weight: bold;}
+.free-content-editor h3, .pdf-sandbox-page h3 { font-size: 18px; color: #1e466e; margin: 15px 0 8px 0; border-bottom: 1px solid #1e466e; padding-bottom: 3px;}
+.free-content-editor h4, .pdf-sandbox-page h4 { font-size: 16px; color: #2c7da0; margin: 12px 0 6px 0;}
+.free-content-editor p, .pdf-sandbox-page p { margin-bottom: 8px;}
+.free-content-editor ul, .free-content-editor ol, .pdf-sandbox-page ul, .pdf-sandbox-page ol { margin: 4px 0 4px 18px; }
+.free-content-editor li, .pdf-sandbox-page li { margin: 6px 0; }
+
+/* 表格教案結構樣式 */
+.lesson-row { display: flex; width: 100%; border: 1px solid #2c3e4e; margin-top: -1px; background: #fff; word-break: break-all; }
+.row-header { background-color: #e9edf4; width: 100%; text-align: center; font-size: 1.35rem; font-weight: bold; padding: 14px; border: 1px solid #2c3e4e; }
+.row-label { width: 120px; background-color: #f0f2f5; font-weight: 600; font-size: 14px; padding: 12px; border-right: 1px solid #2c3e4e; display: flex; align-items: flex-start; flex-shrink: 0; }
+
+.row-content, .lesson-container table td { padding: 12px; font-size: 14px; line-height: 1.6; min-height: 45px; transition: min-height 0.1s; }
+
+mjx-container { display: inline-block; vertical-align: middle; }
+.input-mode-active { justify-content: center !important; }
