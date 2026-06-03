@@ -44,13 +44,13 @@
             border-radius: 8px;
             padding: 15px;
         }
-        .right-sidebar { 
-            flex: 0 0 380px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            border-left: 1px solid #eef2f5; 
-            padding-left: 15px; 
+        .right-sidebar {
+            flex: 0 0 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-left: 1px solid #eef2f5;
+            padding-left: 15px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -252,15 +252,15 @@
                 </select>
             </div>
             <div class="action-bar">
-                <button class="btn-add" onclick="addCircleCard()" style="background:#444;">+ 新增圓形</button>
-                <button class="btn-add" onclick="addEllipseCard()" style="background:#666;">+ 新增橢圓</button>
+                <button class="btn-add" onclick="addCircleCard()" style="background:#e67e22;">+ 新增圓形</button>
+                <button class="btn-add" onclick="addEllipseCard()" style="background:#9b59b6;">+ 新增橢圓</button>
             </div>
             <div id="graphicsList"></div>
         </div>
 
         <div>
             <h3>8. 點位標示 (x, y)</h3>
-            <button class="btn-add" onclick="addPointCard()" style="background:#222; margin-bottom:10px;">+ 新增座標點</button>
+            <button class="btn-add" onclick="addPointCard()" style="background:#5856d6; margin-bottom:10px;">+ 新增座標點</button>
             <div id="pointList"></div>
         </div>
     </div>
@@ -269,33 +269,6 @@
 <script>
     let customGraphics = [];
     let customPoints = [];
-
-    // 數學標籤排版格式化工具
-    function formatMathText(text) {
-        if (!text) return "";
-        let formatted = text.trim();
-
-        // 1. 處理反比例函數與分數格式
-        const subSuperMap = {
-            '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹',
-            'x':'ₓ','y':'ᵧ','a':'ₐ','b':'♭','k':'ₖ','n':'ₙ'
-        };
-        
-        formatted = formatted.replace(/([0-9xyabkn\(\)\-\+]+)\s*[\/⁄]\s*([0-9xyabkn\(\)\-\+]+)/g, function(match, p1, p2) {
-            let numerator = p1.split('').map(ch => subSuperMap[ch] || ch).join('');
-            let denominator = p2.split('').map(ch => subSuperMap[ch] || ch).join('');
-            return numerator + '⁄' + denominator; 
-        });
-
-        // 2. 處理標準上標冪次方
-        formatted = formatted.replace(/\^2/g, "²");
-        formatted = formatted.replace(/\^3/g, "³");
-        formatted = formatted.replace(/\^4/g, "⁴");
-
-        // 3. 乘號美化
-        formatted = formatted.replace(/\*/g, "×");
-        return formatted;
-    }
 
     function handleSync(e) {
         const lockSquare = document.getElementById('lockSquare').checked;
@@ -318,14 +291,13 @@
         selectObj.value = ""; 
     }
 
-    // 1. 函數卡片 (預設黑色)
+    // 1. 函數卡片
     function addFunctionCard(defaultExpr = '', defaultMin = null, defaultMax = null) {
         const id = 'gfx_' + Date.now() + Math.floor(Math.random()*1000);
-        const labelVal = defaultExpr ? `y = ${defaultExpr}` : '';
         const html = `
             <div class="item-card" id="${id}" data-type="function">
                 <div class="item-header">
-                    <label style="font-weight:bold; color:#000000;">📈 函數方程式 y = f(x)</label>
+                    <label style="font-weight:bold; color:#007aff;">📈 函數方程式 y = f(x)</label>
                     <button class="btn-del" onclick="removeItem('${id}')">刪除</button>
                 </div>
                 <div class="control-group">
@@ -333,56 +305,35 @@
                     <span class="tip-text">支援: +, -, *, /, ^ (平方), sin(x), cos(x), abs(x)</span>
                 </div>
                 <div class="row-group">
-                    <div class="checkbox-group" style="margin:0;">
-                        <input type="checkbox" class="gfx-show-label" checked id="lbl_chk_${id}">
-                        <label for="lbl_chk_${id}">顯示圖形標籤</label>
-                    </div>
-                    <div class="control-group">
-                        <input type="text" class="gfx-label-text" placeholder="標籤文字" value="${labelVal}" readonly style="background:#f1f3f5; color:#495057;">
-                    </div>
-                </div>
-                <div class="row-group">
                     <div class="control-group"><label>定義域下限</label><input type="number" class="func-min" step="any" value="${defaultMin !== null ? defaultMin : ''}"></div>
                     <div class="control-group"><label>定義域上限</label><input type="number" class="func-max" step="any" value="${defaultMax !== null ? defaultMax : ''}"></div>
                 </div>
                 <div class="row-group" style="grid-template-columns: 2fr 1fr; align-items:center;">
                     <div class="control-group"><label>粗細</label><input type="number" class="gfx-width" value="3" min="1"></div>
-                    <div class="control-group"><label>顏色</label><input type="color" class="gfx-color" value="#000000"></div>
+                    <div class="control-group"><label>顏色</label><input type="color" class="gfx-color" value="#007aff"></div>
                 </div>
             </div>
         `;
         document.getElementById('graphicsList').insertAdjacentHTML('beforeend', html);
-        
-        const cardNode = document.getElementById(id);
-        cardNode.querySelector('.func-expr').addEventListener('input', function(e) {
-            const lblInput = cardNode.querySelector('.gfx-label-text');
-            if(e.target.value.trim()) {
-                lblInput.value = `y = ${e.target.value.trim()}`;
-            } else {
-                lblInput.value = '';
-            }
-        });
-
         bindDynamicEvents();
         drawPreview();
     }
 
+    // 💡 格式化圓與橢圓的項 (處理正負號與隱藏 0)
     function formatTerm(variable, value) {
-        if (value === 0) return `${variable}^2`;
+        if (value === 0) return `${variable}²`;
         const sign = value > 0 ? '-' : '+';
         const absVal = Math.abs(value);
-        return `(${variable} ${sign} ${parseFloat(absVal.toFixed(4))})^2`;
+        return `(${variable} ${sign} ${parseFloat(absVal.toFixed(4))})²`;
     }
 
-    // 同步更新圓與橢圓的卡片解析式
+    // 更新圓形和橢圓的解析方程式
     function updateEquations() {
         document.querySelectorAll('#graphicsList .item-card').forEach(card => {
             const type = card.getAttribute('data-type');
             const eqBox = card.querySelector('.equation-box');
-            const lblInput = card.querySelector('.gfx-label-text');
             if (!eqBox) return;
 
-            let eqText = "";
             if (type === 'circle') {
                 const h = parseFloat(card.querySelector('.circle-h').value) || 0;
                 const k = parseFloat(card.querySelector('.circle-k').value) || 0;
@@ -391,7 +342,8 @@
                 const xPart = formatTerm('x', h);
                 const yPart = formatTerm('y', k);
                 const r2 = parseFloat((r * r).toFixed(4));
-                eqText = `${xPart} + ${yPart} = ${r2}`;
+                
+                eqBox.innerText = `${xPart} + ${yPart} = ${r2}`;
             } else if (type === 'ellipse') {
                 const h = parseFloat(card.querySelector('.ellipse-h').value) || 0;
                 const k = parseFloat(card.querySelector('.ellipse-k').value) || 0;
@@ -402,23 +354,19 @@
                 const yPart = formatTerm('y', k);
                 const a2 = parseFloat((a * a).toFixed(4));
                 const b2 = parseFloat((b * b).toFixed(4));
-                eqText = `${xPart}/${a2} + ${yPart}/${b2} = 1`;
-            }
-
-            eqBox.innerText = eqText;
-            if (lblInput) {
-                lblInput.value = eqText; 
+                
+                eqBox.innerText = `${xPart}/${a2} + ${yPart}/${b2} = 1`;
             }
         });
     }
 
-    // 2. 圓形卡片 (預設黑色)
+    // 2. 圓形卡片 (自帶動態解析式)
     function addCircleCard() {
         const id = 'gfx_' + Date.now() + Math.floor(Math.random()*1000);
         const html = `
             <div class="item-card" id="${id}" data-type="circle">
                 <div class="item-header">
-                    <label style="font-weight:bold; color:#000000;">⭕ 幾何圓形</label>
+                    <label style="font-weight:bold; color:#e67e22;">⭕ 幾何圓形</label>
                     <button class="btn-del" onclick="removeItem('${id}')">刪除</button>
                 </div>
                 <div class="row-group">
@@ -429,22 +377,10 @@
                     <label>半徑 r</label>
                     <input type="number" class="circle-r" value="3" min="0.001" step="any">
                 </div>
-                <div class="row-group" style="margin-top:5px; display:none;">
-                    <div class="checkbox-group" style="margin:0;">
-                        <input type="checkbox" class="gfx-show-label" checked id="lbl_chk_${id}">
-                    </div>
-                    <div class="control-group">
-                        <input type="text" class="gfx-label-text" value="">
-                    </div>
-                </div>
-                <div class="checkbox-group" style="margin: 5px 0 0 0;">
-                    <input type="checkbox" class="gfx-show-label-toggle" checked id="lbl_toggle_${id}" onchange="document.getElementById('lbl_chk_${id}').checked = this.checked; drawPreview();">
-                    <label for="lbl_toggle_${id}">顯示解析式標籤</label>
-                </div>
                 <div class="equation-box" title="點擊可全選複製"></div>
                 <div class="row-group" style="grid-template-columns: 2fr 1fr; align-items:center;">
                     <div class="control-group"><label>粗細</label><input type="number" class="gfx-width" value="3" min="1"></div>
-                    <div class="control-group"><label>顏色</label><input type="color" class="gfx-color" value="#000000"></div>
+                    <div class="control-group"><label>顏色</label><input type="color" class="gfx-color" value="#e67e22"></div>
                 </div>
             </div>
         `;
@@ -454,13 +390,13 @@
         drawPreview();
     }
 
-    // 3. 橢圓卡片 (預設黑色)
+    // 3. 橢圓卡片 (自帶動態解析式)
     function addEllipseCard() {
         const id = 'gfx_' + Date.now() + Math.floor(Math.random()*1000);
         const html = `
             <div class="item-card" id="${id}" data-type="ellipse">
                 <div class="item-header">
-                    <label style="font-weight:bold; color:#000000;">⬭ 幾何橢圓</label>
+                    <label style="font-weight:bold; color:#9b59b6;">⬭ 幾何橢圓</label>
                     <button class="btn-del" onclick="removeItem('${id}')">刪除</button>
                 </div>
                 <div class="row-group">
@@ -471,22 +407,10 @@
                     <div class="control-group"><label>X半軸長 a</label><input type="number" class="ellipse-a" value="4" min="0.001" step="any"></div>
                     <div class="control-group"><label>Y半軸長 b</label><input type="number" class="ellipse-b" value="2" min="0.001" step="any"></div>
                 </div>
-                <div class="row-group" style="margin-top:5px; display:none;">
-                    <div class="checkbox-group" style="margin:0;">
-                        <input type="checkbox" class="gfx-show-label" checked id="lbl_chk_${id}">
-                    </div>
-                    <div class="control-group">
-                        <input type="text" class="gfx-label-text" value="">
-                    </div>
-                </div>
-                <div class="checkbox-group" style="margin: 5px 0 0 0;">
-                    <input type="checkbox" class="gfx-show-label-toggle" checked id="lbl_toggle_${id}" onchange="document.getElementById('lbl_chk_${id}').checked = this.checked; drawPreview();">
-                    <label for="lbl_toggle_${id}">顯示解析式標籤</label>
-                </div>
                 <div class="equation-box" title="點擊可全選複製"></div>
                 <div class="row-group" style="grid-template-columns: 2fr 1fr; align-items:center;">
                     <div class="control-group"><label>粗細</label><input type="number" class="gfx-width" value="3" min="1"></div>
-                    <div class="control-group"><label>顏色</label><input type="color" class="gfx-color" value="#000000"></div>
+                    <div class="control-group"><label>顏色</label><input type="color" class="ellipse-b" value="#9b59b6"></div>
                 </div>
             </div>
         `;
@@ -496,13 +420,13 @@
         drawPreview();
     }
 
-    // 4. 定位座標點卡片 (預設黑色)
+    // 4. 定位座標點卡片
     function addPointCard() {
         const id = 'point_' + Date.now() + Math.floor(Math.random()*1000);
         const html = `
             <div class="item-card" id="${id}">
                 <div class="item-header">
-                    <label style="font-weight:bold; color:#000000;">📍 座標點 (x, y)</label>
+                    <label style="font-weight:bold; color:#5856d6;">📍 座標點 (x, y)</label>
                     <button class="btn-del" onclick="removeItem('${id}')">刪除</button>
                 </div>
                 <div class="row-group">
@@ -514,7 +438,7 @@
                         <input type="checkbox" class="pt-label" checked id="lbl_${id}">
                         <label for="lbl_${id}">顯示座標標籤</label>
                     </div>
-                    <div class="control-group"><label>顏色</label><input type="color" class="pt-color" value="#000000"></div>
+                    <div class="control-group"><label>顏色</label><input type="color" class="pt-color" value="#5856d6"></div>
                 </div>
             </div>
         `;
@@ -535,9 +459,7 @@
             const item = {
                 type: type,
                 width: parseFloat(card.querySelector('.gfx-width').value) || 3,
-                color: card.querySelector('.gfx-color').value,
-                showLabel: card.querySelector('.gfx-show-label').checked,
-                labelText: card.querySelector('.gfx-label-text').value
+                color: card.querySelector('.gfx-color').value
             };
 
             if (type === 'function') {
@@ -796,17 +718,6 @@
             ctx.lineJoin = 'round';
             ctx.lineCap = 'round';
 
-            let lastValidCanvasX = null;
-            let lastValidCanvasY = null;
-
-            // 設定精緻的數學教科書字體
-            const setMathFont = () => {
-                ctx.fillStyle = item.color;
-                ctx.font = `italic bold ${fontSize - 1}px "Times New Roman", Times, serif`;
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'middle';
-            };
-
             if (item.type === 'function') {
                 if (!item.expr.trim()) { ctx.restore(); return; }
                 ctx.beginPath();
@@ -830,19 +741,8 @@
 
                     if (firstPoint) { ctx.moveTo(canvasX, canvasY); firstPoint = false; }
                     else { ctx.lineTo(canvasX, canvasY); }
-
-                    if (canvasX >= padding && canvasX <= padding + width && canvasY >= padding && canvasY <= padding + height) {
-                        lastValidCanvasX = canvasX;
-                        lastValidCanvasY = canvasY;
-                    }
                 }
                 ctx.stroke();
-
-                if (item.showLabel && item.labelText.trim() && lastValidCanvasX !== null) {
-                    setMathFont();
-                    const mathRenderedLabel = formatMathText(item.labelText.trim());
-                    ctx.fillText(mathRenderedLabel, lastValidCanvasX + 8, lastValidCanvasY);
-                }
 
             } else if (item.type === 'circle') {
                 if (item.r <= 0) { ctx.restore(); return; }
@@ -850,26 +750,10 @@
                 for (let theta = 0; theta <= Math.PI * 2 + 0.05; theta += 0.02) {
                     const cx = item.h + item.r * Math.cos(theta);
                     const cy = item.k + item.r * Math.sin(theta);
-                    const canvasX = getX(cx);
-                    const canvasY = getY(cy);
-
-                    if (theta === 0) ctx.moveTo(canvasX, canvasY);
-                    else ctx.lineTo(canvasX, canvasY);
+                    if (theta === 0) ctx.moveTo(getX(cx), getY(cy));
+                    else ctx.lineTo(getX(cx), getY(cy));
                 }
                 ctx.stroke();
-
-                // 🌟 【修正】將圓形標籤放置在東北/右上角 (45度位置)，完美避開 X 軸重合
-                if (item.showLabel && item.labelText.trim()) {
-                    const angle = Math.PI / 4; // 45度角
-                    const labelX = item.h + item.r * Math.cos(angle);
-                    const labelY = item.k + item.r * Math.sin(angle);
-                    
-                    if (labelX <= maxX && labelX >= minX && labelY <= maxY && labelY >= minY) {
-                        setMathFont();
-                        const mathRenderedLabel = formatMathText(item.labelText.trim());
-                        ctx.fillText(mathRenderedLabel, getX(labelX) + 6, getY(labelY) - 6);
-                    }
-                }
 
             } else if (item.type === 'ellipse') {
                 if (item.a <= 0 || item.b <= 0) { ctx.restore(); return; }
@@ -877,31 +761,15 @@
                 for (let theta = 0; theta <= Math.PI * 2 + 0.05; theta += 0.02) {
                     const cx = item.h + item.a * Math.cos(theta);
                     const cy = item.k + item.b * Math.sin(theta);
-                    const canvasX = getX(cx);
-                    const canvasY = getY(cy);
-
-                    if (theta === 0) ctx.moveTo(canvasX, canvasY);
-                    else ctx.lineTo(canvasX, canvasY);
+                    if (theta === 0) ctx.moveTo(getX(cx), getY(cy));
+                    else ctx.lineTo(getX(cx), getY(cy));
                 }
                 ctx.stroke();
-
-                // 🌟 【修正】將橢圓標籤放置在東北/右上角 (45度位置)，完美避開 X 軸重合
-                if (item.showLabel && item.labelText.trim()) {
-                    const angle = Math.PI / 4; // 45度角
-                    const labelX = item.h + item.a * Math.cos(angle);
-                    const labelY = item.k + item.b * Math.sin(angle);
-                    
-                    if (labelX <= maxX && labelX >= minX && labelY <= maxY && labelY >= minY) {
-                        setMathFont();
-                        const mathRenderedLabel = formatMathText(item.labelText.trim());
-                        ctx.fillText(mathRenderedLabel, getX(labelX) + 6, getY(labelY) - 6);
-                    }
-                }
             }
             ctx.restore();
         });
 
-        // 4. 定位點與點名字標籤繪製
+        // 4. 定位點繪製
         customPoints.forEach(pt => {
             if (pt.x < minX || pt.x > maxX || pt.y < minY || pt.y > maxY) return;
             ctx.save();
@@ -917,7 +785,6 @@
                 ctx.fillStyle = '#222222';
                 ctx.font = `bold ${fontSize - 2}px sans-serif`;
                 ctx.textAlign = 'left';
-                ctx.textBaseline = 'bottom';
                 const labelText = `(${formatNum(pt.x)}, ${formatNum(pt.y)})`;
                 ctx.fillText(labelText, cx + 8, cy - 4);
             }
@@ -967,6 +834,7 @@
             }
         });
 
+        // 🌟 預設乾淨空白
         drawPreview(); 
     };
 </script>
